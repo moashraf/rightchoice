@@ -87,8 +87,8 @@ class AqarController extends Controller
         $sort = $request->sort;
       
       
-$key1= str_ireplace("ي","ى", $keyWords);
-$key2= str_ireplace("ة","ه", $key1);
+        $key1= str_ireplace("ي","ى", $keyWords);
+        $key2= str_ireplace("ة","ه", $key1);
 
               $allAqars = aqar::where('status',1)->where (function($query) use ($offer)
                         {
@@ -136,8 +136,8 @@ $key2= str_ireplace("ة","ه", $key1);
                             if (!empty($keyWords)) {
                              
                        $find = array("ى");
-$replace = array("ي");
- $val_filter=(str_replace($find,$replace,$keyWords));
+        $replace = array("ي");
+        $val_filter=(str_replace($find,$replace,$keyWords));
 
  
                    
@@ -205,15 +205,18 @@ $replace = array("ي");
         $mzaya = Mzaya::all();
       //  $offerTypes = OfferTypes::all()->whereIn('id', [1, 2, 5]);
        $offerTypes = OfferTypes::all() ;
-        $vipAqars = aqar::where('status',1)->where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->latest()->take(10)->get();
+        $vipAqars = aqar::where('status',1)->where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')
+        ->with('offerTypes')->latest()->take(10)->get();
 
        
          $finishes = Finish_type::all();
-         $categories = Category::all();
+         $categories = Category::with('all_property_type_of_cat')->get();
          $compounds = Compound::all();
          $keyWords = $request->keywords;
           $cat_id = $request->licat;
         $prop_id = $request->Propertytype;
+        $compound_singel = $request->compound;
+
         $saletype = $request->saletype;
         $governratew = $request->location1;
         $districtw = $request->location2;
@@ -232,7 +235,7 @@ $replace = array("ي");
         $sort = $request->sort;
        // dd($request->area);
   
-$searchValues = preg_split('/\s+/', $areaw, -1, PREG_SPLIT_NO_EMPTY); 
+        $searchValues = preg_split('/\s+/', $areaw, -1, PREG_SPLIT_NO_EMPTY); 
                 $keys = explode(" ",$areaw);
 
  
@@ -250,7 +253,7 @@ $searchValues = preg_split('/\s+/', $areaw, -1, PREG_SPLIT_NO_EMPTY);
       
            
 
-        $allAqars = aqar::where('status',1) 
+        $allAqars = aqar::where('status',1) ->orderBy('created_at', 'DESC') 
         
         ->when($request->has('location1') && $request->location1 != null,function ($query) use ($request) {
 
@@ -280,11 +283,11 @@ $searchValues = preg_split('/\s+/', $areaw, -1, PREG_SPLIT_NO_EMPTY);
                        }
                    $stack = array();
 
- foreach($areaID as $valu){
-     array_push($stack, $valu->id);
+            foreach($areaID as $valu){
+                array_push($stack, $valu->id);
 
-     
- }
+                
+            }
                    $query ->whereIn('area_id', $stack);
                     }
          
@@ -316,18 +319,18 @@ $searchValues = preg_split('/\s+/', $areaw, -1, PREG_SPLIT_NO_EMPTY);
                             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/*
-   ->when($request->has('keywords') && $request->keywords  != null,function ($query) use ($keyWords)    {
-                        //  dd("fffff");
-                            if (!empty($keyWords)) {
-                             
-                                 // $query ->where('title', 'like', '%' . $keyWords . '%');
-                                 
- $find = array("ى");
-$replace = array("ي");
- $val_filter=(str_replace($find,$replace,$keyWords));
+                        /*
+                        ->when($request->has('keywords') && $request->keywords  != null,function ($query) use ($keyWords)    {
+                                                //  dd("fffff");
+                                                    if (!empty($keyWords)) {
+                                                    
+                                                        // $query ->where('title', 'like', '%' . $keyWords . '%');
+                                                        
+                        $find = array("ى");
+                        $replace = array("ي");
+                        $val_filter=(str_replace($find,$replace,$keyWords));
 
- 
+                        
                    
                               $query ->where('title', 'like' ,"%{$val_filter}%");
                               
@@ -352,18 +355,18 @@ $replace = array("ي");
               */
            //////////////////////////////////////////////////////////////////////////////////////////////////////
                
-               
-             
-  ->where (function($query) use ($keyWords)
-                        {
-                        
-                            if (!empty($keyWords)) {
-                             
- $find = array("ى");
-$replace = array("ي");
- $val_filter=(str_replace($find,$replace,$keyWords));
+                            
+                            
+                ->where (function($query) use ($keyWords)
+                                        {
+                                        
+                                            if (!empty($keyWords)) {
+                                            
+                $find = array("ى");
+                $replace = array("ي");
+                $val_filter=(str_replace($find,$replace,$keyWords));
 
- 
+                
                    
                         $query ->orWhere('title', 'like' ,"%{$val_filter}%");
 
@@ -388,13 +391,13 @@ $replace = array("ي");
                 ->orWhere('area', 'like', "%{$val_filter}%"  )->get();
             //dd($areaID);
                         
-                   $stack = array();
+                                $stack = array();
 
- foreach($areaID as $valu){
-     array_push($stack, $valu->id);
+                foreach($areaID as $valu){
+                    array_push($stack, $valu->id);
 
-     
- }
+                    
+                }
                    $query ->orwhereIn('area_id', $stack);
                    
                    
@@ -405,14 +408,14 @@ $replace = array("ي");
                 ->orWhere('district', 'like', "%{$val_filter22}%"  )
                 ->orWhere('district', 'like', "%{$val_filter}%"  )->get();
           //  dd($DistrictID);
-                        
-                   $stack = array();
+                                        
+                                $stack = array();
 
- foreach($DistrictID as $valu){
-     array_push($stack, $valu->id);
+                foreach($DistrictID as $valu){
+                    array_push($stack, $valu->id);
 
-     
- }
+                    
+                }
                    $query ->orwhereIn('district_id', $stack);
                    
                    
@@ -425,92 +428,108 @@ $replace = array("ي");
                   
                           //////////////////////////////////////////////////////////////////////////////////////////////////////
  
- /*
-->where (function($query) use ($keyWords)
-                        {
-                        
-                            if (!empty($keyWords)) {
-$find = array("ى");
-$replace = array("ي");
-$val_filter=(str_replace($find,$replace,$keyWords));
+                /*
+                ->where (function($query) use ($keyWords)
+                                        {
+                                        
+                                            if (!empty($keyWords)) {
+                $find = array("ى");
+                $replace = array("ي");
+                $val_filter=(str_replace($find,$replace,$keyWords));
 
-$find = array("ي");
-$replace = array("ى");
-$val_filter22=(str_replace($find,$replace,$keyWords));
-                                     
-                                     
-                                     
-                $areaID= SubArea::where('area', 'like', "%{$keyWords}%"  )
-                ->orWhere('area', 'like', "%{$val_filter22}%"  )
-                ->orWhere('area', 'like', "%{$val_filter}%"  )->get();
-            //dd($areaID);
-                        
-                   $stack = array();
+                $find = array("ي");
+                $replace = array("ى");
+                $val_filter22=(str_replace($find,$replace,$keyWords));
+                                                    
+                                                    
+                                                    
+                                $areaID= SubArea::where('area', 'like', "%{$keyWords}%"  )
+                                ->orWhere('area', 'like', "%{$val_filter22}%"  )
+                                ->orWhere('area', 'like', "%{$val_filter}%"  )->get();
+                            //dd($areaID);
+                                        
+                                $stack = array();
 
- foreach($areaID as $valu){
-     array_push($stack, $valu->id);
+                foreach($areaID as $valu){
+                    array_push($stack, $valu->id);
 
-     
- }
-                   $query ->orwhereIn('area_id', $stack);
                     
-          //  dd($stack);
+                }
+                                $query ->orwhereIn('area_id', $stack);
+                                    
+                        //  dd($stack);
 
-                    }})
-                  */
-                   
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
- 
-/*
-   ->when($request->has('keywords') && $request->keywords  != null,function ($query) use ($keyWords )    {
+                                    }})
+                                */
+                                
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////
+                
+                /*
+                ->when($request->has('keywords') && $request->keywords  != null,function ($query) use ($keyWords )    {
 
-$find = array("ى");
-$replace = array("ي");
-$val_filter=(str_replace($find,$replace,$keyWords));
+                $find = array("ى");
+                $replace = array("ي");
+                $val_filter=(str_replace($find,$replace,$keyWords));
 
-$find = array("ي");
-$replace = array("ى");
-$val_filter22=(str_replace($find,$replace,$keyWords));
-                                     
-                                     
-                                     
-                $DistrictID= District::where('district', 'like', "%{$keyWords}%"  )
-                ->orWhere('district', 'like', "%{$val_filter22}%"  )
-                ->orWhere('district', 'like', "%{$val_filter}%"  )->get();
-          //  dd($DistrictID);
-                        
-                   $stack = array();
+                $find = array("ي");
+                $replace = array("ى");
+                $val_filter22=(str_replace($find,$replace,$keyWords));
+                                                    
+                                                    
+                                                    
+                                $DistrictID= District::where('district', 'like', "%{$keyWords}%"  )
+                                ->orWhere('district', 'like', "%{$val_filter22}%"  )
+                                ->orWhere('district', 'like', "%{$val_filter}%"  )->get();
+                        //  dd($DistrictID);
+                                        
+                                $stack = array();
 
- foreach($DistrictID as $valu){
-     array_push($stack, $valu->id);
+                foreach($DistrictID as $valu){
+                    array_push($stack, $valu->id);
 
-     
- }
-                   $query ->whereIn('district_id', $stack);
                     
-          //  dd($stack);
+                }
+                                $query ->whereIn('district_id', $stack);
+                                    
+                        //  dd($stack);
 
-                    })
-                    
-                  */  
-                    
-                         //////////////////////////////////////////////////////////////////////////////////////////////////////   
+                                    })
+                                    
+                                */  
+                                    
+                                        //////////////////////////////////////////////////////////////////////////////////////////////////////   
                     
                     
 
 
-        ->when($request->has('saletype') && $request->saletype != null,function ($query) use ($request,$saletype) {
+                ->when($request->has('saletype') && $request->saletype != null,function ($query) use ($request,$saletype) {
 
-//dd($saletype);
-   if($saletype == 5){
-              $query->where('finannce_bank', 1);
-                    }else{
-                        
-                        
-                       $query ->where('offer_type', $request->saletype) ;
-                        //dd($query);
-                        
-                    } 
+        //dd($saletype);
+                           if($saletype == 5){
+                    $query->where('finannce_bank', 1);
+                            }
+                            
+                            elseif($saletype == 'ALL1'){
+
+                                $query ->whereIn('offer_type', [1,2]) ;
+
+                            }
+
+                            elseif($saletype == 'ALL2'){
+
+                                $query ->whereIn('offer_type', [3,4]) ;
+
+                            }
+
+
+                            
+                            else{
+                                
+                                
+                            $query ->where('offer_type', $request->saletype) ;
+                                //dd($query);
+                                
+                            } 
                     
                     
 
@@ -522,61 +541,62 @@ $val_filter22=(str_replace($find,$replace,$keyWords));
 
                     })   
                     
-    /*                
-        ->when($request->has('minArea'),function ($query) use ($request) {
+            /*                
+                ->when($request->has('minArea'),function ($query) use ($request) {
 
-                       $query ->where('total_area', '<=' , $request->minArea) ;
+                            $query ->where('total_area', '<=' , $request->minArea) ;
 
-                    })   
-                    
+                            })   
+                            
+                        
+                ->when($request->has('maxArea'),function ($query) use ($request) {
+
+                            $query ->where('total_area', '>=' , $request->maxArea) ;
+
+                            })  
+                            
+                ->when($request->has('minPrice'),function ($query) use ($request) {
+
+                            $query ->where('total_price', '<=' , $request->minPrice) ;
+
+                            })   
+                ->when($request->has('maxPrice'),function ($query) use ($request) {
+
+                            $query ->where('total_price', '>=' , $request->maxPrice) ;
+
+                            }) 
+                ->when($request->has('minRooms'),function ($query) use ($request) {
+
+                            $query ->where('rooms', '<=' , $request->minRooms) ;
+
+                            })   
+                ->when($request->has('maxRooms'),function ($query) use ($request) {
+
+                            $query ->where('rooms', '>=' , $request->maxRooms) ;
+
+                            }) 
+                            
+                ->when($request->has('minBaths'),function ($query) use ($request) {
+
+                            $query ->where('baths', '<=' , $request->minBaths) ;
+
+                            })   
+                ->when($request->has('maxBaths'),function ($query) use ($request) {
+
+                            $query ->where('baths', '>=' , $request->maxBaths) ;
+
+                            }) 
+                            
+                */
                 
-        ->when($request->has('maxArea'),function ($query) use ($request) {
+                ->with('districte')->with('governrateq')->with('images')->with('subAreaa')
+                //  ->get();
 
-                       $query ->where('total_area', '>=' , $request->maxArea) ;
+                ->paginate(9);
+                //  dd($request->all());
 
-                    })  
-                    
-        ->when($request->has('minPrice'),function ($query) use ($request) {
-
-                       $query ->where('total_price', '<=' , $request->minPrice) ;
-
-                    })   
-        ->when($request->has('maxPrice'),function ($query) use ($request) {
-
-                       $query ->where('total_price', '>=' , $request->maxPrice) ;
-
-                    }) 
-        ->when($request->has('minRooms'),function ($query) use ($request) {
-
-                       $query ->where('rooms', '<=' , $request->minRooms) ;
-
-                    })   
-        ->when($request->has('maxRooms'),function ($query) use ($request) {
-
-                       $query ->where('rooms', '>=' , $request->maxRooms) ;
-
-                    }) 
-                    
-        ->when($request->has('minBaths'),function ($query) use ($request) {
-
-                       $query ->where('baths', '<=' , $request->minBaths) ;
-
-                    })   
-        ->when($request->has('maxBaths'),function ($query) use ($request) {
-
-                       $query ->where('baths', '>=' , $request->maxBaths) ;
-
-                    }) 
-                    
-        */
-  
-  ->with('districte')->with('governrateq')->with('images')->with('subAreaa')
- //  ->get();
-
- ->paginate(9);
-//  dd($request->all());
-
-        return view('aqars.all-aqars',compact('allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds',
+        return view('aqars.all-aqars',compact('allAqars', 'vipAqars', 'mzaya', 'finishes',
+         'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','compound_singel',
         'cat_id', 'prop_id', 'saletype' , 'governratew', 'keyWords' 
         
         ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' ,
@@ -589,7 +609,7 @@ $val_filter22=(str_replace($find,$replace,$keyWords));
         //////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public function sorting(Request $request,$locale)
-    {
+ {
         //dd("55");
         $cat_id = $request->licat;
         $prop_id = $request->Propertytype;
@@ -1851,7 +1871,7 @@ if($old_uploded_img_count->count() < 8){
         
         $getOffers = OfferTypes::where('id',1)->first();
         
-        $offs ="4,3";
+        $offs ="ALL2";
         if($offs){
             
           $allAqars = aqar::where('status',1)->whereIn('offer_type', [3,4])->latest()->paginate(9);
@@ -1865,7 +1885,7 @@ if($old_uploded_img_count->count() < 8){
       //  dd($allAqars,$getOffers,$slug);
         return view('aqars.all-aqars',
         compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','cat_id', 'prop_id', 'saletype' , 'governratew'
-    ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
+      ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
         
     }
     
@@ -1914,7 +1934,7 @@ if($old_uploded_img_count->count() < 8){
         
         $getOffers = OfferTypes::where('id',1)->first();
         
-        $offs ="1,2,5";
+        $offs ="ALL1";
         if($offs){
             
           $allAqars = aqar::where('status',1)->whereIn('offer_type', [1,2,5])->latest()->paginate(9);
@@ -1925,10 +1945,11 @@ if($old_uploded_img_count->count() < 8){
             
         $off = $getOffers; 
         
-      //  dd($allAqars,$getOffers,$slug);
+       // dd($offs);
         return view('aqars.all-aqars',
-        compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','cat_id', 'prop_id', 'saletype' , 'governratew'
-    ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
+        compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds'
+        ,'cat_id', 'prop_id', 'saletype' , 'governratew'
+     ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
         
     }
     
@@ -1994,7 +2015,7 @@ if($old_uploded_img_count->count() < 8){
       //  dd($allAqars,$getOffers,$slug);
         return view('aqars.all-aqars',
         compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','cat_id', 'prop_id', 'saletype' , 'governratew'
-    ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
+      ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
         
     }
 }
