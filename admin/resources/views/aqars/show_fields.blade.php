@@ -1,252 +1,137 @@
+@extends('layouts.app')
+@section('title', 'Aqars')
+@section('content')
+
 <!-- Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('id', 'Id:') !!}
-    <p>{{ $aqar->id }}</p>
+
+<div class="row col-12"> 
+<ul class="list-group col-md-6">
+  <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> Aqar Details </li>
+  <li class="list-group-item">{!! Form::label('id', 'Id:') !!}   {{ $aqar->id }}</li>
+  <li class="list-group-item"> {!! Form::label('slug', 'Slug:') !!}  {{ $aqar->slug }}</li></li>
+  <li class="list-group-item">{!! Form::label('title', 'Title:') !!}  {{ $aqar->title }}</li>
+  <li class="list-group-item">{!! Form::label('description', 'Description:') !!}  {{ $aqar->description }}</li>
+    <li class="list-group-item">{!! Form::label('user_id', 'governrate :') !!}  {{$aqar->governrateq->governrate }}</li>
+        <li class="list-group-item">{!! Form::label('user_id', 'property Type :') !!} {{$aqar->propertyType->property_type }}</li>
+
+  <li class="list-group-item">{!! Form::label('number_of_floors', 'Number Of Floors:') !!}  {{ $aqar->number_of_floors }}</li>
+  <li class="list-group-item">{!! Form::label('total_area', 'Total Area:') !!}  {{ $aqar->total_area }}</li>
+  <li class="list-group-item">{!! Form::label('rooms', 'Rooms:') !!}  {{ $aqar->rooms }}</li>
+  <li class="list-group-item">{!! Form::label('baths', 'Baths:') !!}  {{ $aqar->baths }}</li>
+  <li class="list-group-item">{!! Form::label('floor', 'Floor:') !!}  {{ $aqar->floor }}</li>
+  <li class="list-group-item">{!! Form::label('ground_area', 'Ground Area:') !!}  {{ $aqar->ground_area }}</li>
+  <li class="list-group-item">{!! Form::label('land_area', 'Land Area:') !!}  {{ $aqar->land_area }}</li>
+  <li class="list-group-item"> {!! Form::label('downpayment', 'Downpayment:') !!}  {{ $aqar->downpayment }}</li>
+      <li class="list-group-item">{!! Form::label('monthly_rent', 'Monthly Rent:') !!} {{ $aqar->monthly_rent }}</li>
+
+
+
+</ul>
+<ul class="list-group col-md-6">
+    <ul class="list-group ">
+  <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> Aqar Details </li>
+
+  <li class="list-group-item"> {!! Form::label('rent_long_time', 'Rent Long Time:') !!}  {{ $aqar->rent_long_time }}</li>
+  <li class="list-group-item">{!! Form::label('offer_type', 'Offer Type:') !!}  {{ $aqar->offer_type }}</li>
+  <li class="list-group-item">{!! Form::label('mtr_price', 'Mtr Price:') !!}  {{ $aqar->mtr_price }}</li>
+  <li class="list-group-item">{!! Form::label('total_price', 'Total Price:') !!}  {{ $aqar->total_price }}</li>
+  <li class="list-group-item">{!! Form::label('finishtype', 'Finishtype:') !!}  {{ $aqar->finishtype }}</li>
+  <li class="list-group-item">{!! Form::label('area_id', 'Area Id:') !!}  {{ $aqar->area_id }}</li>
+  <li class="list-group-item">{!! Form::label('views', 'Views:') !!}  {{ $aqar->views }}</li>
+    <li class="list-group-item">{!! Form::label('user_id', 'aqar points :') !!}  {{$aqar->points_avail }}</li>
+
+  <li class="list-group-item">{!! Form::label('created_at', 'Created At:') !!}  {{ $aqar->created_at }}</li>
+  <li class="list-group-item">{!! Form::label('updated_at', 'Updated At:') !!}  {{ $aqar->updated_at }}</li>
+  <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> Owner Details </li>
+  <li class="list-group-item">{!! Form::label('user_id', 'User Id:') !!}  {{ $aqar->user_id }}</li> 
+</ul>
+ <ul class="list-group ">
+  <li class="list-group-item">{!! Form::label('user_id', 'User name:') !!}  {{ $aqar->user->name }}</li>
+    <li class="list-group-item">{!! Form::label('user_id', 'Email:') !!}  {{ $aqar->user->email }}</li>
+  <li class="list-group-item">{!! Form::label('user_id', 'Mobile:') !!}  {{ $aqar->user->MOP }}</li>
+</ul>
+
+</ul>
+
+
+<div class"col-md-12" style"margin-top:20px">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Viwer Nmae</th>
+          <th scope="col">Points</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse($aqar_viewers as $aqar_viewer)
+            <tr>
+                <td>{{ $aqar_viewer->id }}</td>
+                <td><a href="https://rightchoice-co.com/admin/public/user/{{ $aqar_viewer->user->id }}/edit">{{ $aqar_viewer->user->name}}</a></td>
+                <td>{{ $aqar_viewer->points }}</td>
+                <td>
+                    @if( $aqar_viewer->refund == 1 )
+                        <span data-toggle="modal" data-target="#change_aqar_status_modal">
+                            <button type="button"
+                                    data-placement="top"
+                                    data-toggle="tooltip"
+                                    title="ارجاع النقاط"
+                                    data-url="{{ route('admin.refund_points', $aqar_viewer->id) }}"
+                                    id="change_aqar_status_btn"
+                                    class="btn btn-raised btn-icon btn-danger mr-1">
+                                ارجاع النقاط
+                            </button>
+                        </span>
+                    @else
+                        <button type="button"
+                                class="btn btn-raised btn-icon btn-secondary mr-1">
+                                تم ارجاع النقاط 
+                        </button>
+                    @endif
+                </td
+            </tr>
+        @empty
+            <tr>
+                <td></td>
+                <td colspan="2" class="text-center">لا يوجد بيانات</td>
+                <td></td>
+            </tr>
+        @endforelse
+      </tbody>
+    </table>
+    
+    {{ $aqar_viewers->links() }}
 </div>
 
-<!-- Status Field -->
-<div class="col-sm-12">
-    {!! Form::label('status', 'Status:') !!}
-    <p>{{ $aqar->status }}</p>
+<div class="modal fade" id="change_aqar_status_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post" action="" id="change_aqar_status_form">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> ارجاع النقاط </h5>
+                </div>
+                <div class="modal-body">
+                    <p>هل انت متاكد من ارجاع النقاط</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+                    <button type="submit" class="btn btn-danger">ارجاع</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
-<!-- Slug Field -->
-<div class="col-sm-12">
-    {!! Form::label('slug', 'Slug:') !!}
-    <p>{{ $aqar->slug }}</p>
-</div>
+@endsection
 
-<!-- Title Field -->
-<div class="col-sm-12">
-    {!! Form::label('title', 'Title:') !!}
-    <p>{{ $aqar->title }}</p>
-</div>
+@push('page_scripts')
+    <script>
+        $(document).on('click', "#change_aqar_status_btn", function () {
+            $("#change_aqar_status_form").attr('action', $(this).data('url'));
+        })    
+    </script>
+@endpush
 
-<!-- Description Field -->
-<div class="col-sm-12">
-    {!! Form::label('description', 'Description:') !!}
-    <p>{{ $aqar->description }}</p>
-</div>
-
-<!-- Vip Field -->
-<div class="col-sm-12">
-    {!! Form::label('vip', 'Vip:') !!}
-    <p>{{ $aqar->vip }}</p>
-</div>
-
-<!-- Finannce Bank Field -->
-<div class="col-sm-12">
-    {!! Form::label('finannce_bank', 'Finannce Bank:') !!}
-    <p>{{ $aqar->finannce_bank }}</p>
-</div>
-
-<!-- Licensed Field -->
-<div class="col-sm-12">
-    {!! Form::label('licensed', 'Licensed:') !!}
-    <p>{{ $aqar->licensed }}</p>
-</div>
-
-<!-- Trade Field -->
-<div class="col-sm-12">
-    {!! Form::label('trade', 'Trade:') !!}
-    <p>{{ $aqar->trade }}</p>
-</div>
-
-<!-- Number Of Floors Field -->
-<div class="col-sm-12">
-    {!! Form::label('number_of_floors', 'Number Of Floors:') !!}
-    <p>{{ $aqar->number_of_floors }}</p>
-</div>
-
-<!-- Total Area Field -->
-<div class="col-sm-12">
-    {!! Form::label('total_area', 'Total Area:') !!}
-    <p>{{ $aqar->total_area }}</p>
-</div>
-
-<!-- Rooms Field -->
-<div class="col-sm-12">
-    {!! Form::label('rooms', 'Rooms:') !!}
-    <p>{{ $aqar->rooms }}</p>
-</div>
-
-<!-- Baths Field -->
-<div class="col-sm-12">
-    {!! Form::label('baths', 'Baths:') !!}
-    <p>{{ $aqar->baths }}</p>
-</div>
-
-<!-- Floor Field -->
-<div class="col-sm-12">
-    {!! Form::label('floor', 'Floor:') !!}
-    <p>{{ $aqar->floor }}</p>
-</div>
-
-<!-- Ground Area Field -->
-<div class="col-sm-12">
-    {!! Form::label('ground_area', 'Ground Area:') !!}
-    <p>{{ $aqar->ground_area }}</p>
-</div>
-
-<!-- Land Area Field -->
-<div class="col-sm-12">
-    {!! Form::label('land_area', 'Land Area:') !!}
-    <p>{{ $aqar->land_area }}</p>
-</div>
-
-<!-- Downpayment Field -->
-<div class="col-sm-12">
-    {!! Form::label('downpayment', 'Downpayment:') !!}
-    <p>{{ $aqar->downpayment }}</p>
-</div>
-
-<!-- Installment Time Field -->
-<div class="col-sm-12">
-    {!! Form::label('installment_time', 'Installment Time:') !!}
-    <p>{{ $aqar->installment_time }}</p>
-</div>
-
-<!-- Installment Value Field -->
-<div class="col-sm-12">
-    {!! Form::label('installment_value', 'Installment Value:') !!}
-    <p>{{ $aqar->installment_value }}</p>
-</div>
-
-<!-- Monthly Rent Field -->
-<div class="col-sm-12">
-    {!! Form::label('monthly_rent', 'Monthly Rent:') !!}
-    <p>{{ $aqar->monthly_rent }}</p>
-</div>
-
-<!-- Rent Long Time Field -->
-<div class="col-sm-12">
-    {!! Form::label('rent_long_time', 'Rent Long Time:') !!}
-    <p>{{ $aqar->rent_long_time }}</p>
-</div>
-
-<!-- Offer Type Field -->
-<div class="col-sm-12">
-    {!! Form::label('offer_type', 'Offer Type:') !!}
-    <p>{{ $aqar->offer_type }}</p>
-</div>
-
-<!-- Property Type Field -->
-<div class="col-sm-12">
-    {!! Form::label('property_type', 'Property Type:') !!}
-    <p>{{ $aqar->property_type }}</p>
-</div>
-
-<!-- License Type Field -->
-<div class="col-sm-12">
-    {!! Form::label('license_type', 'License Type:') !!}
-    <p>{{ $aqar->license_type }}</p>
-</div>
-
-<!-- Mtr Price Field -->
-<div class="col-sm-12">
-    {!! Form::label('mtr_price', 'Mtr Price:') !!}
-    <p>{{ $aqar->mtr_price }}</p>
-</div>
-
-<!-- Reciving Field -->
-<div class="col-sm-12">
-    {!! Form::label('reciving', 'Reciving:') !!}
-    <p>{{ $aqar->reciving }}</p>
-</div>
-
-<!-- Rec Time Field -->
-<div class="col-sm-12">
-    {!! Form::label('rec_time', 'Rec Time:') !!}
-    <p>{{ $aqar->rec_time }}</p>
-</div>
-
-<!-- User Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('user_id', 'User Id:') !!}
-    <p>{{ $aqar->user_id }}</p>
-</div>
-
-<!-- Category Field -->
-<div class="col-sm-12">
-    {!! Form::label('category', 'Category:') !!}
-    <p>{{ $aqar->category }}</p>
-</div>
-
-<!-- Location Field -->
-<div class="col-sm-12">
-    {!! Form::label('location', 'Location:') !!}
-    <p>{{ $aqar->location }}</p>
-</div>
-
-<!-- Call Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('call_id', 'Call Id:') !!}
-    <p>{{ $aqar->call_id }}</p>
-</div>
-
-<!-- Endorsement Field -->
-<div class="col-sm-12">
-    {!! Form::label('endorsement', 'Endorsement:') !!}
-    <p>{{ $aqar->endorsement }}</p>
-</div>
-
-<!-- Total Price Field -->
-<div class="col-sm-12">
-    {!! Form::label('total_price', 'Total Price:') !!}
-    <p>{{ $aqar->total_price }}</p>
-</div>
-
-<!-- Finishtype Field -->
-<div class="col-sm-12">
-    {!! Form::label('finishtype', 'Finishtype:') !!}
-    <p>{{ $aqar->finishtype }}</p>
-</div>
-
-<!-- Governrate Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('governrate_id', 'Governrate Id:') !!}
-    <p>{{ $aqar->governrate_id }}</p>
-</div>
-
-<!-- District Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('district_id', 'District Id:') !!}
-    <p>{{ $aqar->district_id }}</p>
-</div>
-
-<!-- Area Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('area_id', 'Area Id:') !!}
-    <p>{{ $aqar->area_id }}</p>
-</div>
-
-<!-- Compound Field -->
-<div class="col-sm-12">
-    {!! Form::label('compound', 'Compound:') !!}
-    <p>{{ $aqar->compound }}</p>
-</div>
-
-<!-- Points Avail Field -->
-<div class="col-sm-12">
-    {!! Form::label('points_avail', 'Points Avail:') !!}
-    <p>{{ $aqar->points_avail }}</p>
-</div>
-
-<!-- Views Field -->
-<div class="col-sm-12">
-    {!! Form::label('views', 'Views:') !!}
-    <p>{{ $aqar->views }}</p>
-</div>
-
-<!-- Created At Field -->
-<div class="col-sm-12">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{{ $aqar->created_at }}</p>
-</div>
-
-<!-- Updated At Field -->
-<div class="col-sm-12">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{{ $aqar->updated_at }}</p>
-</div>
 

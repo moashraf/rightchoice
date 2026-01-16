@@ -429,7 +429,7 @@
                                         @if(!empty(Auth::user()->profile_image))
                                         <div class="mb-2">
                                             <a href="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" data-toggle="lightbox">
-                                                <img src="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" alt=""  class="img-fluid img-thumbnail" style="max-width: 60%;">
+                                                <img src="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" alt=""  class="img-fluid img-thumbnail" style="max-width: 60%;" loading="lazy">
                                             </a>
                                         </div>
                                         @endif        
@@ -449,11 +449,6 @@
 
 
                                     <div class="accordion" id="accordionExample">
-
-
-
-
-
 
 
                                         <div class="accordion-item">
@@ -637,27 +632,6 @@
                                         </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                     </div>
 
 
@@ -765,11 +739,11 @@
                                    @if(!empty(Auth::user()->profile_image))
                                      <img src="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" alt="Admin"
 
-                                        class="rounded-circle admin">
+                                        class="rounded-circle admin" loading="lazy">
                                    @else
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
 
-                                        class="rounded-circle admin">
+                                        class="rounded-circle admin" loading="lazy">
                                    @endif
 
 

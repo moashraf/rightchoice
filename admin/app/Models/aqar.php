@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
+use App\Enums\VIPEnum;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -58,7 +60,7 @@ class aqar extends Model
 
 
     public $table = 'aqar';
-    
+
 
 
 
@@ -104,8 +106,10 @@ class aqar extends Model
         'views',
         'title_en',
         'description_en',
-        'slug_en'
+        'slug_en',
+        'slug'
     ];
+
 
     /**
      * The attributes that should be casted to native types.
@@ -114,10 +118,8 @@ class aqar extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'status' => 'integer',
         'slug' => 'string',
         'title' => 'string',
-        'vip' => 'integer',
         'finannce_bank' => 'integer',
         'licensed' => 'integer',
         'trade' => 'integer',
@@ -160,8 +162,30 @@ class aqar extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
+
+
+
+    public function getStatus()
+    {
+        if($this->status == 0)
+            return StatusEnum::WAITACTIVE;
+        else if($this->status == 1)
+            return StatusEnum::ACTIVE;
+        else if($this->status == 2)
+            return StatusEnum::UNACTIVE;
+    }
+
+    public function getVIP()
+    {
+        if($this->vip == 0)
+            return VIPEnum::NOTVIP;
+        else if($this->vip == 1)
+            return VIPEnum::VIP;
+    }
+
+
 
     public function Images()
     {
@@ -182,5 +206,90 @@ class aqar extends Model
     {
         return $this->belongsTo(offer_type::class, 'offer_type');
     }
+      public function mzaya()
+    {
+        return $this->belongsToMany(mzaya::Class, 'aqar_mzaya',
+          'aqar_id', 'mzaya_id');
+    }
+
+    public function mzayaAqar()
+    {
+        return $this->hasMany(MzayaAqar::Class);
+    }
+
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+
+
+
+    public function location(){
+        return $this->belongsTo(Location::class);
+    }
     
+    
+     
+
+
+    
+
+    public function callTimes(){
+        return $this->belongsTo(call_time::class, 'call_id');
+   }
+    public function license_type(){
+        return $this->belongsTo(license_type::class);
+    }
+    public function finishType(){
+        return $this->belongsTo(finish_type::class, 'finishtype');
+    }
+
+
+    public function governrateq(){
+        return $this->belongsTo(governrate::class, 'governrate_id');
+    }
+
+
+    public function districte(){
+        return $this->belongsTo(district::class, 'district_id');
+    }
+
+
+    public function subAreaa(){
+        return $this->belongsTo(subarea::class, 'area_id');
+    }
+
+
+    public function compounds(){
+        return $this->belongsTo(compound::class, 'compound');
+    }
+
+    public function propertyType() {
+        return $this->belongsTo(property_type::class, 'property_type');
+    }
+
+
+
+
+    public function logActivities()
+    {
+        return $this->morphMany(LogActivity::class, 'loggable');
+    }
+
+    public function users_views()
+    {
+        return $this->belongsToMany(User::class,'usercontactaqar','aqars_id','user_id');
+    }
+    
+ 
+    public function aqar()
+    {
+        return $this->belongsToMany(User::class,'usercontactaqar','aqars_id','user_id');
+    }
+
+
+
+
+
 }

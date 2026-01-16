@@ -5,43 +5,44 @@
             <?php //dd($minPrice);
             ?>
             <h1 class="headingTitle2">
-                @if (\Request::is('aqars-cash'))
+            
+                @if (\Request::segment(2) =='aqars-cash'   )
                     @section('title', ' عقارات للبيع')
 
                     عقارات للبيع
                 @endif
 
-                @if (\Request::is('aqars-installment'))
+                @if (\Request::segment(2) =='aqars-installment')
                     @section('title', ' عقارات تقسيط')
 
                     عقارات للتقسيط
                 @endif
 
-                @if (\Request::is('aqar-finnance'))
+                @if (\Request::segment(2) =='aqar-finnance')
                     @section('title', ' عقارات تصلح تمويل عقاري')
 
                     عقارات تصلح تمويل عقاري
                 @endif
 
-                @if (\Request::is('aqars-new-rent-law'))
+                @if (\Request::segment(2) =='aqars-new-rent-law')
                     @section('title', ' عقارات ايجار قانون جديد')
 
                     عقارات للايجار قانون جديد
                 @endif
 
-                @if (\Request::is('aqars-furnished-rent'))
+                @if (\Request::segment(2) =='aqars-furnished-rent')
                     @section('title', ' عقارات ايجار مفروش')
 
                     عقارات للايجار مفروش
                 @endif
 
-                @if (\Request::is('search'))
+                @if (\Request::segment(2) =='search')
                     @section('title', 'بحث الموقع')
 
                     قائمه البحث
                 @endif
 
-                @if (\Request::is('filter'))
+                @if (\Request::segment(2) =='filter')
                     @section('title', 'تحديد')
 
                     النتائج
@@ -71,8 +72,45 @@
                     @endif
                 </div>
 
-                <div class="col-lg-4" style="justify-content: space-between;
-                ">
+
+  @if (\Request::segment(2) =='filter')
+ 
+                <div class="col-lg-4" style="justify-content: space-between;  ">
+
+
+
+
+                    <form action="{{ route('sort', Config::get('app.locale')) }}" id="sortform" method="get">
+                        @csrf
+
+                        <input name="typeoff" type="hidden" value="{{ $offs }}">
+
+
+
+                        <select onchange="submit_another_form_filter()" class="myselect sortSelect" name="sort" id="sorting">
+
+                            <option value="" selected disabled>الترتيب</option>
+
+                            <option value="5" {{ $sort == '5' ? 'selected' : '' }}>التاريخ: الاحدث اولا</option>
+
+                            <option value="6" {{ $sort == '6' ? 'selected' : '' }}>التاريخ: الاقدم اولا</option>
+
+                            <option value="2" {{ $sort == '2' ? 'selected' : '' }}>السعر: الاقل اولا</option>
+
+                            <option value="1" {{ $sort == '1' ? 'selected' : '' }}>السعر: الاعلى اولا</option>
+
+                            <option value="4" {{ $sort == '4' ? 'selected' : '' }}>المساحه: الاقل اولا</option>
+
+                            <option value="3" {{ $sort == '3' ? 'selected' : '' }}>المساحه: الاعلى اولا</option>
+
+                        </select>
+                    </form>
+
+                </div>
+                
+@else
+
+                <div class="col-lg-4" style="justify-content: space-between;  ">
 
 
 
@@ -106,7 +144,7 @@
                 </div>
 
 
-
+ @endif
 
 
 
@@ -218,7 +256,7 @@
                                                         <div class="form-group mt-3">
 
 
-                                                            <select type="text" name="compound" list="li-compound"
+                                                            <select id="new" type="text" name="compound" list="li-compound"
                                                                 class="myselect" value="{{ old('compound') }}">
 
                                                                 <option value=""  selected disabled>اسم الكومبوند</option>
@@ -409,13 +447,13 @@
 
                                                 <fieldset>
 
-                                                    <div class="row mt-3">
+                                                    <div class="row mt-3" id="solo">
 
                                                         <label for="area">المساحه</label>
 
                                                         <div class="col">
 
-                                                            <input class="myselect" type="number" name="minArea"
+                                                            <input class="myselect hi" type="number" name="minArea"
                                                                 id="area" placeholder="من" min="1"
                                                                 value="{{ $minArea }}">
 
@@ -424,6 +462,7 @@
                                                         <div class="col">
 
                                                             <input class="myselect" type="number" name="maxArea"
+                                                             value="{{ $maxArea }}"
                                                                 id="area" placeholder="الى">
 
                                                         </div>
@@ -437,7 +476,7 @@
                                                         <div class="col">
 
                                                             <input class="myselect" type="number" name="minPrice"
-                                                                id="price" placeholder="من" min="1"
+                                                                id="price" placeholder="اعلى سعر " min="1"
                                                                 value="{{ $minPrice }}">
 
                                                         </div>
@@ -445,7 +484,7 @@
                                                         <div class="col">
 
                                                             <input class="myselect" type="number" name="maxPrice"
-                                                                id="price2" placeholder="الى"
+                                                                id="price2" placeholder="اقل سعر "
                                                                 value="{{ $maxPrice }}">
 
                                                         </div>
@@ -468,7 +507,7 @@
 
                                                             <input class="myselect" type="number" name="maxRooms"
                                                                 id="room2" placeholder="الى" min="0"
-                                                                value="{{ $maxPrice }}">
+                                                                value="{{ $maxRooms }}">
 
                                                         </div>
 
@@ -523,17 +562,24 @@
 
                                                 <fieldset>
 
-                                                    @foreach ($mzaya as $maz)
+                                                    @foreach ($mzaya as $maz_val)
                                                         <div class="form-check">
 
                                                             <input class="form-check-input" name="mzaya[]"
-                                                                type="checkbox" value="{{ $maz->id }}"
+
+                                                            <?php
+                                                            
+                                                            if (isset($maz)) {
+                                                                 if (in_array($maz_val->id , $maz)) {echo'checked';   }  
+                                                                            }
+                                                             ?>
+                                                                type="checkbox" value="{{ $maz_val->id }}"
                                                                 id="secuirty">
 
                                                             <label class="form-check-label"
-                                                                for="{{ $maz->mzaya_type }}">
+                                                                for="{{ $maz_val->mzaya_type }}">
 
-                                                                {{ $maz->mzaya_type }}
+                                                                {{ $maz_val->mzaya_type }}
                                                             </label>
 
                                                         </div>
@@ -556,13 +602,87 @@
 
                             <div class="submit-btns">
 
-                                <input type="reset" id="resetBtn" href="" class="btn btn-light"
+                                <input  type="button"   onclick="myFunctionresetBtn()" id="resetBtn" href="" class="btn btn-light"
                                     value="اعد الاختيارات" />
                                 <script>
                                     var resetBtn = document.getElementById('resetBtn');
                                     resetBtn.addEventListener("click", function() {
-                                        document.getElementById("selectform").reset();
+                                       // alert("fdf");
+                                        // document.getElementById("selectform").reset();
+                                          document.getElementById("selectform").value = document.getElementById("selectform").defaultValue;
+                                          document.getElementById("li-finish").value = "";
+                                          document.getElementById("sale-type").value = "";
+                                          document.getElementById("price").value = "";
+                                          document.getElementById("price2").value = "";
+                                          document.getElementById("Property-type").value = "";
+                                          document.getElementById("li-cat").value = "";
+                                          document.getElementById("room").value = "";
+                                          document.getElementById("room2").value = "";
+                                          document.getElementById("baths").value = "";
+                                          document.getElementById("baths2").value = "";
+                                          document.getElementById("location1").value = "";
+                                          document.getElementById("location2").value = "";
+                                          document.getElementById("area").value = "";
+                                          document.getElementById("new").value = "";
+                                            var uncheck=document.getElementsByTagName('input');
+                                          var number=document.getElementsByTagName('input');
+
+                                             for(var i=0;i<uncheck.length;i++)
+                                             {
+                                              if(uncheck[i].type=='checkbox')
+                                              {
+                                               uncheck[i].checked=false;
+                                              }
+                                             }
+                                              for(var i=0;i<number.length;i++)
+                                             {
+                                              if(uncheck[i].type=='number')
+                                              {
+                                               uncheck[i].value="";
+                                              }
+                                             }
+
                                     });
+                                    
+                                    
+                                    function myFunctionresetBtn() {
+//   document.getElementById("selectform").reset();
+                                            document.getElementById("selectform").value = document.getElementById("selectform").defaultValue;
+                                             document.getElementById("li-finish").value = "";
+                                          document.getElementById("sale-type").value = "";
+                                            document.getElementById("price").value = "";
+                                             document.getElementById("price2").value = "";
+                                          document.getElementById("Property-type").value = "";
+                                          document.getElementById("li-cat").value = "";
+                                          document.getElementById("room").value = "";
+                                          document.getElementById("room2").value = "";
+                                          document.getElementById("baths").value = "";
+                                          document.getElementById("baths2").value = "";
+                                            document.getElementById("location1").value = "";
+                                          document.getElementById("location2").value = "";
+                                            document.getElementById("area").value = "";
+                                          document.getElementById("new").value = "";
+
+                                            var uncheck=document.getElementsByTagName('input');
+                                                                                      var number=document.getElementsByTagName('input');
+
+                                             for(var i=0;i<uncheck.length;i++)
+                                             {
+                                              if(uncheck[i].type=='checkbox')
+                                              {
+                                               uncheck[i].checked=false;
+                                              }
+                                             }
+                                         for(var i=0;i<number.length;i++)
+                                             {
+                                              if(uncheck[i].type=='number')
+                                              {
+                                               uncheck[i].value="";
+                                              }
+                                             }
+                                    }
+
+
                                 </script>
                                 <input value="بحث" type="submit" class="btn our-btn">
 
@@ -590,16 +710,16 @@
                                                 @if ($vip->mainImage)
                                                     <img class="card-img"
                                                         src="{{ URL::to('/') . '/images/' . $vip->mainImage->img_url }}"
-                                                        alt="{{ $vip->title }}">
+                                                        alt="{{ $vip->title }} loading="lazy"">
                                                 @elseif($vip->firstImage)
                                                     <img class="card-img"
                                                         src="{{ URL::to('/') . '/images/' . $vip->firstImage->img_url }}"
-                                                        alt="{{ $vip->title }}">
+                                                        alt="{{ $vip->title }}" loading="lazy" >
 
                                                 @else
 
                                                     <img src="https://rightchoice-co.com/images/FBO.png"
-                                                        class="img-fluid main-img" alt="main">
+                                                        class="img-fluid main-img" alt="main" loading="lazy" >
 
                                                 @endif
 
@@ -648,7 +768,7 @@
                                                                 حمام
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/bath.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt="" loading="lazy"/>
                                                                 </div>
                                                             </div>
                                                             <div class="listing-card-info-icon text-white">
@@ -656,7 +776,7 @@
                                                                 غرف
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/room.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt="" loading="lazy" />
                                                                 </div>
                                                             </div>
 
@@ -665,7 +785,7 @@
                                                                 م²
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/area.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt=""  loading="lazy" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -680,7 +800,7 @@
                                                                 @endif
 
                                                                 <img src="{{ asset('assets/img/pin.svg') }}"
-                                                                    width="18" alt="" />
+                                                                    width="18" alt="" loading="lazy" />
                                                             </div>
                                                         </h6>
 
@@ -746,16 +866,16 @@
 
                                                             @if ($aqar->mainImage)
                                                                 <img src="{{ URL::to('/') . '/images/' . $aqar->mainImage->img_url }}"
-                                                                    class="img-fluid mx-auto" alt="main">
+                                                                    class="img-fluid mx-auto" alt="main" loading="lazy" >
 
 
 
                                                             @elseif($aqar->firstImage)
                                                                 <img src="{{ URL::to('/') . '/images/' . $aqar->firstImage->img_url }}"
-                                                                    class="img-fluid mx-auto" alt="" />
+                                                                    class="img-fluid mx-auto" alt="" loading="lazy" />
                                                             @else
                                                                 <img src="https://rightchoice-co.com/images/FBO.png"
-                                                                    class="img-fluid main-img" alt="main">
+                                                                    class="img-fluid main-img" alt="main" loading="lazy" >
                                                             @endif
 
 
@@ -827,7 +947,7 @@
                                                                 حمام
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/area.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt="" loading="lazy" />
                                                                 </div>
                                                             </div>
                                                             <div class="listing-card-info-icon">
@@ -835,7 +955,7 @@
                                                                 غرف
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/room.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt="" loading="lazy" />
                                                                 </div>
                                                             </div>
 
@@ -844,7 +964,7 @@
                                                                 م²
                                                                 <div class="inc-fleat-icon"><img
                                                                         src="{{ asset('images/icons/area.png') }}"
-                                                                        width="13" alt="" />
+                                                                        width="13" alt="" loading="lazy" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -864,7 +984,7 @@
 
 
                                                                 <img src="{{ asset('assets/img/pin.svg') }}"
-                                                                    width="18" alt="" />
+                                                                    width="18" alt="" loading="lazy" />
 
                                                             </div>
                                                         </div>
@@ -941,7 +1061,65 @@
         });
     </script>
 
+<script type="text/javascript">
+    function submit_another_form_filter()
+    {
+		
+	//	alert("ff");
+        form=document.getElementById('selectform');
+        //form.target='_blank';
+         form.submit();
+     }
+     
+     
+     /*****************************/
+     
+      show_collaps_when_user_add_filter();
+        function show_collaps_when_user_add_filter()
+    {
+    var queryString = $('#selectform').serializeArray();
+ //  console.log(queryString);
+    
+    
+    queryString.forEach(element  =>{
+              console.log(element.name)
+   
+if(element.name== "location1" && element.value !== "" )
+{
+  var element = document.getElementById("collapseOne");
+  element.classList.add("show");
+}
 
+
+if(element.name== "mzaya[]" && element.value !== "" )
+{
+  var element = document.getElementById("collapseThree");
+  element.classList.add("show");
+}
+
+if(element.name== "minPrice" && element.value !== "" || 
+element.name== "minArea" && element.value !== ""  ||
+element.name== "minRooms" && element.value !== "" ||
+element.name== "minBaths" && element.value !== ""  )
+{
+  var element = document.getElementById("collapseTwo");
+  element.classList.add("show");
+}
+
+ 
+    });
+
+
+
+
+  
+     }
+     
+      
+
+     /*****************************/
+
+</script>
 
 
 

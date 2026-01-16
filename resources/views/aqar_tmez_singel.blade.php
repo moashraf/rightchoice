@@ -79,7 +79,7 @@
                                 
                                     -->
                             </form>
-                         <img src="{{ url('public/images/icons/fawry.jpg') }}" class="img-thumbnail" />
+                         <img src="{{ url('public/images/icons/fawry.jpg') }}" class="img-thumbnail" loading="lazy" />
 
                      
                         </div>
@@ -161,7 +161,7 @@ function failureCallBack(data) {
 
 
                         </div>
-                                         <img src="{{ url('public/images/icons/download.png') }}" class="img-thumbnail"/>
+                                         <img src="{{ url('public/images/icons/download.png') }}" class="img-thumbnail" loading="lazy" />
  
                         
                       </div>

@@ -12000,9 +12000,9 @@ span.tag_t {
 
 .property-listing.property-2 .listing-img-wrapper img{
 
-	max-height: 200px;
+	/*max-height: 200px;*/
 
-    min-height: 200px;
+ /*   min-height: 200px;*/
 
 	width: 100%;
   background-color: #ccc;
@@ -23945,7 +23945,7 @@ a.blue2-theme {
     text-align: center;
 
     transition: 0.3s;
-
+    margin-top: 50px;
     height: 100%;
 
   }
@@ -23964,7 +23964,7 @@ a.blue2-theme {
 
     min-height: 12rem;
 
-    max-height: 12rem;
+    max-height: 24rem;
 
   }
 

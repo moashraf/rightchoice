@@ -12,39 +12,43 @@
 <!-- Property Type Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('property_type', 'Property Type:') !!} <span class="text-danger">*</span>
-     
-    
-        <?php // dd( $aqar->compound );?>
-            <select  name="property_type"  class="form-control custom-select">
-                
 
-                                @foreach ($propertytype as $propertytype_val)
-           <option value="{{ $propertytype_val->id}}" <?php    if($aqar->property_type == $propertytype_val->id) {echo 'selected' ;}  ?> >{{ $propertytype_val->property_type }}</option>
-    
-                                @endforeach
-                            </select>
-                            
-                            
-                            
+
+    <?php // dd( $aqar->compound );?>
+    <select name="property_type" class="form-control custom-select">
+
+
+        @foreach ($propertytype as $propertytype_val)
+            <option value="{{ $propertytype_val->id}}"
+
+                    <?php if (@$aqar->property_type == $propertytype_val->id) {
+                echo 'selected';
+            } ?> >{{ $propertytype_val->property_type }}</option>
+
+        @endforeach
+    </select>
+
+
     <small class="text-danger">{{ $errors->first('property_type') }}</small>
 </div>
 
 <!-- Compound Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('compound', 'Compound:') !!}
-     
-    <?php // dd( $aqar->compound );?>
-            <select  name="compound"  class="form-control custom-select">
-                                            <option   value=""> اختار    </option>
 
-                                @foreach ($compound as $cat_compound)
-                                    <option value="{{ $cat_compound->id}}" <?php   if($aqar->compound == $cat_compound->id) {echo 'selected' ;}  ?> >{{ $cat_compound->compound }}</option>
-    
-                                @endforeach
-                            </select>
-                            
-                            
-                            
+    <?php // dd( $aqar->compound );?>
+    <select name="compound" class="form-control custom-select">
+        <option value=""> اختار</option>
+
+        @foreach ($compound as $cat_compound)
+            <option value="{{ $cat_compound->id}}" <?php if (@$aqar->compound == $cat_compound->id) {
+                echo 'selected';
+            } ?> >{{ $cat_compound->compound }}</option>
+
+        @endforeach
+    </select>
+
+
 </div>
 
 <!-- Governrate Id Field -->
@@ -53,22 +57,28 @@
     {!! Form::select('governrate_id', $governrate, null, ['class' => 'form-control custom-select']) !!}
     <small class="text-danger">{{ $errors->first('governrate_id') }}</small>
 </div>
+<div class="form-group col-sm-4">
+    {!! Form::label('slug', 'slug:') !!} <span class="text-danger">*</span>
+    {!! Form::select('slug', $governrate, null, ['class' => 'form-control custom-select']) !!}
+    <small class="text-danger">{{ $errors->first('governrate_id') }}</small>
+</div>
 
 
 <!-- District Id Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('district_id', 'District:') !!} <span class="text-danger">*</span>
-     
-    
-        <select  name="district_id"  class="form-control custom-select">
-                                @foreach ($district as $cat)
-                                    <option value="{{ $cat->id}}" <?php   if($aqar->district_id == $cat->id) {echo 'selected' ;}  ?> >{{ $cat->district }}</option>
-    
-                                @endforeach
-                            </select>
-                            
-                            
-                            
+
+
+    <select name="district_id" class="form-control custom-select">
+        @foreach ($district as $cat)
+            <option value="{{ $cat->id}}" <?php if (@$aqar->district_id == $cat->id) {
+                echo 'selected';
+            } ?> >{{ $cat->district }}</option>
+
+        @endforeach
+    </select>
+
+
     <small class="text-danger">{{ $errors->first('district_id') }}</small>
 </div>
 
@@ -92,11 +102,11 @@
     <small class="text-danger">{{ $errors->first('user_id') }}</small>
 </div>
 @if(Route::current()->getName() == 'aqars.edit')
-<div id="user_phonediv" class="form-group col-sm-4">
-    {!! Form::label('user_phone', 'User Phone:') !!}
-    {!! Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP, ['class' => 'form-control user_phone' ,
-    'readonly']) !!}
-</div>
+    <div id="user_phonediv" class="form-group col-sm-4">
+        {!! Form::label('user_phone', 'User Phone:') !!}
+        {!! Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP, ['class' => 'form-control user_phone' ,
+        'readonly']) !!}
+    </div>
 @endif
 
 <!-- Call Id Field -->
@@ -129,9 +139,6 @@
 <!-- english fieldsssssssssssssssssssssssssss -->
 
 
-
-
-
 <!-- Title_en Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('title', 'Title_en:') !!} <span class="text-danger">*</span>
@@ -153,7 +160,7 @@
     <small class="text-danger">{{ $errors->first('description_en') }}</small>
 </div>
 
-<!-- end of englishssssssssssssssssssssssssssssssssssssssssssssssssssss --> 
+<!-- end of englishssssssssssssssssssssssssssssssssssssssssssssssssssss -->
 
 <div class="card-header mb-3 mt-3 col-12">
     <h4 class="mb-0" style="color: gray;"> Ad Specifications</h4>
@@ -261,16 +268,26 @@
         {!! Form::label('reciving', 'Receiving:') !!}
         {!! Form::select('reciving', ['Fawry','Not Fawry'], null, ['class' => 'form-control custom-select']) !!}
     </div>
-    
-  <div class="form-group col-sm-6">
-    {!! Form::label('vip', 'Vip:') !!}
-    
-        {!! Form::text('vip', null, ['class' => 'form-control']) !!}
 
- </div>  
- 
- 
- 
+    <div class="form-group col-sm-6">
+        {!! Form::label('vip', 'Vip:') !!}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="vip" id="vip-yes" value="1"
+            @if(@$aqar->vip == 1) checked @endif>
+            <label class="form-check-label" for="vip-yes">
+                Yes
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="vip" id="vip-no" value="0"
+                   @if(@$aqar->vip == 0) checked @endif>
+            <label class="form-check-label" for="vip-no">
+                No
+            </label>
+        </div>
+
+
+    </div>
 
 
 </div>
@@ -278,31 +295,29 @@
 <!-- Installment Value Field -->
 <!-- <div class="form-group col-sm-4">
     {!! Form::label('installment_value', 'Installment Value:') !!}
-    {!! Form::number('installment_value', null, ['class' => 'form-control']) !!}
+{!! Form::number('installment_value', null, ['class' => 'form-control']) !!}
 </div> -->
 
 <!-- Vip Field -->
 <!-- <div class="form-group col-sm-6">
-    {!! Form::label('vip', 'Vip:') !!}
-    {!! Form::select('vip', ['No','Yes'] , null, ['class' => 'form-control custom-select']) !!}
 </div> -->
 
 <!-- Ground Area Field -->
 <!-- <div class="form-group col-sm-6">
     {!! Form::label('ground_area', 'Ground Area:') !!}
-    {!! Form::number('ground_area', null, ['class' => 'form-control']) !!}
+{!! Form::number('ground_area', null, ['class' => 'form-control']) !!}
 </div> -->
 
 <!-- Land Area Field -->
 <!-- <div class="form-group col-sm-6">
     {!! Form::label('land_area', 'Land Area:') !!}
-    {!! Form::number('land_area', null, ['class' => 'form-control']) !!}
+{!! Form::number('land_area', null, ['class' => 'form-control']) !!}
 </div> -->
 
 <!-- Mtr Price Field -->
 <!-- <div class="form-group col-sm-6">
     {!! Form::label('mtr_price', 'Mtr Price:') !!}
-    {!! Form::text('mtr_price', null, ['class' => 'form-control']) !!}
+{!! Form::text('mtr_price', null, ['class' => 'form-control']) !!}
 </div> -->
 
 
@@ -320,16 +335,20 @@
 </div>
 
 <!-- Views Field -->
-  <div class="form-group col-sm-6">
+<div class="form-group col-sm-6">
     {!! Form::label('views', 'Views:') !!}
-    
-            {!! Form::number('views', null, ['class' => 'form-control']) !!}
 
- </div>  
+    {!! Form::number('views', null, ['class' => 'form-control']) !!}
+
+</div>
 <!-- Status Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('status', 'Status:') !!}
-    {!! Form::select('status', ['Wait Active','Active','Un Active'] ,null, ['class' => 'form-control']) !!}
+    <select class="form-control" name="status">
+    @foreach(\App\Enums\StatusEnum::values() as $key => $case)
+            <option value="{{$case}}">{{$key}}</option>
+        @endforeach
+    </select>
 </div>
 
 <div class="card-header mb-3 mt-3 col-12">
@@ -341,18 +360,16 @@
     <input id="chkall" type="checkbox" class="ml-3">
     {!! Form::label('chkall', 'Select All:') !!}
     <select class="select2  select2-multiple" style="width: 100%" multiple="multiple" name="feature_id[]"
-        data-placeholder="Choose" id="selecttested">
+            data-placeholder="Choose" id="selecttested">
         @if(!empty($mzaya))
-        @foreach($mzaya as $use)
-        <option value="{{$use->id}}" @if(!empty($mzayaAqar))@foreach($mzayaAqar as $gt) @if($gt->mzaya_id == $use->id)
-            selected @endif @endforeach @endif>{{$use->mzaya_type}}</option>
-        @endforeach
+            @foreach($mzaya as $use)
+                <option value="{{$use->id}}"
+                        @if(!empty($mzayaAqar))@foreach($mzayaAqar as $gt) @if($gt->mzaya_id == $use->id)
+                            selected @endif @endforeach @endif>{{$use->mzaya_type}}</option>
+            @endforeach
         @endif
     </select>
 </div>
-
-
-
 
 
 <!--
@@ -365,7 +382,7 @@
         <select class="form-control" name="notif">
             <option selected value="1">تم قبول اعلانك</option>
             <option value="2">تم الرفض</option>
-     
+
         </select>
     </div>
 </div>
@@ -373,9 +390,6 @@
 
 
 -->
-
-
-
 
 
 <div class="card-header mb-3 mt-2 col-12">
@@ -396,32 +410,62 @@
 <div class="imagesmore col-sm-12">
 </div>
 <div class="row mt-3">
-        @if(!empty($aqar->Images))
+    @if(!empty($aqar->Images))
         @foreach($aqar->Images as $img)
-        <div class="col-md-3 mt-3">
-            
-            <div class="col-md-8 ml-4">
-                <input type="text"   @if($img->main_img == 1) value="Main Image" @else value="normal Image"  @endif
-                    class="form-control" style="text-align: center;" readonly>
-            </div>
-           
-            <a href="#">
-                <div class="img-thumbnail text-center">
-                    @if(!empty($img->img_url))
-                    <a href="{{url('https://rightchoice-co.com/public/images/'.$img->img_url)}}" data-toggle="lightbox">
-                        <img src="{{url('https://rightchoice-co.com/public/images/'.$img->img_url)}}" width="100%" height="140" />
-                    </a>
-                    @endif
+            <div class="col-md-3 mt-3">
 
-                    <a onclick="return confirm('Are You Sure You Want To Delete This Record ?')"
-                        href="{{url('/RemoveImageAqar')}}/{{$img->id}}"
-                        class="btn waves-effect  waves-light btn-danger"
-                        style="padding: 0.375rem 2.36rem; font-size: .875rem; border-radius: 0;">
-                        <i class="far fa-trash-alt"> delete</i>
-                    </a>
+                <div class="col-md-8 ml-4">
+                    <input type="text" @if($img->main_img == 1) value="Main Image" @else value="normal Image" @endif
+                    class="form-control" style="text-align: center;" readonly>
                 </div>
-            </a>
-        </div>
+
+                <a href="#">
+                    <div class="img-thumbnail text-center">
+                        @if(!empty($img->img_url))
+                            <a href="{{url('https://rightchoice-co.com/public/images/'.$img->img_url)}}"
+                               data-toggle="lightbox">
+                                <img src="{{url('https://rightchoice-co.com/public/images/'.$img->img_url)}}"
+                                     width="100%" height="140"/>
+                            </a>
+                        @endif
+
+                        <a onclick="return confirm('Are You Sure You Want To Delete This Record ?')"
+                           href="{{url('/RemoveImageAqar')}}/{{$img->id}}"
+                           class="btn waves-effect  waves-light btn-danger"
+                           style="padding: 0.375rem 2.36rem; font-size: .875rem; border-radius: 0;">
+                            <i class="far fa-trash-alt"> delete</i>
+                        </a>
+                    </div>
+                </a>
+            </div>
         @endforeach
-        @endif
+    @endif
 </div>
+
+
+@if(@$activity_logs)
+<div class="row mt-3">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">سجلات النشاط
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">اترك تعليقك
+            </button>
+        </li>
+
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+             tabindex="0">
+            @include('activity_log.index')
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            @include('activity_log.create')
+        </div>
+    </div>
+</div>
+@endif

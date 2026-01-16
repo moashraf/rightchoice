@@ -13,6 +13,7 @@ class ContactForm extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'name',
         'body',
         'email',
         'phone',

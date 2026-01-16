@@ -13,21 +13,21 @@
 <!-- Area Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('area_id', 'Area Id:') !!}
-    {!! Form::select('area_id', $subarea, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('area_id', null, ['class' => 'form-control ]) !!}
 </div>
 
 
 <!-- District Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('district_id', 'District Id:') !!}
-    {!! Form::select('district_id', $district, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('district_id' null, ['class' => 'form-control']) !!}
 </div>
 
 
 <!-- Governrate Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('governrate_id', 'Governrate Id:') !!}
-    {!! Form::select('governrate_id', $governrate, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('governrate_id' null, ['class' => 'form-control ']) !!}
 </div>
 
 

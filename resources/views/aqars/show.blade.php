@@ -121,7 +121,7 @@
 
 
                                     <a style="width:30%" href="#"
-                                        class="btn btn-light ml-1 mr-1 addToCart <?php if(@show){ echo 'mt-3'; } ?>"
+                                        class="btn btn-light ml-1 mr-1 addToCart {{--<?php if(isset($show)){ echo 'mt-3'; } ?>--}}"
                                         data-id="{{$aqar['id']}}"> {{ trans('langsite.save')}}</a>
 
                                     @else
@@ -137,7 +137,7 @@
 
 
 
-                                    <a style="width:30%" class="btn our-btn <?php if(@show){ echo 'mt-3'; } ?>"
+                                    <a style="width:30%" class="btn our-btn {{--<?php if(@show){ echo 'mt-3'; } ?>--}}"
                                         id="trigger-2">{{ trans('langsite.sharing')}}</a>
 
                                 </div>
@@ -528,12 +528,13 @@
                             <div  id="small_text_show">
                                            <?php 
 
- $eastern_arabic  = array('0','1','2','3','4','5','6','7','8','9');
-  $western_arabic= array('٠','١','٢','٣','٤','٥','٦','٧','٨','٩');
+                                                $eastern_arabic  = array('0','1','2','3','4','5','6','7','8','9');
+                                                $western_arabic= array('٠','١','٢','٣','٤','٥','٦','٧','٨','٩');
 
-$str = str_replace($western_arabic, $eastern_arabic, $aqar->description);
-$data_final = preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********', $str);
-  
+                                                $str = str_replace($western_arabic, $eastern_arabic, $aqar->description) ?? '';
+                                                
+                                                $data_final = preg_replace('/[^\w\s]+/u', ' ', $str);
+                                                  
 //echo $data_final ; 
 
 echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;

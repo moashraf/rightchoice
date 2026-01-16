@@ -26,6 +26,16 @@
     {!! Form::text('Service_en', null, ['class' => 'form-control']) !!}
     <small class="text-danger">{{ $errors->first('Service_en') }}</small>
 </div>
+<div class="form-group col-sm-6">
+    {!! Form::label('slug', 'Slug:') !!} <span class="text-danger">*</span>
+    {!! Form::text('slug', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('Service_en') }}</small>
+</div>
+<div class="form-group col-sm-6">
+    {!! Form::label('title', 'title:') !!} <span class="text-danger">*</span>
+    {!! Form::text('title', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('Service_en') }}</small>
+</div>
 
 
 <!-- english description -->

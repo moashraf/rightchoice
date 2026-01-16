@@ -3,7 +3,7 @@
     من نحن
 @endsection
 
-    <div class="image-cover hero-banner single-items" style="background:url('{{asset('assets/img/about.jpeg')}}') no-repeat;">
+    <div class="image-cover hero-banner single-items" style="background:url('{{asset('assets/img/about.jpeg')}}') no-repeat;" loading="lazy" >
         <div class="container">
             <div class="row">
                 

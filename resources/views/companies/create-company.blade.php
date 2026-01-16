@@ -32,7 +32,7 @@
                                 <!--      <input type="hidden" name="user_id" value="">-->
                              
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-12">
                                         <div
                                             class="form-group {{ $errors->has('Serv_id') ? ' has-error' : '' }}">
                                             <label
@@ -57,7 +57,7 @@
                                                 class="text-danger">{{ $errors->first('Serv_id') }}</small>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-12">
 
                                         <div
                                             class="form-group {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">
@@ -71,7 +71,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-12">
                                         <div
                                             class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
                                             <label

@@ -1,14 +1,14 @@
 <li class="nav-item">
     <a href="{{ route('user.index') }}"
        class="nav-link {{ Request::is('user*') ? 'active' : '' }}">
-        <p>Users</p>
+        <p>المستخدمين</p>
     </a>
 </li>
 
 <li class="nav-item">
     <a href="{{ route('blogs.index') }}"
        class="nav-link {{ Request::is('blogs*') ? 'active' : '' }}">
-        <p>Blogs</p>
+        <p>المدونات</p>
     </a>
 </li>
 
@@ -16,7 +16,7 @@
 <li class="nav-item">
     <a href="{{ route('offerTypes.index') }}"
        class="nav-link {{ Request::is('offerTypes*') ? 'active' : '' }}">
-        <p>Offer Types</p>
+        <p>انواع العروض</p>
     </a>
 </li>
 
@@ -25,21 +25,21 @@
 <li class="nav-item">
     <a href="{{ route('aqarCategories.index') }}"
        class="nav-link {{ Request::is('aqarCategories*') ? 'active' : '' }}">
-        <p>Aqar Categories</p>
+        <p>فئات العقارات</p>
     </a>
 </li>
 
 <li class="nav-item">
     <a href="{{ route('propertyTypes.index') }}"
        class="nav-link {{ Request::is('propertyTypes*') ? 'active' : '' }}">
-        <p>Property Types</p>
+        <p>انواع العقارات</p>
     </a>
 </li>
 
 <li class="nav-item">
     <a href="{{ route('callTimes.index') }}"
        class="nav-link {{ Request::is('callTimes*') ? 'active' : '' }}">
-        <p>Call Times</p>
+            <p>أوقات المكالمات</p>
     </a>
 </li>
 
@@ -47,7 +47,7 @@
 <li class="nav-item">
     <a href="{{ route('compounds.index') }}"
        class="nav-link {{ Request::is('compounds*') ? 'active' : '' }}">
-        <p>Compounds</p>
+        <p>مجمعات سكنية</p>
     </a>
 </li>
 
@@ -55,7 +55,7 @@
 <li class="nav-item">
     <a href="{{ route('governrates.index') }}"
        class="nav-link {{ Request::is('governrates*') ? 'active' : '' }}">
-        <p>Governrates</p>
+        <p>المحافظات</p>
     </a>
 </li>
 
@@ -63,7 +63,7 @@
 <li class="nav-item">
     <a href="{{ route('districts.index') }}"
        class="nav-link {{ Request::is('districts*') ? 'active' : '' }}">
-        <p>Districts</p>
+        <p>المناطق</p>
     </a>
 </li>
 
@@ -71,7 +71,7 @@
 <li class="nav-item">
     <a href="{{ route('finishTypes.index') }}"
        class="nav-link {{ Request::is('finishTypes*') ? 'active' : '' }}">
-        <p>Finish Types</p>
+        <p>أنواع التشطيب</p>
     </a>
 </li>
 
@@ -79,7 +79,7 @@
 <li class="nav-item">
     <a href="{{ route('floors.index') }}"
        class="nav-link {{ Request::is('floors*') ? 'active' : '' }}">
-        <p>Floors</p>
+        <p>الطوابق</p>
     </a>
 </li>
 
@@ -87,7 +87,7 @@
 <li class="nav-item">
     <a href="{{ route('licenseTypes.index') }}"
        class="nav-link {{ Request::is('licenseTypes*') ? 'active' : '' }}">
-        <p>License Types</p>
+        <p>أنواع التراخيص</p>
     </a>
 </li>
 
@@ -95,7 +95,7 @@
 <li class="nav-item">
     <a href="{{ route('subareas.index') }}"
        class="nav-link {{ Request::is('subareas*') ? 'active' : '' }}">
-        <p>Subareas</p>
+        <p>المناطق الفرعية</p>
     </a>
 </li>
 
@@ -103,7 +103,7 @@
 <li class="nav-item">
     <a href="{{ route('services.index') }}"
        class="nav-link {{ Request::is('services*') ? 'active' : '' }}">
-        <p>Services</p>
+        <p>خدمات</p>
     </a>
 </li>
 
@@ -111,7 +111,7 @@
 <li class="nav-item">
     <a href="{{ route('priceingSales.index') }}"
        class="nav-link {{ Request::is('priceingSales*') ? 'active' : '' }}">
-        <p>Priceing Sales</p>
+        <p>تسعير المبيعات</p>
     </a>
 </li>
 
@@ -119,7 +119,7 @@
 <li class="nav-item">
     <a href="{{ route('mzayas.index') }}"
        class="nav-link {{ Request::is('mzayas*') ? 'active' : '' }}">
-        <p>Mzaya</p>
+        <p>مزايا</p>
     </a>
 </li>
 
@@ -127,7 +127,7 @@
 <li class="nav-item">
     <a href="{{ route('pages.index') }}"
        class="nav-link {{ Request::is('pages*') ? 'active' : '' }}">
-        <p>Pages</p>
+        <p>الصفحات</p>
     </a>
 </li>
 
@@ -135,7 +135,7 @@
 <li class="nav-item">
     <a href="{{ route('aqars.index') }}"
        class="nav-link {{ Request::is('aqars*') ? 'active' : '' }}">
-        <p>Aqars</p>
+        <p>عقارات</p>
     </a>
 </li>
 
@@ -159,7 +159,7 @@
 <li class="nav-item">
     <a href="{{ route('companies.index') }}"
        class="nav-link {{ Request::is('companies*') ? 'active' : '' }}">
-        <p>Companies</p>
+        <p>الشركات</p>
     </a>
 </li>
 
@@ -167,7 +167,7 @@
 <li class="nav-item">
     <a href="{{ route('priceVips.index') }}"
        class="nav-link {{ Request::is('priceVips*') ? 'active' : '' }}">
-        <p>Price Vips</p>
+        <p>سعر كبار الشخصيات</p>
     </a>
 </li>
 
@@ -175,7 +175,7 @@
 <li class="nav-item">
     <a href="{{ route('requestPhotoSessions.index') }}"
        class="nav-link {{ Request::is('requestPhotoSessions*') ? 'active' : '' }}">
-        <p>Request Photo Sessions</p>
+        <p>طلب جلسات تصوير</p>
     </a>
 </li>
 
@@ -183,7 +183,7 @@
 <li class="nav-item">
     <a href="{{ route('sliders.index') }}"
        class="nav-link {{ Request::is('sliders*') ? 'active' : '' }}">
-        <p>Sliders</p>
+        <p>سلايدر</p>
     </a>
 </li>
 
@@ -215,7 +215,7 @@
 <li class="nav-item">
     <a href="{{ route('complaints.index') }}"
        class="nav-link {{ Request::is('complaints*') ? 'active' : '' }}">
-        <p>Complaints</p>
+        <p>شكاوي</p>
     </a>
 </li>
 
@@ -223,7 +223,7 @@
 <li class="nav-item">
     <a href="{{ route('contactForms.index') }}"
        class="nav-link {{ Request::is('contactForms*') ? 'active' : '' }}">
-        <p>Contact Forms</p>
+        <p>نماذج الاتصال</p>
     </a>
 </li>
 
@@ -231,7 +231,7 @@
 <li class="nav-item">
     <a href="{{ route('notifications.index') }}"
        class="nav-link {{ Request::is('notifications*') ? 'active' : '' }}">
-        <p>Notifications</p>
+        <p>إشعارات</p>
     </a>
 </li>
 
@@ -239,7 +239,7 @@
 <li class="nav-item">
     <a href="{{ route('settingSites.index') }}"
        class="nav-link {{ Request::is('settingSites*') ? 'active' : '' }}">
-        <p>Setting Sites</p>
+        <p>إعداد الموقع </p>
     </a>
 </li>
 

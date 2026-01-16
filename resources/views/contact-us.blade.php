@@ -6,7 +6,7 @@
 @endsection
 
 
-    <div class="image-cover hero-banner single-items" style="background:url('{{asset('assets/img/contact.jpeg')}}') no-repeat;">
+    <div class="image-cover hero-banner single-items" style="background:url('{{asset('assets/img/contact.jpeg')}}') no-repeat;" loading="lazy">
         <div class="container">
             <div class="row">
 

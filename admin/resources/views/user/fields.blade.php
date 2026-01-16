@@ -14,6 +14,12 @@
     {!! Form::number('MOP', null, ['class' => 'form-control']) !!}
     <small class="text-danger">{{ $errors->first('MOP') }}</small>
 </div>
+<div class="form-group col-sm-4">
+    {!! Form::label('password', 'password:') !!} <span class="text-danger">*</span>
+    {!! Form::password('password', ['class' => 'form-control']) !!}
+
+    <small class="text-danger">{{ $errors->first('password') }}</small>
+</div>
 <div class="form-group col-sm-6">
     <div class="form-group">
         <label for="userName">Type Of User<span class="text-danger">*</span></label>

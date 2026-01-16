@@ -14,9 +14,9 @@
 <div class="col-sm-12">
     {!! Form::label('status', 'Status:') !!}
     @if($blog->status == 0)
-    <span class="badge badge-success">Active</span>
+    <span class="badge badge-success">نشط</span>
     @else
-    <span class="badge badge-danger">UnActive</span>
+    <span class="badge badge-danger">غير نشط</span>
     @endif
     <!-- <p>{{ $blog->status }}</p> -->
 </div>

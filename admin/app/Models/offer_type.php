@@ -23,7 +23,8 @@ class offer_type extends Model
 
 
     public $fillable = [
-        'type_offer'
+        'type_offer',
+        'slug'
     ];
 
     /**

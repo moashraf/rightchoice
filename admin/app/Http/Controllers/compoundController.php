@@ -6,9 +6,12 @@ use App\DataTables\compoundDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreatecompoundRequest;
 use App\Http\Requests\UpdatecompoundRequest;
+use App\Models\compound;
 use App\Repositories\compoundRepository;
+use App\Services\ModelService;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
 use Response;
 
 class compoundController extends AppBaseController
@@ -27,9 +30,13 @@ class compoundController extends AppBaseController
      * @param compoundDataTable $compoundDataTable
      * @return Response
      */
-    public function index(compoundDataTable $compoundDataTable)
+    public function index(Request $request)
     {
-        return $compoundDataTable->render('compounds.index');
+
+        $compounds = compound::paginate();
+        // $compounds = ModelService::filter_search($compounds,'compound',$request);
+
+        return view('compounds.index', compact('compounds'));
     }
 
     /**

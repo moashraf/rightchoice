@@ -17,7 +17,7 @@
 									
 								</div>
 								<hr class="hr-add">
-								<a href="#" class="btn btn-success"> اتصل <img src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20" height="20"/></a>
+								<a href="#" class="btn btn-success"> اتصل <img src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20" height="20" loading="lazy"/></a>
 
 								<a href="#" class="btn btn-light"> مشاركه <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="currentColor" viewBox="0 0 20 20">
 									<path d="M14.68,12.621c-0.9,0-1.702,0.43-2.216,1.09l-4.549-2.637c0.284-0.691,0.284-1.457,0-2.146l4.549-2.638c0.514,0.661,1.315,1.09,2.216,1.09c1.549,0,2.809-1.26,2.809-2.808c0-1.548-1.26-2.809-2.809-2.809c-1.548,0-2.808,1.26-2.808,2.809c0,0.38,0.076,0.741,0.214,1.073l-4.55,2.638c-0.515-0.661-1.316-1.09-2.217-1.09c-1.548,0-2.808,1.26-2.808,2.809s1.26,2.808,2.808,2.808c0.9,0,1.702-0.43,2.217-1.09l4.55,2.637c-0.138,0.332-0.214,0.693-0.214,1.074c0,1.549,1.26,2.809,2.808,2.809c1.549,0,2.809-1.26,2.809-2.809S16.229,12.621,14.68,12.621M14.68,2.512c1.136,0,2.06,0.923,2.06,2.06S15.815,6.63,14.68,6.63s-2.059-0.923-2.059-2.059S13.544,2.512,14.68,2.512M5.319,12.061c-1.136,0-2.06-0.924-2.06-2.06s0.923-2.059,2.06-2.059c1.135,0,2.06,0.923,2.06,2.059S6.454,12.061,5.319,12.061M14.68,17.488c-1.136,0-2.059-0.922-2.059-2.059s0.923-2.061,2.059-2.061s2.06,0.924,2.06,2.061S15.815,17.488,14.68,17.488"></path>								  </svg></a>
@@ -35,44 +35,44 @@
 					<div class="owner mt-3">
 						<Strong>المالك:</Strong>	<a href=""><span>Delta Stars</span></a>
 
-						<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="100">
+						<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="100" loading="lazy" >
 					</div>
 			</div>
 			<div class="col-lg-8">
 				<div class="images">
 					<a href="./assets/img/real-estate/test-18.jpeg" data-lightbox="roadtrip">
 						<div class="watermarked">
-						<img src="./assets/img/real-estate/test-18.jpeg" class="img-fluid main-img" alt="main">
+						<img src="./assets/img/real-estate/test-18.jpeg" class="img-fluid main-img" alt="main" loading="lazy">
 
 					</div>
 				</a>
 					<div class="lazy">
 						<a href="./assets/img/real-estate/test-1.jpeg" data-lightbox="roadtrip">
 							<div class="watermarked">
-								<img src="./assets/img/real-estate/test-1.jpeg" class="img-thumbnail">
+								<img src="./assets/img/real-estate/test-1.jpeg" class="img-thumbnail" loading="lazy" >
 
 							</div>
 						</a>
 						<a href="./assets/img/real-estate/test-7.jpeg" data-lightbox="roadtrip">
 							<div class="watermarked">
-								<img src="./assets/img/real-estate/test-7.jpeg" class="img-thumbnail">
+								<img src="./assets/img/real-estate/test-7.jpeg" class="img-thumbnail" loading="lazy" >
 
 							</div>
 						</a>
 						<a href="./assets/img/real-estate/test-18.jpeg" data-lightbox="roadtrip">
 							<div class="watermarked">
-								<img src="./assets/img/real-estate/test-18.jpeg" class="img-thumbnail">
+								<img src="./assets/img/real-estate/test-18.jpeg" class="img-thumbnail" loading="lazy" >
 
 							</div>
 						</a>
 						<a href="./assets/img/real-estate/test-12.jpeg" data-lightbox="roadtrip">
 							<div class="watermarked">
-								<img src="./assets/img/real-estate/test-12.jpeg" class="img-thumbnail">
+								<img src="./assets/img/real-estate/test-12.jpeg" class="img-thumbnail" loading="lazy">
 
 							</div>
 						</a>
 					</div>
-					<a href="./assets/img/real-estate/test-11.jpeg" data-lightbox="roadtrip" class="btn btn-light"> اظهر كل الصور <img src="https://img.icons8.com/carbon-copy/100/000000/camera--v1.png" width="20" height="20"/></a>
+					<a href="./assets/img/real-estate/test-11.jpeg" data-lightbox="roadtrip" class="btn btn-light"> اظهر كل الصور <img src="https://img.icons8.com/carbon-copy/100/000000/camera--v1.png" width="20" height="20" loading="lazy" /></a>
 
 				</div>
 			
@@ -80,17 +80,17 @@
 					<h3>المواصفات</h3>
 					<div class="fr-grid-deatil-flex">
 						<div class="listing-card-info-icon">
-							<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> iVilla
+							<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> iVilla
 						</div>
 						<div class="listing-card-info-icon">
-							<div class="inc-fleat-icon"><img src="assets/img/bed.svg" width="13" alt="" /></div>3 غرف
+							<div class="inc-fleat-icon"><img src="assets/img/bed.svg" width="13" alt="" loading="lazy" /></div>3 غرف
 						</div>
 					
 						<div class="listing-card-info-icon">
-							<div class="inc-fleat-icon"><img src="assets/img/bathtub.svg" width="13" alt="" /></div>1 حمام
+							<div class="inc-fleat-icon"><img src="assets/img/bathtub.svg" width="13" alt="" loading="lazy" /></div>1 حمام
 						</div>
 						<div class="listing-card-info-icon">
-							<div class="inc-fleat-icon"><img src="assets/img/move.svg" width="13" alt="" /></div>800 مساحه
+							<div class="inc-fleat-icon"><img src="assets/img/move.svg" width="13" alt="" loading="lazy" /></div>800 مساحه
 						</div>
 					
 						
@@ -114,48 +114,48 @@
 				<h3>مزايا</h3>
 				<div class="fr-grid-deatil-flex">
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> اسانسير
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> اسانسير
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> امن
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> امن
 					</div>
 					
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> جراج
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> جراج
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> حديقه
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> حديقه
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> حديقه خاصه
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> حديقه خاصه
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div>حمام سباحه
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div>حمام سباحه
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div>سطح
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div>سطح
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> مدخل خاص
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> مدخل خاص
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> كاميرات مراقبه
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> كاميرات مراقبه
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> عفش
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> عفش
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> تكييفات
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> تكييفات
 							</div>
 							
 							<div class="listing-card-info-icon">
-								<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> مطبخ
+								<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> مطبخ
 							</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> مسموح تربيه الحيوانات
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> مسموح تربيه الحيوانات
 					</div>
 					<div class="listing-card-info-icon">
-						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" /></div> اخرى
+						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> اخرى
 					</div>
 					
 				</div>

@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Create Mzaya</h1>
+                    <h1>إنشاء مزايا</h1>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
 
             <div class="card-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('mzayas.index') }}" class="btn btn-default">Cancel</a>
+                <a href="{{ route('mzayas.index') }}" class="btn btn-default">الغاء</a>
             </div>
 
             {!! Form::close() !!}

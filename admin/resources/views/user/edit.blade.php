@@ -39,11 +39,6 @@
     <small class="text-danger">{{ $errors->first('MOP') }}</small>
 </div>
 
-<div class="form-group col-sm-4">
-    {!! Form::label('created_at', '  created:') !!} <span class="text-danger">*</span>
-    {!! Form::text('created_at', null, ['class' => 'form-control']) !!}
-    <small class="text-danger">{{ $errors->first('created_at') }}</small>
-</div>
 
 
 <div class="form-group col-sm-4">
@@ -59,12 +54,31 @@
 if( (isset($all_point_of_user)))
 
 {
-if($all_point_of_user->count() > 0){   echo($all_point_of_user->current_points);} 
+if($all_point_of_user->count() > 0){   echo($all_point_of_user->current_points);}
+else{ echo 1; } 
 
 
 }
+else{ echo 1; } 
 ?>" class="form-control" name="current_points">
     <small class="text-danger">{{ $errors->first('current_points') }}</small>
+</div>
+
+
+
+<div class="form-group col-sm-4">
+    {!! Form::label('status SMS', '  status SMS :') !!} <span class="text-danger">*</span>
+ {!! Form::text('phone_verfied_sms_status', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('phone_verfied_sms_status') }}</small>
+	
+</div>
+
+
+<div class="form-group col-sm-4">
+    {!! Form::label('Code Otp', '  COde Otp:') !!} <span class="text-danger">*</span>
+ {!! Form::text('phone_sms_otp', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('phone_sms_otp') }}</small>
+	
 </div>
 
 
@@ -73,7 +87,9 @@ if($all_point_of_user->count() > 0){   echo($all_point_of_user->current_points);
 
 
 
-<div class="form-group col-sm-6">
+
+
+<div class="form-group col-sm-4">
     <div class="form-group">
         <label for="userName">Type Of User<span class="text-danger">*</span></label>
         <?php  //dd($user);?>
@@ -100,7 +116,7 @@ if($all_point_of_user->count() > 0){   echo($all_point_of_user->current_points);
 
  
 @if(Route::current()->getName() == 'user.edit')
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('status', 'Status:') !!} <span class="text-danger">*</span>
     {!! Form::select('status', ['Un Active', 'Active'] ,null,['class'=>'form-control']) !!} 
     <small class="text-danger">{{ $errors->first('status') }}</small>   

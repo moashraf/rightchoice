@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\aqarController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade');
+
+
+Route::get('/changeLang/{url}','App\Http\Controllers\PageController@changeLang')->name('changeLang');
+
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
@@ -107,6 +115,12 @@ Route::resource('pages', App\Http\Controllers\PagesController::class);
 
 Route::resource('aqars', App\Http\Controllers\aqarController::class);
 
+Route::post('aqar-refund-points/{viewer}', [App\Http\Controllers\aqarController::class, 'refund_points'])->name('admin.refund_points');
+
+Route::get('aqars/show', [aqarController::class, 'destroy']);
+
+
+
 Route::GET('/RemoveImageAqar/{Images}',[App\Http\Controllers\aqarController::class, 'RemoveImgAqar']);
 
 Route::POST('/ajax-getpropertyByCat',[App\Http\Controllers\aqarController::class, 'getpropertyByCat']);
@@ -134,6 +148,8 @@ Route::resource('userPriceings', App\Http\Controllers\UserPriceingController::cl
 Route::resource('wishes', App\Http\Controllers\wishController::class);
 
 Route::resource('complaints', App\Http\Controllers\ComplaintsController::class);
+Route::get('complaints/user/{user}', 'App\Http\Controllers\ComplaintsController@show_user')->name('complaintsUser');
+
 
 Route::resource('contactForms', App\Http\Controllers\ContactFormController::class);
 
@@ -151,5 +167,15 @@ Route::get('user/dataTable', 'App\Http\Controllers\UserController@dataTable');
 Route::get('users/{user}/block', 'App\Http\Controllers\UserController@block');
 Route::get('users/{user}/activate', 'App\Http\Controllers\UserController@activate');
 Route::get('users/{user}/delete', 'App\Http\Controllers\UserController@destroy');
-Route::get('users/{user}', 'App\Http\Controllers\UserController@show');
+Route::get('user/{id}/show', 'App\Http\Controllers\UserController@show');
+
+
+
 Route::resource('user', 'App\Http\Controllers\UserController');
+// Route::get('user/show/{id}', 'App\Http\Controllers\UserController@show')->name('show_userpage');
+
+
+
+
+
+

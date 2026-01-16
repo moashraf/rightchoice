@@ -13,7 +13,7 @@
 
 					<div  style="text-align: center; margin:0">
 
-						<img src="{{ asset('/images/policies.jpg') }}" alt="" class="img-fluid w-100">
+						<img src="{{ asset('/images/policies.jpg') }}" alt="" class="img-fluid w-100" loading="lazy">
 
  
 					</div>

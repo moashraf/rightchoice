@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Eloquent as Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 /**
@@ -19,14 +19,19 @@ class Complaints extends Model
 {
 
 
+    const COMPLAINT_PENDING = 1;
+    const COMPLAINT_INPROGRESS = 2;
+    const COMPLAINT_SOLVED = 3;
+
     public $table = 'complaints';
-    
+
 
 
 
     public $fillable = [
         'user_id',
         'aqars_id',
+        'status',
         'message'
     ];
 
@@ -47,7 +52,7 @@ class Complaints extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function userinfo()
@@ -58,5 +63,10 @@ class Complaints extends Model
     public function aqarinfo()
     {
         return $this->belongsTo(aqar::class, 'aqars_id');
+    }
+
+    public function logActivities()
+    {
+        return $this->morphMany(LogActivity::class, 'loggable');
     }
 }

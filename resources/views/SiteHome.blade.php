@@ -27,27 +27,29 @@
 													<div class="input-with-icon">
 														<input name="keywords" type="text" class="form-control"
 															placeholder="كلمه البحث">
-														<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
+														<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
 													</div>
 												</div>
 											</div>
 										</div>
 
 										<div class="row">
-											<div class="col-lg-4 col-md-6 col-sm-6">
+												<div class="col-lg-4 col-md-6 col-sm-6">
 												<div class="form-group">
-													<label> سعر اعلي من </label>
-													<input style="min-height: 56px;" type= "number" name="minPrice" id="minPrice" class="form-control" />
-														
+													<label>   أعلى سعر</label>
+										 	<input style="min-height: 56px;" type="number" name="maxPrice" id="maxPrice" class="form-control" />
+
 											</div>
 											</div>
 											<div class="col-lg-4 col-md-6 col-sm-6">
 												<div class="form-group">
-													<label> سعر اقل من </label>
-													<input style="min-height: 56px;" type="number" name="maxPrice" id="maxPrice" class="form-control" />
-													
+													<label>           اقل سعر   </label>
+											 	<input style="min-height: 56px;" type= "number" name="minPrice" id="minPrice" class="form-control" />
+
 												</div>
 											</div>
+									
+										
 											<div class="col-lg-4 col-md-6 col-sm-6">
 												<div class="form-group">
 													<label>{{ trans('langsite.offer_type')}}</label>
@@ -149,17 +151,17 @@
 												<div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarVip->slug) }}">
 												    
 												    		    		     @if($aqarVip->mainImage)
-                                 <img src="{{ URL::to('/').'/images/'.$aqarVip->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main">
+                                 <img src="{{ URL::to('/').'/images/'.$aqarVip->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
                             
                                 @else
                                 
 												    @if($aqarVip->firstImage)
 												    <img
 													src="{{ URL::to('/').'/images/'.$aqarVip->firstImage->img_url}}"
-													class="img-fluid mx-auto" alt="" />
+													class="img-fluid mx-auto" alt="" loading="lazy" />
 														@else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                            alt="main">
+                                            alt="main" loading="lazy" >
 													@endif	@endif
 													</a></div>	
 
@@ -226,18 +228,18 @@
 											<div class="listing-card-info-icon"> 
 												{{ $aqarVip->baths }} حمام
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											<div class="listing-card-info-icon">
 												{{ $aqarVip->rooms }} غرف
 											<div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-														alt="" /></div>
+														alt=""  loading="lazy" /></div>
 											</div>
 											
 											<div class="listing-card-info-icon">
 												{{ $aqarVip->total_area }}  م²
 															<div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											
 											
@@ -255,7 +257,7 @@
 											@endif
 											
 											
-												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
+												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
 											</div>
 										</div>
 										<div class="footer-flex">
@@ -315,7 +317,7 @@
 		    
 		    
                             @if($saleAqar->mainImage)
-                                 <img src="{{ URL::to('/').'/images/'.$saleAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main">
+                                 <img src="{{ URL::to('/').'/images/'.$saleAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
                             
                                 @else
                                 
@@ -323,10 +325,10 @@
                                 
 		    @if($saleAqar->firstImage)<img
 		src="{{ URL::to('/').'/images/'.$saleAqar->firstImage->img_url}}"
-		class="img-fluid mx-auto" alt="" />
+		class="img-fluid mx-auto" alt="" loading="lazy" />
 			@else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                            alt="main">
+                                            alt="main" loading="lazy" >
 		@endif
 		@endif
 		
@@ -391,7 +393,7 @@
                     {{ $saleAqar->baths }} حمام
 						<div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
 
-                            alt="" /></div>
+                            alt="" loading="lazy" /></div>
                 </div>
 
                 <div class="listing-card-info-icon">
@@ -399,7 +401,7 @@
                    {{ $saleAqar->rooms }} غرف
 				    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
 
-                            alt="" /></div>
+                            alt="" loading="lazy" /></div>
 
                 </div>
 
@@ -408,7 +410,7 @@
                     {{ $saleAqar->total_area }}  م²
 					<div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
 
-                            alt="" /></div>
+                            alt="" loading="lazy" /></div>
 
                 </div>
 
@@ -498,16 +500,16 @@
 												<div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}">
 												    
 												     @if($rentAqar->mainImage)
-                                 <img src="{{ URL::to('/').'/images/'.$rentAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main">
+                                 <img src="{{ URL::to('/').'/images/'.$rentAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
                             
                                 @else
                                 
 												    @if($rentAqar->firstImage)<img
 													src="{{ URL::to('/').'/images/'.$rentAqar->firstImage->img_url}}"
-													class="img-fluid mx-auto" alt="" />
+													class="img-fluid mx-auto" alt="" loading="lazy" />
 														@else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                            alt="main">
+                                            alt="main"loading="lazy" >
 													@endif
 													@endif
 													
@@ -563,18 +565,18 @@
 											<div class="listing-card-info-icon"> 
 												{{ $rentAqar->baths }} حمام
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											<div class="listing-card-info-icon">
 												{{ $rentAqar->rooms }} غرف
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											
 											<div class="listing-card-info-icon">
 												{{ $rentAqar->total_area }} م²
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-														alt="" /></div>	
+														alt="" loading="lazy" /></div>	
 											</div>
 											
 											
@@ -592,7 +594,7 @@
 											@endif
 										
 											
-												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
+												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt=""  loading="lazy" />
 											</div>
 										</div>
 										<div class="footer-flex">
@@ -686,7 +688,7 @@
 								<div class="location-property-wrap">
 									<div class="location-property-thumb">
 										<!-- <a target="_blank" href="listings-list-with-sidebar.html"><img src="https://via.placeholder.com/1200x800" class="img-fluid" alt=""></a> -->
-										<a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}"><img src="{{ URL::to('/').'/admin/public/'.$serv->image}}" class="img-fluid" alt=""></a>
+										<a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}"><img src="{{ URL::to('/').'/admin/public/'.$serv->image}}" class="img-fluid" alt="" loading="lazy" ></a>
 									</div>
 									<div class="location-property-content">
 										<div class="lp-content-flex">
@@ -744,7 +746,7 @@
 												<div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $most->slug) }}">
 												    
 												    		     @if($most->mainImage)
-                                 <img src="{{ URL::to('/').'/images/'.$most->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main">
+                                 <img src="{{ URL::to('/').'/images/'.$most->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
                             
                                 @else
                                 
@@ -752,10 +754,10 @@
 												     @if($most->firstImage)
 												     <img
 													src="{{ URL::to('/').'/images/'.$most->firstImage->img_url}}"
-													class="img-fluid mx-auto" alt="" />
+													class="img-fluid mx-auto" alt="" loading="lazy" />
 														@else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                            alt="main">
+                                            alt="main" loading="lazy" >
 													
 													@endif		@endif
 													
@@ -810,18 +812,18 @@
 											<div class="listing-card-info-icon"> 
 												{{ $most->baths }} حمام
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											<div class="listing-card-info-icon">
 												{{ $most->rooms }} غرف
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											
 											<div class="listing-card-info-icon">
 												{{ $most->total_area }}  م²
 												<div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-														alt="" /></div>
+														alt="" loading="lazy" /></div>
 											</div>
 											
 											
@@ -839,7 +841,7 @@
 											@endif
 											
 											
-												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
+												<img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
 											</div>
 										</div>
 										<div class="footer-flex">

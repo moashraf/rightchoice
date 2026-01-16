@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Priceing Sales</h1>
+                    <h1>تسعير المبيعات</h1>
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
                        href="{{ route('priceingSales.create') }}">
-                        Add New
+                        اضافه جديد 
                     </a>
                 </div>
             </div>

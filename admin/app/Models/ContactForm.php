@@ -21,7 +21,7 @@ class ContactForm extends Model
 
 
     public $table = 'contact_form';
-    
+
 
 
 
@@ -50,8 +50,8 @@ class ContactForm extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

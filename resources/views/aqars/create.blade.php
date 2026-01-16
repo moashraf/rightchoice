@@ -21,7 +21,7 @@
     
    
    <div>
-       <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
+       <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." loading="lazy" />
 <h6 class="fw-bolder text-dark mt-5">  بعض الصور حجمها كبير قد يتسغرق رفعها 40   ثانيه (جاري التحميل)</h6>
 
 </div>
@@ -477,7 +477,7 @@
                         {{ csrf_field() }}
                         <div id="result-form-1" style="display:none;"></div>
                         <div id="result-form-2" style="display:none;"></div>
-                        <div id="result3" style="display:none;"><input name="main_img" id="mainImg" /></div>
+                        <div id="result3" style="display:none;"><input name="main_img" id="mainImg" loading="lazy" /></div>
                         <div class="form-group">
                             <!-- <input type="file"   name="photos_id[]" multiple> -->
                             <div class="mt-3 w-100">

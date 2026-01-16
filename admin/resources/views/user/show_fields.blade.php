@@ -1,98 +1,28 @@
-<!-- Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('id', 'Id:') !!}
-    <p>{{ $blog->id }}</p>
-</div>
+@extends('layouts.app')
+@section('title', 'المستخدمين')
+@section('content')
 
-<!-- Seo Title Field -->
-<div class="col-sm-12">
-    {!! Form::label('seo_title', 'Seo Title:') !!}
-    <p>{{ $blog->seo_title }}</p>
-</div>
 
-<!-- Status Field -->
-<div class="col-sm-12">
-    {!! Form::label('status', 'Status:') !!}
-    @if($blog->status == 0)
-    <span class="badge badge-success">Active</span>
-    @else
-    <span class="badge badge-danger">UnActive</span>
-    @endif
-    <!-- <p>{{ $blog->status }}</p> -->
-</div>
+    <ul class="list-group ">
 
-<!-- Main Img Alt Field -->
-<div class="col-sm-12">
-    {!! Form::label('main_img_alt', 'Main Img Alt:') !!}
-    <!-- <p>{{ $blog->main_img_alt }}</p> -->
-</div>
+  <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> User Details </li>
+  <li class="list-group-item">{!! Form::label('id', 'User Id:') !!}  {{ $user->id }}</li> 
 
-@if(!empty($blog->main_img_alt))
-<div class="mb-2">
-    <a href="{{Url($blog->main_img_alt)}}" data-toggle="lightbox"><img src="{{Url($blog->main_img_alt)}}" alt=""  class="img-fluid img-thumbnail" style="max-width: 60%;">
-    </a>
-</div>
-@endif
+ <ul class="list-group ">
+  <li class="list-group-item">{!! Form::label('name', 'User name:') !!}  {{$user->name}}</li>
+    <li class="list-group-item">{!! Form::label('email', 'Email:') !!}  {{ $user->email }}</li>
+  <li class="list-group-item">{!! Form::label('MOP', 'Mobile:') !!}  {{ $user->MOP }}</li>
+    <li class="list-group-item">{!! Form::label('current_points', 'points:') !!}  {{ $user->current_points }}</li>
 
-<!-- Single Photo Field -->
-<div class="col-sm-12">
-    {!! Form::label('single_photo', 'Single Photo:') !!}
-    <!-- <p>{{ $blog->single_photo }}</p> -->
-</div>
+</ul>
+@endsection
 
-@if(!empty($blog->single_photo))
-<div class="mb-2">
-    <a href="{{Url($blog->single_photo)}}" data-toggle="lightbox"><img src="{{Url($blog->single_photo)}}" alt=""  class="img-fluid img-thumbnail" style="max-width: 60%;">
-    </a>
-</div>
-@endif
-
-<!-- Sort Num Field -->
-<div class="col-sm-12">
-    {!! Form::label('sort_num', 'Sort Num:') !!}
-    <p>{{ $blog->sort_num }}</p>
-</div>
-
-<!-- Meta Description Field -->
-<div class="col-sm-12">
-    {!! Form::label('meta_description', 'Meta Description:') !!}
-    <p>{{ $blog->meta_description }}</p>
-</div>
-
-<!-- Number Of Visits Field -->
-<div class="col-sm-12">
-    {!! Form::label('number_of_visits', 'Number Of Visits:') !!}
-    <p>{{ $blog->number_of_visits }}</p>
-</div>
-
-<!-- Title Field -->
-<div class="col-sm-12">
-    {!! Form::label('title', 'Title:') !!}
-    <p>{{ $blog->title }}</p>
-</div>
-
-<!-- Description Field -->
-<div class="col-sm-12">
-    {!! Form::label('description', 'Description:') !!}
-    <p>{{ $blog->description }}</p>
-</div>
-
-<!-- Slug Field -->
-<div class="col-sm-12">
-    {!! Form::label('slug', 'Slug:') !!}
-    <p>{{ $blog->slug }}</p>
-</div>
-
-<!-- Canonical Field -->
-<div class="col-sm-12">
-    {!! Form::label('canonical', 'Canonical:') !!}
-    <p>{{ $blog->canonical }}</p>
-</div>
-
-<!-- Created At Field -->
-<div class="col-sm-12">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{{ $blog->created_at->toDayDateTimeString() }}</p>
-</div>
+@push('page_scripts')
+    <script>
+        $(document).on('click', "#change_aqar_status_btn", function () {
+            $("#change_aqar_status_form").attr('action', $(this).data('url'));
+        })    
+    </script>
+@endpush
 
 

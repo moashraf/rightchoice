@@ -38,7 +38,7 @@ class PagesController extends Controller
         $contact = new ContactForm();
 
         $validator = Validator::make($request->all(), [
-            'name' => 'nullable',
+            'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required|regex:/(01)[0-9]{9}/',
             'subject' => 'required',
@@ -49,6 +49,7 @@ class PagesController extends Controller
 
             if(!$validator->fails())
             {
+                $contact->name = request('name');
                 $contact->phone = request('phone');
                 $contact->email = request('email');
                 $contact->subject = request('subject');

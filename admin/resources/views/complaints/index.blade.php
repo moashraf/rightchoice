@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Complaints</h1>
+                    <h1>شكاوي</h1>
                 </div>
                 <!-- <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
@@ -25,11 +25,46 @@
 
         <div class="card">
             <div class="card-body p-0">
-                @include('complaints.table')
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>User Name</th>
+                                <th>Aqar Name</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                            </tr>
+                            <!--end tr-->
+                            </thead>
 
+                            <tbody>
+                            @foreach($complaints as $val)
+                                <tr>
+                                    <td>{{$val->id}}</td>
+                                    <td><a href="{{route('complaintsUser',$val->userinfo->id)}}">{{$val->userinfo->name}}</a></td>
+                                   <td><a href="{{route('aqars.show',$val->aqars_id)}}">{{$val->message}}</a></td>
+                                    <td>{{$val->created_at}}</td>
+                                    <td>@include('complaints.datatables_actions',['id'=>$val->id])</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer clearfix float-right">
+                        <div class="float-right">
+                            {{$complaints->links()}}
+
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer clearfix float-right">
                     <div class="float-right">
-                        
+                        <div class="card">
+
+
+                        </div>
                     </div>
                 </div>
             </div>

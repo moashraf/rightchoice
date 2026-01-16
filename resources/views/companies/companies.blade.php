@@ -122,7 +122,7 @@
         <div class="col-lg-12 row">
             @foreach ($companies as $company)
 
-        <div class="col-lg-4 mt-4">
+        <div class="col-lg-12 mt-12">
 
 
 

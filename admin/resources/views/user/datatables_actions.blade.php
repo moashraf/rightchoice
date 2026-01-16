@@ -1,9 +1,6 @@
 {!! Form::open(['route' => ['user.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('user.show', $id) }}" class='btn btn-default btn-xs'>
-        <!-- <i class="glyphicon glyphicon-eye-open"></i> -->
-        <i class="fas fa-eye text-info font-18"></i>
-    </a>
+   
     <a href="{{ route('user.edit', $id) }}" class='btn btn-default btn-xs'>
         <!-- <i class="glyphicon glyphicon-edit"></i> -->
         <i class="fas fa-edit text-info font-18"></i>

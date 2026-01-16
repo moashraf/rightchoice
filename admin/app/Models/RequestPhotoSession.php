@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+
 use Eloquent as Model;
+use Spatie\Activitylog\Models\Activity;
 
 
 
@@ -23,7 +25,7 @@ class RequestPhotoSession extends Model
 
 
     public $table = 'requestphotosession';
-    
+
 
 
 
@@ -57,12 +59,17 @@ class RequestPhotoSession extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function userinfo()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+
+    public function logActivities()
+    {
+        return $this->morphMany(LogActivity::class, 'loggable');
+    }
+
 }

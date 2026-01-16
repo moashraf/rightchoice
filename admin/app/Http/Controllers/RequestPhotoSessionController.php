@@ -9,8 +9,12 @@ use App\Http\Requests\UpdateRequestPhotoSessionRequest;
 use App\Repositories\RequestPhotoSessionRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use Response;
 use App\Models\User;
+
+use Spatie\Activitylog\Models\Activity;
+
 class RequestPhotoSessionController extends AppBaseController
 {
     /** @var  RequestPhotoSessionRepository */
@@ -99,7 +103,10 @@ class RequestPhotoSessionController extends AppBaseController
         }
 
         $users = User::pluck('name', 'id');
-        return view('request_photo_sessions.edit',compact('users'))->with('requestPhotoSession', $requestPhotoSession);
+        
+
+
+        return view('request_photo_sessions.edit',compact('users')->with('requestPhotoSession', $requestPhotoSession);
     }
 
     /**
@@ -121,7 +128,13 @@ class RequestPhotoSessionController extends AppBaseController
         }
 
         $requestPhotoSession = $this->requestPhotoSessionRepository->update($request->all(), $id);
-
+        activity()
+            ->causedBy(Auth::user())
+            ->performedOn($requestPhotoSession)
+            ->tap(function(Activity $activity) use ($request) {
+                $activity->comment = $request->comment;
+            })
+            ->log('edited');
         Flash::success('Request Photo Session updated successfully.');
 
         return redirect(route('requestPhotoSessions.index'));

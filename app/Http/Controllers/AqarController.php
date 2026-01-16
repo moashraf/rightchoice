@@ -59,13 +59,18 @@ class AqarController extends Controller
         $finishType = $request->finishtype2;
         $minArea = $request->minArea;
         $maxArea = $request->maxArea;
+		
         $minRooms = $request->minRooms;
         $maxRooms = $request->maxRooms;
         $minBaths = $request->minBaths;
         $maxBaths = $request->maxBaths;
         $maz = $request->mzaya;
         $offs = $request->saletype;
-
+		$minPrice = $request->minPrice;
+        $maxPrice = $request->maxPrice;
+        $keyWords = $request->keywords;
+        $offer =    $request->offerType;
+		
        if($request->offerType == 1 || $request->offerType == 2 || $request->offerType == 5 ){
                     $offerTypes = OfferTypes::all()->whereIn('id', [1, 2, 5]);
 
@@ -77,20 +82,12 @@ class AqarController extends Controller
         $vipAqars = aqar::where('vip', 1)->take(10)->latest()->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
-
-
-        
-        $minPrice = $request->minPrice;
-        $maxPrice = $request->maxPrice;
-        $keyWords = $request->keywords;
-        $offer =    $request->offerType;
-        $sort = $request->sort;
+			$sort = $request->sort;
       
       
         $key1= str_ireplace("ي","ى", $keyWords);
         $key2= str_ireplace("ة","ه", $key1);
-
-              $allAqars = aqar::where('status',1)->where (function($query) use ($offer)
+               $allAqars = aqar::where('status',1)->where (function($query) use ($offer)
                         {
                              
                             if (!empty($offer)) {
@@ -541,61 +538,75 @@ class AqarController extends Controller
 
                     })   
                     
-            /*                
-                ->when($request->has('minArea'),function ($query) use ($request) {
+                          
+                ->when($request->has('minArea') && $request->minArea  !=NULL ,function ($query) use ($request) {
+ 
+ 
+                    
+                             $query ->where('total_area', '>=' , $request->minArea ) ;
 
-                            $query ->where('total_area', '<=' , $request->minArea) ;
-
+ 
                             })   
                             
-                        
-                ->when($request->has('maxArea'),function ($query) use ($request) {
+                         
+                ->when($request->has('maxArea') && $request->maxArea  !=NULL ,function ($query) use ($request) {
 
-                            $query ->where('total_area', '>=' , $request->maxArea) ;
+                            $query ->where('total_area', '<=' , $request->maxArea) ;
 
                             })  
                             
-                ->when($request->has('minPrice'),function ($query) use ($request) {
+                ->when($request->has('minPrice') && $request->minPrice  !=NULL ,function ($query) use ($request) {
 
-                            $query ->where('total_price', '<=' , $request->minPrice) ;
+                            $query ->where('total_price', '>=' , $request->minPrice) ;
 
                             })   
-                ->when($request->has('maxPrice'),function ($query) use ($request) {
+                ->when($request->has('maxPrice') && $request->maxPrice  !=NULL ,function ($query) use ($request) {
 
-                            $query ->where('total_price', '>=' , $request->maxPrice) ;
+                            $query ->where('total_price', '<=' , $request->maxPrice) ;
 
                             }) 
-                ->when($request->has('minRooms'),function ($query) use ($request) {
+                ->when($request->has('minRooms') && $request->minRooms  !=NULL,function ($query) use ($request) {
 
-                            $query ->where('rooms', '<=' , $request->minRooms) ;
-
-                            })   
-                ->when($request->has('maxRooms'),function ($query) use ($request) {
-
-                            $query ->where('rooms', '>=' , $request->maxRooms) ;
-
-                            }) 
-                            
-                ->when($request->has('minBaths'),function ($query) use ($request) {
-
-                            $query ->where('baths', '<=' , $request->minBaths) ;
+                            $query ->where('rooms', '>=' , $request->minRooms) ;
 
                             })   
-                ->when($request->has('maxBaths'),function ($query) use ($request) {
+                ->when($request->has('maxRooms') && $request->maxRooms  !=NULL,function ($query) use ($request) {
 
-                            $query ->where('baths', '>=' , $request->maxBaths) ;
+                            $query ->where('rooms', '<=' , $request->maxRooms) ;
 
                             }) 
                             
-                */
+                ->when($request->has('minBaths') && $request->minBaths  !=NULL ,function ($query) use ($request) {
+
+                            $query ->where('baths', '>=' , $request->minBaths) ;
+
+                            })   
+                ->when($request->has('maxBaths') && $request->maxBaths  !=NULL ,function ($query) use ($request) {
+
+                            $query ->where('baths', '<=' , $request->maxBaths) ;
+
+                            }) 
+
+
+                         ->whereHas('mzayaAqar', function($query) use ($request) {
+
+                         
+                             if($request->has('mzaya') && $request->mzaya  !=NULL){
+                                $query->whereIn('mzaya_id',    $request->mzaya );
+                             }
+                            
+                            })
+                          
+                            
+                
                 
                 ->with('districte')->with('governrateq')->with('images')->with('subAreaa')
                 //  ->get();
 
                 ->paginate(9);
-                //  dd($request->all());
+              
 
-        return view('aqars.all-aqars',compact('allAqars', 'vipAqars', 'mzaya', 'finishes',
+        return view('aqars.all-aqars',compact('allAqars', 'vipAqars', 'mzaya', 'finishes', 
          'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','compound_singel',
         'cat_id', 'prop_id', 'saletype' , 'governratew', 'keyWords' 
         
@@ -628,28 +639,51 @@ class AqarController extends Controller
         $maxBaths = $request->maxBaths;
         $maz = $request->mzaya;
         $offs = $request->typeoff;
-   //   dd("fff");   
+   
         $governrates = Governrate::with('districts')->get();
         $district = District::all();
         $areas = SubArea::distinct()->get();
         $mzaya = Mzaya::all();
         $sort = $request->sort;
         $offerType = $request->typeoff;
-           // dd($governrates);
-$araay=explode(",",$offerType);
-  
- //dd($araay[0]);
-        $allAqars = aqar::where('status',1)->whereIn('offer_type', $araay)
+     
+        if($offerType == 'ALL1'){
+            $offerType =[1,2];
         
-        ->when( $sort == 1 &&   $araay[0] == 1 , function ($q){
- 
+             }
+             if( $offerType  == 'ALL2'){
+                $offerType   =[3,4];
+             }
+
+           
+                          //  dd($offerType);
+        $allAqars = aqar::where('status',1)
+        
+        ->where (function($q) use ($offerType){
+
+        if( is_array($offerType) == 1 ){
+          
+            return $q->whereIn('offer_type',  $offerType);
+        }else{
+        
+            return $q->where('offer_type',   $offerType);
+
+            
+        }
+            
+  
+
+        })
+      
+
+         ->when( $sort == 1 &&   $offerType == 1 || $offerType == [1,2]  && $sort == 1  , function ($q){
                    return $q->orderBy('total_price', 'DESC'); 
             
            
         })
         
         
-         ->when( $sort == 1 &&   $araay[0] == 2 , function ($q){
+         ->when( $sort == 1 &&  $offerType == 2  || $offerType == [1,2]  && $sort == 1  , function ($q){
  
                    return $q->orderBy('total_price', 'DESC'); 
             
@@ -657,42 +691,43 @@ $araay=explode(",",$offerType);
         })
         
           
-          ->when( $sort == 1 &&   $araay[0] ==3    , function ($q){
- 
+          ->when( $sort == 1 &&   $offerType  ==3  || $offerType == [3,4]  && $sort == 1  , function ($q){
+             
                    return $q->orderBy('monthly_rent', 'DESC'); 
             
            
         })
         
-           ->when( $sort == 1 &&   $araay[0] ==4    , function ($q){
- 
+           ->when( $sort == 1 &&   $offerType  ==4   || $offerType == [3,4]  && $sort == 1 , function ($q){
+          
                    return $q->orderBy('monthly_rent', 'DESC'); 
             
            
         })
         
-        ->when( $sort == 2 && $araay[0] == 2 , function ($q){
+        ->when( $sort == 2 && $offerType  == 2 || $offerType == [1,2]  && $sort == 2, function ($q){
+           
+            
+            return $q->orderBy('total_price', 'ASC'); 
+        })  
+        
+        
+             ->when( $sort == 2 &&  $offerType  == 1  || $offerType == [1,2] && $sort == 2 , function ($q){
              
             
             return $q->orderBy('total_price', 'ASC'); 
         })  
         
         
-             ->when( $sort == 2 &&   $araay[0] == 1 , function ($q){
-             
             
-            return $q->orderBy('total_price', 'ASC'); 
-        })  
+        ->when( $sort == 2  &&  $offerType == 4 || $offerType == [3,4] && $sort == 2 , function ($q){
         
-        
-            
-        ->when( $sort == 2  &&   $araay[0] == 4 , function ($q){
            return $q->orderBy('monthly_rent', 'ASC');
             
             
          })  
         
-          ->when( $sort == 2  &&   $araay[0] == 3 , function ($q){
+          ->when( $sort == 2  &&  $offerType  == 3 || $offerType == [3,4] && $sort == 2, function ($q){
            return $q->orderBy('monthly_rent', 'ASC');
             
             
@@ -719,7 +754,18 @@ $araay=explode(",",$offerType);
       
         //dd(   $allAqars);
         $offerTypes = OfferTypes::all();
-        $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->whereIn('offer_type', $araay)->latest()->take(4)->get();
+
+        if( is_array($offerType) == 1 ){
+          
+            $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->whereIn('offer_type',$offerType )->latest()->take(4)->get();
+        }else{
+           // dd($offerType);
+           $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->where('offer_type',$offerType )->latest()->take(4)->get();
+
+            
+        }
+
+
         $finishes = Finish_type::all();
         $categories = Category::all();
          
@@ -1507,8 +1553,8 @@ else{
             
             $cheackPoint->update($request->all());
             
- 
-                Auth::user()->contact()->create($request->all());
+             
+            Auth::user()->contact()->create($request->all());
              
             
         }

@@ -9,9 +9,24 @@ use App\SystemSettings;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\User;
+use App\Repositories\ActivityLogger;
+use App\Repositories\ActivityLogStatus;
+
 function loadAssets($asset)
 {
     return url($asset);
+}
+
+if (! function_exists('activity')) {
+    function activity($logName = null): ActivityLogger
+    {
+        $defaultLogName = config('activitylog.default_log_name');
+
+        $logStatus = app(ActivityLogStatus::class);
+        return app(ActivityLogger::class)
+            ->useLog($logName ?? $defaultLogName)
+            ->setLogStatus($logStatus);
+    }
 }
 
 function loadOption($option)
@@ -178,7 +193,7 @@ function _getIDDay($case)
 
 function _uploadFileWeb($image_file, $path)
 {
-   
+
     try {
 
         $file = $image_file;
@@ -206,7 +221,7 @@ function _uploadFileWeb($image_file, $path)
 
 function _uploadFileWebNoCrop($image_file, $path)
 {
-   
+
     try {
 
         $file = $image_file;
@@ -231,7 +246,7 @@ function _uploadFileWebNoCrop($image_file, $path)
 
 function _uploadFileWebSlid($image_file, $path)
 {
-   
+
     try {
 
         $file = $image_file;
@@ -259,7 +274,7 @@ function _uploadFileWebSlid($image_file, $path)
 
 function _uploadFileWebAqar($image_file, $path)
 {
-   
+
     try {
 
         $file = $image_file;

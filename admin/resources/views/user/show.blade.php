@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Blog Details')
+@section('title', 'user Details')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Blog Details</h1>
+                    <h1>تفاصيل المستخدم</h1>
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('blogs.index') }}">
-                        Back
+                       href="{{ route('user.index') }}">
+                        رجوع
                     </a>
                 </div>
             </div>
@@ -22,7 +22,7 @@
 
             <div class="card-body">
                 <div class="row">
-                    @include('blogs.show_fields')
+                    @include('user.show_fields')
                 </div>
             </div>
 

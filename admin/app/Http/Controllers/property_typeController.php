@@ -6,9 +6,12 @@ use App\DataTables\property_typeDataTable;
 use App\Http\Requests;
 use App\Http\Requests\Createproperty_typeRequest;
 use App\Http\Requests\Updateproperty_typeRequest;
+use App\Models\property_type;
 use App\Repositories\property_typeRepository;
+use App\Services\ModelService;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
 use Response;
 use App\Models\aqar_category;
 class property_typeController extends AppBaseController
@@ -27,9 +30,12 @@ class property_typeController extends AppBaseController
      * @param property_typeDataTable $propertyTypeDataTable
      * @return Response
      */
-    public function index(property_typeDataTable $propertyTypeDataTable)
+    public function index(Request $request)
     {
-        return $propertyTypeDataTable->render('property_types.index');
+        $property_types = property_type::paginate();
+        // $property_types = ModelService::filter_search($property_types,'property_type',$request);
+
+        return view('property_types.index',compact('property_types'));
     }
 
     /**
@@ -50,7 +56,7 @@ class property_typeController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Createproperty_typeRequest $request)
+    public function store(request $request)
     {
         $input = $request->all();
 

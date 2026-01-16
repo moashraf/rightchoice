@@ -20,13 +20,8 @@ use Eloquent as Model;
  */
 class UserPriceing extends Model
 {
-
-
     public $table = 'users_priceing_sale';
     
-
-
-
     public $fillable = [
         'user_id',
         'pricing_id',

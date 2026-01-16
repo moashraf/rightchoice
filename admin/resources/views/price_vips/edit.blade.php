@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Edit Price Vip</h1>
+                    <h1>تعديل سعر  Vip</h1>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
 
             <div class="card-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('priceVips.index') }}" class="btn btn-default">Cancel</a>
+                <a href="{{ route('priceVips.index') }}" class="btn btn-default">الغاء</a>
             </div>
 
            {!! Form::close() !!}

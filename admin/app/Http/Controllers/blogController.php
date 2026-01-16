@@ -51,12 +51,11 @@ class blogController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateblogRequest $request)
+    public function store(request $request)
     {
         
         
         $input = $request->all();
-
         //generate => image file
         if ($request->has('img1') && !is_null($request->img1))
         $request->merge(['main_img_alt' => _uploadFileWeb($request->img1, 'blog/')]);

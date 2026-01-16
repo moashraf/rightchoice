@@ -12,7 +12,7 @@
 
     <meta charset="utf-8">
 
-
+<meta name=description>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -1180,7 +1180,7 @@ role="contentinfo">
     { 
         
         ?>
-                         <img src="{{ asset('assets/img/footer-logo.png') }}" />
+                         <img src="{{ asset('assets/img/footer-logo.png') }}" alt="" />
          
          <?php 
     }
@@ -1189,7 +1189,7 @@ else{
     
     ?>
     
-                         <img src="{{ asset('assets/img/footer-logo.png') }}" />
+                         <img src="{{ asset('assets/img/footer-logo.png') }}" alt=""  />
 
     <?php
 }  

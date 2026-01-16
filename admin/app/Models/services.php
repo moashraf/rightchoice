@@ -27,7 +27,9 @@ class services extends Model
         'image',
     'description',
         'Service_en',
-        'description_en'
+        'description_en',
+        'slug',
+        'title'
     ];
 
     /**

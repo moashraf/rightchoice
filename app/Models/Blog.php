@@ -32,4 +32,8 @@ class Blog extends Model
         'body'
         
     ];
+
+    public function userprising(){
+        return $this->hasMany(Userprising::class,);
+    }
 }
