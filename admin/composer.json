@@ -5,29 +5,28 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "doctrine/dbal": "~2.3",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "php": "^8.1|^8.2",
+        "doctrine/dbal": "^3.0",
+        "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/adminlte-templates": "^2.0",
         "infyomlabs/generator-builder": "dev-master",
         "infyomlabs/laravel-generator": "^3.0",
-        "intervention/image": "^2.5",
-        "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.0",
-        "laravelcollective/html": "^6.2",
-        "yajra/laravel-datatables": "1.5",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "intervention/image": "^2.7",
+        "laravel/framework": "^10.0",
+        "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.0",
+        "laravelcollective/html": "^6.4",
+        "yajra/laravel-datatables": "^10.0",
+        "yajra/laravel-datatables-oracle": "^10.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.18",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {

@@ -63,7 +63,7 @@ class PageController extends Controller
 
                     return  redirect()->intended('/');
                 } else {
-                    //dd("no");     
+                    //dd("no");
                     if ($locale == 'ar') {
                         return back()->withErrors([
                             'email' => 'البيانات التى تم ادخالها غير صحيحه.',
@@ -264,10 +264,10 @@ class PageController extends Controller
     {
         //  dd($_GET['userID'] );
         $user = User::where('id', $_GET['userID'])->first();
-        //   dd( $user);
+
 
         return view('auth.otb-page', compact('user'));
-    }
+     }
 
 
 
@@ -427,7 +427,7 @@ class PageController extends Controller
                 curl_setopt($ch, CURLOPT_HEADER, 0);
 
                 //$body = '{}';
-                //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+                //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
                 //curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
