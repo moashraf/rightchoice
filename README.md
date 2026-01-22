@@ -7,6 +7,25 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+---
+
+## 🚀 Laravel 10 & PHP 8.2 Upgrade
+
+**This project has been prepared for Laravel 10 upgrade!**
+
+### Quick Start:
+1. Install PHP 8.2 in XAMPP
+2. Run: `upgrade-laravel10.bat`
+3. Test using `UPGRADE_CHECKLIST.md`
+
+### Documentation:
+- 📖 **UPGRADE_GUIDE.md** - Complete upgrade guide (Arabic/English)
+- 📋 **UPGRADE_CHECKLIST.md** - Testing checklist
+- 🔧 **upgrade-laravel10.bat** - Automated upgrade script
+- 💻 **upgrade-laravel10.ps1** - PowerShell upgrade script
+
+---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
