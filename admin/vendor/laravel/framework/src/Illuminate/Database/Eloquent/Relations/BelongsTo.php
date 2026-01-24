@@ -2,6 +2,7 @@
 
 namespace Illuminate\Database\Eloquent\Relations;
 
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -51,7 +52,6 @@ class BelongsTo extends Relation
      * @param  string  $foreignKey
      * @param  string  $ownerKey
      * @param  string  $relationName
-     *
      * @return void
      */
     public function __construct(Builder $query, Model $child, $foreignKey, $ownerKey, $relationName)
@@ -75,7 +75,7 @@ class BelongsTo extends Relation
      */
     public function getResults()
     {
-        if (is_null($this->child->{$this->foreignKey})) {
+        if (is_null($this->getForeignKeyFrom($this->child))) {
             return $this->getDefaultFor($this->parent);
         }
 
@@ -95,7 +95,7 @@ class BelongsTo extends Relation
             // of the related models matching on the foreign key that's on a parent.
             $table = $this->related->getTable();
 
-            $this->query->where($table.'.'.$this->ownerKey, '=', $this->child->{$this->foreignKey});
+            $this->query->where($table.'.'.$this->ownerKey, '=', $this->getForeignKeyFrom($this->child));
         }
     }
 
@@ -114,7 +114,7 @@ class BelongsTo extends Relation
 
         $whereIn = $this->whereInMethod($this->related, $this->ownerKey);
 
-        $this->query->{$whereIn}($key, $this->getEagerModelKeys($models));
+        $this->whereInEager($whereIn, $key, $this->getEagerModelKeys($models));
     }
 
     /**
@@ -131,7 +131,7 @@ class BelongsTo extends Relation
         // to query for via the eager loading query. We will add them to an array then
         // execute a "where in" statement to gather up all of those related records.
         foreach ($models as $model) {
-            if (! is_null($value = $model->{$this->foreignKey})) {
+            if (! is_null($value = $this->getForeignKeyFrom($model))) {
                 $keys[] = $value;
             }
         }
@@ -167,17 +167,13 @@ class BelongsTo extends Relation
      */
     public function match(array $models, Collection $results, $relation)
     {
-        $foreign = $this->foreignKey;
-
-        $owner = $this->ownerKey;
-
         // First we will get to build a dictionary of the child models by their primary
         // key of the relationship, then we can easily match the children back onto
         // the parents using that dictionary and the primary key of the children.
         $dictionary = [];
 
         foreach ($results as $result) {
-            $attribute = $this->getDictionaryKey($result->getAttribute($owner));
+            $attribute = $this->getDictionaryKey($this->getRelatedKeyFrom($result));
 
             $dictionary[$attribute] = $result;
         }
@@ -186,7 +182,7 @@ class BelongsTo extends Relation
         // and match back onto their children using these keys of the dictionary and
         // the primary key of the children to map them onto the correct instances.
         foreach ($models as $model) {
-            $attribute = $this->getDictionaryKey($model->{$foreign});
+            $attribute = $this->getDictionaryKey($this->getForeignKeyFrom($model));
 
             if (isset($dictionary[$attribute])) {
                 $model->setRelation($relation, $dictionary[$attribute]);
@@ -199,7 +195,7 @@ class BelongsTo extends Relation
     /**
      * Associate the model instance to the given parent.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|int|string  $model
+     * @param  \Illuminate\Database\Eloquent\Model|int|string|null  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function associate($model)
@@ -338,7 +334,7 @@ class BelongsTo extends Relation
      */
     public function getParentKey()
     {
-        return $this->child->{$this->foreignKey};
+        return $this->getForeignKeyFrom($this->child);
     }
 
     /**
@@ -370,6 +366,19 @@ class BelongsTo extends Relation
     protected function getRelatedKeyFrom(Model $model)
     {
         return $model->{$this->ownerKey};
+    }
+
+    /**
+     * Get the value of the model's foreign key.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return mixed
+     */
+    protected function getForeignKeyFrom(Model $model)
+    {
+        $foreignKey = $model->{$this->foreignKey};
+
+        return $foreignKey instanceof BackedEnum ? $foreignKey->value : $foreignKey;
     }
 
     /**

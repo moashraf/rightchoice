@@ -2,7 +2,6 @@
 
 namespace Laravel\Ui;
 
-
 class AuthRouteMethods
 {
     /**
@@ -20,7 +19,7 @@ class AuthRouteMethods
                 // Login Routes...
                 if ($options['login'] ?? true) {
                     $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
-                    $this->post('login', 'Auth\LoginController@authenticate');
+                    $this->post('login', 'Auth\LoginController@login');
                 }
 
                 // Logout Routes...

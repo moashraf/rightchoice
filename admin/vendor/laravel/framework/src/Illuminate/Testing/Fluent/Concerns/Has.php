@@ -15,7 +15,7 @@ trait Has
      * @param  int|null  $length
      * @return $this
      */
-    public function count($key, int $length = null): self
+    public function count($key, ?int $length = null): self
     {
         if (is_null($length)) {
             $path = $this->dotPath();
@@ -48,7 +48,7 @@ trait Has
      * @param  \Closure|null  $callback
      * @return $this
      */
-    public function has($key, $length = null, Closure $callback = null): self
+    public function has($key, $length = null, ?Closure $callback = null): self
     {
         $prop = $this->prop();
 
@@ -63,9 +63,14 @@ trait Has
 
         $this->interactsWith($key);
 
-        if (is_int($length) && ! is_null($callback)) {
+        if (! is_null($callback)) {
             return $this->has($key, function (self $scope) use ($length, $callback) {
-                return $scope->count($length)
+                return $scope
+                    ->tap(function (self $scope) use ($length) {
+                        if (! is_null($length)) {
+                            $scope->count($length);
+                        }
+                    })
                     ->first($callback)
                     ->etc();
             });
@@ -85,7 +90,7 @@ trait Has
     /**
      * Assert that all of the given props exist.
      *
-     * @param  array|string $key
+     * @param  array|string  $key
      * @return $this
      */
     public function hasAll($key): self
@@ -104,9 +109,31 @@ trait Has
     }
 
     /**
+     * Assert that at least one of the given props exists.
+     *
+     * @param  array|string  $key
+     * @return $this
+     */
+    public function hasAny($key): self
+    {
+        $keys = is_array($key) ? $key : func_get_args();
+
+        PHPUnit::assertTrue(
+            Arr::hasAny($this->prop(), $keys),
+            sprintf('None of properties [%s] exist.', implode(', ', $keys))
+        );
+
+        foreach ($keys as $key) {
+            $this->interactsWith($key);
+        }
+
+        return $this;
+    }
+
+    /**
      * Assert that none of the given props exist.
      *
-     * @param  array|string $key
+     * @param  array|string  $key
      * @return $this
      */
     public function missingAll($key): self
@@ -158,7 +185,7 @@ trait Has
      * @param  string|null  $key
      * @return mixed
      */
-    abstract protected function prop(string $key = null);
+    abstract protected function prop(?string $key = null);
 
     /**
      * Instantiate a new "scope" at the path of the given key.
