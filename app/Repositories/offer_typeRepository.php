@@ -35,6 +35,6 @@ class offer_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return offer_type::class;
+        return OfferType::class;
     }
 }

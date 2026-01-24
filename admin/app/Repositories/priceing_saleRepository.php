@@ -44,6 +44,6 @@ class priceing_saleRepository extends BaseRepository
      **/
     public function model()
     {
-        return priceing_sale::class;
+        return PriceingSale::class;
     }
 }
