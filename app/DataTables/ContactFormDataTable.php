@@ -77,7 +77,7 @@ class ContactFormDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'contact_forms_datatable_' . time();
     }

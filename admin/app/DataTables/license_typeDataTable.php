@@ -75,7 +75,7 @@ class license_typeDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'license_types_datatable_' . time();
     }

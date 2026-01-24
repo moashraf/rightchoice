@@ -75,7 +75,7 @@ class wishDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'wishes_datatable_' . time();
     }

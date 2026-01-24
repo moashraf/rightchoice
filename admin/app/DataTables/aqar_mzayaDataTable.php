@@ -75,7 +75,7 @@ class aqar_mzayaDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'aqar_mzayas_datatable_' . time();
     }

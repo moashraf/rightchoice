@@ -79,7 +79,7 @@ class offer_typeDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'offer_types_datatable_' . time();
     }

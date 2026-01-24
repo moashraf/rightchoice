@@ -77,7 +77,7 @@ class ComplaintsDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'complaints_datatable_' . time();
     }

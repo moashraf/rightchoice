@@ -75,7 +75,7 @@ class servicesDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'services_datatable_' . time();
     }
