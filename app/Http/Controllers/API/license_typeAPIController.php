@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createlicense_typeAPIRequest;
 use App\Http\Requests\API\Updatelicense_typeAPIRequest;
-use App\Models\license_type;
+use App\Models\LicenseType;
 use App\Repositories\license_typeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class license_typeAPIController extends AppBaseController
         return $this->sendSuccess('License Type deleted successfully');
     }
 }
+
+

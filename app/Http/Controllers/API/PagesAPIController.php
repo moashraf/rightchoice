@@ -129,3 +129,5 @@ class PagesAPIController extends AppBaseController
         return $this->sendSuccess('Pages deleted successfully');
     }
 }
+
+

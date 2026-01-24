@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PriceVip;
 
 use App\Models\Pricing;
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Models\FawryPayment;
  
 use App\Models\UserPriceing;
@@ -354,7 +354,7 @@ $pric= Pricing::find(2);
                           
         $pieces_id = explode("55555", $_GET['customerProfileId']);
  
-         $aqar = aqar::where('id','=',$pieces_id[1])->first();
+         $aqar = Aqar::where('id','=',$pieces_id[1])->first();
                //dd($aqar);
         $aqar->vip = 1;
         $aqar->save();
@@ -399,7 +399,7 @@ $message ="  تم تميز اعلانك بنجاح ";
   public function add_to_vip(Request $request)
     {
    
- $add_to_vip = aqar::where('id', $request->aqar_id)->where('user_id', $request->user_id)->first();
+ $add_to_vip = Aqar::where('id', $request->aqar_id)->where('user_id', $request->user_id)->first();
 
 // dd($add_to_vip);
     }
@@ -877,7 +877,7 @@ $paymentStatus = $response['type']; // get response values
     public function vip($locale,$aqarSingle)
     {
         //
-        $aqar = aqar::find($aqarSingle);
+        $aqar = Aqar::find($aqarSingle);
         $vips = PriceVip::all();
         return view('price.vip_aqar', ['aqarSingle' => $aqar],compact('vips'));
     }
@@ -898,7 +898,7 @@ $paymentStatus = $response['type']; // get response values
     {
        
         //
-        $aqar = aqar::findOrFail($aqarid->id);
+        $aqar = Aqar::findOrFail($aqarid->id);
         $aqar->vip = 1;
         $aqar->save();
         
@@ -937,3 +937,5 @@ $paymentStatus = $response['type']; // get response values
 
 
 }
+
+

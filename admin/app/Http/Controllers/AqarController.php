@@ -16,22 +16,22 @@ use Illuminate\Support\Facades\Redirect;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\governrate;
-use App\Models\district;
-use App\Models\finish_type;
+use App\Models\Governrate;
+use App\Models\District;
+use App\Models\FinishType;
 use App\Models\floor;
-use App\Models\license_type;
-use App\Models\offer_type;
+use App\Models\LicenseType;
+use App\Models\OfferType;
 use App\Models\subarea;
-use App\Models\property_type;
+use App\Models\PropertyType;
 use App\Models\User;
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Models\Viewer;
 use App\Models\UserPriceing;
 
-use App\Models\aqar_category;
+use App\Models\AqarCategory;
 use App\Models\compound;
-use App\Models\call_time;
+use App\Models\CallTime;
 use App\Models\mzaya;
 use App\Models\aqar_mzaya;
 use App\Models\Images;
@@ -62,7 +62,7 @@ class aqarController extends AppBaseController
     public function index(Request $request,aqarDataTable $aqarDataTable)
     {
 
-          $allAqars = aqar::with('mzaya')->with('compounds')->with('governrateq')
+          $allAqars = Aqar::with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')
              ->with('propertyType')->with('offertype');
         if($request->sortBy == 0)
@@ -98,18 +98,18 @@ class aqarController extends AppBaseController
      */
     public function create()
     {
-        $governrate = governrate::pluck('governrate', 'id');
-        $district = district::get();
-        $finishtype = finish_type::pluck('finish_type', 'id');
-        $floor = floor::pluck('floor', 'id');
-        $licensetype = license_type::pluck('license_type', 'id');
-        $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = subarea::pluck('area', 'id');
-        $propertytype = property_type::get();
+        $governrate = Governrate::pluck('governrate', 'id');
+        $district = District::get();
+        $finishtype = FinishType::pluck('finish_type', 'id');
+        $floor = Floor::pluck('floor', 'id');
+        $licensetype = LicenseType::pluck('license_type', 'id');
+        $offertype = OfferType::pluck('type_offer', 'id');
+        $subarea = SubArea::pluck('area', 'id');
+        $propertytype = PropertyType::get();
         $users = User::pluck('name', 'id');
-        $aqarcategory = aqar_category::pluck('category_name', 'id');
+        $aqarcategory = AqarCategory::pluck('category_name', 'id');
         $compound = compound::get();
-        $callTimes = call_time::pluck('call_time', 'id');
+        $callTimes = CallTime::pluck('call_time', 'id');
         return view('aqars.create',compact('governrate','district','finishtype','floor','licensetype','offertype','subarea','propertytype','users','aqarcategory','compound','callTimes'));
     }
 
@@ -150,16 +150,16 @@ class aqarController extends AppBaseController
             return redirect(route('aqars.index'));
         }
 
-        $governrate = governrate::pluck('governrate', 'id');
-        $district = district::where('govern_id',1)->pluck('district', 'id','govern_id');
-        $finishtype = finish_type::pluck('finish_type', 'id');
-        $floor = floor::pluck('floor', 'id');
-        $licensetype = license_type::pluck('license_type', 'id');
-        $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = subarea::pluck('area', 'id');
-        $propertytype = property_type::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
+        $governrate = Governrate::pluck('governrate', 'id');
+        $district = District::where('govern_id',1)->pluck('district', 'id','govern_id');
+        $finishtype = FinishType::pluck('finish_type', 'id');
+        $floor = Floor::pluck('floor', 'id');
+        $licensetype = LicenseType::pluck('license_type', 'id');
+        $offertype = OfferType::pluck('type_offer', 'id');
+        $subarea = SubArea::pluck('area', 'id');
+        $propertytype = PropertyType::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
         $users = User::pluck('name', 'id');
-        $aqarcategory = aqar_category::pluck('category_name', 'id');
+        $aqarcategory = AqarCategory::pluck('category_name', 'id');
         $compound = compound::get();
         
         $aqar_viewers = Viewer::where('aqar_id', $aqar->id)->paginate(10);
@@ -189,25 +189,25 @@ class aqarController extends AppBaseController
             return redirect(route('aqars.index'));
         }
 
-        $governrate = governrate::pluck('governrate', 'id');
-        $district = district::get();
+        $governrate = Governrate::pluck('governrate', 'id');
+        $district = District::get();
   //  dd($aqar);
-        $finishtype = finish_type::pluck('finish_type', 'id');
-        $floor = floor::pluck('floor', 'id');
+        $finishtype = FinishType::pluck('finish_type', 'id');
+        $floor = Floor::pluck('floor', 'id');
 
-        $licensetype = license_type::pluck('license_type', 'id');
-        $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = subarea::pluck('area', 'id');
-        //$propertytype = property_type::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
-       $propertytype = property_type::get();
+        $licensetype = LicenseType::pluck('license_type', 'id');
+        $offertype = OfferType::pluck('type_offer', 'id');
+        $subarea = SubArea::pluck('area', 'id');
+        //$propertytype = PropertyType::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
+       $propertytype = PropertyType::get();
         $users = User::pluck('name', 'id');
         $getPhoneFirst = User::where('id',$aqar->user_id)->first('MOP');
-        $aqarcategory = aqar_category::pluck('category_name', 'id');
+        $aqarcategory = AqarCategory::pluck('category_name', 'id');
         $compound = compound::get();
 
 
-        $callTimes = call_time::pluck('call_time', 'id');
-        $mzaya = mzaya::select('mzaya_type', 'id')->get();
+        $callTimes = CallTime::pluck('call_time', 'id');
+        $mzaya = Mzaya::select('mzaya_type', 'id')->get();
         $mzayaAqar = aqar_mzaya::where('aqar_id', $id)->get();
          //dd($aqar);
         $activity_logs = Activity::forSubject($aqar)->orderBy('id','DESC')->paginate(10);
@@ -347,7 +347,7 @@ class aqarController extends AppBaseController
 
     public function getpropertyByCat(Request $request)
     {
-        $Categories = property_type::select('property_type','id')->where('cat_id', $request->category)->get();
+        $Categories = PropertyType::select('property_type','id')->where('cat_id', $request->category)->get();
         if (!count($Categories) > 0) {
             return response()->json(['status' => 401, 'data' => []], 200);
         }
@@ -356,7 +356,7 @@ class aqarController extends AppBaseController
 
     public function getdistrictByGovernrate(Request $request)
     {
-        $district = district::select('district','id')->where('govern_id', $request->governrate_id)->get();
+        $district = District::select('district','id')->where('govern_id', $request->governrate_id)->get();
         if (!count($district) > 0) {
             return response()->json(['status' => 401, 'data' => []], 200);
         }
@@ -386,3 +386,5 @@ class aqarController extends AppBaseController
         return redirect()->route('aqars.show', $viewer->aqar_id);
     }
 }
+
+

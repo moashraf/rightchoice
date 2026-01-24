@@ -149,3 +149,5 @@ class floorController extends AppBaseController
         return redirect(route('floors.index'));
     }
 }
+
+

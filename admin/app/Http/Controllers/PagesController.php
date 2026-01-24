@@ -149,3 +149,5 @@ class PagesController extends AppBaseController
         return redirect(route('pages.index'));
     }
 }
+
+

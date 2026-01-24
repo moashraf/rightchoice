@@ -7,18 +7,18 @@ use Eloquent as Model;
 
 
 /**
- * Class floor
+ * Class Floor
  * @package App\Models
  * @version July 4, 2021, 1:51 pm UTC
  *
  * @property string $floor
  */
-class floor extends Model
+class Floor extends Model
 {
 
 
     public $table = 'floor';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class floor extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

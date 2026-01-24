@@ -160,3 +160,5 @@ class ContactFormController extends AppBaseController
         return redirect(route('contactForms.index'));
     }
 }
+
+

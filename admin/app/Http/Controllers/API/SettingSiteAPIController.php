@@ -129,3 +129,5 @@ class SettingSiteAPIController extends AppBaseController
         return $this->sendSuccess('Setting Site deleted successfully');
     }
 }
+
+

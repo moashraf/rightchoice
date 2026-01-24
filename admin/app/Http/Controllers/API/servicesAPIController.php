@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateservicesAPIRequest;
 use App\Http\Requests\API\UpdateservicesAPIRequest;
-use App\Models\services;
+use App\Models\Services;
 use App\Repositories\servicesRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class servicesAPIController extends AppBaseController
         return $this->sendSuccess('Services deleted successfully');
     }
 }
+
+

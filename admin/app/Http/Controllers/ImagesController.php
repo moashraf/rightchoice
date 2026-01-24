@@ -149,3 +149,5 @@ class ImagesController extends AppBaseController
         return redirect(route('images.index'));
     }
 }
+
+

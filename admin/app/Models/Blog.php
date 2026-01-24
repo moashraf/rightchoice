@@ -7,7 +7,7 @@ use Eloquent as Model;
 
 
 /**
- * Class blog
+ * Class Blog
  * @package App\Models
  * @version July 1, 2021, 1:11 pm UTC
  *
@@ -25,12 +25,12 @@ use Eloquent as Model;
  * @property string $created_at
  * @property string $updated_at
  */
-class blog extends Model
+class Blog extends Model
 {
 
 
     public $table = 'blogs';
-    
+
 
 
 
@@ -82,5 +82,5 @@ class blog extends Model
             ];
     }
 
-    
+
 }

@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use Laravel\Jetstream\Jetstream;
 
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Models\wish;
 use App\Models\FawryPayment;
 
@@ -128,7 +128,7 @@ class PageController extends Controller
             }
         }
 
-        $allAqars = aqar::where('user_id', $getUser->id)->paginate(9);
+        $allAqars = Aqar::where('user_id', $getUser->id)->paginate(9);
 
 
         return view('auth.user_ads', compact('allAqars', 'points'));
@@ -546,3 +546,5 @@ class PageController extends Controller
         return Redirect::back();
     }
 }
+
+

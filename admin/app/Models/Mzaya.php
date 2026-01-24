@@ -7,19 +7,19 @@ use Eloquent as Model;
 
 
 /**
- * Class mzaya
+ * Class Mzaya
  * @package App\Models
  * @version July 11, 2021, 1:04 pm UTC
  *
  * @property string $mzaya_type
  * @property string $img_name
  */
-class mzaya extends Model
+class Mzaya extends Model
 {
 
 
     public $table = 'mzaya';
-    
+
 
 
 
@@ -45,8 +45,8 @@ class mzaya extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

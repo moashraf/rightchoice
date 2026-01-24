@@ -149,3 +149,5 @@ class governrateController extends AppBaseController
         return redirect(route('governrates.index'));
     }
 }
+
+

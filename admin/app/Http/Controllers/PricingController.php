@@ -85,3 +85,5 @@ class Pricing extends Controller
         //
     }
 }
+
+

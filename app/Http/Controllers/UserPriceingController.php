@@ -149,3 +149,5 @@ class UserPriceingController extends AppBaseController
         return redirect(route('userPriceings.index'));
     }
 }
+
+

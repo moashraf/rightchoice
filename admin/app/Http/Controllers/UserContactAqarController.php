@@ -149,3 +149,5 @@ class UserContactAqarController extends AppBaseController
         return redirect(route('userContactAqars.index'));
     }
 }
+
+

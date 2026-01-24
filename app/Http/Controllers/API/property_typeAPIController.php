@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createproperty_typeAPIRequest;
 use App\Http\Requests\API\Updateproperty_typeAPIRequest;
-use App\Models\property_type;
+use App\Models\PropertyType;
 use App\Repositories\property_typeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class property_typeAPIController extends AppBaseController
         return $this->sendSuccess('Property Type deleted successfully');
     }
 }
+
+

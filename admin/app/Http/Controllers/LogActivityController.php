@@ -84,3 +84,5 @@ class LogActivityController extends Controller
         //
     }
 }
+
+

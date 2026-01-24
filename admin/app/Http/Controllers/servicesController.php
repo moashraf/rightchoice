@@ -155,3 +155,5 @@ class servicesController extends AppBaseController
         return redirect(route('services.index'));
     }
 }
+
+

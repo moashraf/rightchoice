@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createfinish_typeAPIRequest;
 use App\Http\Requests\API\Updatefinish_typeAPIRequest;
-use App\Models\finish_type;
+use App\Models\FinishType;
 use App\Repositories\finish_typeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class finish_typeAPIController extends AppBaseController
         return $this->sendSuccess('Finish Type deleted successfully');
     }
 }
+
+

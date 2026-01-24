@@ -161,3 +161,5 @@ class SliderController extends AppBaseController
         return redirect(route('sliders.index'));
     }
 }
+
+

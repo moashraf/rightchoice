@@ -149,3 +149,5 @@ class wishController extends AppBaseController
         return redirect(route('wishes.index'));
     }
 }
+
+

@@ -7,18 +7,18 @@ use Eloquent as Model;
 
 
 /**
- * Class subarea
+ * Class SubArea
  * @package App\Models
  * @version July 5, 2021, 8:44 am UTC
  *
  * @property string $area
  */
-class subarea extends Model
+class SubArea extends Model
 {
 
 
     public $table = 'subarea';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class subarea extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

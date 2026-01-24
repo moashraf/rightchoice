@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Services\ModelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -205,7 +205,7 @@ class UserController extends AppBaseController
     {
         //refund points to user
         $user->update(['points' => $user->points + $request->points]);
-        $aqar = aqar::find($request->aqar_id);
+        $aqar = Aqar::find($request->aqar_id);
         //create log
         activity()
             ->causedBy(Auth::user())
@@ -219,6 +219,8 @@ class UserController extends AppBaseController
         return redirect(route('user.view', $user->id));
     }
 }
+
+
 
 
 

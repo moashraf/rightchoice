@@ -149,3 +149,5 @@ class aqar_mzayaController extends AppBaseController
         return redirect(route('aqarMzayas.index'));
     }
 }
+
+

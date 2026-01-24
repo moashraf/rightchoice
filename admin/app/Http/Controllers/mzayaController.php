@@ -162,3 +162,5 @@ class mzayaController extends AppBaseController
         return redirect(route('mzayas.index'));
     }
 }
+
+

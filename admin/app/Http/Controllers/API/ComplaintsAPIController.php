@@ -129,3 +129,5 @@ class ComplaintsAPIController extends AppBaseController
         return $this->sendSuccess('Complaints deleted successfully');
     }
 }
+
+

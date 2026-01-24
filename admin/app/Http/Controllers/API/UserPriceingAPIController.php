@@ -129,3 +129,5 @@ class UserPriceingAPIController extends AppBaseController
         return $this->sendSuccess('User Priceing deleted successfully');
     }
 }
+
+

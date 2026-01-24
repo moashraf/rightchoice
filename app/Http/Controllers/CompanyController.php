@@ -4,7 +4,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\aqar;
+use App\Models\Aqar;
 
 
 use App\Models\Company;
@@ -66,7 +66,7 @@ class CompanyController extends Controller
                     $districtw = $request->location2;
 
             
-                    $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
+                    $allAqars = Aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
     
             //
@@ -99,7 +99,7 @@ class CompanyController extends Controller
 
 
     public function furn(Request $request, $locale,$slug){
-                $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
+                $allAqars = Aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
         
         
@@ -131,7 +131,7 @@ class CompanyController extends Controller
     }
 
     public function finish(){
-        $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
+        $allAqars = Aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
 
 
@@ -146,7 +146,7 @@ class CompanyController extends Controller
     }
 
     public function homeSale(){
-        $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
+        $allAqars = Aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
 
 
@@ -163,7 +163,7 @@ class CompanyController extends Controller
     public function electronics(){
 
 
-        $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
+        $allAqars = Aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
         $companies = Company::where('status',1)->where('serv_id', 4)->paginate(6);
 
@@ -636,7 +636,7 @@ dd($ex);
 
           $random_ads= Ads::inRandomOrder()->first();
 
-    $allAqars = aqar::where('category',1) 
+    $allAqars = Aqar::where('category',1) 
          ->where('status',1)
          ->where('vip',1)
          ->with('images')->with('governrateq')->with('districte')
@@ -771,4 +771,6 @@ dd($ex);
     }    
 
 }
+
+
 
