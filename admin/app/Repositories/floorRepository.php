@@ -35,6 +35,6 @@ class floorRepository extends BaseRepository
      **/
     public function model()
     {
-        return floor::class;
+        return Floor::class;
     }
 }

@@ -35,6 +35,6 @@ class governrateRepository extends BaseRepository
      **/
     public function model()
     {
-        return governrate::class;
+        return Governrate::class;
     }
 }

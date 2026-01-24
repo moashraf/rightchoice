@@ -39,6 +39,6 @@ class servicesRepository extends BaseRepository
      **/
     public function model()
     {
-        return services::class;
+        return Services::class;
     }
 }

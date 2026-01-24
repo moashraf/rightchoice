@@ -36,6 +36,6 @@ class mzayaRepository extends BaseRepository
      **/
     public function model()
     {
-        return mzaya::class;
+        return Mzaya::class;
     }
 }

@@ -35,6 +35,6 @@ class compoundRepository extends BaseRepository
      **/
     public function model()
     {
-        return compound::class;
+        return Compound::class;
     }
 }

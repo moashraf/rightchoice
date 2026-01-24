@@ -24,6 +24,6 @@ class CreatewishAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return wish::$rules;
+        return Wish::$rules;
     }
 }

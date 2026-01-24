@@ -36,6 +36,6 @@ class wishRepository extends BaseRepository
      **/
     public function model()
     {
-        return wish::class;
+        return Wish::class;
     }
 }

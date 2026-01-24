@@ -25,6 +25,6 @@ class CreatewishRequest extends FormRequest
      */
     public function rules()
     {
-        return wish::$rules;
+        return Wish::$rules;
     }
 }

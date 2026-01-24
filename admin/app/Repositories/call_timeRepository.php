@@ -35,6 +35,6 @@ class call_timeRepository extends BaseRepository
      **/
     public function model()
     {
-        return call_time::class;
+        return CallTime::class;
     }
 }

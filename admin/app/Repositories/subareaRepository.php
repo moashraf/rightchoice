@@ -35,6 +35,6 @@ class subareaRepository extends BaseRepository
      **/
     public function model()
     {
-        return subarea::class;
+        return SubArea::class;
     }
 }

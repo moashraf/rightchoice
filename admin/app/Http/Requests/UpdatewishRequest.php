@@ -25,8 +25,8 @@ class UpdatewishRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = wish::$rules;
-        
+        $rules = Wish::$rules;
+
         return $rules;
     }
 }

@@ -24,8 +24,8 @@ class UpdatefloorAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = floor::$rules;
-        
+        $rules = Floor::$rules;
+
         return $rules;
     }
 }
