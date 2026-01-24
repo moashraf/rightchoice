@@ -77,7 +77,7 @@ class User extends Authenticatable
 
     public function views()
     {
-        return $this->belongsToMany(aqar::class,'usercontactaqar','user_id','aqars_id');
+        return $this->belongsToMany(Aqar::class,'usercontactaqar','user_id','aqars_id');
     }
 
      public function viewers()

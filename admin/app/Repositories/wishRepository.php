@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\wish;
+use App\Models\Wish;
 use App\Repositories\BaseRepository;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\call_time;
+use App\Models\CallTime;
 use App\Repositories\BaseRepository;
 
 /**

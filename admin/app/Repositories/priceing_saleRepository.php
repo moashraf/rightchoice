@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\priceing_sale;
+use App\Models\PriceingSale;
 use App\Repositories\BaseRepository;
 
 /**

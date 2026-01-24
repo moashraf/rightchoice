@@ -14,7 +14,7 @@ class AqarFactory extends Factory
      *
      * @var string
      */
-    protected $model = aqar::class;
+    protected $model = Aqar::class;
 
     /**
      * Define the model's default state.

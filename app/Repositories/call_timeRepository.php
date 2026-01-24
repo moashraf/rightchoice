@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\call_time;
+use App\Models\CallTime;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class call_timeRepository extends BaseRepository
      **/
     public function model()
     {
-        return call_time::class;
+        return CallTime::class;
     }
 }

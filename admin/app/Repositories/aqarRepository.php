@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Repositories\BaseRepository;
 
 /**
@@ -73,6 +73,6 @@ class aqarRepository extends BaseRepository
      **/
     public function model()
     {
-        return aqar::class;
+        return Aqar::class;
     }
 }

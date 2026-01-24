@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserContactAqar extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'usercontactaqar';
     protected $primaryKey = 'id';
 
@@ -18,7 +18,7 @@ class UserContactAqar extends Model
     ];
 
 
-       
+
 
 public function user()
     {
@@ -29,10 +29,10 @@ public function user()
 
 public function all_aqat_viw()
     {
-        return $this->belongsTo(aqar::class,'aqars_id')->distinct();
+        return $this->belongsTo(Aqar::class,'aqars_id')->distinct();
     }
 
 
-   
-    
+
+
 }

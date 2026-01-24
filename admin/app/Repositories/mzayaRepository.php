@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use App\Repositories\BaseRepository;
 
 /**

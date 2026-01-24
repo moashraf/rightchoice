@@ -31,7 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
          'MOP',
          'status',
          'AGE',
-         'TYPE', 
+         'TYPE',
          'Job_title',
         'Tax_card',
          'Commercial_Register',
@@ -74,17 +74,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
- 
-    
+
+
     public function prices()
     {
-        return $this->belongsToMany(Pricing::Class, 'users_priceing_sale', 
+        return $this->belongsToMany(Pricing::Class, 'users_priceing_sale',
           'user_id', 'pricing_id');
     }
-    
+
     public function wishlist()
     {
-        return $this->hasMany(wish::class,'user_id','id');
+        return $this->hasMany(Wish::class,'user_id','id');
     }
     public function companiess()
     {
@@ -99,15 +99,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserPriceing::class);
     }
-    
+
     public function userpricin()
     {
         return $this->belongsTo(UserPriceing::class,'id','user_id')->orderBy('id','desc');
     }
-    
+
     public function notification()
     {
         return $this->hasMany(Notification::class,'user_id','id');
     }
-    
+
 }

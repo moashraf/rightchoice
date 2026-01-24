@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\offer_type;
+use App\Models\OfferType;
 use App\Repositories\BaseRepository;
 
 /**

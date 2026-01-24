@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\floor;
+use App\Models\Floor;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class floorRepository extends BaseRepository
      **/
     public function model()
     {
-        return floor::class;
+        return Floor::class;
     }
 }

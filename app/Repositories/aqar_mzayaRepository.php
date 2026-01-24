@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\aqar_mzaya;
+use App\Models\AqarMzaya;
 use App\Repositories\BaseRepository;
 
 /**

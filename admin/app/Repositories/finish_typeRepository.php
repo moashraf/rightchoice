@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\finish_type;
+use App\Models\FinishType;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class finish_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return finish_type::class;
+        return FinishType::class;
     }
 }
