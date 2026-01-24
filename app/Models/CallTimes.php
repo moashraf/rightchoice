@@ -11,11 +11,10 @@ class CallTimes extends Model
 
     protected $table = 'call_time';
     protected $primaryKey = 'id';
-
-    public $incrementing = true;
-    public $timestamps = true;
+     public $timestamps = true;
 
     protected $fillable = [
+
         'call_time',
         'call_time_en'
     ];
