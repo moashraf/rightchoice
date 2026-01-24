@@ -23,8 +23,13 @@ use Spatie\Activitylog\Models\Activity;
 class RequestPhotoSession extends Model
 {
 
-
     public $table = 'requestphotosession';
+
+    protected $primaryKey = 'id';
+
+    public $incrementing = true;
+
+    public $timestamps = true;
 
 
 
