@@ -80,7 +80,7 @@ class RequestPhotoSessionDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'request_photo_sessions_datatable_' . time();
     }

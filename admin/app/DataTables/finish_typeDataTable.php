@@ -75,7 +75,7 @@ class finish_typeDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'finish_types_datatable_' . time();
     }

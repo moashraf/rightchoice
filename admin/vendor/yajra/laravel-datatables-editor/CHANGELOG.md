@@ -2,6 +2,37 @@
 
 ## [Unreleased]
 
+## [v1.25.4] - 2023-02-22
+
+- feat: update stub with event hook example
+
+## [v1.25.3] - 2023-02-21
+
+- fix: cmd model namespace #75
+
+## [v1.25.2] - 2023-02-20
+
+- fix: default user namespace
+- fix: editor stub return type
+
+## [v1.25.1] - 2022-03-05
+
+- Fix doc blocks.
+- Update readme.
+
+## [v1.25.0] - 2021-11-08
+
+- Add methods for custom handling of uploaded files.
+
+## [v1.24.2] - 2021-08-13
+
+- Remove buttons package in dependency. #62
+
+## [v1.24.1] - 2021-07-30
+
+- Fix setting of validation rules when using dot in field name. 
+- Ex: settings.image, settings.logo, etc.
+  
 ## [v1.24.0] - 2021-05-17
 
 - Remove abstract on create, edit and remove rules.
@@ -193,7 +224,15 @@ Rule::unique($model->getTable())
 - CRUD pre / post events hooks.
 - Artisan command for DataTables Editor generation.
 
-[Unreleased]: https://github.com/yajra/laravel-datatables-editor/compare/v1.23.0...master
+[Unreleased]: https://github.com/yajra/laravel-datatables-editor/compare/v1.25.4...master
+[v1.25.4]: https://github.com/yajra/laravel-datatables-editor/compare/v1.25.3...v1.25.4
+[v1.25.3]: https://github.com/yajra/laravel-datatables-editor/compare/v1.25.2...v1.25.3
+[v1.25.2]: https://github.com/yajra/laravel-datatables-editor/compare/v1.25.1...v1.25.2
+[v1.25.1]: https://github.com/yajra/laravel-datatables-editor/compare/v1.25.0...v1.25.1
+[v1.25.0]: https://github.com/yajra/laravel-datatables-editor/compare/v1.24.2...v1.25.0
+[v1.24.2]: https://github.com/yajra/laravel-datatables-editor/compare/v1.24.1...v1.24.2
+[v1.24.1]: https://github.com/yajra/laravel-datatables-editor/compare/v1.24.0...v1.24.1
+[v1.24.0]: https://github.com/yajra/laravel-datatables-editor/compare/v1.23.0...v1.24.0
 [v1.23.0]: https://github.com/yajra/laravel-datatables-editor/compare/v1.22.0...v1.23.0
 [v1.22.0]: https://github.com/yajra/laravel-datatables-editor/compare/v1.21.0...v1.22.0
 [v1.21.0]: https://github.com/yajra/laravel-datatables-editor/compare/v1.20.0...v1.21.0

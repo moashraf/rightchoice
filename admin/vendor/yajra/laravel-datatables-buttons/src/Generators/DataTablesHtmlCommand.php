@@ -36,10 +36,12 @@ class DataTablesHtmlCommand extends DataTablesMakeCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function buildClass($name)
+    protected function buildClass($name): string
     {
         $stub = $this->files->get($this->getStub());
 
@@ -59,22 +61,20 @@ class DataTablesHtmlCommand extends DataTablesMakeCommand
      *
      * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
-        $config = $this->laravel['config'];
-
-        return $config->get('datatables-buttons.stub')
-            ? base_path() . $config->get('datatables-buttons.stub') . '/html.stub'
-            : __DIR__ . '/stubs/html.stub';
+        return config('datatables-buttons.stub')
+            ? base_path().config('datatables-buttons.stub').'/html.stub'
+            : __DIR__.'/stubs/html.stub';
     }
 
     /**
      * Parse the name and format according to the root namespace.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name)
+    protected function qualifyClass($name): string
     {
         $rootNamespace = $this->laravel->getNamespace();
 
@@ -86,10 +86,12 @@ class DataTablesHtmlCommand extends DataTablesMakeCommand
             $name = str_replace('/', '\\', $name);
         }
 
-        if (! Str::contains(Str::lower($name), 'datatable')) {
+        if (! Str::contains(Str::lower($name), 'datatablehtml')) {
             $name .= 'DataTableHtml';
+        } else {
+            $name = preg_replace('#datatablehtml$#i', 'DataTableHtml', $name);
         }
 
-        return $this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name;
+        return $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name;
     }
 }

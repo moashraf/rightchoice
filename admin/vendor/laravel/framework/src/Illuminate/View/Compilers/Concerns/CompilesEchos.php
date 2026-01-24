@@ -125,7 +125,7 @@ trait CompilesEchos
     /**
      * Add an instance of the blade echo handler to the start of the compiled string.
      *
-     * @param string $result
+     * @param  string  $result
      * @return string
      */
     protected function addBladeCompilerVariable($result)
@@ -143,7 +143,7 @@ trait CompilesEchos
     {
         $value = Str::of($value)
             ->trim()
-            ->when(Str::endsWith($value, ';'), function ($str) {
+            ->when(str_ends_with($value, ';'), function ($str) {
                 return $str->beforeLast(';');
             });
 
@@ -153,13 +153,17 @@ trait CompilesEchos
     /**
      * Apply the echo handler for the value if it exists.
      *
-     * @param  $value  string
+     * @param  string  $value
      * @return string
      */
     public function applyEchoHandler($value)
     {
         if (is_object($value) && isset($this->echoHandlers[get_class($value)])) {
             return call_user_func($this->echoHandlers[get_class($value)], $value);
+        }
+
+        if (is_iterable($value) && isset($this->echoHandlers['iterable'])) {
+            return call_user_func($this->echoHandlers['iterable'], $value);
         }
 
         return $value;

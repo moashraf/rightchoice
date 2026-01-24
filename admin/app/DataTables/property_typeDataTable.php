@@ -77,7 +77,7 @@ class property_typeDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'property_types_datatable_' . time();
     }

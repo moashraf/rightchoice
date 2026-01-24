@@ -75,7 +75,7 @@ class UserContactAqarDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'user_contact_aqars_datatable_' . time();
     }

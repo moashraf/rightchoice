@@ -304,3 +304,96 @@ function _uploadFileWebAqar($image_file, $path)
 {
     return Carbon::parse($key)->format('Y-m-d');
 }
+
+/**
+ * Flash helper class to replace Laracasts\Flash\Flash
+ */
+if (!class_exists('Flash')) {
+    class Flash
+    {
+        /**
+         * Create a success flash notification message.
+         *
+         * @param string $message
+         * @return void
+         */
+        public static function success($message)
+        {
+            self::message($message, 'success');
+        }
+
+        /**
+         * Create an error flash notification message.
+         *
+         * @param string $message
+         * @return void
+         */
+        public static function error($message)
+        {
+            self::message($message, 'danger');
+        }
+
+        /**
+         * Create a warning flash notification message.
+         *
+         * @param string $message
+         * @return void
+         */
+        public static function warning($message)
+        {
+            self::message($message, 'warning');
+        }
+
+        /**
+         * Create an info flash notification message.
+         *
+         * @param string $message
+         * @return void
+         */
+        public static function info($message)
+        {
+            self::message($message, 'info');
+        }
+
+        /**
+         * Create a flash notification message.
+         *
+         * @param string $message
+         * @param string $level
+         * @return void
+         */
+        public static function message($message, $level = 'info')
+        {
+            $notification = [
+                'message' => $message,
+                'level' => $level,
+                'important' => false,
+                'overlay' => false,
+                'title' => null
+            ];
+
+            session()->push('flash_notification', $notification);
+        }
+
+        /**
+         * Create an overlay flash notification message.
+         *
+         * @param string $message
+         * @param string $title
+         * @return void
+         */
+        public static function overlay($message, $title = 'Notice')
+        {
+            $notification = [
+                'message' => $message,
+                'level' => 'info',
+                'important' => true,
+                'overlay' => true,
+                'title' => $title
+            ];
+
+            session()->push('flash_notification', $notification);
+        }
+    }
+}
+

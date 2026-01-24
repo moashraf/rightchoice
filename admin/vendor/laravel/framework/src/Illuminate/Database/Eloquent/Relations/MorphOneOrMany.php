@@ -48,9 +48,9 @@ abstract class MorphOneOrMany extends HasOneOrMany
     public function addConstraints()
     {
         if (static::$constraints) {
-            parent::addConstraints();
-
             $this->getRelationQuery()->where($this->morphType, $this->morphClass);
+
+            parent::addConstraints();
         }
     }
 
@@ -65,6 +65,20 @@ abstract class MorphOneOrMany extends HasOneOrMany
         parent::addEagerConstraints($models);
 
         $this->getRelationQuery()->where($this->morphType, $this->morphClass);
+    }
+
+    /**
+     * Create a new instance of the related model. Allow mass-assignment.
+     *
+     * @param  array  $attributes
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function forceCreate(array $attributes = [])
+    {
+        $attributes[$this->getForeignKeyName()] = $this->getParentKey();
+        $attributes[$this->getMorphType()] = $this->morphClass;
+
+        return $this->related->forceCreate($attributes);
     }
 
     /**

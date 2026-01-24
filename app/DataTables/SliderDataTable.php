@@ -76,7 +76,7 @@ class SliderDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'sliders_datatable_' . time();
     }

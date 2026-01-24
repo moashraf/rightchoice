@@ -79,7 +79,7 @@ class UserPriceingDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'user_priceings_datatable_' . time();
     }

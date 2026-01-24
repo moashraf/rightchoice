@@ -75,7 +75,7 @@ class aqar_categoryDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'aqar_categories_datatable_' . time();
     }

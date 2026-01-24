@@ -26,5 +26,11 @@ class AppServiceProvider extends ServiceProvider
         //
         date_default_timezone_set('Africa/Cairo');
 
+        // Register flash notification views
+        $this->loadViewsFrom(resource_path('views/vendor/flash'), 'flash');
+
+        // Register adminlte-templates views
+        $this->loadViewsFrom(resource_path('views/vendor/adminlte-templates'), 'adminlte-templates');
+
     }
 }

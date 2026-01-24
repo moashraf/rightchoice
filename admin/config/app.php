@@ -55,7 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class,
+        // InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class, // Removed - not compatible with Laravel 10
         Yajra\DataTables\DataTablesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
@@ -237,7 +237,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
-        'Flash'     => Laracasts\Flash\Flash::class,
+        // 'Flash'     => Laracasts\Flash\Flash::class, // Using custom Flash class in helper.php
         'Image' => Intervention\Image\Facades\Image::class
 
 

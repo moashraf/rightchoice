@@ -6,11 +6,15 @@ use ArrayAccess;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Tappable;
+use Traversable;
 
 /**
  * @mixin \Illuminate\Support\Collection
@@ -107,7 +111,7 @@ abstract class AbstractCursorPaginator implements Htmlable
         }
 
         return $this->path()
-            .(Str::contains($this->path(), '?') ? '&' : '?')
+            .(str_contains($this->path(), '?') ? '&' : '?')
             .Arr::query($parameters)
             .$this->buildFragment();
     }
@@ -152,6 +156,10 @@ abstract class AbstractCursorPaginator implements Htmlable
             return null;
         }
 
+        if ($this->items->isEmpty()) {
+            return null;
+        }
+
         return $this->getCursorForItem($this->items->first(), false);
     }
 
@@ -164,6 +172,10 @@ abstract class AbstractCursorPaginator implements Htmlable
     {
         if ((is_null($this->cursor) && ! $this->hasMore) ||
             (! is_null($this->cursor) && $this->cursor->pointsToNextItems() && ! $this->hasMore)) {
+            return null;
+        }
+
+        if ($this->items->isEmpty()) {
             return null;
         }
 
@@ -193,9 +205,17 @@ abstract class AbstractCursorPaginator implements Htmlable
     public function getParametersForItem($item)
     {
         return collect($this->parameters)
+            ->filter()
             ->flip()
             ->map(function ($_, $parameterName) use ($item) {
-                if ($item instanceof ArrayAccess || is_array($item)) {
+                if ($item instanceof JsonResource) {
+                    $item = $item->resource;
+                }
+
+                if ($item instanceof Model &&
+                    ! is_null($parameter = $this->getPivotParameterForItem($item, $parameterName))) {
+                    return $parameter;
+                } elseif ($item instanceof ArrayAccess || is_array($item)) {
                     return $this->ensureParameterIsPrimitive(
                         $item[$parameterName] ?? $item[Str::afterLast($parameterName, '.')]
                     );
@@ -207,6 +227,26 @@ abstract class AbstractCursorPaginator implements Htmlable
 
                 throw new Exception('Only arrays and objects are supported when cursor paginating items.');
             })->toArray();
+    }
+
+    /**
+     * Get the cursor parameter value from a pivot model if applicable.
+     *
+     * @param  \ArrayAccess|\stdClass  $item
+     * @param  string  $parameterName
+     * @return string|null
+     */
+    protected function getPivotParameterForItem($item, $parameterName)
+    {
+        $table = Str::beforeLast($parameterName, '.');
+
+        foreach ($item->getRelations() as $relation) {
+            if ($relation instanceof Pivot && $relation->getTable() === $table) {
+                return $this->ensureParameterIsPrimitive(
+                    $relation->getAttribute(Str::afterLast($parameterName, '.'))
+                );
+            }
+        }
     }
 
     /**
@@ -485,7 +525,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->items->getIterator();
     }
@@ -515,7 +555,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->items->count();
     }
@@ -559,7 +599,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->items->has($key);
     }
@@ -570,7 +610,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($key): mixed
     {
         return $this->items->get($key);
     }
@@ -582,7 +622,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->items->put($key, $value);
     }
@@ -593,7 +633,7 @@ abstract class AbstractCursorPaginator implements Htmlable
      * @param  mixed  $key
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->items->forget($key);
     }

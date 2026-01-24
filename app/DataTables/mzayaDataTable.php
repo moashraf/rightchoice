@@ -80,7 +80,7 @@ class mzayaDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'mzayas_datatable_' . time();
     }
