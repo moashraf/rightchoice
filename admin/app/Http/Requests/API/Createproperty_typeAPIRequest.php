@@ -24,6 +24,6 @@ class Createproperty_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return property_type::$rules;
+        return PropertyType::$rules;
     }
 }

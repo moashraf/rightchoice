@@ -24,8 +24,8 @@ class Updatelicense_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = license_type::$rules;
-        
+        $rules = LicenseType::$rules;
+
         return $rules;
     }
 }

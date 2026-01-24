@@ -35,6 +35,6 @@ class property_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return property_type::class;
+        return PropertyType::class;
     }
 }

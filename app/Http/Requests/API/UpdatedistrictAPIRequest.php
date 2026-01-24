@@ -24,8 +24,8 @@ class UpdatedistrictAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = district::$rules;
-        
+        $rules = District::$rules;
+
         return $rules;
     }
 }
