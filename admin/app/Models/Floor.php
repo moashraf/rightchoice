@@ -13,12 +13,12 @@ use Eloquent as Model;
  *
  * @property string $floor
  */
-class floor extends Model
+class Floor extends Model
 {
 
 
     public $table = 'floor';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class floor extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
