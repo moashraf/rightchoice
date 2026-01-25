@@ -14,12 +14,12 @@ use Eloquent as Model;
  * @property string $district
  * @property integer $govern_id
  */
-class District extends Model
+class district extends Model
 {
 
 
     public $table = 'district';
-
+    
 
 
 
@@ -45,8 +45,8 @@ class District extends Model
      * @var array
      */
     public static $rules = [
-
+        
     ];
 
-
+    
 }

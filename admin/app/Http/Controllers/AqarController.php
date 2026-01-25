@@ -98,17 +98,17 @@ class AqarController extends AppBaseController
      */
     public function create()
     {
-        $governrate = Governrate::pluck('governrate', 'id');
-        $district = District::get();
-        $finishtype = Finish_type::pluck('finish_type', 'id');
-        $floor = Floor::pluck('floor', 'id');
+        $governrate = governrate::pluck('governrate', 'id');
+        $district = district::get();
+        $finishtype = finish_type::pluck('finish_type', 'id');
+        $floor = floor::pluck('floor', 'id');
         $licensetype = license_type::pluck('license_type', 'id');
         $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = SubArea::pluck('area', 'id');
+        $subarea = subarea::pluck('area', 'id');
         $propertytype = property_type::get();
         $users = User::pluck('name', 'id');
         $aqarcategory = aqar_category::pluck('category_name', 'id');
-        $compound = Compound::get();
+        $compound = compound::get();
         $callTimes = call_time::pluck('call_time', 'id');
         return view('aqars.create',compact('governrate','district','finishtype','floor','licensetype','offertype','subarea','propertytype','users','aqarcategory','compound','callTimes'));
     }
@@ -150,17 +150,17 @@ class AqarController extends AppBaseController
             return redirect(route('aqars.index'));
         }
 
-        $governrate = Governrate::pluck('governrate', 'id');
-        $district = District::where('govern_id',1)->pluck('district', 'id','govern_id');
-        $finishtype = Finish_type::pluck('finish_type', 'id');
-        $floor = Floor::pluck('floor', 'id');
+        $governrate = governrate::pluck('governrate', 'id');
+        $district = district::where('govern_id',1)->pluck('district', 'id','govern_id');
+        $finishtype = finish_type::pluck('finish_type', 'id');
+        $floor = floor::pluck('floor', 'id');
         $licensetype = license_type::pluck('license_type', 'id');
         $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = SubArea::pluck('area', 'id');
+        $subarea = subarea::pluck('area', 'id');
         $propertytype = property_type::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
         $users = User::pluck('name', 'id');
         $aqarcategory = aqar_category::pluck('category_name', 'id');
-        $compound = Compound::get();
+        $compound = compound::get();
 
         $aqar_viewers = Viewer::where('aqar_id', $aqar->id)->paginate(10);
 
@@ -189,21 +189,21 @@ class AqarController extends AppBaseController
             return redirect(route('aqars.index'));
         }
 
-        $governrate = Governrate::pluck('governrate', 'id');
-        $district = District::get();
+        $governrate = governrate::pluck('governrate', 'id');
+        $district = district::get();
   //  dd($aqar);
-        $finishtype = Finish_type::pluck('finish_type', 'id');
-        $floor = Floor::pluck('floor', 'id');
+        $finishtype = finish_type::pluck('finish_type', 'id');
+        $floor = floor::pluck('floor', 'id');
 
         $licensetype = license_type::pluck('license_type', 'id');
         $offertype = offer_type::pluck('type_offer', 'id');
-        $subarea = SubArea::pluck('area', 'id');
+        $subarea = subarea::pluck('area', 'id');
         //$propertytype = property_type::where('cat_id',1)->pluck('property_type', 'id' ,'cat_id');
        $propertytype = property_type::get();
         $users = User::pluck('name', 'id');
         $getPhoneFirst = User::where('id',$aqar->user_id)->first('MOP');
         $aqarcategory = aqar_category::pluck('category_name', 'id');
-        $compound = Compound::get();
+        $compound = compound::get();
 
 
         $callTimes = call_time::pluck('call_time', 'id');
@@ -356,7 +356,7 @@ class AqarController extends AppBaseController
 
     public function getdistrictByGovernrate(Request $request)
     {
-        $district = District::select('district','id')->where('govern_id', $request->governrate_id)->get();
+        $district = district::select('district','id')->where('govern_id', $request->governrate_id)->get();
         if (!count($district) > 0) {
             return response()->json(['status' => 401, 'data' => []], 200);
         }

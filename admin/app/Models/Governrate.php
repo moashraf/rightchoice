@@ -13,12 +13,12 @@ use Eloquent as Model;
  *
  * @property string $governrate
  */
-class Governrate extends Model
+class governrate extends Model
 {
 
 
     public $table = 'governrate';
-
+    
 
 
 
@@ -42,8 +42,8 @@ class Governrate extends Model
      * @var array
      */
     public static $rules = [
-
+        
     ];
 
-
+    
 }
