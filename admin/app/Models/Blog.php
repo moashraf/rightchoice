@@ -25,14 +25,10 @@ use Eloquent as Model;
  * @property string $created_at
  * @property string $updated_at
  */
-class blog extends Model
+class Blog extends Model
 {
 
-
     public $table = 'blogs';
-    
-
-
 
     public $fillable = [
         'seo_title',
@@ -82,5 +78,5 @@ class blog extends Model
             ];
     }
 
-    
+
 }
