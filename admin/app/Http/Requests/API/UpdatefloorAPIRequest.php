@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\floor;
+use App\Models\Floor;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdatefloorAPIRequest extends APIRequest
@@ -25,7 +25,7 @@ class UpdatefloorAPIRequest extends APIRequest
     public function rules()
     {
         $rules = floor::$rules;
-        
+
         return $rules;
     }
 }

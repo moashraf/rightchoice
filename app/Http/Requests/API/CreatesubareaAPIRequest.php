@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\subarea;
+use App\Models\SubArea;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreatesubareaAPIRequest extends APIRequest

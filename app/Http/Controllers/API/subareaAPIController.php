@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatesubareaAPIRequest;
 use App\Http\Requests\API\UpdatesubareaAPIRequest;
-use App\Models\subarea;
+use App\Models\SubArea;
 use App\Repositories\subareaRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;

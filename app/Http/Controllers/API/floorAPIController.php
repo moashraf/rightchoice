@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatefloorAPIRequest;
 use App\Http\Requests\API\UpdatefloorAPIRequest;
-use App\Models\floor;
+use App\Models\Floor;
 use App\Repositories\floorRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;

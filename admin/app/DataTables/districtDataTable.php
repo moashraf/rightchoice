@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\district;
+use App\Models\District;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class districtDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\district $model
+     * @param \App\Models\District $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(district $model)
+    public function query(District $model)
     {
         return $model->newQuery();
     }

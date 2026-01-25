@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\finish_type;
+use App\Models\Finish_type;
 
 class Createfinish_typeRequest extends FormRequest
 {

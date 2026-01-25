@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\governrate;
+use App\Models\Governrate;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class governrateDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\governrate $model
+     * @param \App\Models\Governrate $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(governrate $model)
+    public function query(Governrate $model)
     {
         return $model->newQuery();
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\floor;
+use App\Models\Floor;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreatefloorAPIRequest extends APIRequest

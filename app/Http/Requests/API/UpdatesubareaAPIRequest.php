@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\subarea;
+use App\Models\SubArea;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdatesubareaAPIRequest extends APIRequest
@@ -24,8 +24,8 @@ class UpdatesubareaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = subarea::$rules;
-        
+        $rules = SubArea::$rules;
+
         return $rules;
     }
 }

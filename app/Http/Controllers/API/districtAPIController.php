@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatedistrictAPIRequest;
 use App\Http\Requests\API\UpdatedistrictAPIRequest;
-use App\Models\district;
+use App\Models\District;
 use App\Repositories\districtRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;

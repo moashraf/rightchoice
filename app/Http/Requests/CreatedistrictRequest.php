@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\district;
+use App\Models\District;
 
 class CreatedistrictRequest extends FormRequest
 {

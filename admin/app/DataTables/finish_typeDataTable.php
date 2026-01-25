@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\finish_type;
+use App\Models\Finish_type;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class finish_typeDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\finish_type $model
+     * @param \App\Models\Finish_type $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(finish_type $model)
+    public function query(Finish_type $model)
     {
         return $model->newQuery();
     }

@@ -11,10 +11,10 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\services;
-use App\Models\governrate;
+use App\Models\Governrate;
 use App\Models\district;
-use App\Models\subarea;
-use App\Models\floor;
+use App\Models\SubArea;
+use App\Models\Floor;
 use App\Models\User;
 
 class CompanyController extends AppBaseController

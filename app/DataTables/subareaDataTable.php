@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\subarea;
+use App\Models\SubArea;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class subareaDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\subarea $model
+     * @param \App\Models\SubArea $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(subarea $model)
+    public function query(SubArea $model)
     {
         return $model->newQuery();
     }

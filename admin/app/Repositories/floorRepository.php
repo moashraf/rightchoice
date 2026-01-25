@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\floor;
+use App\Models\Floor;
 use App\Repositories\BaseRepository;
 
 /**

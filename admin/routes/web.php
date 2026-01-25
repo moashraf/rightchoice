@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\aqarController;
+use App\Http\Controllers\AqarController;
 
 
 /*
@@ -113,21 +113,21 @@ Route::resource('mzayas', App\Http\Controllers\mzayaController::class);
 
 Route::resource('pages', App\Http\Controllers\PagesController::class);
 
-Route::resource('aqars', App\Http\Controllers\aqarController::class);
+Route::resource('aqars', AqarController::class);
 
-Route::post('aqar-refund-points/{viewer}', [App\Http\Controllers\aqarController::class, 'refund_points'])->name('admin.refund_points');
+Route::post('aqar-refund-points/{viewer}', [AqarController::class, 'refund_points'])->name('admin.refund_points');
 
-Route::get('aqars/show', [aqarController::class, 'destroy']);
+Route::get('aqars/show', [AqarController::class, 'destroy']);
 
 
 
-Route::GET('/RemoveImageAqar/{Images}',[App\Http\Controllers\aqarController::class, 'RemoveImgAqar']);
+Route::GET('/RemoveImageAqar/{Images}',[AqarController::class, 'RemoveImgAqar']);
 
-Route::POST('/ajax-getpropertyByCat',[App\Http\Controllers\aqarController::class, 'getpropertyByCat']);
+Route::POST('/ajax-getpropertyByCat',[AqarController::class, 'getpropertyByCat']);
 
-Route::POST('/ajax-getdistrictByGovernrate',[App\Http\Controllers\aqarController::class, 'getdistrictByGovernrate']);
+Route::POST('/ajax-getdistrictByGovernrate',[AqarController::class, 'getdistrictByGovernrate']);
 
-Route::POST('/ajax-getPhoneUser',[App\Http\Controllers\aqarController::class, 'getPhoneUser']);
+Route::POST('/ajax-getPhoneUser',[AqarController::class, 'getPhoneUser']);
 
 Route::resource('images', App\Http\Controllers\ImagesController::class);
 

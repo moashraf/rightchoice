@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Redirect;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\governrate;
+use App\Models\Governrate;
 use App\Models\district;
-use App\Models\finish_type;
-use App\Models\floor;
+use App\Models\Finish_type;
+use App\Models\Floor;
 use App\Models\license_type;
 use App\Models\offer_type;
-use App\Models\subarea;
+use App\Models\SubArea;
 use App\Models\property_type;
 use App\Models\User;
 use App\Models\aqar;
@@ -32,7 +32,7 @@ use App\Models\UserPriceing;
 use App\Models\aqar_category;
 use App\Models\Compound;
 use App\Models\call_time;
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\DataTables\NotificationDataTable;
@@ -43,7 +43,7 @@ use App\Http\Requests\UpdateNotificationRequest;
 use App\Repositories\NotificationRepository;
 use App\Models\Activity;
 
-class aqarController extends AppBaseController
+class AqarController extends AppBaseController
 {
     /** @var  aqarRepository */
     private $aqarRepository;
@@ -207,7 +207,7 @@ class aqarController extends AppBaseController
 
 
         $callTimes = call_time::pluck('call_time', 'id');
-        $mzaya = mzaya::select('mzaya_type', 'id')->get();
+        $mzaya = Mzaya::select('mzaya_type', 'id')->get();
         $mzayaAqar = aqar_mzaya::where('aqar_id', $id)->get();
          //dd($aqar);
         $activity_logs = Activity::forSubject($aqar)->orderBy('id','DESC')->paginate(10);
