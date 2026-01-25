@@ -3,24 +3,19 @@ node_modules/
 dist/
  *.class
  *.py[cod]
-
+/vendor
 *.log
 *.md
 *.jar
 target/
 dist/
-
 .idea/
-
 TEST*.xml
 .DS_Store
 Thumbs.db
-
 *.app
 *.exe
 *.war
-
-# Large media files
 *.mp4
 *.tiff
 *.avi
