@@ -17,7 +17,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Governrate;
-use App\Models\district;
+use App\Models\District;
 use App\Models\Finish_type;
 use App\Models\Floor;
 use App\Models\license_type;
