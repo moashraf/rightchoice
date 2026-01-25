@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatecompoundAPIRequest;
 use App\Http\Requests\API\UpdatecompoundAPIRequest;
-use App\Models\compound;
+use App\Models\Compound;
 use App\Repositories\compoundRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;

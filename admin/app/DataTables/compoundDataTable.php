@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\compound;
+use App\Models\Compound;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class compoundDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\compound $model
+     * @param \App\Models\Compound $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(compound $model)
+    public function query(Compound $model)
     {
         return $model->newQuery();
     }

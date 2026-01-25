@@ -30,7 +30,7 @@ use App\Models\Viewer;
 use App\Models\UserPriceing;
 
 use App\Models\aqar_category;
-use App\Models\compound;
+use App\Models\Compound;
 use App\Models\call_time;
 use App\Models\mzaya;
 use App\Models\aqar_mzaya;
@@ -161,17 +161,17 @@ class aqarController extends AppBaseController
         $users = User::pluck('name', 'id');
         $aqarcategory = aqar_category::pluck('category_name', 'id');
         $compound = compound::get();
-        
+
         $aqar_viewers = Viewer::where('aqar_id', $aqar->id)->paginate(10);
-    
+
         return view('aqars.show',compact('governrate','district','finishtype','floor','licensetype','offertype','subarea','propertytype','users','aqarcategory','compound', 'aqar_viewers'))->with('aqar', $aqar);
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     /**
      * Show the form for editing the specified aqar.
      *
@@ -371,18 +371,18 @@ class aqarController extends AppBaseController
         }
         return response()->json(['status' => 200, 'data' => $user], 200);
     }
-    
+
     public function refund_points(Viewer $viewer)
     {
         $viewer->refund = 2;
         $viewer->update();
-        
+
         $user_points = UserPriceing::where('user_id', $viewer->user_id)->where('statues', 1)->first();
-        
+
         $user_points->current_points = ( $user_points->current_points + $viewer->points );
         $user_points->sub_points = ( $user_points->sub_points - $viewer->points );
         $user_points->update();
-        
+
         return redirect()->route('aqars.show', $viewer->aqar_id);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\compound;
+use App\Models\Compound;
 
 class UpdatecompoundRequest extends FormRequest
 {

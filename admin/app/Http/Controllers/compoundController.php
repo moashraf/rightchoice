@@ -6,7 +6,7 @@ use App\DataTables\compoundDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreatecompoundRequest;
 use App\Http\Requests\UpdatecompoundRequest;
-use App\Models\compound;
+use App\Models\Compound;
 use App\Repositories\compoundRepository;
 use App\Services\ModelService;
 use Flash;
