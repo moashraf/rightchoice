@@ -13,12 +13,12 @@ use Eloquent as Model;
  *
  * @property string $area
  */
-class subarea extends Model
+class SubArea extends Model
 {
 
 
     public $table = 'subarea';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class subarea extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
