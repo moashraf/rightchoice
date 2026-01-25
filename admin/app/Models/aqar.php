@@ -252,7 +252,7 @@ class aqar extends Model
 
 
     public function districte(){
-        return $this->belongsTo(district::class, 'district_id');
+        return $this->belongsTo(District::class, 'district_id');
     }
 
 
