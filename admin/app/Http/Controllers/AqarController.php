@@ -32,7 +32,7 @@ use App\Models\UserPriceing;
 use App\Models\aqar_category;
 use App\Models\Compound;
 use App\Models\call_time;
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\DataTables\NotificationDataTable;
@@ -207,7 +207,7 @@ class aqarController extends AppBaseController
 
 
         $callTimes = call_time::pluck('call_time', 'id');
-        $mzaya = mzaya::select('mzaya_type', 'id')->get();
+        $mzaya = Mzaya::select('mzaya_type', 'id')->get();
         $mzayaAqar = aqar_mzaya::where('aqar_id', $id)->get();
          //dd($aqar);
         $activity_logs = Activity::forSubject($aqar)->orderBy('id','DESC')->paginate(10);

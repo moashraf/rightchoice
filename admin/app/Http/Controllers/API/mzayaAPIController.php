@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreatemzayaAPIRequest;
 use App\Http\Requests\API\UpdatemzayaAPIRequest;
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use App\Repositories\mzayaRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;

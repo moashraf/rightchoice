@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdatemzayaAPIRequest extends APIRequest
@@ -24,8 +24,8 @@ class UpdatemzayaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = mzaya::$rules;
-        
+        $rules = Mzaya::$rules;
+
         return $rules;
     }
 }

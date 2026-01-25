@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\mzaya;
+use App\Models\Mzaya;
 
 class UpdatemzayaRequest extends FormRequest
 {

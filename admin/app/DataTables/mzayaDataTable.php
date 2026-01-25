@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class mzayaDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\mzaya $model
+     * @param \App\Models\Mzaya $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(mzaya $model)
+    public function query(Mzaya $model)
     {
         return $model->newQuery();
     }
