@@ -11,7 +11,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 
 /**
- * Class AqarController
+ * Class aqarController
  * @package App\Http\Controllers\API
  */
 
