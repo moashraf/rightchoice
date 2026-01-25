@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\district;
+use App\Models\District;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreatedistrictAPIRequest extends APIRequest

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\district;
+use App\Models\District;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdatedistrictAPIRequest extends APIRequest
@@ -25,7 +25,7 @@ class UpdatedistrictAPIRequest extends APIRequest
     public function rules()
     {
         $rules = district::$rules;
-        
+
         return $rules;
     }
 }

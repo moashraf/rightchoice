@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\district;
+use App\Models\District;
 use App\Repositories\BaseRepository;
 
 /**
