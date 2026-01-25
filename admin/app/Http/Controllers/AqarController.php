@@ -43,7 +43,7 @@ use App\Http\Requests\UpdateNotificationRequest;
 use App\Repositories\NotificationRepository;
 use App\Models\Activity;
 
-class aqarController extends AppBaseController
+class AqarController extends AppBaseController
 {
     /** @var  aqarRepository */
     private $aqarRepository;
