@@ -247,12 +247,12 @@ class aqar extends Model
 
 
     public function governrateq(){
-        return $this->belongsTo(governrate::class, 'governrate_id');
+        return $this->belongsTo(Governrate::class, 'governrate_id');
     }
 
 
     public function districte(){
-        return $this->belongsTo(district::class, 'district_id');
+        return $this->belongsTo(District::class, 'district_id');
     }
 
 
