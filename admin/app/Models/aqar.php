@@ -247,7 +247,7 @@ class aqar extends Model
 
 
     public function governrateq(){
-        return $this->belongsTo(governrate::class, 'governrate_id');
+        return $this->belongsTo(Governrate::class, 'governrate_id');
     }
 
 

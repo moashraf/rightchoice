@@ -37,7 +37,7 @@ class Company extends Model
 
 
     public $table = 'company';
-    
+
 
 
 
@@ -97,7 +97,7 @@ class Company extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function userinfo()
@@ -107,7 +107,7 @@ class Company extends Model
 
     public function governratinfo()
     {
-        return $this->belongsTo(governrate::class, 'governrate_id');
+        return $this->belongsTo(Governrate::class, 'governrate_id');
     }
 
     public function districtinfo()
@@ -125,5 +125,5 @@ class Company extends Model
         return $this->belongsTo(services::class, 'Serv_id');
     }
 
-    
+
 }
