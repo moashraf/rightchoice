@@ -208,7 +208,7 @@ class aqar extends Model
     }
       public function mzaya()
     {
-        return $this->belongsToMany(mzaya::Class, 'aqar_mzaya',
+        return $this->belongsToMany(Mzaya::class, 'aqar_mzaya',
           'aqar_id', 'mzaya_id');
     }
 
