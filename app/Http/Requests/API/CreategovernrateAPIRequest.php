@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\governrate;
+use App\Models\Governrate;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreategovernrateAPIRequest extends APIRequest

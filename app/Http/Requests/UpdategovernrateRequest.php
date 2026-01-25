@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\governrate;
+use App\Models\Governrate;
 
 class UpdategovernrateRequest extends FormRequest
 {

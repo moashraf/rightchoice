@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\governrate;
+use App\Models\Governrate;
 use App\Models\district;
 use App\Models\finish_type;
 use App\Models\floor;

@@ -9,7 +9,7 @@ use App\Http\Requests\UpdatedistrictRequest;
 use App\Repositories\districtRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
-use App\Models\governrate;
+use App\Models\Governrate;
 use Response;
 
 class districtController extends AppBaseController

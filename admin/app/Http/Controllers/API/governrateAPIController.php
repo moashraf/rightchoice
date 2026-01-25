@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreategovernrateAPIRequest;
 use App\Http\Requests\API\UpdategovernrateAPIRequest;
-use App\Models\governrate;
+use App\Models\Governrate;
 use App\Repositories\governrateRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
