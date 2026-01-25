@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\compound;
+use App\Models\Compound;
 use InfyOm\Generator\Request\APIRequest;
 
 class UpdatecompoundAPIRequest extends APIRequest
@@ -24,8 +24,8 @@ class UpdatecompoundAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = compound::$rules;
-        
+        $rules = Compound::$rules;
+
         return $rules;
     }
 }

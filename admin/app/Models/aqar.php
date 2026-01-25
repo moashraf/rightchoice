@@ -228,12 +228,12 @@ class aqar extends Model
     public function location(){
         return $this->belongsTo(Location::class);
     }
-    
-    
-     
 
 
-    
+
+
+
+
 
     public function callTimes(){
         return $this->belongsTo(call_time::class, 'call_id');
@@ -262,7 +262,7 @@ class aqar extends Model
 
 
     public function compounds(){
-        return $this->belongsTo(compound::class, 'compound');
+        return $this->belongsTo(Compound::class, 'compound');
     }
 
     public function propertyType() {
@@ -281,8 +281,8 @@ class aqar extends Model
     {
         return $this->belongsToMany(User::class,'usercontactaqar','aqars_id','user_id');
     }
-    
- 
+
+
     public function aqar()
     {
         return $this->belongsToMany(User::class,'usercontactaqar','aqars_id','user_id');
