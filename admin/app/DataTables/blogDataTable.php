@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\blog;
+use App\Models\Blog;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -35,10 +35,10 @@ class blogDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\blog $model
+     * @param \App\Models\Blog $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(blog $model)
+    public function query(Blog $model)
     {
         return $model->newQuery();
     }

@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\blog;
+use App\Models\Blog;
 use App\Repositories\BaseRepository;
 
 /**
@@ -47,6 +47,6 @@ class blogRepository extends BaseRepository
      **/
     public function model()
     {
-        return blog::class;
+        return Blog::class;
     }
 }
