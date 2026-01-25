@@ -19,7 +19,7 @@ use Response;
 use App\Models\Governrate;
 use App\Models\district;
 use App\Models\Finish_type;
-use App\Models\floor;
+use App\Models\Floor;
 use App\Models\license_type;
 use App\Models\offer_type;
 use App\Models\subarea;

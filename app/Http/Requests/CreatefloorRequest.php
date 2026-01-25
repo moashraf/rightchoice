@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\floor;
+use App\Models\Floor;
 
 class CreatefloorRequest extends FormRequest
 {

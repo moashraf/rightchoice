@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\floor;
+use App\Models\Floor;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -24,10 +24,10 @@ class floorDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\floor $model
+     * @param \App\Models\Floor $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(floor $model)
+    public function query(Floor $model)
     {
         return $model->newQuery();
     }
