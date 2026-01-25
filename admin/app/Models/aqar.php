@@ -257,7 +257,7 @@ class aqar extends Model
 
 
     public function subAreaa(){
-        return $this->belongsTo(subarea::class, 'area_id');
+        return $this->belongsTo(SubArea::class, 'area_id');
     }
 
 
