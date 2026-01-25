@@ -242,7 +242,7 @@ class aqar extends Model
         return $this->belongsTo(license_type::class);
     }
     public function finishType(){
-        return $this->belongsTo(finish_type::class, 'finishtype');
+        return $this->belongsTo(Finish_type::class, 'finishtype');
     }
 
 

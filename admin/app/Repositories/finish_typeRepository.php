@@ -35,6 +35,6 @@ class finish_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return finish_type::class;
+        return Finish_type::class;
     }
 }
