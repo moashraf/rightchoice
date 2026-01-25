@@ -14,12 +14,12 @@ use Eloquent as Model;
  * @property string $mzaya_type
  * @property string $img_name
  */
-class mzaya extends Model
+class Mzaya extends Model
 {
 
 
     public $table = 'mzaya';
-    
+
 
 
 
@@ -45,8 +45,8 @@ class mzaya extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

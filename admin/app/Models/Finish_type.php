@@ -13,12 +13,12 @@ use Eloquent as Model;
  *
  * @property string $finish_type
  */
-class finish_type extends Model
+class Finish_type extends Model
 {
 
 
     public $table = 'finish_type';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class finish_type extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
