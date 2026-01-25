@@ -20,7 +20,7 @@ class Images extends Model
 
 
     public $table = 'aqars_imgs';
-    
+
 
 
 
@@ -48,12 +48,12 @@ class Images extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
     public function aqar()
     {
-        return $this->belongsTo(aqar::class,'aqar_id' ,'id');
+        return $this->belongsTo(Aqar::class,'aqar_id' ,'id');
     }
-    
+
 }

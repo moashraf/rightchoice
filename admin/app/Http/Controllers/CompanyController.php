@@ -10,9 +10,9 @@ use App\Repositories\CompanyRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\services;
-use App\Models\governrate;
-use App\Models\district;
+use App\Models\Services;
+use App\Models\Governrate;
+use App\Models\District;
 use App\Models\subarea;
 use App\Models\floor;
 use App\Models\User;
@@ -96,11 +96,11 @@ class CompanyController extends AppBaseController
     public function edit($id)
     {
         $company = $this->companyRepository->find($id);
-        $governrate = governrate::pluck('governrate', 'id');
-        $district = district::where('govern_id',1)->pluck('district', 'id','govern_id');
-        $subarea = subarea::pluck('area', 'id');
-        $service = services::pluck('service', 'id');
-        $floor = floor::pluck('floor', 'id');
+        $governrate = Governrate::pluck('governrate', 'id');
+        $district = District::where('govern_id',1)->pluck('district', 'id','govern_id');
+        $subarea = SubArea::pluck('area', 'id');
+        $service = Services::pluck('service', 'id');
+        $floor = Floor::pluck('floor', 'id');
         $users = User::where('id',$company->user_id)->first();
        // dd($users->id);
 
@@ -163,3 +163,5 @@ class CompanyController extends AppBaseController
         return redirect(route('companies.index'));
     }
 }
+
+

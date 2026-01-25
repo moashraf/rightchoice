@@ -24,8 +24,8 @@ class Updatecall_timeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = call_time::$rules;
-        
+        $rules = CallTime::$rules;
+
         return $rules;
     }
 }

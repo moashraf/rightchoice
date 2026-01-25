@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createoffer_typeAPIRequest;
 use App\Http\Requests\API\Updateoffer_typeAPIRequest;
-use App\Models\offer_type;
+use App\Models\OfferType;
 use App\Repositories\offer_typeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class offer_typeAPIController extends AppBaseController
         return $this->sendSuccess('Offer Type deleted successfully');
     }
 }
+
+

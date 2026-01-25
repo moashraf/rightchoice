@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Viewer extends Model
 {
     use HasFactory;
-      
-      
+
+
     public $table = 'viewers';
 
-    
+
      public $fillable = [
         'user_id',
         'aqar_id',
@@ -33,8 +33,8 @@ class Viewer extends Model
      public function aqars(){
         return $this->hasMany(aqar::Class);
     }
-    
-    
+
+
        public function logActivities()
     {
         return $this->hasMany(LogActivity::class,'id');
@@ -45,13 +45,13 @@ class Viewer extends Model
         return $this->belongsToMany( users::class,'id','name');
     }
     public function UserPriceing(){
-        
-        return $this->belongsToMany(priceing_sale::class,'users_priceing_sale','user_id','pricing_id');
-        // UserPriceing 
-    } 
-    
-    
-    
+
+        return $this->belongsToMany(PriceingSale::class,'users_priceing_sale','user_id','pricing_id');
+        // UserPriceing
+    }
+
+
+
         public function getUserType()
     {
         if($this->TYPE == 1)

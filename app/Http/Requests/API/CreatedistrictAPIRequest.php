@@ -24,6 +24,6 @@ class CreatedistrictAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return district::$rules;
+        return District::$rules;
     }
 }

@@ -62,7 +62,7 @@ class Complaints extends Model
 
     public function aqarinfo()
     {
-        return $this->belongsTo(aqar::class, 'aqars_id');
+        return $this->belongsTo(Aqar::class, 'aqars_id');
     }
 
     public function logActivities()

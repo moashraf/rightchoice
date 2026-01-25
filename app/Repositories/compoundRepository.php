@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\compound;
+use App\Models\Compound;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class compoundRepository extends BaseRepository
      **/
     public function model()
     {
-        return compound::class;
+        return Compound::class;
     }
 }

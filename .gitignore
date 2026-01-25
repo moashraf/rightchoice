@@ -7,7 +7,7 @@
 *.zip
 /vendor
 .env
-.md
+*.md
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml

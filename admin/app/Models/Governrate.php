@@ -7,18 +7,18 @@ use Eloquent as Model;
 
 
 /**
- * Class governrate
+ * Class Governrate
  * @package App\Models
  * @version July 4, 2021, 12:05 pm UTC
  *
  * @property string $governrate
  */
-class governrate extends Model
+class Governrate extends Model
 {
 
 
     public $table = 'governrate';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class governrate extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

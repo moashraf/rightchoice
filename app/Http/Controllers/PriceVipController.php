@@ -149,3 +149,5 @@ class PriceVipController extends AppBaseController
         return redirect(route('priceVips.index'));
     }
 }
+
+

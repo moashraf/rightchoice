@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\priceing_sale;
+use App\Models\PriceingSale;
 use App\Repositories\BaseRepository;
 
 /**
@@ -44,6 +44,6 @@ class priceing_saleRepository extends BaseRepository
      **/
     public function model()
     {
-        return priceing_sale::class;
+        return PriceingSale::class;
     }
 }

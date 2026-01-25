@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createaqar_categoryAPIRequest;
 use App\Http\Requests\API\Updateaqar_categoryAPIRequest;
-use App\Models\aqar_category;
+use App\Models\AqarCategory;
 use App\Repositories\aqar_categoryRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class aqar_categoryAPIController extends AppBaseController
         return $this->sendSuccess('Aqar Category deleted successfully');
     }
 }
+
+

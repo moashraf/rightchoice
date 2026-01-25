@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\license_type;
+use App\Models\LicenseType;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class license_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return license_type::class;
+        return LicenseType::class;
     }
 }

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Response;
 use App\Models\User;
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Models\Activity;
 
 class ComplaintsController extends AppBaseController
@@ -85,7 +85,7 @@ class ComplaintsController extends AppBaseController
             return redirect(route('complaints.index'));
         }
         $GetUsers = User::pluck('name', 'id');
-        $Getaqar = aqar::pluck('title', 'id');
+        $Getaqar = Aqar::pluck('title', 'id');
         return view('complaints.show', compact('GetUsers', 'Getaqar'))->with('complaints', $complaints);
     }
 
@@ -107,7 +107,7 @@ class ComplaintsController extends AppBaseController
         }
 
         $GetUsers = User::get();
-        $Getaqar = aqar::pluck('title', 'id');
+        $Getaqar = Aqar::pluck('title', 'id');
 
         $activity_logs = Activity::forSubject($complaints)->orderBy('id', 'DESC')->paginate(10);
 
@@ -179,3 +179,5 @@ class ComplaintsController extends AppBaseController
     }
 
 }
+
+

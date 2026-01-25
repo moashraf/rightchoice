@@ -7,18 +7,18 @@ use Eloquent as Model;
 
 
 /**
- * Class compound
+ * Class Compound
  * @package App\Models
  * @version July 4, 2021, 11:45 am UTC
  *
  * @property string $compound
  */
-class compound extends Model
+class Compound extends Model
 {
 
 
     public $table = 'compound';
-    
+
 
 
 
@@ -42,8 +42,8 @@ class compound extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

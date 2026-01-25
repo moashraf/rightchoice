@@ -7,19 +7,19 @@ use Eloquent as Model;
 
 
 /**
- * Class district
+ * Class District
  * @package App\Models
  * @version July 4, 2021, 12:32 pm UTC
  *
  * @property string $district
  * @property integer $govern_id
  */
-class district extends Model
+class District extends Model
 {
 
 
     public $table = 'district';
-    
+
 
 
 
@@ -45,8 +45,8 @@ class district extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }

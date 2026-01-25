@@ -24,6 +24,6 @@ class Createlicense_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return license_type::$rules;
+        return LicenseType::$rules;
     }
 }

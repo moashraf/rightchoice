@@ -24,6 +24,6 @@ class CreatemzayaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return mzaya::$rules;
+        return Mzaya::$rules;
     }
 }

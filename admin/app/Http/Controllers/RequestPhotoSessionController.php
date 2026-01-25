@@ -103,10 +103,12 @@ class RequestPhotoSessionController extends AppBaseController
         }
 
         $users = User::pluck('name', 'id');
-        
 
 
-        return view('request_photo_sessions.edit',compact('users')->with('requestPhotoSession', $requestPhotoSession);
+
+      //  return view('request_photo_sessions.edit',compact('users')->with('requestPhotoSession', $requestPhotoSession);
+         return view('request_photo_sessions.edit',compact('users'))->with('requestPhotoSession', $requestPhotoSession);
+
     }
 
     /**
@@ -164,3 +166,5 @@ class RequestPhotoSessionController extends AppBaseController
         return redirect(route('requestPhotoSessions.index'));
     }
 }
+
+

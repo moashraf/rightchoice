@@ -24,6 +24,6 @@ class Createoffer_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return offer_type::$rules;
+        return OfferType::$rules;
     }
 }

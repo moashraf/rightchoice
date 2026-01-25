@@ -6,14 +6,14 @@ use App\DataTables\property_typeDataTable;
 use App\Http\Requests;
 use App\Http\Requests\Createproperty_typeRequest;
 use App\Http\Requests\Updateproperty_typeRequest;
-use App\Models\property_type;
+use App\Models\PropertyType;
 use App\Repositories\property_typeRepository;
 use App\Services\ModelService;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Response;
-use App\Models\aqar_category;
+use App\Models\AqarCategory;
 class property_typeController extends AppBaseController
 {
     /** @var  property_typeRepository */
@@ -32,7 +32,7 @@ class property_typeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $property_types = property_type::paginate();
+        $property_types = PropertyType::paginate();
         // $property_types = ModelService::filter_search($property_types,'property_type',$request);
 
         return view('property_types.index',compact('property_types'));
@@ -45,7 +45,7 @@ class property_typeController extends AppBaseController
      */
     public function create()
     {
-        $category = aqar_category::pluck('category_name', 'id');
+        $category = AqarCategory::pluck('category_name', 'id');
         return view('property_types.create',compact('category'));
     }
 
@@ -103,7 +103,7 @@ class property_typeController extends AppBaseController
 
             return redirect(route('propertyTypes.index'));
         }
-        $category = aqar_category::pluck('category_name', 'id');
+        $category = AqarCategory::pluck('category_name', 'id');
         return view('property_types.edit',compact('category'))->with('propertyType', $propertyType);
     }
 
@@ -156,3 +156,5 @@ class property_typeController extends AppBaseController
         return redirect(route('propertyTypes.index'));
     }
 }
+
+

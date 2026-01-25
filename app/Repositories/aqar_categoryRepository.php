@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\aqar_category;
+use App\Models\AqarCategory;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class aqar_categoryRepository extends BaseRepository
      **/
     public function model()
     {
-        return aqar_category::class;
+        return AqarCategory::class;
     }
 }

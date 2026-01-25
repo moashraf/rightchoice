@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\wish;
+use App\Models\Wish;
 use App\Repositories\BaseRepository;
 
 /**
@@ -36,6 +36,6 @@ class wishRepository extends BaseRepository
      **/
     public function model()
     {
-        return wish::class;
+        return Wish::class;
     }
 }

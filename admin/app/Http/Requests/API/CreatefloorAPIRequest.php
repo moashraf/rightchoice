@@ -24,6 +24,6 @@ class CreatefloorAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return floor::$rules;
+        return Floor::$rules;
     }
 }

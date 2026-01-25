@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\offer_type;
+use App\Models\OfferType;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class offer_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return offer_type::class;
+        return OfferType::class;
     }
 }

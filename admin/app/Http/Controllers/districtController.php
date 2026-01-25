@@ -9,7 +9,7 @@ use App\Http\Requests\UpdatedistrictRequest;
 use App\Repositories\districtRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
-use App\Models\governrate;
+use App\Models\Governrate;
 use Response;
 
 class districtController extends AppBaseController
@@ -40,7 +40,7 @@ class districtController extends AppBaseController
      */
     public function create()
     {
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.create',compact('governrate'));
     }
 
@@ -79,7 +79,7 @@ class districtController extends AppBaseController
             return redirect(route('districts.index'));
         }
 
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.show',compact('governrate'))->with('district', $district);
     }
 
@@ -100,7 +100,7 @@ class districtController extends AppBaseController
             return redirect(route('districts.index'));
         }
 
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.edit',compact('governrate'))->with('district', $district);
     }
 
@@ -153,3 +153,5 @@ class districtController extends AppBaseController
         return redirect(route('districts.index'));
     }
 }
+
+

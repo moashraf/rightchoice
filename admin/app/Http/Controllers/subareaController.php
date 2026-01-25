@@ -149,3 +149,5 @@ class subareaController extends AppBaseController
         return redirect(route('subareas.index'));
     }
 }
+
+

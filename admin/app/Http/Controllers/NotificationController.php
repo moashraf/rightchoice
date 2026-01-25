@@ -173,3 +173,5 @@ class NotificationController extends AppBaseController
         return redirect(route('notifications.index'));
     }
 }
+
+

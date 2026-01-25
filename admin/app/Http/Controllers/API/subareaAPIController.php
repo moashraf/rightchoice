@@ -129,3 +129,5 @@ class subareaAPIController extends AppBaseController
         return $this->sendSuccess('Subarea deleted successfully');
     }
 }
+
+

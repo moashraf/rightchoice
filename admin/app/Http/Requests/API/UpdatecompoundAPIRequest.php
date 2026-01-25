@@ -24,8 +24,8 @@ class UpdatecompoundAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = compound::$rules;
-        
+        $rules = Compound::$rules;
+
         return $rules;
     }
 }

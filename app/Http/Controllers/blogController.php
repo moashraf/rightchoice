@@ -177,3 +177,5 @@ class blogController extends AppBaseController
         return redirect(route('blogs.index'));
     }
 }
+
+

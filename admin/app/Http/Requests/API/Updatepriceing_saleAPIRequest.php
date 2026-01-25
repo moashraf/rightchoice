@@ -24,8 +24,8 @@ class Updatepriceing_saleAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = priceing_sale::$rules;
-        
+        $rules = PriceingSale::$rules;
+
         return $rules;
     }
 }

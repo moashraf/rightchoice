@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\district;
+use App\Models\District;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class districtRepository extends BaseRepository
      **/
     public function model()
     {
-        return district::class;
+        return District::class;
     }
 }

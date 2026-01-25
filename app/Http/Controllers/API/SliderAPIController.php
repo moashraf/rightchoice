@@ -129,3 +129,5 @@ class SliderAPIController extends AppBaseController
         return $this->sendSuccess('Slider deleted successfully');
     }
 }
+
+

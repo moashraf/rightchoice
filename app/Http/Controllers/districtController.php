@@ -153,3 +153,5 @@ class districtController extends AppBaseController
         return redirect(route('districts.index'));
     }
 }
+
+

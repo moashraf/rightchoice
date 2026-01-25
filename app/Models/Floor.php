@@ -16,6 +16,6 @@ class Floor extends Model
         'floor_en',
     ];
     public function Aqars() {
-        return $this->hasMany(aqar::class);
+        return $this->hasMany(Aqar::class);
     }
 }

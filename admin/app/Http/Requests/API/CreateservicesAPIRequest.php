@@ -24,6 +24,6 @@ class CreateservicesAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return services::$rules;
+        return Services::$rules;
     }
 }

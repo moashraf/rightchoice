@@ -149,3 +149,5 @@ class license_typeController extends AppBaseController
         return redirect(route('licenseTypes.index'));
     }
 }
+
+

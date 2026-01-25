@@ -156,3 +156,5 @@ class compoundController extends AppBaseController
         return redirect(route('compounds.index'));
     }
 }
+
+

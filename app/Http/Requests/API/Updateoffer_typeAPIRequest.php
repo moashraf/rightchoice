@@ -24,8 +24,8 @@ class Updateoffer_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = offer_type::$rules;
-        
+        $rules = OfferType::$rules;
+
         return $rules;
     }
 }

@@ -6,8 +6,8 @@ use App\DataTables\aqar_categoryDataTable;
 use App\Http\Requests;
 use App\Http\Requests\Createaqar_categoryRequest;
 use App\Http\Requests\Updateaqar_categoryRequest;
-use App\Models\aqar_category;
-use App\Models\offer_type;
+use App\Models\AqarCategory;
+use App\Models\OfferType;
 use App\Repositories\aqar_categoryRepository;
 use App\Services\ModelService;
 use Flash;
@@ -33,7 +33,7 @@ class aqar_categoryController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $aqar_categories = aqar_category::query();
+        $aqar_categories = AqarCategory::query();
         $aqar_categories = ModelService::filter_search($aqar_categories,'category_name',$request);
 
         return view('aqar_categories.index',compact('aqar_categories'));
@@ -156,3 +156,5 @@ class aqar_categoryController extends AppBaseController
         return redirect(route('aqarCategories.index'));
     }
 }
+
+

@@ -149,3 +149,5 @@ class finish_typeController extends AppBaseController
         return redirect(route('finishTypes.index'));
     }
 }
+
+

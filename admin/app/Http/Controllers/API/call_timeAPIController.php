@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\Createcall_timeAPIRequest;
 use App\Http\Requests\API\Updatecall_timeAPIRequest;
-use App\Models\call_time;
+use App\Models\CallTime;
 use App\Repositories\call_timeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class call_timeAPIController extends AppBaseController
         return $this->sendSuccess('Call Time deleted successfully');
     }
 }
+
+

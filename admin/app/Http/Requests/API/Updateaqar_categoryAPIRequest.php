@@ -24,8 +24,8 @@ class Updateaqar_categoryAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = aqar_category::$rules;
-        
+        $rules = AqarCategory::$rules;
+
         return $rules;
     }
 }

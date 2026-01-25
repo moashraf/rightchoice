@@ -24,8 +24,8 @@ class Updateproperty_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = property_type::$rules;
-        
+        $rules = PropertyType::$rules;
+
         return $rules;
     }
 }

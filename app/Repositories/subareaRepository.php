@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\subarea;
+use App\Models\SubArea;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class subareaRepository extends BaseRepository
      **/
     public function model()
     {
-        return subarea::class;
+        return SubArea::class;
     }
 }

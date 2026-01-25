@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateaqarAPIRequest;
 use App\Http\Requests\API\UpdateaqarAPIRequest;
-use App\Models\aqar;
+use App\Models\Aqar;
 use App\Repositories\aqarRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -129,3 +129,5 @@ class aqarAPIController extends AppBaseController
         return $this->sendSuccess('Aqar deleted successfully');
     }
 }
+
+

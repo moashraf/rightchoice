@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\mzaya;
+use App\Models\Mzaya;
 use App\Repositories\BaseRepository;
 
 /**
@@ -36,6 +36,6 @@ class mzayaRepository extends BaseRepository
      **/
     public function model()
     {
-        return mzaya::class;
+        return Mzaya::class;
     }
 }

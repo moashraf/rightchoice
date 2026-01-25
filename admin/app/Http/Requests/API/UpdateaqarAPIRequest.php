@@ -24,8 +24,8 @@ class UpdateaqarAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = aqar::$rules;
-        
+        $rules = Aqar::$rules;
+
         return $rules;
     }
 }

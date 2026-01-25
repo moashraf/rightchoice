@@ -149,3 +149,5 @@ class call_timeController extends AppBaseController
         return redirect(route('callTimes.index'));
     }
 }
+
+

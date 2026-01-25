@@ -149,3 +149,5 @@ class priceing_saleController extends AppBaseController
         return redirect(route('priceingSales.index'));
     }
 }
+
+

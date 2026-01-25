@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\governrate;
+use App\Models\Governrate;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class governrateRepository extends BaseRepository
      **/
     public function model()
     {
-        return governrate::class;
+        return Governrate::class;
     }
 }

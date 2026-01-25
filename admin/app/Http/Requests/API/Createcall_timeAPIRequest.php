@@ -24,6 +24,6 @@ class Createcall_timeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return call_time::$rules;
+        return CallTime::$rules;
     }
 }

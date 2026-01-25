@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\property_type;
+use App\Models\PropertyType;
 use App\Repositories\BaseRepository;
 
 /**
@@ -35,6 +35,6 @@ class property_typeRepository extends BaseRepository
      **/
     public function model()
     {
-        return property_type::class;
+        return PropertyType::class;
     }
 }

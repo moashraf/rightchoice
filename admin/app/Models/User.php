@@ -77,18 +77,18 @@ class User extends Authenticatable
 
     public function views()
     {
-        return $this->belongsToMany(aqar::class,'usercontactaqar','user_id','aqars_id');
+        return $this->belongsToMany(Aqar::class,'usercontactaqar','user_id','aqars_id');
     }
-    
+
      public function viewers()
     {
         return $this->belongsToMany(users::class,'name','user_id','aqars_id');
     }
     public function UserPriceing(){
-        
-        return $this->belongsToMany(priceing_sale::class,'users_priceing_sale','user_id','pricing_id');
-        // UserPriceing 
-    } 
+
+        return $this->belongsToMany(PriceingSale::class,'users_priceing_sale','user_id','pricing_id');
+        // UserPriceing
+    }
 
     public function getUserType()
     {

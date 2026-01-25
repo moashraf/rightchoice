@@ -6,7 +6,7 @@ use App\DataTables\offer_typeDataTable;
 use App\Http\Requests;
 use App\Http\Requests\Createoffer_typeRequest;
 use App\Http\Requests\Updateoffer_typeRequest;
-use App\Models\offer_type;
+use App\Models\OfferType;
 use App\Repositories\offer_typeRepository;
 use App\Services\ModelService;
 use Flash;
@@ -32,7 +32,7 @@ class offer_typeController extends AppBaseController
      */
     public function index(Request $request )
     {
-        $offer_types = offer_type::query();
+        $offer_types = OfferType::query();
         $offer_types = ModelService::filter_search($offer_types,'type_offer');
 
         return view('offer_types.index',compact('offer_types'));
@@ -155,3 +155,5 @@ class offer_typeController extends AppBaseController
         return redirect(route('offerTypes.index'));
     }
 }
+
+

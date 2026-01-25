@@ -172,3 +172,5 @@ class SettingSiteController extends AppBaseController
         return redirect(route('settingSites.index'));
     }
 }
+
+

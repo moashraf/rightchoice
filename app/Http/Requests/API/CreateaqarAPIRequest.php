@@ -24,6 +24,6 @@ class CreateaqarAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return aqar::$rules;
+        return Aqar::$rules;
     }
 }
