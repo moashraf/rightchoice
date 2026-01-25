@@ -13,7 +13,7 @@ use Response;
 use App\Models\services;
 use App\Models\Governrate;
 use App\Models\district;
-use App\Models\subarea;
+use App\Models\SubArea;
 use App\Models\Floor;
 use App\Models\User;
 

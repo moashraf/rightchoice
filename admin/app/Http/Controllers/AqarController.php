@@ -22,7 +22,7 @@ use App\Models\Finish_type;
 use App\Models\Floor;
 use App\Models\license_type;
 use App\Models\offer_type;
-use App\Models\subarea;
+use App\Models\SubArea;
 use App\Models\property_type;
 use App\Models\User;
 use App\Models\aqar;
