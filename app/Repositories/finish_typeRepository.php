@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\finish_type;
+use App\Models\Finish_type;
 use App\Repositories\BaseRepository;
 
 /**

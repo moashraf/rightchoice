@@ -18,7 +18,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Governrate;
 use App\Models\district;
-use App\Models\finish_type;
+use App\Models\Finish_type;
 use App\Models\floor;
 use App\Models\license_type;
 use App\Models\offer_type;

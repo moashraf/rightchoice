@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\finish_type;
+use App\Models\Finish_type;
 use InfyOm\Generator\Request\APIRequest;
 
 class Createfinish_typeAPIRequest extends APIRequest

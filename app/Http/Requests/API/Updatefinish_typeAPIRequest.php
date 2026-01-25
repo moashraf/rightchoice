@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\finish_type;
+use App\Models\Finish_type;
 use InfyOm\Generator\Request\APIRequest;
 
 class Updatefinish_typeAPIRequest extends APIRequest
@@ -25,7 +25,7 @@ class Updatefinish_typeAPIRequest extends APIRequest
     public function rules()
     {
         $rules = finish_type::$rules;
-        
+
         return $rules;
     }
 }
