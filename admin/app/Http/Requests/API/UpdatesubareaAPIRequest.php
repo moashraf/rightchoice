@@ -24,7 +24,7 @@ class UpdatesubareaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = subarea::$rules;
+        $rules = SubArea::$rules;
 
         return $rules;
     }

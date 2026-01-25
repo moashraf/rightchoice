@@ -6,8 +6,8 @@ use App\Enums\StatusEnum;
 use App\Enums\VIPEnum;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
+use App\Models\SubArea;
+use App\Models\Finish_type;
 
 /**
  * Class aqar
@@ -242,7 +242,7 @@ class aqar extends Model
         return $this->belongsTo(license_type::class);
     }
     public function finishType(){
-        return $this->belongsTo(finish_type::class, 'finishtype');
+        return $this->belongsTo(Finish_type::class, 'finishtype');
     }
 
 
@@ -257,7 +257,7 @@ class aqar extends Model
 
 
     public function subAreaa(){
-        return $this->belongsTo(subarea::class, 'area_id');
+        return $this->belongsTo(SubArea::class, 'area_id');
     }
 
 

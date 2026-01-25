@@ -24,7 +24,7 @@ class UpdategovernrateAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = governrate::$rules;
+        $rules = Governrate::$rules;
 
         return $rules;
     }

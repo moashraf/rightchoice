@@ -98,7 +98,7 @@ class CompanyController extends AppBaseController
         $company = $this->companyRepository->find($id);
         $governrate = governrate::pluck('governrate', 'id');
         $district = district::where('govern_id',1)->pluck('district', 'id','govern_id');
-        $subarea = subarea::pluck('area', 'id');
+        $subarea = SubArea::pluck('area', 'id');
         $service = services::pluck('service', 'id');
         $floor = floor::pluck('floor', 'id');
         $users = User::where('id',$company->user_id)->first();
