@@ -169,21 +169,15 @@
 											</div>
 										</div>
 
-							   <?php  if($aqarVip->vip ==1 && \Carbon\Carbon::now()->diffInYears($aqarVip->created_at) < 1 ){   ?>
+							   <?php  if($aqarVip->vip ==1 ){   ?>
 
-                            <div class="views"  >
+  <div class="views"  >
                             <div class="views-1">مميز</div>
-                              </div>
-                                <?php }  ?>
-                                    <?php if(\Carbon\Carbon::now()->diffInYears($aqarVip->created_at) >= 1){ ?>
-                                        <div class="views " style="left: 13px;">
-                                            <div class="viewsRed">غير متاح</div>
-                                        </div>
-                                        <?php } ?>
+                        </div>
+                                                         <?php }  ?>
 
 
-
-					   <div class="views">
+										                  <div class="views">
 
                         <div class="views-2">
                             <i class="fa fa-eye"></i>
@@ -344,22 +338,12 @@
 
 
 
-             <?php  if($saleAqar->vip ==1 && \Carbon\Carbon::now()->diffInYears($saleAqar->created_at) < 1 ){   ?>
-                        <div class="views"  >
+             <?php  if($saleAqar->vip ==1 ){   ?>
+
+  <div class="views"  >
                             <div class="views-1">مميز</div>
                         </div>
-                     <?php }  ?>
-
-
-                         <?php if(\Carbon\Carbon::now()->diffInYears($saleAqar->created_at) >= 1){ ?>
-        <div class="views " style="left: 13px;">
-            <div class="viewsRed">غير متاح</div>
-        </div>
-        <?php } ?>
-
-
-
-
+                                                         <?php }  ?>
                <div class="views">
 
                         <div class="views-2">
@@ -537,19 +521,13 @@
 										</div>
 
 
-					   <?php  if($rentAqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) < 1){   ?>
+										    <?php  if($rentAqar->vip ==1 ){   ?>
                           <div class="views">
                             <div class="views-1">مميز</div>
                         </div>
 
-                         <?php }  ?>
+                                                         <?php }  ?>
 
-
-                             <?php if(\Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1){ ?>
-                                        <div class="views " style="left: 13px;">
-                                            <div class="viewsRed">غير متاح</div>
-                                        </div>
-                                        <?php } ?>
 
 
 

@@ -10,7 +10,6 @@ dist/
 target/
 dist/
 .idea/
-.htaccess
 TEST*.xml
 .DS_Store
 Thumbs.db

@@ -2,26 +2,26 @@
 
 
  @section('title')
-{{$company->Name}}
+{{$company->Name}} 
 @endsection
-
-
+   
+   
    <section id="inner-listing">
 
         <div class="container">
 
 <div class="adv">
-
-
-
+             
+                                
+                                    
                  	<img src="<?php if (isset($random_ads)){echo URL::to('/').'/images/'.$random_ads->img  ;} ?>" class="image-fluid w-100 mx-auto mb-5" alt="">
-
-
+                   
+ 
  </div>
 
-            <h3 class=" single-company headingTitle2 hideTitle2" style="    margin-bottom: 28px;  font-size: 24px!important;">
-                    {{ $company->serv->Service }}
-
+            <h3 class="headingTitle2 hideTitle2" style="    margin-bottom: 28px;  font-size: 24px!important;">     
+                    {{ $company->serv->Service }}  
+                  
                     </h3>
 
             <div class="row">
@@ -32,16 +32,16 @@
                             <div class="card-body">
                                 <h4 class="headingTitle2">{{ $company->Name }} </h4>
                                 <div dir="rtl">
-                                 <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>
+                                 <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>  
                                 </div>
 
                                 <div class="fr-grid-deatil-flex details mt-3">
-
+ 
                                     <div class="listing-card-info-icon">
-                                          {{ $company->governrateq->governrate}}
-                            @if($company->district_ashraf)  , {{ $company->district_ashraf->district}}@endif
-                            @if($company->subArea)  , {{ $company->subArea->area}}@endif
-
+                                          {{ $company->governrateq->governrate}}   
+                            @if($company->district_ashraf)  , {{ $company->district_ashraf->district}}@endif  
+                            @if($company->subArea)  , {{ $company->subArea->area}}@endif 
+                             
                                         <div class="inc-fleat-icon">
                                             <img src="{{asset('images/icons/location.png')}}"
                                                 width="13" alt="" /></div>
@@ -54,24 +54,24 @@
 <div class="text-center">
    <a style="width:41%" href="tel:{{ $company->Phone }}" class="btn btn-light ml-1 mr-1 addToCart mt-3" data-id="146103"> {{ $company->Phone }}</a>
 
-
+                                    
 
 
 
                                     <a style="width:30%" class="btn our-btn mt-3" id="trigger-2">مشاركه</a>
 
                                 </div>
-
-
-
+                                
+                                
+                                
                                 <!--  <img src="https://al-kafigroup.com/images/vhjfhgc.jpeg" class="img-thumbnail">-->
 
                                 <hr class="hr-add">
+                              
 
+ 
 
-
-
-
+                               
 
 
                             </div>
@@ -84,10 +84,10 @@
                 <div class="col-lg-8">
                     <div class="images" dir="ltr">
 
+ 
 
-
-
-
+ 
+                                
                                <div class="watermarked">
 
                                         <img src="<?php if (isset($company)){echo URL::to('/').'/images/'.$company->photo  ;} ?>"
@@ -95,15 +95,15 @@
                                 </div>
 
 
+                                  
+ 
 
 
 
+                                
 
 
-
-
-
-
+                            
 
 
                             <div class="details mt-3">
@@ -111,7 +111,7 @@
 
                                 <div class="fr-grid-deatil-flex">
                                     <div class="listing-card-info-icon">
-                                  {{ $company->serv->Service }}
+                                  {{ $company->serv->Service }}  
                                   </div>
     <div class="listing-card-info-icon">
                               {{ $company->Name }}
@@ -120,7 +120,7 @@
                                     <div class="listing-card-info-icon">
                                         رقم الاعلان
                                         {{ $company->id }}
-
+ 
 
                                     </div>
                                     <div class="listing-card-info-icon">
@@ -130,56 +130,56 @@
 
                                         {{ date('d/m/Y', strtotime($company->created_at))  }}
 
-
+                                    
 
                                     </div>
 
                                 </div>
-
-
-
-
-
+                                
+                                
+                                
+                                
+                                
                                      <div class="fr-grid-deatil-flex">
                                     <div class="listing-card-info-icon">
-                                        {{ $company->governrateq->governrate}}
-                            @if($company->district_ashraf)  , {{ $company->district_ashraf->district}}@endif
-                            @if($company->subArea)  , {{ $company->subArea->area}}@endif
-
-
+                                        {{ $company->governrateq->governrate}}   
+                            @if($company->district_ashraf)  , {{ $company->district_ashraf->district}}@endif  
+                            @if($company->subArea)  , {{ $company->subArea->area}}@endif 
+                            
+                                         
                                     </div>
 
-
-
+                                    
+                                   
 
                                 </div>
-
-
-
+                         
+                         
+                         
                               <div class="fr-grid-deatil-flex">
                                     <div class="listing-card-info-icon">
-                                 <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>
-
+                                 <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>  
+                                         
                                     </div>
 
                                     <div class="listing-card-info-icon">
-                            @if( $company->landline )
-                             <a href="tel:{{ $company->landline }}">{{ $company->landline }}</a>
-
+                            @if( $company->landline ) 
+                             <a href="tel:{{ $company->landline }}">{{ $company->landline }}</a> 
+                            
                              @endif
-
+                             
    </div>
-
+                                   
 
                                 </div>
-
-
-
-
+                                
+                                
+                                  
+                                
                             </div>
 
 
-
+ 
 
 
 
@@ -190,26 +190,26 @@
 
 
                             <br />
-
+                           
 
                     </div>
 
                     <div class="details mt-3">
                         <br>
                         <h3 class="headingTitle2"> {{ trans('langsite.moreDetails')}}</h3>
-
+                      
 
                         <p>
                             <div  id="small_text_show">
                             {{ $company->details }}
                             </div>
-
+                            
 
                         </p>
-
+                        
 
                     </div>
-
+                  
 
 
                 </div>
@@ -258,35 +258,35 @@
 
                                             <div>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarSim->slug) }}"  target="_blank">
-
-
+                                                    
+                                                       
               @if($aqarSim->mainImage)
                                  <img src="{{ URL::to('/').'/images/'.$aqarSim->mainImage->img_url}}"   class="img-fluid mx-auto"  alt="main">
-
+                            
                                 @else
-
-
+                                
+							
                                                     @if($aqarSim->firstImage)
                                                     <img
                                                         src="{{ URL::to('/').'/images/'.$aqarSim->firstImage->img_url}}"
                                                         class="img-fluid mx-auto" alt="" />
-
-
-
+                                                        
+                                                     
+                                                        
                                                           @else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
                                             alt="main">
-
+ 
                                         @endif
-
-
-
+                                                        
+                                                        
+                                                        
                                                         @endif
-
-
+                                                               
+                                                        
                                                         </a>
-
-
+                                                        
+                                                        
                                                         </div>
                                                      </div>
                                     </div>
@@ -392,6 +392,6 @@
 
         </div>
     </section>
-
-
+ 
+    
 </x-layout>
