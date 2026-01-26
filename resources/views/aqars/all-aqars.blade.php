@@ -5,7 +5,7 @@
             <?php //dd($minPrice);
             ?>
             <h1 class="headingTitle2">
-
+            
                 @if (\Request::segment(2) =='aqars-cash'   )
                     @section('title', ' عقارات للبيع')
 
@@ -74,7 +74,7 @@
 
 
   @if (\Request::segment(2) =='filter')
-
+ 
                 <div class="col-lg-4" style="justify-content: space-between;  ">
 
 
@@ -107,7 +107,7 @@
                     </form>
 
                 </div>
-
+                
 @else
 
                 <div class="col-lg-4" style="justify-content: space-between;  ">
@@ -568,9 +568,9 @@
                                                             <input class="form-check-input" name="mzaya[]"
 
                                                             <?php
-
+                                                            
                                                             if (isset($maz)) {
-                                                                 if (in_array($maz_val->id , $maz)) {echo'checked';   }
+                                                                 if (in_array($maz_val->id , $maz)) {echo'checked';   }  
                                                                             }
                                                              ?>
                                                                 type="checkbox" value="{{ $maz_val->id }}"
@@ -643,8 +643,8 @@
                                              }
 
                                     });
-
-
+                                    
+                                    
                                     function myFunctionresetBtn() {
 //   document.getElementById("selectform").reset();
                                             document.getElementById("selectform").value = document.getElementById("selectform").defaultValue;
@@ -723,22 +723,13 @@
 
                                                 @endif
 
-                                                    @if ($vip->vip ==1 && \Carbon\Carbon::now()->diffInYears($vip->created_at) < 1)
-
                                                 <div class="views">
                                                     <div class="views-1">مميز</div>
                                                 </div>
-                                                    @endif
-
-                                                        <?php if(\Carbon\Carbon::now()->diffInYears($vip->created_at) >= 1){ ?>
-                                                    <div class="views " style="left: 13px;">
-                                                        <div class="viewsRed">غير متاح</div>
-                                                    </div>
-                                                    <?php } ?>
-
-                                                    <div class="views-3">
+                                                <div class="views-3">
                                                     <i class="fa fa-eye"></i>
                                                     <span>{{ $vip->views }}</span>
+
                                                 </div>
 
 
@@ -897,7 +888,7 @@
                                                 </div>
 
 
-                                                <?php  if($aqar->vip ==1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1 ){   ?>
+                                                <?php  if($aqar->vip ==1 ){   ?>
                                                 <div class="views">
                                                     <div class="views-1">مميز</div>
                                                 </div>
@@ -1073,26 +1064,26 @@
 <script type="text/javascript">
     function submit_another_form_filter()
     {
-
+		
 	//	alert("ff");
         form=document.getElementById('selectform');
         //form.target='_blank';
          form.submit();
      }
-
-
+     
+     
      /*****************************/
-
+     
       show_collaps_when_user_add_filter();
         function show_collaps_when_user_add_filter()
     {
     var queryString = $('#selectform').serializeArray();
  //  console.log(queryString);
-
-
+    
+    
     queryString.forEach(element  =>{
               console.log(element.name)
-
+   
 if(element.name== "location1" && element.value !== "" )
 {
   var element = document.getElementById("collapseOne");
@@ -1106,7 +1097,7 @@ if(element.name== "mzaya[]" && element.value !== "" )
   element.classList.add("show");
 }
 
-if(element.name== "minPrice" && element.value !== "" ||
+if(element.name== "minPrice" && element.value !== "" || 
 element.name== "minArea" && element.value !== ""  ||
 element.name== "minRooms" && element.value !== "" ||
 element.name== "minBaths" && element.value !== ""  )
@@ -1115,16 +1106,16 @@ element.name== "minBaths" && element.value !== ""  )
   element.classList.add("show");
 }
 
-
+ 
     });
 
 
 
 
-
+  
      }
-
-
+     
+      
 
      /*****************************/
 

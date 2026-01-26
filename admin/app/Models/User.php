@@ -79,16 +79,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(aqar::class,'usercontactaqar','user_id','aqars_id');
     }
-
+    
      public function viewers()
     {
         return $this->belongsToMany(users::class,'name','user_id','aqars_id');
     }
     public function UserPriceing(){
-
+        
         return $this->belongsToMany(priceing_sale::class,'users_priceing_sale','user_id','pricing_id');
-        // UserPriceing
-    }
+        // UserPriceing 
+    } 
 
     public function getUserType()
     {
@@ -109,10 +109,5 @@ class User extends Authenticatable
             return UserStatusEnum::ACTIVE;
         if($this->status == 0)
             return UserStatusEnum::UNACTIVE;
-    }
-
-    public function aqars()
-    {
-        return $this->hasMany(aqar::class, 'user_id');
     }
 }
