@@ -80,11 +80,11 @@ class ComplaintsController extends AppBaseController
      *
      * @return Response
      */
-     
+
      public function show_user($id){
-         return view('complaints.user',[
-             'user' => User::where('id',$id)->first(),
-             ]);
+        $user = User::find($id);
+        $complaints = Complaints::where('user_id', $id)->get();
+        return view('complaints.user', compact('user', 'complaints'));
      }
     public function show($id)
     {
