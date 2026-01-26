@@ -210,8 +210,11 @@ class UserController extends AppBaseController
         return redirect(route('user.index'));
 
     }
+
+    public function aqars($id)
+    {
+        $user = User::find($id);
+        $aqars = $user->aqars;
+        return view('user.aqars', compact('user', 'aqars'));
+    }
 }
-
-
-
-
