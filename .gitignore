@@ -8,6 +8,7 @@
 *.md
 /vendor
 .env
+.htaccess
 .md
 .env.backup
 .phpunit.result.cache

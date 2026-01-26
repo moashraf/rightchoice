@@ -108,10 +108,9 @@
                             <th>اسم</th>
                             <th>نوع</th>
                             <th>الباقة</th>
-                            <th>البريد الإلكتروني</th>
+{{--                            <th>البريد الإلكتروني</th>--}}
                             <th>التليفون المحمول</th>
-                          
-                                                      <th>التاريخ</th>
+                              <th>التاريخ</th>
 
                             <th>حالة</th>
                             <th>حدث</th>
@@ -125,17 +124,17 @@
                                 <td>{{$user->id}}</td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->getUserType()}}</td>
-                               
+
                                 <td>
-                                
+
                                     @foreach($user->UserPriceing as $val)
-                                    {{$val->type}} 
+                                    {{$val->type}}
                                     @endforeach
-                                    
+
                                 </td>
-                               
-                                   
-                                <td>{{$user->email}}</td>
+
+
+{{--                                <td>{{$user->email}}</td>--}}
                                 <td>{{$user->MOP}}</td>
                                 <td>{{$user->created_at}}</td>
                                 <td>
