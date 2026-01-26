@@ -11,6 +11,7 @@ target/
 dist/
 .idea/
 .htaccess
+public/.htaccess
 TEST*.xml
 .DS_Store
 Thumbs.db
