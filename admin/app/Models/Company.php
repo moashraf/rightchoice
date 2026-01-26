@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use App\Models\SubArea;
 
 
 
@@ -112,12 +113,12 @@ class Company extends Model
 
     public function districtinfo()
     {
-        return $this->belongsTo(district::class, 'district_id');
+        return $this->belongsTo(District::class, 'district_id');
     }
 
     public function subareainfo()
     {
-        return $this->belongsTo(subarea::class, 'area_id');
+        return $this->belongsTo(SubArea::class, 'area_id');
     }
 
     public function serviceinfo()

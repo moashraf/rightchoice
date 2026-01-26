@@ -35,6 +35,6 @@ class districtRepository extends BaseRepository
      **/
     public function model()
     {
-        return district::class;
+        return District::class;
     }
 }

@@ -24,6 +24,6 @@ class CreatesubareaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return subarea::$rules;
+        return SubArea::$rules;
     }
 }

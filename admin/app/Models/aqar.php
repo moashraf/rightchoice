@@ -6,8 +6,8 @@ use App\Enums\StatusEnum;
 use App\Enums\VIPEnum;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
+use App\Models\SubArea;
+use App\Models\Finish_type;
 
 /**
  * Class aqar

@@ -24,6 +24,6 @@ class Createfinish_typeAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return finish_type::$rules;
+        return Finish_type::$rules;
     }
 }

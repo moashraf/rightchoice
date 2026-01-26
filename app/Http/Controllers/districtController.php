@@ -40,7 +40,7 @@ class districtController extends AppBaseController
      */
     public function create()
     {
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.create',compact('governrate'));
     }
 
@@ -79,7 +79,7 @@ class districtController extends AppBaseController
             return redirect(route('districts.index'));
         }
 
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.show',compact('governrate'))->with('district', $district);
     }
 
@@ -100,7 +100,7 @@ class districtController extends AppBaseController
             return redirect(route('districts.index'));
         }
 
-        $governrate   = governrate::pluck('governrate', 'id');
+        $governrate   = Governrate::pluck('governrate', 'id');
         return view('districts.edit',compact('governrate'))->with('district', $district);
     }
 
