@@ -167,5 +167,14 @@
 
 @stack('page_scripts')
 
+<script>
+$(document).ready(function() {
+    var activeItem = $('.sidebar .nav-link.active');
+    if (activeItem.length) {
+        activeItem[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+</script>
+
 </body>
 </html>
