@@ -8,6 +8,10 @@
                     <h1>تفاصيل المستخدم</h1>
                 </div>
                 <div class="col-sm-6">
+                    <a class="btn btn-primary float-right ml-2"
+                       href="{{ route('user.aqars', $user->id) }}">
+                        عرض العقارات
+                    </a>
                     <a class="btn btn-default float-right"
                        href="{{ route('user.index') }}">
                         رجوع

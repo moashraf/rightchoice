@@ -11,18 +11,20 @@
 <div class="adv">
     <?php //dd($random_ads); ?>
  <a  target="_blank"  href="{{  $random_ads->name  }}" >
-	
 
-                        
-                                
-                                    
+
+
+
+
                  	<img src="{{ URL::to('/').'/images/'.$random_ads->img}}" class="image-fluid w-100 mx-auto mb-5" alt="">
-                   
+
 
 </a>
  </div>
 
-            <h3 class="headingTitle2 hideTitle2" style="    margin-bottom: 28px;  font-size: 24px!important;">{{ $aqar->title }} </h3>
+            <h3 class="headingTitle2 hideTitle2" style=" margin-bottom: 28px;  font-size: 24px!important;">
+                  {{ $aqar->title }}
+            </h3>
 
             <div class="row">
                 <div class="col-lg-4">
@@ -67,12 +69,12 @@
                                         @if ($aqar->governrateq)
                                         {{ $aqar->governrateq->governrate }}
                                         @endif
-                                        
+
                                         @if ($aqar->districte),
                                         {{ $aqar->districte->district }}
-                                        @endif  
-                                        
-                                      
+                                        @endif
+
+
                                         <div class="inc-fleat-icon"><img src="{{asset('images/icons/location.png')}}"
                                                 width="13" alt="" /></div>
                                     </div>
@@ -101,7 +103,7 @@
                                        @if($show2)
                                         <a class="btn btn-success" href="tel:{{ $aqar->user->MOP }}">{{ $aqar->user->MOP }}</a>
                                         @else
-                                        
+
                                         <button onclick="document.getElementById('myModal').style.display = 'block'"
                                             class="btn btn-success">اظهر الرقم</button>
                                                 @endif
@@ -198,7 +200,7 @@
                                         @else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
                                             alt="main">
- 
+
                                         @endif
 
 
@@ -207,12 +209,18 @@
 
 
                                 </a>
-                                 <?php  if($aqar->vip ==1 ){   ?>               
+                      <?php  if($aqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1){   ?>
 
-  <div class="views" style=" left: 13px;">
+                        <div class="views" style=" left: 13px;">
                             <div class="views-1">مميز</div>
                         </div>
-                                                         <?php }  ?>               
+                              <?php }  ?>
+
+                              <?php if(\Carbon\Carbon::now()->diffInYears($aqar->created_at) >= 1){ ?>
+                                <div class="views " style="left: 13px;">
+                                    <div class="viewsRed">غير متاح</div>
+                                </div>
+                              <?php } ?>
 
 
                                 <div class="lazy" dir="ltr">
@@ -228,7 +236,7 @@
                                         </div>
                                     </a>
                                        <?php  //$image_info = exif_read_data("https://rightchoice-co.com/images/$images_url->img_url"); print_r( $image_info);  ?>
- 
+
                                     @endif
                                     @endforeach
 
@@ -240,7 +248,7 @@
                                 @if($aqar->firstImage)
                                 <a href="{{ URL::to('/').'/images/'.$aqar->firstImage->img_url}}"
                                     data-lightbox="roadtrip" class="btn btn-light lightbtn">
-                                  <b>  {{ trans('langsite.show_photos')}}  
+                                  <b>  {{ trans('langsite.show_photos')}}
                                     ( <?php echo(   $aqar->images ->count() ); ?> )
                                     </b>
                                     <img src="https://img.icons8.com/carbon-copy/100/000000/camera--v1.png" width="20"
@@ -262,11 +270,11 @@
                                         ,
                                         {{ $aqar->subAreaa->area }}
                                         @endif
-                                        
+
                                            @if ($aqar->compounds),
                                         {{ $aqar->compounds->compound }}
-                                        @endif 
-                                        
+                                        @endif
+
                                         <div class="inc-fleat-icon"><img src="{{asset('images/icons/location.png')}}"
                                                 width="13" alt="" /></div>
                                     </div>
@@ -279,18 +287,18 @@
                                                 width="13" alt="" /></div>
 
                                     </div>
-                                    
-                                    
+
+
                                          <div class="listing-card-info-icon">
-عدد المشاهدات 
+عدد المشاهدات
 
 {{ $aqar->views }}
 
                                         <div class="fa fa-eye"> </div>
 
                                     </div>
-                                    
-                                    
+
+
                                     <div class="listing-card-info-icon">
 
                                         تاريخ الاعلان
@@ -359,7 +367,7 @@
 
 
                                     <!--<div class="listing-card-info-icon">
-                        {{ $aqar->installment_value }} {{ trans('langsite.value_installment')}} 
+                        {{ $aqar->installment_value }} {{ trans('langsite.value_installment')}}
                         <div class="inc-fleat-icon"><img src="{{asset('images/icons/installment.png')}}" width="13" alt="" /></div>
                     </div>-->
 
@@ -526,29 +534,29 @@
 
                         <p>
                             <div  id="small_text_show">
-                                           <?php 
+                                           <?php
 
                                                 $eastern_arabic  = array('0','1','2','3','4','5','6','7','8','9');
                                                 $western_arabic= array('٠','١','٢','٣','٤','٥','٦','٧','٨','٩');
 
                                                 $str = str_replace($western_arabic, $eastern_arabic, $aqar->description) ?? '';
-                                                
+
                                                 $data_final = preg_replace('/[^\w\s]+/u', ' ', $str);
-                                                  
-//echo $data_final ; 
+
+//echo $data_final ;
 
 echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;
 ?>
                             {{--  \Illuminate\Support\Str::limit(preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********01', $aqar->description), 100, '') --}}
-                            
+
                             </div>
                             @if (\Illuminate\Support\Str::length($aqar->description) > 500)
                             <span id="dots">...</span>
                             <span
                                 id="more">
-                                
+
                                 {{-- preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********', preg_replace('/\d+/u', '*********', $aqar->description)) --}}
-                                
+
                                 <?php echo $data_final ; ?>
                                 </span>
 
@@ -627,35 +635,35 @@ echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;
 
                                             <div>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarSim->slug) }}"  target="_blank">
-                                                    
-                                                       
+
+
               @if($aqarSim->mainImage)
                                  <img src="{{ URL::to('/').'/images/'.$aqarSim->mainImage->img_url}}"   class="img-fluid mx-auto"  alt="main">
-                            
+
                                 @else
-                                
-							
+
+
                                                     @if($aqarSim->firstImage)
                                                     <img
                                                         src="{{ URL::to('/').'/images/'.$aqarSim->firstImage->img_url}}"
                                                         class="img-fluid mx-auto" alt="" />
-                                                        
-                                                     
-                                                        
+
+
+
                                                           @else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
                                             alt="main">
- 
+
                                         @endif
-                                                        
-                                                        
-                                                        
+
+
+
                                                         @endif
-                                                               
-                                                        
+
+
                                                         </a>
-                                                        
-                                                        
+
+
                                                         </div>
                                                      </div>
                                     </div>
@@ -842,12 +850,12 @@ echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;
             <br />
             <x-logo />
             <br />
-             
-                
-                
+
+
+
                 <p> تحتاج الي  {{ $aqar->points_avail }} نقطه    </p>
-           
-           
+
+
            <p> رصيد نقاطك لا يكفي  <br> الانتقال الى صفحه الباقات ؟ </p>
            <div>
 
