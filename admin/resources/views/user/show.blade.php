@@ -12,6 +12,10 @@
                        href="{{ route('user.aqars', $user->id) }}">
                         عرض العقارات
                     </a>
+                    <a class="btn btn-warning float-right ml-2"
+                       href="{{ route('complaintsUser', $user->id) }}">
+                        عرض الشكاوى
+                    </a>
                     <a class="btn btn-default float-right"
                        href="{{ route('user.index') }}">
                         رجوع
