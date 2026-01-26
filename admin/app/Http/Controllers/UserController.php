@@ -43,7 +43,7 @@ class UserController extends AppBaseController
 
     public function store(Request $request,User $user)
     {
-        
+
         $input = $request->all();
         $request->validate([
             'name'=>'Required',
@@ -53,7 +53,7 @@ class UserController extends AppBaseController
             ]);
 
         // $this->validate($request,$user->rules($request->password));
-        
+
         //generate => image file
         if ($request->has('img') && !is_null($request->img))
         $request->merge(['profile_image' => _uploadFileWeb($request->img, 'user/')]);
@@ -133,8 +133,9 @@ class UserController extends AppBaseController
 
 
 
-    public function show(User $user)
+    public function show($id)
     {
+        $user = User::find($id);
         return view('user.show', compact('user'));
     }
 
