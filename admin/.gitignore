@@ -6,6 +6,7 @@ dist/
 /vendor
 *.log
 *.md
+.idea
 *.jar
 target/
 dist/
