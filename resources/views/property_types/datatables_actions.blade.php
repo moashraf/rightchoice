@@ -1,0 +1,18 @@
+{!! Form::open(['route' => ['propertyTypes.destroy', $id], 'method' => 'delete']) !!}
+
+<div class='btn-group'>
+    <a href="{{ route('propertyTypes.show', $id) }}" class='btn btn-default btn-xs'>
+        <!-- <i class="glyphicon glyphicon-eye-open"></i> -->
+        <i class="fas fa-eye text-info font-18"></i>
+    </a>
+    <a href="{{ route('propertyTypes.edit', $id) }}" class='btn btn-default btn-xs'>
+        <!-- <i class="glyphicon glyphicon-edit"></i> -->
+        <i class="fas fa-edit text-info font-18"></i>
+    </a>
+    <!-- {!! Form::button('<i class="fa fa-trash text-danger font-18"></i>', [
+        'type' => 'submit',
+        'class' => 'btn btn-default btn-xs',
+        'onclick' => "return confirm('Are you sure?')"
+    ]) !!} -->
+</div>
+{!! Form::close() !!}
