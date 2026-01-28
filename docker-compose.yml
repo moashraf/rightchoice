@@ -54,7 +54,7 @@ services:
       PMA_USER: root
       PMA_PASSWORD: secret
     ports:
-      - "8080:80"
+      - "9090:80"
     depends_on:
       - db
     networks:
