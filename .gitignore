@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 *.zip
+.idea
 *.md
 /vendor
 .env
