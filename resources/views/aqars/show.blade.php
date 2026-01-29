@@ -525,8 +525,10 @@
                   -->
                             الاوقات المناسبه للاتصال بالمالك
 
+                            @if ($aqar->callTimes)
 
                             {{ $aqar->callTimes->call_time }}
+                            @endif
 
                         </p>
 
