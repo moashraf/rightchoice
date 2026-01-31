@@ -9,28 +9,26 @@
 
 
         <div class="container">
- 
+
             <div class="row">
 
 
 
-             
+
 
                 <div class="col-lg-8">
 
 
 
                     <h2 style="font-weight: bold;" class="mb-5">سجل الان مجانا</h2>
- 
+
 
 
                     @if (count($errors) > 0)
 
 
 
-                    <ul style="
-  COLOR: red;
-  font-size: 20px;">
+                    <ul style="COLOR: red; font-size: 20px;">
 
 
 
@@ -54,23 +52,11 @@
 
 
 
-
-
-
-
-
-
-
-
                     <form method="POST" action="{{ route('custom_register', Config::get('app.locale')) }}" autocomplete="off" >
 
 
 
                         @csrf
-
-
-
-
 
                         <div class="row">
 
@@ -82,15 +68,13 @@
 
 
 
-                                    <label for="name">   
-                                    
-                                    الاسم الكامل 
+                                    <label for="name">
+
+                                    الاسم الكامل
                                     <span class="text-danger">*</span>
                                     </label>
 
-
-
-                                    <input  oninvalid="this.setCustomValidity('   برجاء ادخال    الاسم     ')" oninput="this.setCustomValidity('')" 
+                                    <input  oninvalid="this.setCustomValidity('   برجاء ادخال    الاسم     ')" oninput="this.setCustomValidity('')"
                                     name="name" autocomplete="off"   value="{{ old('name') }}" required autofocus type="text"
                                         class="myselect" id="name" aria-describedby="" >
 
@@ -107,32 +91,22 @@
 
                                 <div class="form-group">
 
-
-
-                                    <label for="email">   
+                                    <label for="email">
                                     البريد الالكتروني
-                                                                        <span class="text-danger">*</span>
+{{--                                    <span class="text-danger">*</span>--}}
 
                                     </label>
 
 
-
-                                    <input  
-                                    oninvalid="this.setCustomValidity('   برجاء ادخال    البريد     ')" oninput="this.setCustomValidity('')"
-                                    type="email" name="email" value="{{ old('email') }}" required
-                                        class="myselect"  autocomplete="off" id="email" aria-describedby="emailHelp" 
+                                    <input
+                                    oninvalid="this.setCustomValidity('   برجاء ادخال    البريد     ')"
+                                    oninput="this.setCustomValidity('')"
+                                    type="email" name="email" value="{{ old('email') }}"
+                                        class="myselect"  autocomplete="off" id="email" aria-describedby="emailHelp"
                                        >
 
 
-
                                 </div>
-
-
-
-
-
-
-
 
 
                             </div>
@@ -140,20 +114,7 @@
                         </div>
 
 
-
-
-
-
-
-
-
                         <div class="row">
-
-
-
-
-
-
 
                             <div class="col-lg-6">
 
@@ -164,29 +125,23 @@
 
 
                                     <label for="user-type">
-                            
+
                                         نوع المستخدم
-                                        
-                                        
-                                                                            <span class="text-danger">*</span>
+
+                                          <span class="text-danger">*</span>
 
                                         </label>
 
 
 
-                                    <select  
+                                    <select
                                     oninvalid="this.setCustomValidity('   برجاء ادخال  نوع المستخدم    ')"
-  oninput="this.setCustomValidity('')"
-     autocomplete="off"  name="TYPE" id="user-type" class="myselect">
+                                      oninput="this.setCustomValidity('')"
+                                         autocomplete="off"  name="TYPE" id="user-type" class="myselect">
 
 
                                         <option value="">
 أختار                                        </option>
-
-
-
- 
-
 
                                         <option value="1">
                                             بائع او مؤجر
@@ -202,12 +157,6 @@
 
                                         <option value="3"> مطور عقاري </option>
 
-
-
-
-
-
-
                                     </select>
 
 
@@ -217,17 +166,14 @@
 
 
                             </div>
-                    
 
 
-    <div class="col-lg-6"> 
+
+    <div class="col-lg-6">
 
                         <div class="form-group  ">
+                                  <label name="phone" for="phone">
 
-
-
-                            <label name="phone" for="phone">
-                                
                                 رقم الهاتف
                                     <span class="text-danger">*</span></label>
 
@@ -252,17 +198,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                         <div class="row" id="motwar" style="display:none;">
                             <div class="col-lg-4">
 
@@ -274,7 +209,7 @@
                                 </div>
 
                             </div>
-                            
+
                             <div class="col-lg-4">
                                 <div class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
                                     <label for="employe-type">المسمى الوظيفي<span class="text-danger">*</span></label>
@@ -290,8 +225,8 @@
                                 </div>
 
                             </div>
-                         
-                         
+
+
                             <div class="col-lg-4">
                                 <div class="form-group">
 
@@ -324,12 +259,12 @@
 
                                     <label for="exampleInputPassword1">
                                         ادخل كلمه المرور
-                                        
+
                                                                             <span class="text-danger">*</span></label>
 
 
 
-                                    <input 
+                                    <input
                                         oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف       ')" oninput="this.setCustomValidity('')"
                                         minlength="4" name="password" autocomplete="off"   required type="password" class="myselect passwordInput"
                                         id="exampleInputPassword1" placeholder="كلمه المرور">
@@ -363,8 +298,8 @@
 
 
 
-                                    <input 
-                                            
+                                    <input
+
                                             oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف       ')" oninput="this.setCustomValidity('')"
                                             minlength="4" autocomplete="off"  name="password_confirmation" required type="password" class="myselect passwordInput"
                                                                                     id="exampleInputPassword1" >
@@ -396,33 +331,30 @@
                             <input oninvalid="this.setCustomValidity(' برجاء الضغط علي الموافقه علي الشروط والاحكام       ')" oninput="this.setCustomValidity('')"
                             required type="checkbox" class="form-check-input" name="check">
 
-
-
-
                             <label style="padding-right: 30px;" class="form-check-label" for="check">
                                           اوافق على
                                        <strong> <a target="_blank" href="{{ url(Config::get('app.locale').'/terms-conditions') }}">&nbsp;  شروط و احكام  &nbsp;  </a></strong>
 موقع
-Right Choice 
+Right Choice
 
-<span  id="termsCheckLabel"></span>
-                                </label>
+                            <span  id="termsCheckLabel"></span>
+                            </label>
 
 
 
                         </div>
-<br>
-<div class="form-group">
-                                           <label class="form-label"> </label>
-                                                <div class="col-md-6">
-                                                    <div class="caption-parent w-100" >
-                                                            {!! NoCaptcha::display() !!}
-                                                             <small class="text-danger">{{ $errors->first('g-recaptcha-response') }}</small>
-                                                    </div>
-                                                
-                                                </div>
-                                        </div>
-<br>
+{{--                                <br>--}}
+{{--                                <div class="form-group">--}}
+{{--                                   <label class="form-label"> </label>--}}
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="caption-parent w-100" >--}}
+{{--                                                    {!! NoCaptcha::display() !!}--}}
+{{--                                                     <small class="text-danger">{{ $errors->first('g-recaptcha-response') }}</small>--}}
+{{--                                            </div>--}}
+{{--                                        --}}
+{{--                                        </div>--}}
+{{--                                </div>--}}
+{{--                                <br>--}}
                         <button type="submit" class="btn our-btn">سجل</button>
 
 
@@ -434,10 +366,10 @@ Right Choice
                 </div>
 
    <div class="col-lg-4">
- 
+
 <img src="{{asset('/images/03 (1).jpg')}}" alt="" style="  width: 100%;  padding-top: 25px;" >
 
- 
+
                 </div>
 
 
@@ -456,7 +388,7 @@ Right Choice
 
     </section>
 
-    {!! NoCaptcha::renderJs() !!}
+{{--    {!! NoCaptcha::renderJs() !!}--}}
 <style>
     .field-icon {
   float: left;
