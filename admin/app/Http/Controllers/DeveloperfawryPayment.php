@@ -139,7 +139,7 @@ $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demo
             $apiRequest = $client->request('POST', $fawryUrl, $requestContent);
             $response = json_decode($apiRequest->getBody()->getContents(), true);
 
- // dd($response);
+            // dd($response);
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
 
