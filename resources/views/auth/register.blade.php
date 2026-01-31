@@ -82,9 +82,6 @@
                             </div>
 
 
-
-
-
                             <div class="col-lg-6">
 
 
@@ -182,12 +179,6 @@
                             <input  oninvalid="this.setCustomValidity('   برجاء ادخال    رقم الهاتف     ')" oninput="this.setCustomValidity('')"
                             required id="phone"  value="{{ old('MOP') }}" style="/* width:96% */" type="number" name="MOP"
                                 class="myselect" />
-
-
-
-
-
-
 
                         </div>
     </div>

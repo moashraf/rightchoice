@@ -148,7 +148,6 @@ class PageController extends Controller
     public function custom_register(Request $request, $locale)
     {
 
-        //dd($request['name']);
 
 
         $locale =   app()->getLocale();
@@ -158,16 +157,11 @@ class PageController extends Controller
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
-
-            'email' => 'required|min:3|email|max:90|unique:users',
-
+            'MOP' => 'required|min:3|max:90|unique:users',
             'password'     => 'required|confirmed|max:255',
             //    'TYPE' => 'required|max:90',
             // 'AGE' => 'required|max:90',
-
-            'MOP' => 'required|min:3|max:90|unique:users',
-
-
+            //'email' => 'email|max:90|unique:users',
 
         ]);
 
