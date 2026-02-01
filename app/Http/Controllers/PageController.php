@@ -157,7 +157,7 @@ class PageController extends Controller
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
-            'MOP' => 'required|min:3|max:90|unique:users',
+            'MOP' => 'required|min:3|max:11|unique:users',
             'password'     => 'required|confirmed|max:255',
             //    'TYPE' => 'required|max:90',
             // 'AGE' => 'required|max:90',

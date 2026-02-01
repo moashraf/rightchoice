@@ -892,7 +892,7 @@ echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;
             /* Hidden by default */
             position: fixed;
             /* Stay in place */
-            z-index: 1;
+            z-index: 100;
             /* Sit on top */
             padding-top: 200px;
             /* Location of the box */
