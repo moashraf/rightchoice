@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use InfyOm\Generator\Utils\ResponseUtil;
-use Response;
-
 /**
  * @SWG\Swagger(
  *   basePath="/api/v1",
@@ -20,17 +17,24 @@ class AppBaseController extends Controller
 {
     public function sendResponse($result, $message)
     {
-        return Response::json(ResponseUtil::makeResponse($message, $result));
+        return response()->json([
+            'success' => true,
+            'data' => $result,
+            'message' => $message
+        ], 200);
     }
 
     public function sendError($error, $code = 404)
     {
-        return Response::json(ResponseUtil::makeError($error), $code);
+        return response()->json([
+            'success' => false,
+            'message' => $error
+        ], $code);
     }
 
     public function sendSuccess($message)
     {
-        return Response::json([
+        return response()->json([
             'success' => true,
             'message' => $message
         ], 200);
