@@ -2,7 +2,8 @@
 
 use App\Models\aqar;
 use Illuminate\Support\Facades\Route;
-
+use App\Mail\TestEmail;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,13 @@ Route::get('/clear-cache', function() {
 });
 
 
+
+
+Route::get('send-email', function () {
+   // Mail::to('recipient@example.com')->send(new TestEmail());
+    Mail::to('figoashraf@gmail.com')->send(new \App\Mail\MaiableClass('name'));
+    return 'Email sent successfully!';
+});
 
 
 //Re optimized class loader:
@@ -66,18 +74,18 @@ Route::get('/config-clear', function() {
 });
 
 /*   Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-  
- 
+
+
         return view('dashboard');
     })->name('dashboard');  */
-    
+
      Route::get('/', function() {
     $locale = App::getLocale();
            // dd($locale);
     return redirect('/'.$locale);
         });
 
- 
+
     Route::get('/dashboard', function() {
     $locale = App::getLocale();
            // dd($locale);
@@ -91,10 +99,10 @@ Route::group(['prefix' => '{locale}'], function (){
 
             Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale']);
             Route::get('/dashboard', function() {
-            
+
             return View('dashboard');
         })->middleware(['setLocale']);
-        
+
 
 
 
@@ -114,55 +122,55 @@ Route::group(['prefix' => '{locale}'], function (){
         Route::get('/update_companies/{company}', 'App\Http\Controllers\CompanyController@updateCompany')->middleware('setLocale');
         Route::get('/fawryCallback', 'App\Http\Controllers\PricController@fawryCallback')->middleware('setLocale');
         Route::get('/tmyezz_fawryCallback', 'App\Http\Controllers\PricController@tmyezz_fawryCallback')->middleware('setLocale');
-        
-        
+
+
       //  Route::post('/post_fawry_code_send', 'App\Http\Controllers\PricController@getNumber')->middleware('setLocale')->name('post_fawry_code_send');
-        
-        
-        
+
+
+
       //  Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session')->middleware('setLocale');
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
         });
-         
+
     Route::get('/login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'create'])
             ->middleware(['guest:'.config('fortify.guard')])
             ->name('login')->middleware('setLocale');
-            
-            
+
+
                 $limiter = config('fortify.limiters.login');
- 
+
     Route::post('/login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'store'])
         ->middleware(array_filter([
             'guest:'.config('fortify.guard'),
             $limiter ? 'throttle:'.$limiter : null,
         ]))->middleware('setLocale');
-        
-        
-        
+
+
+
     Route::post('/customLoginManual', 'App\Http\Controllers\PageController@customLoginManual')->name('customLoginManual')->middleware('setLocale');
     Route::get('/register', 'App\Http\Controllers\PageController@register')->name('register')->middleware('setLocale');
     Route::get('/verify-your-phone', 'App\Http\Controllers\PageController@otbPage')->name('otbPage')->middleware('setLocale');
     Route::get('/reset-your-password', 'App\Http\Controllers\PageController@otbReset')->name('otbReset')->middleware('setLocale');
 
     Route::get('/donePhoneVerf','App\Http\Controllers\PageController@donePhoneVerf')->name('donePhoneVerf')->middleware('setLocale');
-    
+
     Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register')->middleware('setLocale');
 
- 
+
    Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade')->middleware(['setLocale']);
    Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar')->middleware('setLocale');
    Route::get('/all_aqar_for_sale', 'App\Http\Controllers\AqarController@all_aqar_for_sale')->middleware('setLocale');
    Route::get('/all_aqar_for_rent', 'App\Http\Controllers\AqarController@all_aqar_for_rent')->middleware('setLocale');
-   
- 
+
+
 
    Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance')->name('aqar-finnance')->middleware('setLocale');
    Route::get('/aqars/update/{aqar}', 'App\Http\Controllers\AqarController@edit')->middleware('setLocale');
-   
+
    Route::get('/aqars/{aqar}', 'App\Http\Controllers\AqarController@show')->middleware('setLocale')->middleware('setLocale');
-        
-        
+
+
  // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
  // Route::get('/tamyeez_vip/{vipid}/{aqarSingle_id}', 'App\Http\Controllers\PricController@tamyeez_vip')->middleware('setLocale');
 
@@ -172,33 +180,33 @@ Route::group(['prefix' => '{locale}'], function (){
    Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
 
 
-    
+
     Route::get('/terms-conditions', 'App\Http\Controllers\PagesController@index')->middleware('setLocale');
     Route::get('/contact-us', 'App\Http\Controllers\PagesController@contact')->middleware('setLocale');
     Route::get('/about-us', 'App\Http\Controllers\PagesController@about')->middleware('setLocale');
-    
-    
-    
-    
+
+
+
+
     Route::get('/blogs', 'App\Http\Controllers\blogsController@index')->name('blogs')->middleware('setLocale');
 
     Route::get('/blogs/{slug}', 'App\Http\Controllers\blogsController@show')->name('blog')->middleware('setLocale');
-    
 
- 
+
+
 
     //Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware('setLocale');
 
-       
-        
-        
+
+
+
         Route::get('/ourcompanies-{slug}', 'App\Http\Controllers\CompanyController@furn')->middleware('setLocale');
         Route::get('/companies/{compan}', 'App\Http\Controllers\CompanyController@show')->middleware('setLocale');
         Route::get('/ourcompanies-{slug}/filterby', 'App\Http\Controllers\CompanyController@sorting')->middleware('setLocale')->name('filterBy');
-        
+
         Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
-        
-        
+
+
 
 });
 Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');
@@ -210,7 +218,7 @@ Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@store
 
 //Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register');
 
-// goo 
+// goo
 Route::group(['middleware' => 'auth:sanctum' ], function ()
 {
 //Route::get('/add_company', 'App\Http\Controllers\CompanyController@create');
@@ -302,11 +310,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-// goo 
+// goo
     Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbPage')->name('verficationApply');
-    
+
     Route::post('/phoneVerficationReset', 'App\Http\Controllers\PageController@verifyOtbReset')->name('verficationReset');
-    
+
     Route::post('/phoneResetPassword','App\Http\Controllers\PageController@phoneResetPassword')->name('phoneResetPassword');
 
 
@@ -321,6 +329,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
         });
         Route::post('/updatedProfileUser', 'App\Http\Controllers\UpdateProfileUserController@UpdateProfileUser');
         Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session');
-        
+
         Route::post('/resend-otb', 'App\Http\Controllers\PageController@resendOTB')->name('resendOTB');
 

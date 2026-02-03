@@ -32,9 +32,12 @@ class MaiableClass extends Mailable
     public function build()
     {
         return $this
-            ->view('emails.example-email') // Use the Blade view you created
+            ->view('emails.example-email')
+            // Use the Blade view you created
             ->subject('Your Complain Status')
-            ->with(['name' => $this->name]); // You can customize this based on your data      // Set the email subject
+            ->with(['name' => $this->name]);
+        // You can customize this based on your data
+        //      // Set the email subject
 
     }
 
