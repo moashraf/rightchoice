@@ -18,7 +18,7 @@ class DeveloperfawryPayment extends Controller
 
     public function buildMessageSignatureV2($amount, $merchantRefNum, $customerProfileId)
     {
-        
+
 $merchantCode    = 'TUDH+sU93QqTh4bRQqAadQ==';
 $merchantRefNum  = '99900642041';
 $merchant_cust_prof_id  = '458626698';
@@ -47,13 +47,13 @@ return hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id 
 
 
 ////////////////////////////////////////////////////////////////////////////
-    
-    
-    
+
+
+
     public function getProductsJSON($amount)
     {
         $data = [] ;
-        
+
           $data[0]['itemId']       = 4365;
             $data[0]['description']  = "435435";
             $data[0]['price']        = $amount;
@@ -71,18 +71,18 @@ return hash('sha256' , $merchantCode . $merchantRefNum . $merchant_cust_prof_id 
         */
         return response()->json($data);
     }
-    
-    
-    
+
+
+
     ////////////////////////////////////////////////////////////////////////////
 
-    
-   
+
+
       public function callfary_api_card()
     {
- 
-  
-       // $merchantRefNum=  $six_digit_random_number = random_int(100000, 999999);  
+
+
+       // $merchantRefNum=  $six_digit_random_number = random_int(100000, 999999);
      //   $amount=20.22;
        // $amount = number_format((float)$amount, 2, '.', '');
 $merchantCode    = 'TUDH+sU93QqTh4bRQqAadQ==';
@@ -101,7 +101,7 @@ $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demo
 
         $fawryUrl = 'https://www.atfawry.com/ECommerceWeb/api/cards/cardToken';
         $data = [
-                   
+
          'merchantCode' => $merchantCode,
         'customerProfileId'=> $merchant_cust_prof_id,
         'customerMobile' => '01234567891',
@@ -114,40 +114,40 @@ $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demo
         'enable3ds' => true,
         'isDefault' => true,
         'returnUrl' => $returnUrl
-        
-                  
-              
+
+
+
         ];
         //dd($data);
        // return $this->callPostApi($fawryUrl,$data);
-        
+
          $payload = json_encode($data);
         $requestContent = [
             'headers' => [
               'Accept' => 'application/json',
               'Content-Type' => 'application/json',
-     
+
   //  'Content-Length: ' . strlen($payload)
 
             ],
-            'json' =>  $data 
-                        
+            'json' =>  $data
+
         ];
         try {
             //$client = new \GuzzleHttp\Client(['verify' => false ]);
             $client = new \GuzzleHttp\Client();
             $apiRequest = $client->request('POST', $fawryUrl, $requestContent);
             $response = json_decode($apiRequest->getBody()->getContents(), true);
- 
+
  dd($response);
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
-           
+
               $referenceNumber=($response['referenceNumber']);
-              $customerMobile=($response['customerMobile']);
-           
+               $customerMobile = isset($response['customerMobile']) ? $response['customerMobile'] : 'N/A';
+
  /////////////////////////////////////////////
- 
+
             $FawryPayment = new FawryPayment();
 
         $FawryPayment->paymentAmount =$amount  ;
@@ -161,41 +161,41 @@ $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demo
         $FawryPayment->paqaat_priceing_sale_id = $request->price_id;
          $FawryPayment->save();
          /////////////////////////////////////////////
-        
+
  $message="
  $referenceNumber
-  استخدم الكود دا وانت بتدفع في اي منفذ من منافذ فوري الموجودة في انحاء الجمهورية  رقم  الهاتف الخاص بك هو 
+  استخدم الكود دا وانت بتدفع في اي منفذ من منافذ فوري الموجودة في انحاء الجمهورية  رقم  الهاتف الخاص بك هو
   $customerMobile
-  المبلغ الطلوب سداده 
+  المبلغ الطلوب سداده
   $amount
   ";
         session()->flash('success',$message );
-        return view('/th', compact('message'));  
-        
-        
-         
+        return view('/th', compact('message'));
+
+
+
 
         } catch (RequestException $re) {
-            
+
            // dd($re);
             Log::debug($re);
             return false;
         }
-  
-  
-  
-  
+
+
+
+
 
     }
-    
-    
+
+
     ////////////////////////////////////////////////////////////////////////////
 
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
 }
