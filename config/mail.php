@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
@@ -38,7 +37,7 @@ return [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.gmail.com'),
             'port' => env('MAIL_PORT', 465),
-            'from' => ['address' => 's46451659@gmail.com', 'name' => 'Rightchoice'],
+            'from' => ['address' => env('MAIL_FROM_ADDRESS', 's46451659@gmail.com'), 'name' => env('MAIL_FROM_NAME', 'Rightchoice')],
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
@@ -107,5 +106,4 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-
 ];
