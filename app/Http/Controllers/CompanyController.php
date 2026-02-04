@@ -18,7 +18,7 @@ use App\Models\Governrate;
 use App\Models\SubArea;
 use App\Models\User;
 use App\Models\Ads;
- 
+
 use App\Models\District;
 use App\Models\JobTitles;
 
@@ -36,7 +36,7 @@ class CompanyController extends Controller
 
 {
 
-    
+
 
     /**
 
@@ -60,27 +60,27 @@ class CompanyController extends Controller
 
 
       public function sorting(Request $request, $locale, $slug)
-    
+
         {
-            
+
                     $districtw = $request->location2;
 
-            
+
                     $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
-    
+
             //
-            
+
         $governrates = Governrate::all();
         $district = District::all();
-        
+
         $governratew = $request->governrate;
-        
+
         $getService = Service::where('slug',$slug)->first();
 
 
         if($getService){
-            
+
          if($districtw){
               $companies = Company::where('status',1)->where('serv_id', $getService->id)->where('governrate_id', $governratew)->Where('district_id', $districtw)->paginate(8);
          }else {
@@ -90,9 +90,9 @@ class CompanyController extends Controller
         }else{
             $companies = [];
         }
-            
-             return view('companies.companies', compact('companies','getService','governrates' ,'governratew', 'allAqars','district','districtw'));    
-    
+
+             return view('companies.companies', compact('companies','getService','governrates' ,'governratew', 'allAqars','district','districtw'));
+
         }
 
 
@@ -101,8 +101,8 @@ class CompanyController extends Controller
     public function furn(Request $request, $locale,$slug){
                 $allAqars = aqar::with('images')->with('governrateq')->with('districte')->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
-        
-        
+
+
         $governratew = $request->governrate;
         $district = District::all();
 
@@ -112,11 +112,11 @@ class CompanyController extends Controller
            // dd($locale);
         $getService = Service::where('slug',$slug)->first();
 
-        
+
       //  dd($getService);
-        
+
         if($getService){
-            
+
           $companies = Company::where('status',1)->where('serv_id', $getService->id)->paginate(6);
 
         }else{
@@ -137,7 +137,7 @@ class CompanyController extends Controller
 
         $companies = Company::where('status',1)->where('serv_id', 2)->paginate(6);
 
-        
+
 
         return view('companies.companies', compact('companies', 'allAqars'));
 
@@ -152,7 +152,7 @@ class CompanyController extends Controller
 
         $companies = Company::where('status',1)->where('serv_id', 3)->paginate(6);
 
-        
+
 
         return view('companies.companies', compact('companies', 'allAqars'));
 
@@ -167,7 +167,7 @@ class CompanyController extends Controller
 
         $companies = Company::where('status',1)->where('serv_id', 4)->paginate(6);
 
-        
+
 
         return view('companies.companies', compact('companies', 'allAqars'));
 
@@ -192,7 +192,7 @@ class CompanyController extends Controller
         $areas = SubArea::all();
 
         $governrate = Governrate::with('districts')->get();
-        
+
         $jobs = JobTitles::all();
 
         return view('companies.create-company', compact('areas', 'governrate', 'jobs' ));
@@ -216,11 +216,11 @@ class CompanyController extends Controller
      public function store(Request $request)
 
     {
-        
+
           if (!empty($request->area_id)) {
                 $areaCheck =  SubArea::where('area', $request->area_id)->orWhere('area', $request->area_id)->first();
             if($areaCheck){
-               $areaTab = $areaCheck->id; 
+               $areaTab = $areaCheck->id;
             }else{
             $areaTab = new SubArea();
             $areaTab->area = $request->area_id;
@@ -232,7 +232,7 @@ class CompanyController extends Controller
 
       //   $vendor = Auth::user();
 
-         
+
 
         if ($request->isMethod('post')) {
         $random_mass_num= random_int(111, 10000);
@@ -271,7 +271,7 @@ class CompanyController extends Controller
 
                 'photo'         => 'required|image|mimes:jpeg,jpg,png,gif',
 
-                
+
 
             ];
 
@@ -288,25 +288,25 @@ class CompanyController extends Controller
             } else {
 
                 try {
-                         
+
                          $register_user_data=  User::create([
 
                                                     'TYPE' => 4,
-                                    
+
                                                     'MOP' => $request['Phone'],
-                                    
+
                                                     'AGE' => 0,
-                                    
+
                                                     'name' => $request['Name'],
-                                    
+
                                                     'email' => $request['email'],
-                                    
+
                                                     'password' =>bcrypt($request->password),
-                                                    
-                                                    'phone_sms_otp' => $random_mass_num 
-                                    
-                                                ]); 
-                                                
+
+                                                    'phone_sms_otp' => $random_mass_num
+
+                                                ]);
+
                                                 $locale=   app()->getLocale();
 
                                                 $userID = $register_user_data->id;
@@ -316,7 +316,7 @@ class CompanyController extends Controller
                         if($cheackSlug){
                            $findSlug = true;
                         }
-                    
+
 
                         $company = new Company();
 
@@ -325,14 +325,14 @@ class CompanyController extends Controller
                         }else {
                             $company->Name = request('Name');
                         }
-                        
-                        
+
+
                         if($findSlug == true){
-            
+
                              $company->slug = Str::slug($request->Name, '-').'-'.Str::random(2);
                         }else{
-                            
-                           $company->slug = Str::slug($request->Name, '-');  
+
+                           $company->slug = Str::slug($request->Name, '-');
                         }
 
                         $company->governrate_id = request('governrate_id');
@@ -342,7 +342,7 @@ class CompanyController extends Controller
                             if($areaCheck){
                             $company->area_id = $areaTab;
                             }else{
-                              $company->area_id = $areaTab->id;  
+                              $company->area_id = $areaTab->id;
                             }
                         }
                         $company->district_id = request('district_id');
@@ -351,14 +351,14 @@ class CompanyController extends Controller
 
                         $company->user_id = $userID;
                        // dd($userID);
-                        
+
                           if (App::isLocale('en')) {
                             $company->Employee_Name = request('Employee_Name_en');
                         }else {
                           $company->Employee_Name = request('Employee_Name');
                         }
 
-                        
+
 
                         $company->Job_title = request('Job_title');
 
@@ -371,14 +371,14 @@ class CompanyController extends Controller
                         $company->Floor = request('Floor');
 
                         $company->unit_number = request('unit_number');
-                        
+
                         if (App::isLocale('en')) {
                             $company->details = request('details_en');
                         }else {
                            $company->details = request('details');
                         }
 
-                        
+
 
                         $company->Tax_card = request('Tax_card');
 
@@ -386,15 +386,15 @@ class CompanyController extends Controller
 
                         $company->Serv_id = request('Serv_id');
 
-                        
 
-                   
 
-                                        
+
+
+
 
                         if (!empty($request->photo)) {
 
-                                
+
 
                                $photoexplode = $request->photo->getClientOriginalName();
 
@@ -409,34 +409,25 @@ class CompanyController extends Controller
 
                                $request->photo->move(base_path() . '/public/images/', $imageNameGallery2);
 
-                               $input['photo']=    $imageNameGallery2; 
+                               $input['photo']=    $imageNameGallery2;
 
-                     
+
 
                                $company->photo = "$imageNameGallery2";
 
-                                  
+
 
                        }
+   $company->save();
 
-                
-
-                        
-
-                
-            
-                   // dd($request->all());
-
-                      $company->save();
-                      
 
 /******************************************************/
- 
+
 
 $MOP  = $request['Phone'];
 
 $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-$stringnalue="AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for https://rightchoice-co.com";
+$stringnalue="AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
 $code="D8FBFDD3DD684C85BC00E708FC5872EB";
   $sig = hash_hmac('sha256',$stringnalue,$code );
 $str = strtoupper($sig);
@@ -463,17 +454,15 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, "<?xml version='1.0' encoding='UTF-8'?>
 <SMSList>
 <SenderName>RightChoice</SenderName>
 <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-<SMSText>$random_mass_num is your verification code for https://rightchoice-co.com</SMSText>
+<SMSText>$random_mass_num is your verification code for  RightChoice </SMSText>
 </SMSList>
 </SubmitSMSRequest>");
 
 
 $resp = curl_exec($curl);
 curl_close($curl);
-//echo($random_mass_num);
 
-//var_dump($resp);
- 
+
  /******************************************************/
 
 
@@ -481,46 +470,42 @@ curl_close($curl);
                  //   session()->flash('success', 'تم اضافه الشركة بنجاح و جاري المراجعه');
 
                   //   return Redirect::back();
-                  
+
                   return redirect()->route('otbPage', ['userID' => $userID,'locale'=>$locale]) ;
 
                 }catch (\Exception $ex) {
-dd($ex);
-                    session()->flash('error', 'عفوا, يوجد خطأ ما');
-
-            
-
-                    return Redirect::back()->withInput($request->all());
+                     session()->flash('error', 'عفوا, يوجد خطأ ما');
+  return Redirect::back()->withInput($request->all());
 
                 }
 
-       
+
 
 
 
             }
 
- 
 
-            
+
+
 
         }
 
-        
+
 
         return Redirect::back();
 
 
 
     }
-   
-   
-   
-    
+
+
+
+
     public function updatedProfileCompany(Request $request ,Company $company)
     {
-        
-        
+
+
         $vendor = Auth::user();
 
         if ($request->isMethod('post')) {
@@ -555,7 +540,7 @@ dd($ex);
                 'Commercial_Register' => '',
 
                 'img'         => ( $request->img != null ? 'required|image|mimes:jpeg,jpg,png,gif' : ''),
-                
+
             ];
             $Validator = Validator::make($request->all(),$rules);
             if($Validator->fails()) {
@@ -565,11 +550,11 @@ dd($ex);
             } else {
                 try {
 
-                        
+
                     //Upload Image
                    if ($request->has('img') && !is_null($request->img))
                    {
-                            
+
                            $photoexplode = $request->img->getClientOriginalName();
                            $photoexplode = explode(".", $photoexplode);
                        //    $namerand = '-'.rand(1,900).'-';
@@ -578,11 +563,11 @@ dd($ex);
                            $namerand.= $photoexplode[0];
                            $imageNameGallery2 = $namerand . '.' . $request->img->getClientOriginalExtension();
                            $request->img->move(base_path() . '/public/images/', $imageNameGallery2);
-                           $input['img'] =    $imageNameGallery2; 
-                 
+                           $input['img'] =    $imageNameGallery2;
+
                            $request->merge(['photo' =>  $input['img']]);
-                              
-                   } 
+
+                   }
 
                    //update aqarDetails
                    if($request->Name){
@@ -591,14 +576,14 @@ dd($ex);
 
                     $updatedata = Company::findOrFail($company->id);
                     $updatedata->update($request->all());
-                    
-                    
+
+
                     $vendor->update([
                         'name' => $request->Name,
                         'MOP' => $request->Phone,
                             ]);
 
-                    
+
                     session()->flash('success', 'تم التعديل بنجاح');
                    // return Redirect(Config::get('app.locale').'/user_companies');
                    return Redirect::back();
@@ -607,8 +592,8 @@ dd($ex);
 
                     return Redirect::back()->withInput($request->all());
                 }
-                
-               
+
+
             }
         }
         return Redirect::back();
@@ -632,17 +617,17 @@ dd($ex);
 
     public function show($locale,$compan)
 
-    { 
+    {
 
           $random_ads= Ads::inRandomOrder()->first();
 
-    $allAqars = aqar::where('category',1) 
+    $allAqars = aqar::where('category',1)
          ->where('status',1)
          ->where('vip',1)
          ->with('images')->with('governrateq')->with('districte')
         ->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
-        
-        
+
+
 
         $company = Company::where('slug', $compan)->with("governrateq")->with("district_ashraf")->with("serv")->with('jobTitles')->where('status',1)->first();
     //dd($company->serv->Service);
@@ -671,9 +656,9 @@ dd($ex);
     {
 
         //
-        
+
         $areas = SubArea::all();
-        
+
         $district = District::all();
 
         $governrate = Governrate::with('districts')->get();
@@ -750,25 +735,25 @@ dd($ex);
 
 
             $allCompanies = Company::where('user_id', $getUser->id)->paginate(9);
-                
+
 
             return view('companies.user-companies',compact('allCompanies', 'points'));
     }
-        
+
      public function removeuserCompany(Request $request)
     {
-        
-        $cheackAqar = Company::find($request->item_id)->delete();
-        
-        if(!$cheackAqar){
-            
-           return response()->json(['massage'=>'This item is not found','status'=>202], 202); 
-        }
-        
-        
-        return response()->json(['massage'=>'Deleted Suucess!','status'=>200], 200); 
 
-    }    
+        $cheackAqar = Company::find($request->item_id)->delete();
+
+        if(!$cheackAqar){
+
+           return response()->json(['massage'=>'This item is not found','status'=>202], 202);
+        }
+
+
+        return response()->json(['massage'=>'Deleted Suucess!','status'=>200], 200);
+
+    }
 
 }
 
