@@ -6,9 +6,6 @@ use App\DataTables\aqarDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateaqarRequest;
 use App\Http\Requests\UpdateaqarRequest;
-use App\Models\LogActivity;
-use App\Repositories\ActivityLogger;
-use App\Repositories\ActivityLogStatus;
 use App\Repositories\aqarRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +38,6 @@ use App\Models\Notification;
 use App\Http\Requests\CreateNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
 use App\Repositories\NotificationRepository;
-use App\Models\Activity;
 
 class AqarController extends AppBaseController
 {
@@ -209,10 +205,9 @@ class AqarController extends AppBaseController
         $callTimes = call_time::pluck('call_time', 'id');
         $mzaya = Mzaya::select('mzaya_type', 'id')->get();
         $mzayaAqar = aqar_mzaya::where('aqar_id', $id)->get();
-         //dd($aqar);
-        $activity_logs = Activity::forSubject($aqar)->orderBy('id','DESC')->paginate(10);
+         // $activity_logs = Activity::forSubject($aqar)->orderBy('id','DESC')->paginate(10); // Removed Spatie Activitylog
 
-        return view('aqars.edit',compact('governrate','activity_logs','callTimes','mzaya','mzayaAqar','getPhoneFirst','district','finishtype','floor','licensetype','offertype','subarea','propertytype','users','aqarcategory','compound'))->with('aqar', $aqar);
+        return view('aqars.edit',compact('governrate','callTimes','mzaya','mzayaAqar','getPhoneFirst','district','finishtype','floor','licensetype','offertype','subarea','propertytype','users','aqarcategory','compound'))->with('aqar', $aqar);
     }
 
 
@@ -287,13 +282,6 @@ class AqarController extends AppBaseController
                          <br/>
                         5/عرض اكثر من وحده في الإعلان';
         }
-        activity()
-            ->causedBy(Auth::user())
-            ->performedOn($aqar)
-            ->tap(function(Activity $activity) use ($request) {
-                $activity->comment = $request->comment;
-            })
-            ->log('edited');
 
         $notification = Notification::create([
             'user_id'=>$user->id,

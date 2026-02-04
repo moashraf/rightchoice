@@ -272,11 +272,6 @@ class aqar extends Model
 
 
 
-    public function logActivities()
-    {
-        return $this->morphMany(LogActivity::class, 'loggable');
-    }
-
     public function users_views()
     {
         return $this->belongsToMany(User::class,'usercontactaqar','aqars_id','user_id');

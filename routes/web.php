@@ -93,7 +93,7 @@ Route::get('/config-clear', function() {
         });
 
 
-Route::group(['prefix' => '{locale}'], function (){
+Route::group(['prefix' => '{locale?}'], function (){
          Route::group(['middleware' => 'CheackUser'], function () {
             Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
