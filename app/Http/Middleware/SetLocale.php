@@ -16,13 +16,12 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next)
     {
-     
+
   $langs = array("en", "ar");
-       if(!in_array($request->segment(1), $langs)){
-           return abort(404, 'Page not found.');
-       }else{
+       if(in_array($request->segment(1), $langs)){
         app::setLocale($request->segment(1));
-           
+       }else{
+        app::setLocale('ar'); // default locale
        }
         return $next($request);
     }
