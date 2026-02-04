@@ -11,13 +11,11 @@ use App\Models\Complaints;
 use App\Repositories\ComplaintsRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Response;
 use App\Models\User;
 use App\Models\aqar;
 use App\Models\Complaints as comp;
-use Spatie\Activitylog\Models\Activity;
 
 class ComplaintsController extends AppBaseController
 {
@@ -151,14 +149,6 @@ class ComplaintsController extends AppBaseController
                 Mail::to($complaints->userinfo->email)
                     ->send(new \App\Mail\MaiableClass($complaints->userinfo->name));
         }
-        activity()
-            ->causedBy(Auth::user())
-            ->performedOn($complaints)
-            ->tap(function (Activity $activity) use ($request) {
-                $activity->comment = $request->comment;
-            })
-            ->withProperties($request->except(['_method', '_token']))
-            ->log('edited');
 
         Flash::success('Complaints updated successfully.');
 
