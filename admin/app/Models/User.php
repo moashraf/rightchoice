@@ -70,11 +70,6 @@ class User extends Authenticatable
             return 'hello';
     }
 
-    public function logActivities()
-    {
-        return $this->hasMany(LogActivity::class,'user_id');
-    }
-
     public function views()
     {
         return $this->belongsToMany(aqar::class,'usercontactaqar','user_id','aqars_id');

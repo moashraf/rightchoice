@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 
 /**
@@ -65,8 +64,4 @@ class Complaints extends Model
         return $this->belongsTo(aqar::class, 'aqars_id');
     }
 
-    public function logActivities()
-    {
-        return $this->morphMany(LogActivity::class, 'loggable');
-    }
 }
