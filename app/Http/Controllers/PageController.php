@@ -235,21 +235,16 @@ class PageController extends Controller
 <SMSList>
 <SenderName>RightChoice</SenderName>
 <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-<SMSText>$random_mass_num is your verification code for RightChoice </SMSText>
+<SMSText>$random_mass_num is your verification code for RightChoice</SMSText>
 </SMSList>
 </SubmitSMSRequest>");
 
 
             $resp = curl_exec($curl);
             curl_close($curl);
-            //echo($random_mass_num);
 
-            //var_dump($resp);
 
             /******************************************************/
-
-
-            // return redirect('/');
 
             return redirect()->route('otbPage', ['userID' => $userID, 'locale' => $locale]);
         }
@@ -257,9 +252,7 @@ class PageController extends Controller
 
     public function otbPage()
     {
-        //  dd($_GET['userID'] );
-        $user = User::where('id', $_GET['userID'])->first();
-
+         $user = User::where('id', $_GET['userID'])->first();
 
         return view('auth.otb-page', compact('user'));
      }
@@ -268,9 +261,7 @@ class PageController extends Controller
 
     public function otbReset()
     {
-        //  dd($_GET['userID'] );
-        $user = User::where('id', $_GET['userID'])->first();
-        //   dd( $user);
+         $user = User::where('id', $_GET['userID'])->first();
 
         return view('auth.otb-reset', compact('user'));
     }
@@ -282,7 +273,6 @@ class PageController extends Controller
     public function verifyOtbPage(Request $request)
     {
         $user = User::where('id', $request->userID)->first();
-        // dd($user);
         if ($user->phone_sms_otp == $request->otb) {
             // $user->update('phone_verfied_sms_status',true);
             $user->update(['phone_verfied_sms_status' => true]);
@@ -302,18 +292,15 @@ class PageController extends Controller
     {
         $user = User::where('id', $request->userID)->first();
         $userPhone = $user->MOP;
-        // dd($user);
 
         if ($user->phone_sms_otp == $request->otb) {
             // $user->update('phone_verfied_sms_status',true);
-            // dd('hell');
             return view('auth.resetPassPhone', compact('userPhone'));
         } else {
             return back()->withErrors([
                 'otp' => 'البيانات التى تم ادخالها غير صحيحه.',
             ]);
         }
-        // dd('afterelse');
 
     }
 
@@ -323,7 +310,6 @@ class PageController extends Controller
     {
 
         $user = User::where('MOP', $request->phone)->first();
-        // dd($user);
         $user->password = Hash::make($request->password);
 
         $user->save();
@@ -386,9 +372,7 @@ class PageController extends Controller
         //  $data_con = user::with('contact')->where('id','=',$getUser->id)->get();
         $all_data = UserContactAqar::with('all_aqat_viw')->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(5);
 
-        //dd($all_data);
         $all_history_of_point_of_user = UserPriceing::with('pricing')->where('user_id', '=', $getUser->id)->get();
-        //  dd($all_history_of_point_of_user);
         $points = 0;
         $allpoints = ($getUser->userpricin);
         if ($getUser->userpricin) {
@@ -404,11 +388,9 @@ class PageController extends Controller
 
         $FawryPayment_data = FawryPayment::where('user_id', $getUser->id)->where('paymentStatus', 'PAID')->paginate(4, '*', 'posts');
         $FawryPayment_data_unpaid = FawryPayment::where('user_id', $getUser->id)->where('paymentStatus', 'UNPAID')->paginate(4, '*', 'posts');
-        //dd($FawryPayment_data_unpaid);
         if (count($FawryPayment_data) != 0) {
             foreach ($FawryPayment_data as $FawryPayment_data_val) {
 
-                //dd($FawryPayment_data_val->signature);
                 $merchantCode    = 'TUDH+sU93QqTh4bRQqAadQ==';
                 $merchantRefNumber  = $FawryPayment_data_val->merchantRefNumber;
                 $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demonstration
@@ -485,7 +467,7 @@ class PageController extends Controller
     {
 
 
-        //dd($request);
+
 
         $random_mass_num = random_int(111, 10000);
 
@@ -523,13 +505,13 @@ class PageController extends Controller
         <SMSList>
         <SenderName>RightChoice</SenderName>
         <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-        <SMSText>$random_mass_num is your verification code for RightChoice </SMSText>
+        <SMSText>$random_mass_num is your verification code for RightChoice</SMSText>
         </SMSList>
         </SubmitSMSRequest>");
 
 
         $resp = curl_exec($curl);
-        curl_close($curl);
+         curl_close($curl);
 
 
 

@@ -387,11 +387,6 @@ class CompanyController extends Controller
                         $company->Serv_id = request('Serv_id');
 
 
-
-
-
-
-
                         if (!empty($request->photo)) {
 
 
