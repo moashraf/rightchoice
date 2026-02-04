@@ -10,8 +10,7 @@ use App\Repositories\ContactFormRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use Response;
-use Spatie\Activitylog\Models\Activity;
+use Illuminate\Http\Response;
 
 class ContactFormController extends AppBaseController
 {
@@ -98,9 +97,8 @@ class ContactFormController extends AppBaseController
 
             return redirect(route('contactForms.index'));
         }
-        $activity_logs = Activity::forSubject($contactForm)->orderBy('id','DESC')->paginate(10);
 
-        return view('contact_forms.edit',compact('activity_logs'))
+        return view('contact_forms.edit')
             ->with('contactForm', $contactForm,);
     }
 
@@ -123,13 +121,6 @@ class ContactFormController extends AppBaseController
         }
 
         $contactForm = $this->contactFormRepository->update($request->all(), $id);
-        activity()
-            ->causedBy(Auth::user())
-            ->performedOn($contactForm)
-            ->tap(function(Activity $activity) use ($request) {
-                $activity->comment = $request->comment;
-            })
-            ->log('edited');
 
         Flash::success('Contact Form updated successfully.');
 

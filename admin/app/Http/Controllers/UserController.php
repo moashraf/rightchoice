@@ -12,9 +12,7 @@ use Response;
 use App\Models\User;
 use App\Models\UserPriceing;
 
-
 use DataTables;
-use Spatie\Activitylog\Models\Activity;
 
 class UserController extends AppBaseController
 {

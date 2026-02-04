@@ -16,7 +16,6 @@ use App\Models\UserPriceing;
 
 
 use DataTables;
-use Spatie\Activitylog\Models\Activity;
 
 class UserController extends AppBaseController
 {
@@ -219,7 +218,4 @@ class UserController extends AppBaseController
         return redirect(route('user.view', $user->id));
     }
 }
-
-
-
 
