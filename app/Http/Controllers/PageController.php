@@ -208,7 +208,7 @@ class PageController extends Controller
             $MOP  = $request['MOP'];
 
             $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-            $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for https://rightchoice-co.com";
+            $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
             $code = "D8FBFDD3DD684C85BC00E708FC5872EB";
             $sig = hash_hmac('sha256', $stringnalue, $code);
             $str = strtoupper($sig);
@@ -235,7 +235,7 @@ class PageController extends Controller
 <SMSList>
 <SenderName>RightChoice</SenderName>
 <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-<SMSText>$random_mass_num is your verification code for https://rightchoice-co.com</SMSText>
+<SMSText>$random_mass_num is your verification code for RightChoice </SMSText>
 </SMSList>
 </SubmitSMSRequest>");
 
@@ -496,7 +496,7 @@ class PageController extends Controller
         $MOP  = $request['MOP'];
 
         $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-        $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for https://rightchoice-co.com";
+        $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
         $code = "D8FBFDD3DD684C85BC00E708FC5872EB";
         $sig = hash_hmac('sha256', $stringnalue, $code);
         $str = strtoupper($sig);
@@ -523,7 +523,7 @@ class PageController extends Controller
         <SMSList>
         <SenderName>RightChoice</SenderName>
         <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-        <SMSText>$random_mass_num is your verification code for https://rightchoice-co.com</SMSText>
+        <SMSText>$random_mass_num is your verification code for RightChoice </SMSText>
         </SMSList>
         </SubmitSMSRequest>");
 
