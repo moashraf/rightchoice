@@ -6,8 +6,8 @@
 
 <!-- Slug Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('slug', 'Slug:') !!}
-    {!! Form::text('slug', null, ['class' => 'form-control']) !!}
+    {!! Form::label('slug', 'Slug:*') !!}
+    {!! Form::text('slug', null, ['class' => 'form-control', 'required' => true]) !!}
 </div>
 
 <!-- Area Id Field -->
