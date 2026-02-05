@@ -13,21 +13,21 @@
 <!-- Area Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('area_id', 'Area Id:') !!}
-    {!! Form::select('area_id', null, ['class' => 'form-control ]) !!}
+    {!! Form::select('area_id', $subarea ?? [], null, ['class' => 'form-control']) !!}
 </div>
 
 
 <!-- District Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('district_id', 'District Id:') !!}
-    {!! Form::select('district_id' null, ['class' => 'form-control']) !!}
+    {!! Form::select('district_id', $district ?? [], null, ['class' => 'form-control']) !!}
 </div>
 
 
 <!-- Governrate Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('governrate_id', 'Governrate Id:') !!}
-    {!! Form::select('governrate_id' null, ['class' => 'form-control ']) !!}
+    {!! Form::select('governrate_id', $governrate ?? [], null, ['class' => 'form-control']) !!}
 </div>
 
 
@@ -36,7 +36,7 @@
 <!-- Serv Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('Serv_id', 'Serv Id:') !!}
-    {!! Form::select('Serv_id', $service, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('Serv_id', $service ?? [], null, ['class' => 'form-control custom-select']) !!}
 </div>
 
 
@@ -73,7 +73,7 @@
 <!-- Floor Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('Floor', 'Floor:') !!}
-    {!! Form::select('Floor', $floor, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::select('Floor', $floor ?? [], null, ['class' => 'form-control custom-select']) !!}
 </div>
 
 
