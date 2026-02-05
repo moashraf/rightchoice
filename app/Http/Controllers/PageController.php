@@ -138,8 +138,14 @@ class PageController extends Controller
     public function register(Request $request, $locale)
 
     {
+        $getUserType=[
+            'مشتري او مستأجر' => 1,
+            'بائع او مؤجر' => 2,
+            'مطور عقاري' => 3,
+            'شركة' => 4,
+        ];
+         return view('auth.register', compact('getUserType'));
 
-        return view('auth.register');
     }
 
 
