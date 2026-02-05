@@ -978,16 +978,17 @@ class AqarController extends Controller
     }
 
 
-public  function replacePhoneNumbersWithStars($text) {
-    // تعبير منتظم لاستخراج الأرقام الهاتفية
-    $pattern = '/(\+?(\d{1,4}))?(\(?\d{1,4}\)?\s?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,4})/';
+public function replaceLongPhoneNumbersWithStars($text) {
+    // التعبير المنتظم لاستخراج الأرقام التي تحتوي على أكثر من 8 أرقام متصلة
+    $pattern = '/\b\d{9,}\b/';
 
-    // استبدال الأرقام بـ ***
+    // استبدال الأرقام التي تحتوي على أكثر من 8 أرقام بـ ***
     return preg_replace($pattern, '***', $text);
 }
 
 
-         //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function store(Request $request)
     {
 
@@ -1074,7 +1075,7 @@ public  function replacePhoneNumbersWithStars($text) {
           $aqar->slug = Str::slug($request->title, '-');
         }
 
-          $result_description = $this->replacePhoneNumbersWithStars(request('description'));
+          $result_description = $this->replaceLongPhoneNumbersWithStars(request('description'));
 
           $aqar->description =$result_description ;
          $aqar->vip = 0;
