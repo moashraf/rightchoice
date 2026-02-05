@@ -29,24 +29,8 @@ services:
       DB_DATABASE: rightchoiceco_rightchoiceco
       DB_USERNAME: root
       DB_PASSWORD: secret
-    depends_on:
-      - db
     networks:
       - laravel-network
-
-  # MySQL
-  db:
-    image: mysql:8.0
-    container_name: mysql-db-admin
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: rightchoiceco_rightchoiceco
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - laravel-network
-
-
 
 networks:
   laravel-network:
