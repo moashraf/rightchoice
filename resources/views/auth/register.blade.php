@@ -135,24 +135,12 @@
                                     oninvalid="this.setCustomValidity('   برجاء ادخال  نوع المستخدم    ')"
                                       oninput="this.setCustomValidity('')"
                                          autocomplete="off"  name="TYPE" id="user-type" class="myselect">
-
-
                                         <option value="">
 أختار                                        </option>
+                                        @foreach($getUserType as $name => $id)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
 
-                                        <option value="1">
-                                            بائع او مؤجر
-                                        </option>
-
-
-
-                                        <option value="2">
-                                            مشتري او مستأجر
-                                        </option>
-
-
-
-                                        <option value="3"> مطور عقاري </option>
 
                                     </select>
 
@@ -222,7 +210,7 @@
                                 <div class="form-group">
 
                                     <label for="togary-id">رقم السجل التجاري
-                                                                        <span class="text-danger">*</span>
+                                      <span class="text-danger">*</span>
 
                                     </label>
 
@@ -250,28 +238,17 @@
 
                                     <label for="exampleInputPassword1">
                                         ادخل كلمه المرور
-
-                                                                            <span class="text-danger">*</span></label>
-
-
-
-                                    <input
+                              <span class="text-danger">*</span></label>
+                              <input
                                         oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف       ')" oninput="this.setCustomValidity('')"
                                         minlength="4" name="password" autocomplete="off"   required type="password" class="myselect passwordInput"
                                         id="exampleInputPassword1" placeholder="كلمه المرور">
 							   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 
-
-
                                 </div>
 
 
-
-
-
                             </div>
-
-
 
 
 
@@ -285,16 +262,13 @@
 
                                     <label for="exampleInputPassword1">
                                         اعد ادخال كلمه المرور
-                                                                            <span class="text-danger">*</span></label>
-
-
+                                      <span class="text-danger">*</span></label>
 
                                     <input
 
                                             oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف       ')" oninput="this.setCustomValidity('')"
                                             minlength="4" autocomplete="off"  name="password_confirmation" required type="password" class="myselect passwordInput"
                                                                                     id="exampleInputPassword1" >
-
 
 
                                 </div>
