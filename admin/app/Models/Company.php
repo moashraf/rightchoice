@@ -112,17 +112,17 @@ class Company extends Model
 
     public function districtinfo()
     {
-        return $this->belongsTo(district::class, 'district_id');
+        return $this->belongsTo(District::class, 'district_id');
     }
 
     public function subareainfo()
     {
-        return $this->belongsTo(subarea::class, 'area_id');
+        return $this->belongsTo(SubArea::class, 'area_id');
     }
 
     public function serviceinfo()
     {
-        return $this->belongsTo(services::class, 'Serv_id');
+        return $this->belongsTo(Service::class, 'Serv_id');
     }
 
 
