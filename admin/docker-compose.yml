@@ -2,7 +2,7 @@ services:
   # Nginx
   nginx:
     image: nginx:alpine
-    container_name: nginx
+    container_name: nginx-admin
     ports:
       - "7070:80"
     volumes:
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel-app
+    container_name: laravel-app-admin
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
@@ -37,7 +37,7 @@ services:
   # MySQL
   db:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: mysql-db-admin
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: rightchoiceco_rightchoiceco

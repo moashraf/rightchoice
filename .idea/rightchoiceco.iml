@@ -258,6 +258,14 @@
       <excludeFolder url="file://$MODULE_DIR$/admin/vendor/symfony/polyfill-php83" />
       <excludeFolder url="file://$MODULE_DIR$/admin/vendor/symfony/polyfill-uuid" />
       <excludeFolder url="file://$MODULE_DIR$/admin/vendor/symfony/uid" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/ezyang/htmlpurifier" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/livewire/livewire" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/maennchen/zipstream-php" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/markbaker/matrix" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/openspout/openspout" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/admin/vendor/yajra/laravel-datatables-export" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
