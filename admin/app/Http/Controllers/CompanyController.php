@@ -45,7 +45,14 @@ class CompanyController extends AppBaseController
      */
     public function create()
     {
-        return view('companies.create');
+        $governrate = governrate::pluck('governrate', 'id');
+        $district = district::where('govern_id',1)->pluck('district', 'id');
+        $subarea = subarea::pluck('area', 'id');
+        $service = services::pluck('service', 'id');
+        $floor = floor::pluck('floor', 'id');
+        $users = auth()->user();
+
+        return view('companies.create', compact('governrate','district','subarea','service','floor','users'));
     }
 
     /**
