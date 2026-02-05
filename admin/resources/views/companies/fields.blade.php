@@ -134,6 +134,8 @@
 <div class="form-group col-sm-6">
     {!! Form::label('user_id', 'User Id:') !!}
     <select disabled class="form-control custom-select" name="user_id">
+        @if($users)
         <option value="{{ $users->id }}">{{ $users->name }}</option>
+        @endif
     </select>
 </div>
