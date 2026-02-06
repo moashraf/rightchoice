@@ -133,8 +133,6 @@ class PageController extends Controller
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
-
-
     public function register(Request $request, $locale)
 
     {
@@ -144,9 +142,14 @@ class PageController extends Controller
             'مطور عقاري' => 3,
             'شركة' => 4,
         ];
-         return view('auth.register', compact('getUserType'));
+
+        $invited_by = $request->query('invited_by');
+
+        return view('auth.register', compact('getUserType', 'invited_by'));
 
     }
+
+
 
 
     ///////////////////////////////////////////////////////
@@ -160,10 +163,11 @@ class PageController extends Controller
 
         $random_mass_num = random_int(111, 10000);
 
+
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
-            'MOP' => 'required|min:3|max:11|unique:users',
+            'MOP' => 'required|min:10|max:11|unique:users',
             'password'  => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
 
@@ -171,8 +175,6 @@ class PageController extends Controller
             // 'AGE' => 'required|max:90',
 
         ]);
-
-
 
 
 
@@ -194,22 +196,17 @@ class PageController extends Controller
                 'AGE' => $request['AGE'],
 
                 'name' => $request['name'],
-
                 'email' => $request['email'],
-
                 'password' => bcrypt($request->password),
-
                 'phone_sms_otp' => $random_mass_num,
-
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
+                'invited_by' =>  $request['invited_by']   ,
 
             ]);
             $userID = $register_user_data->id;
-            //dd($register_user_data->id);
 
             /******************************************************/
-
 
             $MOP  = $request['MOP'];
 
