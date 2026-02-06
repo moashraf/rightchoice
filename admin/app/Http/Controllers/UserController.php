@@ -28,7 +28,8 @@ class UserController extends AppBaseController
         if($request->search_key)
             $users->where(function($q) use ($request) {
                 $q->where('name','like','%'.$request->search_key.'%')
-                  ->orWhere('MOP','like','%'.$request->search_key.'%');
+                  ->orWhere('MOP','like','%'.$request->search_key.'%')
+                  ->orWhere('invited_by','like','%'.$request->search_key.'%');
             });
         if($request->filter_status != null)
             $users->where('status',$request->filter_status);
