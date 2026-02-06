@@ -163,11 +163,11 @@ class PageController extends Controller
 
         $random_mass_num = random_int(111, 10000);
 
-        $invited_by = $request->query('invited_by');
-         $validator = Validator::make($request->all(), [
+
+        $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
-            'MOP' => 'required|min:3|max:11|unique:users',
+            'MOP' => 'required|min:10|max:11|unique:users',
             'password'  => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
 
@@ -196,22 +196,17 @@ class PageController extends Controller
                 'AGE' => $request['AGE'],
 
                 'name' => $request['name'],
-
                 'email' => $request['email'],
-
                 'password' => bcrypt($request->password),
-
                 'phone_sms_otp' => $random_mass_num,
-
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
-                'invited_by' => $invited_by ? $invited_by : null,
+                'invited_by' =>  $request['invited_by']   ,
 
             ]);
             $userID = $register_user_data->id;
 
             /******************************************************/
-
 
             $MOP  = $request['MOP'];
 
