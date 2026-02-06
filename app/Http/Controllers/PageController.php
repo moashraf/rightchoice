@@ -160,6 +160,8 @@ class PageController extends Controller
 
         $random_mass_num = random_int(111, 10000);
 
+        $invited_by = $request->query('invited_by');
+
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
@@ -203,6 +205,7 @@ class PageController extends Controller
 
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
+                'invited_by' => $invited_by ? $invited_by : null,
 
             ]);
             $userID = $register_user_data->id;
