@@ -120,7 +120,13 @@
                                             <td> {{$allAqars_val->getStatus() }} </td>
 
                                             <td>
-                                                <a href="https://rightchoice-co.com/admin/public/user/{{ $allAqars_val->user->id }}/edit">   {{ $allAqars_val->user->name }}  </a>
+                                                @if($allAqars_val->user)
+                                                    <a href="https://rightchoice-co.com/admin/public/user/{{ $allAqars_val->user->id }}/edit">
+                                                        {{ $allAqars_val->user->name }}
+                                                    </a>
+                                                @else
+                                                    N/A
+                                                @endif
                                             </td>
                                             <td> {{ $allAqars_val->views }} </td>
 
@@ -130,15 +136,15 @@
                                             <div class="btn-group gap-2">
                                                 <a href="{!! route('aqars.show', [$allAqars_val->id]) !!}" class="btn btn-info font-18">
                                                     <i class="fas fa-eye"></i>
-                                                </a>                                                
-                                                
+                                                </a>
+
                                                 <a href="{!! route('aqars.edit', [$allAqars_val->id]) !!}" class="btn btn-primary font-18">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                            
+
                                                 {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger font-18', 'onclick' => "return confirm('Are you sure?')"]) !!}
                                             </div>
-                                        
+
                                             {!! Form::close() !!}
                                         </td>
 
@@ -177,5 +183,4 @@
     </div>
 
 @endsection
-
 

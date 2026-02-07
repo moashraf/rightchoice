@@ -1,4 +1,3 @@
-
 node_modules/
 dist/
  *.class
@@ -13,6 +12,7 @@ dist/
 .idea/
 .htaccess
 public/.htaccess
+public/uploads
 TEST*.xml
 .DS_Store
 Thumbs.db
