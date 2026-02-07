@@ -35,6 +35,7 @@ class User extends Authenticatable
         'Commercial_Register',
         'two_factor_secret',
         'two_factor_recovery_codes',
+        'phone_sms_otp',
     ];
 
     /**

@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Services\ModelService;
+use Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
+ use Flash;
+ use Response;
 use App\Models\User;
 use App\Models\UserPriceing;
 
@@ -46,23 +43,42 @@ class UserController extends AppBaseController
     public function store(Request $request,User $user)
     {
 
-        $input = $request->all();
-        $request->validate([
+         $request->validate([
             'name'=>'Required',
             'email'=>'Required',
             'MOP'=>'Required',
             'password'=>'Required'
             ]);
 
-        // $this->validate($request,$user->rules($request->password));
+
+
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'required|min:3|max:90',
+            'MOP' => 'required|min:10|max:11|unique:users',
+            'password'  => 'required|max:255',
+            'email' => 'required|email|max:90|unique:users',
+
+            //    'TYPE' => 'required|max:90',
+            // 'AGE' => 'required|max:90',
+
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return \Redirect::back()->withErrors($validator)->withInput($request->all());
+        }
+//        $this->validate($request,$user->rules($request->email));
 
         //generate => image file
         if ($request->has('img') && !is_null($request->img))
         $request->merge(['profile_image' => _uploadFileWeb($request->img, 'user/')]);
         else
         $request->merge(['profile_image' => $request->img_logo]);
-
-        $user->create($request->all());
+        $request->merge(['phone_sms_otp' => 123456]);
+        $request->merge(['password' => bcrypt($request->password) ]);
+         $user->create($request->all());
 
         Flash::success('user saved successfully.');
 
