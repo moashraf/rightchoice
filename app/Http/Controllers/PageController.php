@@ -136,6 +136,11 @@ class PageController extends Controller
     public function register(Request $request, $locale)
 
     {
+        $getUser = Auth::user();
+
+        if ($getUser || $getUser != null  ){
+            return redirect()->intended('/');
+        }
         $getUserType=[
             'مشتري او مستأجر' => 1,
             'بائع او مؤجر' => 2,
