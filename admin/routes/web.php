@@ -64,6 +64,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+Route::middleware(['auth'])->group(function () {
+
 Route::get('generator_builder', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@builder')->name('io_generator_builder');
 
 Route::get('field_template', '\InfyOm\GeneratorBuilder\Controllers\GeneratorBuilderController@fieldTemplate')->name('io_field_template');
@@ -148,6 +150,7 @@ Route::resource('userPriceings', App\Http\Controllers\UserPriceingController::cl
 Route::resource('wishes', App\Http\Controllers\wishController::class);
 
 Route::resource('complaints', App\Http\Controllers\ComplaintsController::class);
+
 Route::get('complaints/user/{user}', 'App\Http\Controllers\ComplaintsController@show_user')->name('complaintsUser');
 
 
@@ -175,10 +178,4 @@ Route::get('user/{id}/aqars', 'App\Http\Controllers\UserController@aqars')->name
 Route::resource('user', 'App\Http\Controllers\UserController');
 // Route::get('user/show/{id}', 'App\Http\Controllers\UserController@show')->name('show_userpage');
 
-
-
-
-
-
-
-
+});
