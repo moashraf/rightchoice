@@ -1107,12 +1107,11 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         if($request->total_price  == NULL){
                      $aqar->total_price = 0;
-
         }
-else{
-        $aqar->total_price = request('total_price');
+    else{
+            $aqar->total_price = request('total_price');
 
-}
+    }
 
 
         //$aqar->mzaya = 'refer_to_mzayAqar_table';
@@ -1297,12 +1296,6 @@ else{
         //        return redirect("aqars/$aqar->id")->with('status', '  تم الحفظ بنجاح!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\aqar  $aqar
-     * @return \Illuminate\Http\Response
-     */
 
          //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function show($locale, $aqar)
@@ -1390,12 +1383,7 @@ else{
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\aqar  $aqar
-     * @return \Illuminate\Http\Response
-     */
+
          //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit($locale,$aqar)
     {
@@ -1459,21 +1447,14 @@ else{
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\aqar  $aqar
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(aqar $aqar)
     {
         //
     }
 
 
-    //Add Wish List
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Add Wish List //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
      public function addwish_list(Request $request)
@@ -1583,8 +1564,7 @@ else{
          }
 
         if ($request->isMethod('post')) {
-      //  dd($request->all());
-            $rules = [
+             $rules = [
                          //   'photos_id' => ' mimes:jpg,png,jpeg',
 
                // 'aqar_slug_unique' => 'required|min:2|unique:aqar',
@@ -1620,21 +1600,15 @@ else{
 
                     $request->merge(['slug' => Str::slug($request->title.$six_digit_random_number, '-')]);
                     }
-*/
+                    */
 
 
      if (!empty($request->area_id)) {
                 $areaCheck =  SubArea::where('area', $request->area_id)->orWhere('area', $request->area_id)->first();
             if($areaCheck){
                $areaTab = $areaCheck->id;
-
-
-
-                    $request->merge(['area_id' =>  $areaCheck->id]);
-
-
-
-            }else{
+               $request->merge(['area_id' =>  $areaCheck->id]);
+             }else{
             $areaTab = new SubArea();
             $areaTab->area = $request->area_id;
             $areaTab->save();
@@ -1642,9 +1616,6 @@ else{
             }
 
          }
-
-
-
 
      if (!empty($request->compound)) {
                 $CompoundCheck =  Compound::where('compound', $request->compound)->orWhere('compound', $request->compound)->first();
@@ -1672,25 +1643,18 @@ else{
 
          }
 
-
-
-
-
-
-          if($request->offer_type == 1 || $request->offer_type == 2 || $request->offer_type == 5){
+    if($request->offer_type == 1 || $request->offer_type == 2 || $request->offer_type == 5){
                         $request->merge(['points_avail' =>  aqar::pointCalculate($request->total_price)]);
 
-        }else {
+        }
+
+    else {
            $request->merge(['points_avail' =>  aqar::pointCalculateRent($request->monthly_rent)]);
         }
 
-
-
-
-
-
-
                     $updatedata = aqar::WHERE('id',$aqar->id)->where('user_id',Auth::user()->id)->first();
+                    $result_description = $this->replaceLongPhoneNumbersWithStars(request('description'));
+                    $request->merge(['description'    => $result_description]);
 
                     $updatedata->update($request->all());
                      //dd( $updatedata);
@@ -1708,9 +1672,8 @@ else{
 
 
 
-              $old_uploded_img_count = Images::WHERE('aqar_id',$aqar->id)->get();
-   // dd($old_uploded_img_count->count() );
-if($old_uploded_img_count->count() < 8){
+    $old_uploded_img_count = Images::WHERE('aqar_id',$aqar->id)->get();
+ if($old_uploded_img_count->count() < 8){
   //  dd("ddd");
                     if (is_array($request->photos_id)) {
                         //dd(sdsd);
@@ -1756,11 +1719,11 @@ if($old_uploded_img_count->count() < 8){
 
                     }
 }
+
                     session()->flash('success', 'تم التعديل بنجاح');
                     return Redirect(Config::get('app.locale').'/user_ads');
                 }catch (\Exception $ex) {
 
-                    dd($ex);
                     session()->flash('error', 'عفوا, يوجد خطأ ما');
 
                     return Redirect::back()->withInput($request->all());
@@ -1771,8 +1734,6 @@ if($old_uploded_img_count->count() < 8){
         }
         return Redirect::back();
     }
-
-
 
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1805,15 +1766,7 @@ if($old_uploded_img_count->count() < 8){
             return Redirect::back()->withInput($request->all());
         }
     }
-
-
-
-
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
       public function removeuserAds(Request $request)
     {
@@ -1833,9 +1786,6 @@ if($old_uploded_img_count->count() < 8){
 
 
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
      public function usercomplain(Request $request)
     {
@@ -1927,11 +1877,7 @@ if($old_uploded_img_count->count() < 8){
       ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
 
     }
-
-
-
-
-                //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
        public function all_aqar_for_sale (Request $request,$locale )
     {
@@ -1991,10 +1937,7 @@ if($old_uploded_img_count->count() < 8){
      ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
 
     }
-
-
-
-                //////////////////////////////////////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function mainAqar(Request $request,$locale ,$slug)
     {
