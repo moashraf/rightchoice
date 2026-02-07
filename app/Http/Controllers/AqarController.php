@@ -946,13 +946,6 @@ class AqarController extends Controller
         ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice', 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs'));
 
     }*/
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1548,7 +1541,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
     public function updatedAqar(Request $request ,aqar $aqar)
     {
-        //dd($request->offer_type);
 
          if (!empty($request->area_id)) {
                 $areaCheck =  SubArea::where('area', $request->area_id)->orWhere('area', $request->area_id)->first();
@@ -1673,16 +1665,14 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
 
     $old_uploded_img_count = Images::WHERE('aqar_id',$aqar->id)->get();
- if($old_uploded_img_count->count() < 8){
-  //  dd("ddd");
-                    if (is_array($request->photos_id)) {
-                        //dd(sdsd);
-                        $counter=0;
+     if($old_uploded_img_count->count() < 8){
+                     if (is_array($request->photos_id)) {
+                         $counter=0;
                             foreach($request->photos_id as $photo1)
                             {
 
                             //$namerand = '-'.rand(1,900).'-';
-                                                        $namerand = '-'.rand(1,999900).rand(1,999900).rand(1,999900).'-';
+                             $namerand = '-'.rand(1,999900).rand(1,999900).rand(1,999900).'-';
 
                             $imageNameGallery = $namerand . '.' . $photo1->getClientOriginalExtension();
                             $photo1->move(base_path() . '/public/images/', $imageNameGallery);
@@ -1930,7 +1920,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         $off = $getOffers;
 
-       // dd($offs);
         return view('aqars.all-aqars',
         compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds'
         ,'cat_id', 'prop_id', 'saletype' , 'governratew'
