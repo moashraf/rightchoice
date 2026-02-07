@@ -64,23 +64,23 @@
 
     <!-- Custom CSS -->
  <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-         
-         <?php 
+
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
     <link href="{{asset('assets/css/rtl.css')}}" rel="stylesheet">
 
     <?php
-}  
-?> 
+}
+?>
 
 
 
@@ -250,25 +250,25 @@ else{
 
 
                         <a href="{{ URL::to('/'.Config::get('app.locale'))}}">
-                            
+
                              <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
                         <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="" />
-         
-         <?php 
+
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
                         <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="" />
 
     <?php
-}  
-?> 
+}
+?>
 
 
 
@@ -334,21 +334,21 @@ else{
 
 
                                 <ul class="nav-dropdown nav-submenu">
-                                    
-                                       	<li><a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">  
-                                       	الكل 
+
+                                       	<li><a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">
+                                       	الكل
                                        	</a></li>
 
                                     @if(!empty($offersTypeForCashAndInstallment))
                                     @foreach($offersTypeForCashAndInstallment as $cash)
-                                    
+
                                             <li><a href="{{ URL::to(Config::get('app.locale') .'/aqars-' . $cash->slug) }}">
                                                 @if(App::isLocale('en'))
                                                  {{ $cash->type_offer_en }}
                                                 @else
                                                  {{ $cash->type_offer }}
                                                 @endif
-                                               
+
                                                 </a></li>
                                     @endforeach
                                     @endif
@@ -375,10 +375,10 @@ else{
 
 
                                   	<li><a href="{{ asset('') }}"> عقارات تصلح تمويل عقاري </a></li>
-                                  	
+
                                   	-->
-                                        
-                                      
+
+
 
 
                                 </ul>
@@ -398,21 +398,21 @@ else{
 
 
                                 <ul class="nav-dropdown nav-submenu">
-                                    
-                                        	<li><a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}">  
-                                       	الكل 
+
+                                        	<li><a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}">
+                                       	الكل
                                        	</a></li>
                              @if(!empty($offersTypeForRents))
                                   @foreach($offersTypeForRents as $rent)
-                                                            
-                                                        <li><a href="{{ URL::to(Config::get('app.locale').'/aqars-' . $rent->slug) }}"> 
-                                                        
+
+                                                        <li><a href="{{ URL::to(Config::get('app.locale').'/aqars-' . $rent->slug) }}">
+
                                                          @if(App::isLocale('en'))
                                                  {{ $rent->type_offer_en }}
                                                 @else
                                                  {{ $rent->type_offer }}
                                                 @endif
-                                                        
+
                                                         </a></li>
                                           @endforeach
                              @endif
@@ -467,7 +467,7 @@ else{
                                         @else
                                         <a href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}">{{ $serv->Service}}</a>
                                         @endif
-                                        
+
                                     </li>
                                     @endforeach
                                   @endif
@@ -509,8 +509,8 @@ else{
 
 <!--
                      <?php  if (  App::getLocale()== 'en' )
-                        { 
-                            
+                        {
+
                             ?>
                         <li>
 
@@ -518,52 +518,42 @@ else{
 
                                 <a href="{{ url($newUrl) }}">عربي</a>
 
-                   
+
 
 
 
                             </li>
-                             
-                             <?php 
+
+                             <?php
                         }
-                    else{  
-                        
-                        
+                    else{
+
+
                         ?>
-                        
+
                          <li>
 
 
-                           
+
                                 <a  class="text-success"  href="{{ url($newUrl) }}" >English</a>
-                          
-
-
-
-
 
                             </li>
-                    
+
                         <?php
-                    }  
-                    ?> 
+                    }
+                    ?>
 
 
--->                                 
-                                @if(Auth::check())  
+-->
+                                @if(Auth::check())
                             @if(Auth()->user()->TYPE == 4)
-                 
-                    
-                      
-                            
-                            
-                            @else
+                     @else
                                     <li class="{{ Request::is('newlisting') ? 'active' : '' }}">
 
 
 
                                 <a href="{{ url(Config::get('app.locale').'/aqars/create') }}" class="text-success">
-                                  <!--    
+                                  <!--
                                     <img
 
                                         src="{{ asset('assets/img/submit.svg') }}"
@@ -575,24 +565,23 @@ else{
                                         {{ trans('langsite.add_aqar-free')}}</a>
 
 
-
                                 <!-- <a href="submit-property.html" class="text-success"><img src="assets/img/submit.svg" width="20" alt="" class="mr-2" />Add Property</a> -->
 
 
 
                             </li>
 
-                            
-                                  @endif  
-                                  
-                                  
+
+                                  @endif
+
+
                                   @else
                                    <li class="{{ Request::is('newlisting') ? 'active' : '' }}">
 
 
 
                                 <a href="{{ url(Config::get('app.locale').'/aqars/create') }}" class="text-success">
-                                  <!--    
+                                  <!--
                                     <img
 
                                         src="{{ asset('assets/img/submit.svg') }}"
@@ -610,28 +599,25 @@ else{
 
 
                             </li>
-                                  
-                                  
-                       
+
+
+
                             @endif
-                            
-                            
+
+
                             @if(Auth::check())
 
 
                             @else
-                            
-                                <li class="{{ Request::is(Config::get('app.locale').'/register') ? 'active' : '' }}"><a href="{{ asset(Config::get('app.locale').'/register') }}"
 
-                                    class="text-success">{{ trans('langsite.register')}}</a></li>
+                                <li class="{{ Request::is(Config::get('app.locale').'/register') ? 'active' : 'no' }}">
+                                    <a href="{{ asset(Config::get('app.locale').'/register') }}{{ Request::has('invited_by') ? '?invited_by=' . urlencode(Request::query('invited_by')) : '' }}" class="text-success">
+                                        {{ trans('langsite.register')}}
+                                    </a>
+                                </li>
 
                             @endif
-
-
-
-
-
-                            @if(Auth::check())
+                          @if(Auth::check())
 
 
 
@@ -643,11 +629,11 @@ else{
                                     @if(Auth::user()->TYPE == 3)
                                     {{\Illuminate\Support\Str::limit(Auth::user()->Employee_Name, 10, $ned='') }}
 
-                                    
+
                                     @else
                                     {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
 
-                                    
+
                                     @endif
                                   @else
 
@@ -675,7 +661,7 @@ else{
 
                                              @if(Auth::check())
 
-                                           
+
 
                                     {{ trans('langsite.profile')}}
                                              @else
@@ -690,43 +676,43 @@ else{
                                         </a></li>
 
 
-                                        @else 
-                                        
+                                        @else
+
                                           <li><a
 
                                             href="{{ URL::to(Config::get('app.locale').'/update_companies/'.Auth()->user()->id) }}">Update Company</a>
 
                                     </li>
-                                    
+
                                         @endif
                                      @if(Auth::check())
 
 
-                            
+
                                       @if(Auth()->user()->TYPE != 4)
 
                                     <li>
                                         <a  href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}">{{ trans('langsite.fav')}}</a>
 
                                     </li>
-                                    
-                                    
+
+
                                   <li>
                                         <a  href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">اعلاناتي</a>
 
                                     </li>
-                                    
+
                                       <li>
                                         <a  href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">النقاط</a>
 
                                     </li>
-                                    
-                                    
+
+
                                         @endif
 
                                            <li><a href="{{ URL::to(Config::get('app.locale').'/notification')}}">
-                                               
-                                               
+
+
                                                 {{ trans('langsite.Notifications')}}
                                                @if($countNotifi > 0)<span class="badge badgedanger badge-pill noti-icon-badge ml-1">{{$countNotifi}}</span>@endif</a>
 
@@ -866,17 +852,17 @@ else{
 
         <!-- Footer -->
 
-        <!-- Footer 
+        <!-- Footer
 
 <footer style="background-image: url('{{asset('assets/img/footer\ BG.jpg')}}');" class=" text-center text-white">
 
-    
+
 
     <div class="container p-4">
 
-  
 
-      
+
+
 
       <div class="row">
 
@@ -926,7 +912,7 @@ else{
 
               <a href="{{ asset('blogs') }}" class="text-white">المقالات</a>
 
-            </li> 
+            </li>
 
             <li class="text-white fw-bolder">
 
@@ -934,13 +920,13 @@ else{
 
             </li>
 
-            
+
 
           </ul>
 
           <ul >
 
-            
+
 
             <li style=" display: block; margin: auto;" class="text-white fw-bolder">
 
@@ -954,7 +940,7 @@ else{
 
 
 
-    
+
 
 	  <ul class="footer-bottom-social">
 
@@ -968,19 +954,19 @@ else{
 
 
 
-        <li><a href="#"><i style=" background: #f09433; 
+        <li><a href="#"><i style=" background: #f09433;
 
 
 
-  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 
 
 
-  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
 
 
 
-  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
 
 
 
@@ -1004,15 +990,15 @@ else{
 
 
 
-    
 
 
 
-     
 
 
 
-          
+
+
+
 
           </div>
 
@@ -1020,7 +1006,7 @@ else{
 
       </div>
 
-  
+
 
      </div>
 
@@ -1036,7 +1022,7 @@ else{
 
         <footer class="mainfooter" style=" <?php  if (  App::getLocale()== 'ar' )
     {  echo'background-image: url(https://rightchoice-co.com/public/assets/img/footerwith.jpg);background-size: cover;';}
-else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/footerwithen.jpg);background-size: cover;'; }  
+else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/footerwithen.jpg);background-size: cover;'; }
 ?> "
 role="contentinfo">
 
@@ -1088,7 +1074,7 @@ role="contentinfo">
 
                             </li>
                             @if(!Auth()->user())
-                         
+
                             <li class="text-white fw-bolder d-block" >
 
                                 <a href="{{ url(Config::get('app.locale').'/add_company') }}"
@@ -1097,7 +1083,7 @@ role="contentinfo">
 
                             </li>
                             @endif
-        
+
 
                         </ul>
 
@@ -1123,25 +1109,25 @@ role="contentinfo">
 
 
 
-                            <li><a target="_blank" href="https://www.instagram.com/right.choice.co"><i style=" background: #f09433; 
+                            <li><a target="_blank" href="https://www.instagram.com/right.choice.co"><i style=" background: #f09433;
 
-  
 
-    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
 
-  
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 
-    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
 
-  
 
-    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
 
-  
+
+
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+
+
 
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
 
-  
+
 
      " class="instagram shadow ti-instagram"></i></a></li>
 
@@ -1177,24 +1163,24 @@ role="contentinfo">
 
                         <div class="footer-logo">
                              <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
                          <img src="{{ asset('assets/img/footer-logo.png') }}" alt="" />
-         
-         <?php 
+
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
                          <img src="{{ asset('assets/img/footer-logo.png') }}" alt=""  />
 
     <?php
-}  
-?> 
-                          
+}
+?>
+
 
                         </div>
 
@@ -1203,10 +1189,10 @@ else{
                 </div>
 
             </div>
-            
-            
-            <!-- 
-            
+
+
+            <!--
+
         <div  class="text-center p-1 footer-bottom text-white">
 
 
@@ -1217,18 +1203,18 @@ else{
 
         <a class="text-white small" target="_blank" href="https://corddigital.com/">by Cord Digital</a>
       </div>
-      
+
        -->
-       
-       
+
+
          <div  class="text-center p-1 footer-bottom text-white">
 جميع  الحقوق كامله محفوظة لشركة   رايت تشويز
-        
+
       </div>
-      
 
 
-      
+
+
         </footer>
 
         <!-- Copyright -->
@@ -1305,10 +1291,10 @@ else{
 
                 <li><a target="_blank"  href="https://www.facebook.com/sharer/sharer.php?u=
                 <?php $currentURL = url()->current();  echo $currentURL ;?>">
-                    
+
                     <i style="background-color: #3b5998;" class="shadow ti-facebook"></i></a></li>
 
- 
+
 
 
             </ul>
@@ -1336,7 +1322,7 @@ else{
 
     </div>
 
- 
+
 
 
     </div>
@@ -1499,44 +1485,44 @@ else{
 
 
  <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
 
     <script src="{{asset('assets/js/rtl.js')}}"></script>
-         <?php 
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
     <script src="{{asset('assets/js/rtl.js')}}"></script>
 
     <?php
-}  
-?> 
+}
+?>
 
 
 
  <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
 
     <script src="{{asset('assets/js/english-listing.js')}}"></script>
-         <?php 
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
     <script src="{{asset('assets/js/arabic-listing.js')}}"></script>
 
     <?php
-}  
-?> 
+}
+?>
 
 
 
@@ -1566,7 +1552,7 @@ else{
 
 
 
-    
+
 
     @if(Session::has('success'))
 
@@ -1610,7 +1596,7 @@ else{
 
             });
 
-           
+
 
             $('body').on("click","a.addToCart",function () {
 
@@ -1652,17 +1638,17 @@ else{
 
                                 timeOut: 5000
 
-                            }); 
+                            });
 
                         }else{
 
-                           
+
 
                             toastr.success(data.massage, '', {
 
                             timeOut: 5000
 
-                           }); 
+                           });
 
                         }
 
@@ -1674,7 +1660,7 @@ else{
 
                         //console.log('Error:', data);
 
-                     
+
 
                     }
 
@@ -1710,7 +1696,7 @@ else{
 
       });
 
-     
+
 
       $('body').on("click","a.removeFromCart",function () {
 
@@ -1742,7 +1728,7 @@ else{
 
               },
 
-              
+
 
               success: function (data) {
 
@@ -1756,9 +1742,9 @@ else{
 
                           timeOut: 10000
 
-                          
 
-                      }); 
+
+                      });
 
 
 
@@ -1772,7 +1758,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -1790,7 +1776,7 @@ else{
 
                   //console.log('Error:', data);
 
-               
+
 
               }
 
@@ -1826,7 +1812,7 @@ else{
 
       });
 
-     
+
 
       $('body').on("click","a.removeFromCompany",function () {
 
@@ -1858,7 +1844,7 @@ else{
 
               },
 
-              
+
 
               success: function (data) {
 
@@ -1874,9 +1860,9 @@ else{
 
                           extendedTimeOut : 50000
 
-                          
 
-                      }); 
+
+                      });
 
 
 
@@ -1894,7 +1880,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -1912,7 +1898,7 @@ else{
 
                   //console.log('Error:', data);
 
-               
+
 
               }
 
@@ -1948,7 +1934,7 @@ else{
 
             });
 
-           
+
 
             $('body').on("click","button.addToContact",function () {
 
@@ -1989,7 +1975,7 @@ else{
 
                                 timeOut: 5000
 
-                            }); 
+                            });
 
                         }
                         document.getElementById('contMop').innerHTML='<a class="btn btn-success" href="tel:' + data.massage + '">' + data.massage + '</a>';
@@ -2006,7 +1992,7 @@ else{
 
                            });
 
-                     
+
 
                     }
 
@@ -2024,7 +2010,7 @@ else{
 
     </script>
 
-    
+
 
 <script>
 
@@ -2052,7 +2038,7 @@ else{
 
           var url = "{{route('remove-user-Ads')}}";     var confirmation =  confirm('تاكيد حذف العقار ؟');
         if(confirmation){
-            
+
          @auth
 
           $.ajax({
@@ -2071,7 +2057,7 @@ else{
 
               },
 
-              
+
 
               success: function (data) {
 
@@ -2087,9 +2073,9 @@ else{
 
                           extendedTimeOut : 50000
 
-                          
 
-                      }); 
+
+                      });
 
 
 
@@ -2107,7 +2093,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -2125,7 +2111,7 @@ else{
 
                   //console.log('Error:', data);
 
-               
+
 
               }
 
@@ -2138,8 +2124,8 @@ else{
           @endauth
         }
 
-      }); 
-     
+      });
+
 
 
   });
@@ -2162,7 +2148,7 @@ else{
 
       });
 
-     
+
 
       $('body').on("click","a.AddComplain",function () {
 
@@ -2171,7 +2157,7 @@ else{
           var item_id = $(this).data('id');
 
           var $input = $('.js-result').val();
-          
+
           var message = $("textarea[name='message']").val();
 
 
@@ -2192,12 +2178,12 @@ else{
                   _token: token,
 
                   item_id: item_id,
-                  
+
                   message:message,
 
               },
 
-              
+
 
               success: function (data) {
 
@@ -2208,16 +2194,16 @@ else{
                                location.reload();
                              }, 1000);
 
-   
+
                          toastr.info(data.massage, '', {
 
                           timeOut: 50000,
 
                           extendedTimeOut : 50000
 
-                          
 
-                      }); 
+
+                      });
 
 
                   }else if(data.status == 404){
@@ -2234,7 +2220,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -2258,7 +2244,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -2274,7 +2260,7 @@ else{
 
               error: function (data) {
                 if(data.status == 400){
-                 toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', {  
+                 toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', {
 
                       timeOut: 50000,
 
@@ -2284,7 +2270,7 @@ else{
 
                      });
                 }else{
-                   toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {  
+                   toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {
 
                       timeOut: 50000,
 
@@ -2292,10 +2278,10 @@ else{
 
 
 
-                     }); 
+                     });
                 }
 
-               
+
 
               }
 
@@ -2329,22 +2315,22 @@ else{
 
       });
 
-     
+
 
       $('body').on("click","a.SendUserSession",function () {
 
           var token = "{{ csrf_token() }}"
 
           var $input = $('.js-result').val();
-          
+
           var user_phone = $("input[name='user_session_phone']").val();
-          
+
           var user_name = $("input[name='user_session_name']").val();
-          
+
           var user_email = $("input[name='user_session_email']").val();
-          
+
           var user_address = $("input[name='user_session_address']").val();
-          
+
           var session_description = $("textarea[name='session_description']").val();
 
 
@@ -2371,7 +2357,7 @@ else{
 
               },
 
-              
+
 
               success: function (data) {
 
@@ -2390,11 +2376,11 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
-                     
+
 
 
 
@@ -2414,7 +2400,7 @@ else{
 
 
 
-                     }); 
+                     });
 
 
 
@@ -2430,7 +2416,7 @@ else{
 
               error: function (data) {
                 if(data.status == 400){
-                toastr.error('يجب إدخال البيانات المطلوبه امامكم', '', {  
+                toastr.error('يجب إدخال البيانات المطلوبه امامكم', '', {
 
                       timeOut: 3000,
 
@@ -2440,7 +2426,7 @@ else{
 
                      });
                 }else{
-                   toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {  
+                   toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {
 
                       timeOut: 1000,
 
@@ -2448,10 +2434,10 @@ else{
 
 
 
-                     }); 
+                     });
                 }
 
-               
+
 
               }
 
@@ -2469,10 +2455,10 @@ else{
 
 
 function updateStatus(id) {
-  
+
     //   $('.accordion-button').on("click",function () {
- 
-      
+
+
           var token = "{{ csrf_token() }}";
           var item_id =id;
           var $input = $('.js-result').val();
@@ -2488,7 +2474,7 @@ function updateStatus(id) {
               },
 
               success: function (data) {
-        
+
                   $('#notifi-'+ id).removeClass('alert-success');
                      $('#notifi-'+ id).addClass('card');
               },
@@ -2520,7 +2506,7 @@ function updateStatus(id) {
 
       });
 
- 
+
 
 
   });
