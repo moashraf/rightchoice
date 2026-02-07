@@ -237,9 +237,9 @@ function _uploadFileWebSlid($image_file, $path)
 
         $file = $image_file;
         $pathfile = 'uploads/'.$path;
-         $namerand = '-'.rand(1,900).'-';
+        $namerand = '-'.rand(1,900).'-';
         $filename = $namerand . '.' . $file->getClientOriginalName();
-        if (!file_exists('uploads/'.$path)) {
+        if (!file_exists('public/uploads/'.$path)) {
             mkdir('public/uploads/'.$path, 0777, true);
         }
 
