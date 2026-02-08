@@ -30,7 +30,7 @@ class blogController extends AppBaseController
      */
     public function index(blogDataTable $blogDataTable)
     {
-        dd(55);
+
         return $blogDataTable->render('blogs.index');
     }
 

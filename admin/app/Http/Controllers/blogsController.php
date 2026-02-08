@@ -14,13 +14,12 @@ class blogsController extends Controller
      */
     public function index()
     {
-        //
-        
-        
+
+
         $allBlogs = Blog::paginate(9);
-        
-        
-         return view('blogs.blogs', compact('allBlogs')); 
+
+
+         return view('blogs.blogs', compact('allBlogs'));
     }
 
     /**
@@ -55,7 +54,7 @@ class blogsController extends Controller
     public function show($locale,$slug)
     {
         //
-        
+
         $blog = Blog::where('slug', $slug)->first();
         //dd($blog);
     // dd($company);

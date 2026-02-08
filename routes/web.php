@@ -15,6 +15,16 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
+Route::group(['middleware' => 'adminon'], function () {
+    Route::get('gg', function() {
+        dd(55221);
+    });
+
+
+});
+
+Route::resource('adminon/blogs', App\Http\Controllers\adminon\blogController::class);
+
 Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade');
 
 
@@ -84,6 +94,10 @@ Route::get('/config-clear', function() {
            // dd($locale);
     return redirect('/'.$locale);
         });
+
+
+
+
 
 
     Route::get('/dashboard', function() {
@@ -320,8 +334,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
         Route::post('/resend-otb', 'App\Http\Controllers\PageController@resendOTB')->name('resendOTB');
 
-Route::group(['middleware' => 'adminon'], function () {
-    Route::resource('blogs', App\Http\Controllers\blogController::class);
 
-
-});

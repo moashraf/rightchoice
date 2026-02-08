@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\adminon;
 
 use App\DataTables\blogDataTable;
 use App\Http\Requests;
@@ -30,8 +30,7 @@ class blogController extends AppBaseController
      */
     public function index(blogDataTable $blogDataTable)
     {
-        dd(55);
-        return $blogDataTable->render('blogs.index');
+         return $blogDataTable->render('blogs.index');
     }
 
     /**

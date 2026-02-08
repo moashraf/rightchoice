@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\adminon;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
@@ -15,12 +15,11 @@ class blogsController extends Controller
     public function index()
     {
         //
-        
-        
+
         $allBlogs = Blog::paginate(9);
-        
-        
-         return view('blogs.blogs', compact('allBlogs')); 
+
+
+         return view('blogs.blogs', compact('allBlogs'));
     }
 
     /**
@@ -55,7 +54,7 @@ class blogsController extends Controller
     public function show($locale,$slug)
     {
         //
-        
+
         $blog = Blog::where('slug', $slug)->first();
         //dd($blog);
     // dd($company);
