@@ -66,11 +66,7 @@ class mzayaDataTable extends DataTable
     {
         return [
             'id',
-            'Main Img' => [
-                'name' => 'Main Img', 'data' => 'img_name',
-                'render' =>
-                    '"<a href=\""+data+"\" data-toggle=\"lightbox\"/><img src=\"images/icons/"+data+"\" height=\"50\"/>"'
-            ],
+            'Main Img' => ['name' => 'Main Img', 'data' => 'img_name', 'render' => '"<a href=\""+data+"\" data-toggle=\"lightbox\"/><img src=\""+data+"\" height=\"50\"/>"'],
             'mzaya_type',
         ];
     }

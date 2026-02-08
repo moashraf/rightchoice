@@ -70,7 +70,7 @@ class RequestPhotoSessionDataTable extends DataTable
             'phone',
             'email',
             'address',
-            'description',
+           
             'created_at'
         ];
     }
