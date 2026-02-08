@@ -11,6 +11,28 @@
     </a>
 </li>
 
+<li class="nav-item">
+    <a href="{{ route('complaints.index') }}"
+       class="nav-link {{ Request::is('complaints*') ? 'active' : '' }}">
+        <p>شكاوي</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('contactForms.index') }}"
+       class="nav-link {{ Request::is('contactForms*') ? 'active' : '' }}">
+        <p>نماذج الاتصال</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('notifications.index') }}"
+       class="nav-link {{ Request::is('notifications*') ? 'active' : '' }}">
+        <p>إشعارات</p>
+    </a>
+</li>
 
 <li class="nav-item">
     <a href="{{ route('blogs.index') }}"
@@ -213,28 +235,6 @@
 </li> -->
 
 
-<li class="nav-item">
-    <a href="{{ route('complaints.index') }}"
-       class="nav-link {{ Request::is('complaints*') ? 'active' : '' }}">
-        <p>شكاوي</p>
-    </a>
-</li>
-
-
-<li class="nav-item">
-    <a href="{{ route('contactForms.index') }}"
-       class="nav-link {{ Request::is('contactForms*') ? 'active' : '' }}">
-        <p>نماذج الاتصال</p>
-    </a>
-</li>
-
-
-<li class="nav-item">
-    <a href="{{ route('notifications.index') }}"
-       class="nav-link {{ Request::is('notifications*') ? 'active' : '' }}">
-        <p>إشعارات</p>
-    </a>
-</li>
 
 
 <li class="nav-item">
