@@ -4,6 +4,13 @@
         <p>المستخدمين</p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{ route('aqars.index') }}"
+       class="nav-link {{ Request::is('aqars*') ? 'active' : '' }}">
+        <p>عقارات</p>
+    </a>
+</li>
+
 
 <li class="nav-item">
     <a href="{{ route('blogs.index') }}"
@@ -132,12 +139,6 @@
 </li>
 
 
-<li class="nav-item">
-    <a href="{{ route('aqars.index') }}"
-       class="nav-link {{ Request::is('aqars*') ? 'active' : '' }}">
-        <p>عقارات</p>
-    </a>
-</li>
 
 
 <!-- <li class="nav-item">
@@ -187,7 +188,7 @@
     </a>
 </li>
 
-<!-- 
+<!--
 <li class="nav-item">
     <a href="{{ route('userContactAqars.index') }}"
        class="nav-link {{ Request::is('userContactAqars*') ? 'active' : '' }}">
