@@ -3,7 +3,7 @@
     تسجيل دخول
     @endsection
 <section id="register" class="bg-light">
-    
+
     <br>
     <br>
     <br>
@@ -11,7 +11,7 @@
                 <div class="container" id="login-form">
                    <div class="row">
 					   <div class="col-lg-4">
-					               
+
 
 					            @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -22,12 +22,24 @@
                           @csrf
 							<div class="form-group">
 								<label for="exampleInputEmail1">البريد الالكنروني / الهاتف</label>
-								<input oninvalid="this.setCustomValidity('Please enter a valid phone or email')"
-  oninput="this.setCustomValidity('')" type="text" name="email" :value="old('email')" required  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email or phone" pattern = "^(?:\d{11}|\w+@\w+\.\w{2,3})$">
-							  </div>
-							  
-	
-							
+                                <input
+                                    type="text"
+                                    name="email"
+                                    :value="old('email')"
+                                    required
+                                    class="form-control"
+                                    id="exampleInputEmail1"
+                                    aria-describedby="emailHelp"
+                                    placeholder="email or phone"
+                                    oninvalid="this.setCustomValidity('Please enter a valid phone or email')"
+                                    oninput="this.setCustomValidity('')"
+                                    pattern="^(?:01\d{9}|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$"
+                                />
+
+                            </div>
+
+
+
 							<div class="form-group">
 							  <label for="exampleInputPassword1">كلمه المرور</label>
 							  <input  type="password" name="password" required  class="form-control passwordInput" id="exampleInputPassword1" placeholder="كلمه المرور">
@@ -40,7 +52,7 @@
 								</label>
 							  </div>
 							<p>
-							    
+
 							      @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         <!--{{ __('Forgot your password?') }}-->
@@ -51,19 +63,19 @@
 
 
  							</p>
-							
+
 
 							<button type="submit" class="btn btn-primary">الدخول</button>
 
 							<P style="text-align: center;"><a href="{{ route('register', Config::get('app.locale')) }} ">ليس لديك حساب؟مستخدم جديد</a></P>
-						  </form> 
+						  </form>
 					   </div>
 					   <x-jet-validation-errors class="mb-4 error-box"  />
-				   </div>  
+				   </div>
                 </div>
-                  
-               
-                
+
+
+
             </section>
 
 
