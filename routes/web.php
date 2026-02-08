@@ -104,16 +104,10 @@ Route::group(['prefix' => '{locale?}'], function (){
         })->middleware(['setLocale']);
 
 
-
-
-
-
     Route::get('/callfary_api_card', 'App\Http\Controllers\DeveloperfawryPayment@callfary_api_card')->name('callfary_api_card')->middleware('setLocale');
 
-
-
-    Route::get('/pricing-seller', 'App\Http\Controllers\PricController@index')->name('priceSeller')->middleware('setLocale');
-    Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
+        Route::get('/pricing-seller', 'App\Http\Controllers\PricController@index')->name('priceSeller')->middleware('setLocale');
+        Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
         /*   Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
@@ -212,9 +206,7 @@ Route::group(['prefix' => '{locale?}'], function (){
 Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');
 Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
 Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
-        Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
-
-
+  Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
 
 //Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register');
 
@@ -307,10 +299,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Route::post('/customLogin', 'App\Http\Controllers\HomeController@customLogin')->name('customLogin');
 
-
-
-
-// goo
     Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbPage')->name('verficationApply');
 
     Route::post('/phoneVerficationReset', 'App\Http\Controllers\PageController@verifyOtbReset')->name('verficationReset');
@@ -332,3 +320,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
         Route::post('/resend-otb', 'App\Http\Controllers\PageController@resendOTB')->name('resendOTB');
 
+Route::group(['middleware' => 'adminon'], function () {
+    Route::resource('blogs', App\Http\Controllers\blogController::class);
+
+
+});
