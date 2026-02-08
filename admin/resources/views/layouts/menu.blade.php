@@ -4,6 +4,35 @@
         <p>المستخدمين</p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="{{ route('aqars.index') }}"
+       class="nav-link {{ Request::is('aqars*') ? 'active' : '' }}">
+        <p>عقارات</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('complaints.index') }}"
+       class="nav-link {{ Request::is('complaints*') ? 'active' : '' }}">
+        <p>شكاوي</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('contactForms.index') }}"
+       class="nav-link {{ Request::is('contactForms*') ? 'active' : '' }}">
+        <p>نماذج الاتصال</p>
+    </a>
+</li>
+
+
+<li class="nav-item">
+    <a href="{{ route('notifications.index') }}"
+       class="nav-link {{ Request::is('notifications*') ? 'active' : '' }}">
+        <p>إشعارات</p>
+    </a>
+</li>
 
 <li class="nav-item">
     <a href="{{ route('blogs.index') }}"
@@ -132,12 +161,6 @@
 </li>
 
 
-<li class="nav-item">
-    <a href="{{ route('aqars.index') }}"
-       class="nav-link {{ Request::is('aqars*') ? 'active' : '' }}">
-        <p>عقارات</p>
-    </a>
-</li>
 
 
 <!-- <li class="nav-item">
@@ -187,7 +210,7 @@
     </a>
 </li>
 
-<!-- 
+<!--
 <li class="nav-item">
     <a href="{{ route('userContactAqars.index') }}"
        class="nav-link {{ Request::is('userContactAqars*') ? 'active' : '' }}">
@@ -212,28 +235,6 @@
 </li> -->
 
 
-<li class="nav-item">
-    <a href="{{ route('complaints.index') }}"
-       class="nav-link {{ Request::is('complaints*') ? 'active' : '' }}">
-        <p>شكاوي</p>
-    </a>
-</li>
-
-
-<li class="nav-item">
-    <a href="{{ route('contactForms.index') }}"
-       class="nav-link {{ Request::is('contactForms*') ? 'active' : '' }}">
-        <p>نماذج الاتصال</p>
-    </a>
-</li>
-
-
-<li class="nav-item">
-    <a href="{{ route('notifications.index') }}"
-       class="nav-link {{ Request::is('notifications*') ? 'active' : '' }}">
-        <p>إشعارات</p>
-    </a>
-</li>
 
 
 <li class="nav-item">
