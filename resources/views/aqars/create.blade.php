@@ -577,7 +577,8 @@ else{
         $(document).ready(function () {
         //    $('#country').on('change', function () {
             $('#governrate_input').on('change', function () {
-                var idCountry = document.getElementById("governrate_id");
+                var idCountry = $('#governrate_id').val(); // Get the value from the hidden input (should be the ID)
+                if (!idCountry) return;
                 $("#area_input").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-states') }}",
