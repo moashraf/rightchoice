@@ -119,7 +119,7 @@
                                         oninvalid="this.setCustomValidity('   برجاء ادخال  نوع المستخدم    ')"
                                         oninput="this.setCustomValidity('')"
                                         autocomplete="off" name="TYPE" id="user-type" class="myselect">
-                                        <option value="">
+                                        <option value="1">
                                             أختار
                                         </option>
                                         @foreach($getUserType as $name => $id)
