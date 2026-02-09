@@ -98,6 +98,7 @@ Route::group(['prefix' => '{locale?}'], function (){
             Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
             Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale']);
+            Route::get('/governorates/search', 'App\Http\Controllers\AqarController@searchGovernorates')->middleware(['setLocale']);
             Route::get('/dashboard', function() {
 
             return View('dashboard');
