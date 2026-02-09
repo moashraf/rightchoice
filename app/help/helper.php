@@ -66,7 +66,7 @@ function _PushNotification($title,$msg,$UserObject,$typeThisNotify,$redirectionI
 }
 
 
-function notify($title = null, $body = null, $json_data, $user)
+function notify($json_data, $user, $title = null, $body = null)
 {
     try {
         $optionBuilder = new OptionsBuilder();

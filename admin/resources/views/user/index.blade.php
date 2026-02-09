@@ -23,6 +23,10 @@
                        href="{{ route('user.create') }}">
                         اضف جديد
                     </a>
+                    <a id="export-users-btn" class="btn btn-success float-right mr-2" href="{{ route('admin.users.export-last-1000') }}">
+                        <span id="export-users-text">تصدير آخر 1000 مستخدم</span>
+                        <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -183,6 +187,26 @@
 @section('footerScript')
     <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{ URL::asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-
+    @parent
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var exportBtn = document.getElementById('export-users-btn');
+            var exportText = document.getElementById('export-users-text');
+            var exportSpinner = document.getElementById('export-users-spinner');
+            if(exportBtn) {
+                exportBtn.addEventListener('click', function (e) {
+                    exportBtn.classList.add('disabled');
+                    exportText.style.display = 'none';
+                    exportSpinner.style.display = '';
+                    // Let the browser handle the download
+                    setTimeout(function(){
+                        exportBtn.classList.remove('disabled');
+                        exportText.style.display = '';
+                        exportSpinner.style.display = 'none';
+                    }, 5000); // fallback in case download fails
+                });
+            }
+        });
+    </script>
 @endsection
 

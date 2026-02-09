@@ -173,9 +173,11 @@ Route::get('users/{user}/delete', 'App\Http\Controllers\UserController@destroy')
 Route::get('user/{id}/show', 'App\Http\Controllers\UserController@show');
 Route::get('user/{id}/aqars', 'App\Http\Controllers\UserController@aqars')->name('user.aqars');
 
+    Route::get('users/export-last-1000', [\App\Http\Controllers\Admin\UserExportController::class, 'exportLast1000'])->name('admin.users.export-last-1000');
 
 
 Route::resource('user', 'App\Http\Controllers\UserController');
+// Route::get('user/show/{id}', 'App\Http\Controllers\UserController@show')->name('show_userpage');
 // Route::get('user/show/{id}', 'App\Http\Controllers\UserController@show')->name('show_userpage');
 
 });
