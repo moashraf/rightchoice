@@ -250,9 +250,7 @@ class AqarController extends Controller
 
 
 
-        $allAqars = aqar::where('status',1) ->orderBy('created_at', 'DESC')
-
-        ->when($request->has('location1') && $request->location1 != null,function ($query) use ($request) {
+        $allAqars = aqar::where('status',1) ->orderBy('created_at', 'DESC')   ->when($request->has('location1') && $request->location1 != null,function ($query) use ($request) {
 
                        $query ->where('governrate_id', $request->location1) ;
 
@@ -1988,5 +1986,14 @@ public function replaceLongPhoneNumbersWithStars($text) {
         compact('off','allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas','compounds','cat_id', 'prop_id', 'saletype' , 'governratew'
       ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
 
+    }
+
+
+
+    public function searchGovernorates(Request $request)
+    {
+        $query = $request->get('q');
+        $governorates = Governrate::where('governrate', 'like', $query . '%')->select('id', 'governrate')->get();
+        return response()->json($governorates);
     }
 }

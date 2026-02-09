@@ -1,6 +1,6 @@
 <x-layout>
-    
-        
+
+
     @section('title')
     اضف اعلان
     @endsection
@@ -10,22 +10,22 @@
     <section id="add-listing" dir="rtl">
 
 <div id="pageloader" class="d-none text-center justify-content-center align-items-center" style="  background: rgba( 255, 255, 255, 0.8 );
- 
-  
+
+
   position: fixed;
   top:0;
   bottom:0;
   left:0;
   right:0;
   z-index: 9999;">
-    
-   
+
+
    <div>
        <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." loading="lazy" />
 <h6 class="fw-bolder text-dark mt-5">  بعض الصور حجمها كبير قد يتسغرق رفعها 40   ثانيه (جاري التحميل)</h6>
 
 </div>
-  
+
 </div>
 
 
@@ -50,12 +50,12 @@
                         justify-content: start;">
                             <div class="col-lg-2">
                                 <div class="form-group">
-                          
-                          
-                          
+
+
+
 
                                     <label for="li-cat">تصنيف العرض <span class="text-danger">*</span></label>
-                             
+
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.categoryError')}}')"
   oninput="this.setCustomValidity('')" required name="category" id="li-cat" class="myselect">
                                         <option selected disabled   value="">اختر</option>
@@ -105,21 +105,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                               
-                                <div class="row" style="align-content: start;
-                                justify-content: start;">
+
+                                <div class="row" style="align-content: start;  justify-content: start;">
                                     <div class="col-lg-4">
                                          <label for="">المحافظه <span class="text-danger">*</span></label>
-                                        <select oninvalid="this.setCustomValidity('{{ trans('validation.country')}}')"
-  oninput="this.setCustomValidity('')" required name="governrate_id" id="country" class="myselect">
-                                            <option selected disabled   selected="true" value >اختر</option>
-                                            @foreach ($governrate as $loc)
-                                            <option value="{{ $loc->id }}"
-                                                {{ old('governrate_id') == $loc->id ? 'selected' : '' }}>
-                                                {{ $loc->governrate }}</option>
-
-                                            @endforeach
-                                        </select>
+                                        <input type="text" id="governrate_input" name="governrate_name" class="form-control"
+                                               required value="{{ old('governrate_name') }}" placeholder="ابحث عن المحافظه">
+                                        <input type="hidden" id="governrate_id" name="governrate_id" value="{{ old('governrate_id') }}">
+                                        <div id="governrate_suggestions" class="suggestions"></div>
 
                                         @error('governrate_id')
                                         <p class="text-danger text-sm mt-1"> {{ $message }} </p>
@@ -360,13 +353,13 @@
                                 </div>
                             </div>
                             <!-- boolean row -->
-                          
+
                             <!-- total-price -->
-                           
+
                             <!-- installment row -->
                             <div id="showHide">
-                                
-                            
+
+
                              <div id="boolean-row" class="row" style="align-content: start;
                             justify-content: start;">
 
@@ -383,7 +376,7 @@
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
 
@@ -397,7 +390,7 @@
                                             <option value="1" >نعم</option>
                                             <option value="0">كلا</option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
                                 <!-- signed -->
@@ -412,7 +405,7 @@
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -422,11 +415,11 @@
                                     <input required  oninvalid="this.setCustomValidity('من فضلك ادخل السعر الاجمالي ')"
   oninput="this.setCustomValidity('')" type="number" name="total_price" id="total-price" class="myselect"
                                         placeholder="" min="50">
-                                   
+
                                 </div>
                             </div>`
                             </div>
-                            
+
                             <div class="mt-3 mb-3" id="mzaya-div">
                                 <h3>المزايا</h3>
                                 <small>يمكن اختيار اكثر من ميزه بالضغط عليها</small>
@@ -435,15 +428,15 @@
                                 <br>
                                 <div class="row" style="align-items:start !important;align-content: start !important;justify-content: start !important;">
                                     <div class="col-lg-12">
-                                        <input type="checkbox" onClick="toggle(this)" /> 
+                                        <input type="checkbox" onClick="toggle(this)" />
                                         <label for="mzaya[]">بالضغط على المربع يتم اختيار جميع المزايا</label><br>
-                                    </div> 
+                                    </div>
                                     @foreach ($mzaya as $maz)
                                     <div class="col-lg-2">
                                         <input type="checkbox" name="mzaya[]" value="{{$maz->id}}">
                                         <label for="mzaya[]">{{ $maz->mzaya_type }}</label><br>
                                     </div> @endforeach
-                                    
+
                                   <script language="JavaScript">
                                function toggle(source) {
                                   checkboxes = document.getElementsByName('mzaya[]');
@@ -452,7 +445,7 @@
                                   }
 }
                                     </script>
-                                    
+
                                     </div>
 
                             </div>
@@ -553,37 +546,38 @@
 
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
      <?php  if (  App::getLocale()== 'en' )
-    { 
-        
+    {
+
         ?>
 
     <script src="{{ asset('assets/js/english-imgs.js') }}"></script>
-         <?php 
+         <?php
     }
-else{  
-    
-    
+else{
+
+
     ?>
-    
+
     <script src="{{ asset('assets/js/img-upload.js') }}"></script>
 
     <?php
-}  
-?> 
+}
+?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
 
     <script>
         $(document).ready(function () {
-            $('#country').on('change', function () {
-                var idCountry = this.value;
+        //    $('#country').on('change', function () {
+            $('#governrate_input').on('change', function () {
+                var idCountry = document.getElementById("governrate_id");
                 $("#area_input").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-states') }}",
@@ -604,14 +598,54 @@ else{
                 });
             });
 
+            // Autocomplete for governorate
+            $('#governrate_input').on('input', function() {
+                var query = $(this).val();
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '{{ url(App::getLocale() . "/governorates/search") }}',
+                        type: 'GET',
+                        data: { q: query },
+                        success: function(data) {
+                            var suggestions = $('#governrate_suggestions');
+                            suggestions.empty();
+                            if (data.length > 0) {
+                                data.forEach(function(item) {
+                                    suggestions.append('<div class="suggestion-item" data-id="' + item.id + '" data-name="' + item.governrate + '">' + item.governrate + '</div>');
+                                });
+                                suggestions.show();
+                            } else {
+                                suggestions.hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#governrate_suggestions').hide();
+                }
+            });
+
+            $(document).on('click', '.suggestion-item', function() {
+                var id = $(this).data('id');
+                var name = $(this).data('name');
+                $('#governrate_input').val(name);
+                $('#governrate_id').val(id);
+                $('#governrate_suggestions').hide();
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#governrate_input, #governrate_suggestions').length) {
+                    $('#governrate_suggestions').hide();
+                }
+            });
+
         });
-        
-        
-        
-        
-        
+
+
+
+
+
         $(function(){
-             
+
     $("#total-area,#rooms,#baths,#total-price,#installment-time,#installment-value,#installment-date,#rent-value").keypress(function(event){
         var ew = event.which;
         if(ew == 32)
