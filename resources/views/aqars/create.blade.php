@@ -109,10 +109,40 @@
                                 <div class="row" style="align-content: start;  justify-content: start;">
                                     <div class="col-lg-4">
                                         <label for="">المحافظه <span class="text-danger">*</span></label>
-                                        <input type="text" id="governrate_input" name="governrate_name" class="form-control"
-                                               required value="{{ old('governrate_name') }}" placeholder="ابحث عن المحافظه">
-                                        <input type="hidden" id="governrate_id" name="governrate_id" value="{{ old('governrate_id') }}">
-                                        <div id="governrate_suggestions" class="suggestions"></div>
+
+                                        <div class="col-lg-12">
+
+                                            <div class="gov-dropdown w-100">
+                                                <button type="button" id="governrate_btn" class="myselect gov-dropbtn w-100">
+                                                    <span id="governrate_btn_text">{{ old('governrate_name') ?: 'اختر المحافظه' }}</span>
+                                                    <span class="gov-caret">▾</span>
+                                                </button>
+
+                                                <div id="governrate_dropdown" class="gov-dropdown-content w-100">
+                                                    <input
+                                                        type="text"
+                                                        id="governrate_input"
+                                                        name="governrate_name"
+                                                        class="gov-search-input"
+                                                        placeholder="ابحث عن المحافظه..."
+                                                        autocomplete="off"
+                                                        value="{{ old('governrate_name') }}"
+                                                        required
+                                                    />
+
+                                                    <div id="governrate_results" class="gov-results">
+                                                        <div class="gov-empty">اكتب للبحث...</div>
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="governrate_id" name="governrate_id" value="{{ old('governrate_id') }}">
+                                            </div>
+
+                                            @error('governrate_id')
+                                            <p class="text-danger text-sm mt-1"> {{ $message }} </p>
+                                            @enderror
+                                        </div>
+
 
                                         @error('governrate_id')
                                         <p class="text-danger text-sm mt-1"> {{ $message }} </p>
@@ -602,110 +632,232 @@
         }
     </style>
 
+        <script>
+            $(document).ready(function(){
 
+                function fetchDistrictsByGovernorateId(governrateId) {
+                    if (!governrateId) return;
 
-    <script>
-        $(document).ready(function () {
+                    $("#area_input").html('<option value="" selected disabled>جاري التحميل...</option>');
 
-            function fetchDistrictsByGovernorateId(governrateId) {
-                if (!governrateId) return;
-
-                $("#area_input").html('');
-                $.ajax({
-                    url: "{{ url('api/fetch-states') }}",
-                    type: "POST",
-                    data: {
-                        country_id: governrateId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#area_input').html('<option value="" selected disabled>اختر</option>');
-                        $.each(result.states, function (key, value) {
-                            $("#area_input").append('<option value="' + value.id + '">' + value.district + '</option>');
-                        });
-                    },
-                    error: function(xhr){
-                        console.log('fetch-states error:', xhr.status, xhr.responseText);
-                    }
-                });
-            }
-
-            // ✅ لو المستخدم غيّر القيمة يدويًا، نحاول نجيب الأحياء بالـ governrate_id لو موجود
-            $('#governrate_input').on('change', function () {
-                var governrateId = $('#governrate_id').val();
-                if (!governrateId) return;
-                fetchDistrictsByGovernorateId(governrateId);
-            });
-
-            // Autocomplete for governorate
-            let govAjax = null; // ✅ cancel previous request
-            $('#governrate_input').on('input', function() {
-                var query = $(this).val();
-
-                // ✅ reset hidden id عندما يكتب من جديد
-                $('#governrate_id').val('');
-                $("#area_input").html('<option value="" selected disabled>اختر</option>');
-
-                if (govAjax) {
-                    try { govAjax.abort(); } catch(e) {}
-                }
-
-                if (query.length > 0) {
-                    govAjax = $.ajax({
-                        url: '{{ url(App::getLocale() . "/governorates/search") }}',
-                        type: 'GET',
-                        data: { q: query },
-                        dataType: 'json',
-                        success: function(data) {
-                            var suggestions = $('#governrate_suggestions');
-                            suggestions.empty();
-
-                            if (Array.isArray(data) && data.length > 0) {
-                                data.forEach(function(item) {
-                                    // دعم أسماء مختلفة للحقول
-                                    var id = item.id ?? item.governrate_id ?? '';
-                                    var name = item.governrate ?? item.name ?? item.governorate ?? '';
-                                    if (!id || !name) return;
-
-                                    suggestions.append(
-                                        '<div class="suggestion-item" data-id="' + id + '" data-name="' + name + '">' + name + '</div>'
-                                    );
+                    $.ajax({
+                        url: "{{ url('api/fetch-states') }}",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            country_id: governrateId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (result) {
+                            $('#area_input').html('<option value="" selected disabled>اختر</option>');
+                            if (result && result.states) {
+                                $.each(result.states, function (key, value) {
+                                    $("#area_input").append('<option value="' + value.id + '">' + value.district + '</option>');
                                 });
-                                suggestions.show();
-                            } else {
-                                suggestions.hide();
                             }
                         },
                         error: function(xhr){
-                            console.log('governorates/search error:', xhr.status, xhr.responseText);
-                            $('#governrate_suggestions').hide();
+                            console.log('fetch-states error:', xhr.status, xhr.responseText);
+                            $('#area_input').html('<option value="" selected disabled>خطأ في التحميل</option>');
                         }
                     });
-                } else {
-                    $('#governrate_suggestions').hide();
                 }
+
+                // فتح/غلق dropdown
+                $('#governrate_btn').on('click', function(){
+                    $('#governrate_dropdown').toggleClass('show');
+
+                    // focus على input
+                    if ($('#governrate_dropdown').hasClass('show')) {
+                        setTimeout(() => $('#governrate_input').focus(), 0);
+                    }
+                });
+
+                // قفل dropdown لو ضغط بره
+                $(document).on('click', function(e){
+                    if (!$(e.target).closest('.gov-dropdown').length) {
+                        $('#governrate_dropdown').removeClass('show');
+                    }
+                });
+
+                let govAjax = null;
+
+                // البحث داخل dropdown
+                $('#governrate_input').on('keyup', function(){
+                    const query = $(this).val().trim();
+
+                    // reset id + district
+                    $('#governrate_id').val('');
+                    $('#area_input').html('<option value="" selected disabled>اختر</option>');
+
+                    if (govAjax) { try { govAjax.abort(); } catch(e) {} }
+
+                    if (query.length === 0) {
+                        $('#governrate_results').html('<div class="gov-empty">اكتب للبحث...</div>');
+                        return;
+                    }
+
+                    $('#governrate_results').html('<div class="gov-empty">جاري البحث...</div>');
+
+                    govAjax = $.ajax({
+                        url: '{{ url(App::getLocale() . "/governorates/search") }}',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { q: query },
+                        success: function(data){
+                            if (!Array.isArray(data) || data.length === 0) {
+                                $('#governrate_results').html('<div class="gov-empty">لا توجد نتائج</div>');
+                                return;
+                            }
+
+                            let html = '';
+                            data.forEach(function(item){
+                                const id = item.id ?? item.governrate_id ?? '';
+                                const name = item.governrate ?? item.name ?? item.governorate ?? '';
+                                if (!id || !name) return;
+
+                                html += `<div class="gov-item" data-id="${id}" data-name="${name}">${name}</div>`;
+                            });
+
+                            $('#governrate_results').html(html || '<div class="gov-empty">لا توجد نتائج</div>');
+                        },
+                        error: function(xhr){
+                            console.log('governorates/search error:', xhr.status, xhr.responseText);
+                            $('#governrate_results').html('<div class="gov-empty">حصل خطأ أثناء البحث</div>');
+                        }
+                    });
+                });
+
+                // اختيار محافظة
+                $(document).on('click', '.gov-item', function(){
+                    const id = $(this).data('id');
+                    const name = $(this).data('name');
+
+                    $('#governrate_input').val(name);
+                    $('#governrate_id').val(id);
+
+                    // تحديث نص الزرار
+                    $('#governrate_btn_text').text(name);
+
+                    // اقفل dropdown
+                    $('#governrate_dropdown').removeClass('show');
+
+                    // هات الأحياء
+                    fetchDistrictsByGovernorateId(id);
+                });
+
+                // لو فيه old value من السيرفر (edit/validation) هات الأحياء تلقائيًا
+                const oldGovId = $('#governrate_id').val();
+                const oldGovName = $('#governrate_input').val();
+                if (oldGovName) $('#governrate_btn_text').text(oldGovName);
+                if (oldGovId) fetchDistrictsByGovernorateId(oldGovId);
+
             });
+        </script>
 
-            // ✅ عند اختيار المحافظة: نحدد id + نجيب الأحياء فورًا
-            $(document).on('click', '.suggestion-item', function() {
-                var id = $(this).data('id');
-                var name = $(this).data('name');
 
-                $('#governrate_input').val(name);
-                $('#governrate_id').val(id);
-                $('#governrate_suggestions').hide();
+    <script>
+        {{--$(document).ready(function () {--}}
 
-                fetchDistrictsByGovernorateId(id);
-            });
+        {{--    function fetchDistrictsByGovernorateId(governrateId) {--}}
+        {{--        if (!governrateId) return;--}}
 
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('#governrate_input, #governrate_suggestions').length) {
-                    $('#governrate_suggestions').hide();
-                }
-            });
+        {{--        $("#area_input").html('');--}}
+        {{--        $.ajax({--}}
+        {{--            url: "{{ url('api/fetch-states') }}",--}}
+        {{--            type: "POST",--}}
+        {{--            data: {--}}
+        {{--                country_id: governrateId,--}}
+        {{--                _token: '{{ csrf_token() }}'--}}
+        {{--            },--}}
+        {{--            dataType: 'json',--}}
+        {{--            success: function (result) {--}}
+        {{--                $('#area_input').html('<option value="" selected disabled>اختر</option>');--}}
+        {{--                $.each(result.states, function (key, value) {--}}
+        {{--                    $("#area_input").append('<option value="' + value.id + '">' + value.district + '</option>');--}}
+        {{--                });--}}
+        {{--            },--}}
+        {{--            error: function(xhr){--}}
+        {{--                console.log('fetch-states error:', xhr.status, xhr.responseText);--}}
+        {{--            }--}}
+        {{--        });--}}
+        {{--    }--}}
 
-        });
+        {{--    // ✅ لو المستخدم غيّر القيمة يدويًا، نحاول نجيب الأحياء بالـ governrate_id لو موجود--}}
+        {{--    $('#governrate_input').on('change', function () {--}}
+        {{--        var governrateId = $('#governrate_id').val();--}}
+        {{--        if (!governrateId) return;--}}
+        {{--        fetchDistrictsByGovernorateId(governrateId);--}}
+        {{--    });--}}
+
+        {{--    // Autocomplete for governorate--}}
+        {{--    let govAjax = null; // ✅ cancel previous request--}}
+        {{--    $('#governrate_input').on('input', function() {--}}
+        {{--        var query = $(this).val();--}}
+
+        {{--        // ✅ reset hidden id عندما يكتب من جديد--}}
+        {{--        $('#governrate_id').val('');--}}
+        {{--        $("#area_input").html('<option value="" selected disabled>اختر</option>');--}}
+
+        {{--        if (govAjax) {--}}
+        {{--            try { govAjax.abort(); } catch(e) {}--}}
+        {{--        }--}}
+
+        {{--        if (query.length > 0) {--}}
+        {{--            govAjax = $.ajax({--}}
+        {{--                url: '{{ url(App::getLocale() . "/governorates/search") }}',--}}
+        {{--                type: 'GET',--}}
+        {{--                data: { q: query },--}}
+        {{--                dataType: 'json',--}}
+        {{--                success: function(data) {--}}
+        {{--                    var suggestions = $('#governrate_suggestions');--}}
+        {{--                    suggestions.empty();--}}
+
+        {{--                    if (Array.isArray(data) && data.length > 0) {--}}
+        {{--                        data.forEach(function(item) {--}}
+        {{--                            // دعم أسماء مختلفة للحقول--}}
+        {{--                            var id = item.id ?? item.governrate_id ?? '';--}}
+        {{--                            var name = item.governrate ?? item.name ?? item.governorate ?? '';--}}
+        {{--                            if (!id || !name) return;--}}
+
+        {{--                            suggestions.append(--}}
+        {{--                                '<div class="suggestion-item" data-id="' + id + '" data-name="' + name + '">' + name + '</div>'--}}
+        {{--                            );--}}
+        {{--                        });--}}
+        {{--                        suggestions.show();--}}
+        {{--                    } else {--}}
+        {{--                        suggestions.hide();--}}
+        {{--                    }--}}
+        {{--                },--}}
+        {{--                error: function(xhr){--}}
+        {{--                    console.log('governorates/search error:', xhr.status, xhr.responseText);--}}
+        {{--                    $('#governrate_suggestions').hide();--}}
+        {{--                }--}}
+        {{--            });--}}
+        {{--        } else {--}}
+        {{--            $('#governrate_suggestions').hide();--}}
+        {{--        }--}}
+        {{--    });--}}
+
+        {{--    // ✅ عند اختيار المحافظة: نحدد id + نجيب الأحياء فورًا--}}
+        {{--    $(document).on('click', '.suggestion-item', function() {--}}
+        {{--        var id = $(this).data('id');--}}
+        {{--        var name = $(this).data('name');--}}
+
+        {{--        $('#governrate_input').val(name);--}}
+        {{--        $('#governrate_id').val(id);--}}
+        {{--        $('#governrate_suggestions').hide();--}}
+
+        {{--        fetchDistrictsByGovernorateId(id);--}}
+        {{--    });--}}
+
+        {{--    $(document).on('click', function(e) {--}}
+        {{--        if (!$(e.target).closest('#governrate_input, #governrate_suggestions').length) {--}}
+        {{--            $('#governrate_suggestions').hide();--}}
+        {{--        }--}}
+        {{--    });--}}
+
+        {{--});--}}
 
 
 
@@ -727,12 +879,61 @@
             });
         });
 
-
-
-
-
-
-
     </script>
+        <styele>
 
+
+            <style>
+                .gov-dropdown{ position: relative; }
+                .gov-dropbtn{
+                    display:flex; align-items:center; justify-content:space-between;
+                    background:#fff; border:1px solid #ddd; padding:10px 12px;
+                    cursor:pointer; border-radius:6px;
+                }
+                .gov-dropbtn:focus{ outline: 3px solid #eee; }
+
+                .gov-caret{ font-size:12px; color:#666; }
+
+                .gov-dropdown-content{
+                    display:none;
+                    position:absolute;
+                    top: calc(100% + 4px);
+                    right:0;
+                    background:#fff;
+                    border:1px solid #ddd;
+                    border-radius:8px;
+                    z-index:9999;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+                    overflow:hidden;
+                }
+
+                .gov-dropdown-content.show{ display:block; }
+
+                .gov-search-input{
+                    width:100%;
+                    border:0;
+                    border-bottom:1px solid #eee;
+                    padding:10px 12px;
+                    outline:none;
+                }
+
+                .gov-results{
+                    max-height:240px;
+                    overflow:auto;
+                }
+
+                .gov-item{
+                    padding:10px 12px;
+                    cursor:pointer;
+                    border-bottom:1px solid #f4f4f4;
+                }
+                .gov-item:hover{ background:#f7f7f7; }
+
+                .gov-empty{
+                    padding:10px 12px;
+                    color:#777;
+                }
+            </style>
+
+        </styele>
 </x-layout>
