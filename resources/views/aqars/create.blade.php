@@ -2,14 +2,14 @@
 
 
     @section('title')
-    اضف اعلان
+        اضف اعلان
     @endsection
 
     <link href="{{ asset('assets/css/img-upload.css') }}" rel="stylesheet">
 
     <section id="add-listing" dir="rtl">
 
-<div id="pageloader" class="d-none text-center justify-content-center align-items-center" style="  background: rgba( 255, 255, 255, 0.8 );
+        <div id="pageloader" class="d-none text-center justify-content-center align-items-center" style="  background: rgba( 255, 255, 255, 0.8 );
 
 
   position: fixed;
@@ -20,13 +20,13 @@
   z-index: 9999;">
 
 
-   <div>
-       <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." loading="lazy" />
-<h6 class="fw-bolder text-dark mt-5">  بعض الصور حجمها كبير قد يتسغرق رفعها 40   ثانيه (جاري التحميل)</h6>
+            <div>
+                <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." loading="lazy" />
+                <h6 class="fw-bolder text-dark mt-5">  بعض الصور حجمها كبير قد يتسغرق رفعها 40   ثانيه (جاري التحميل)</h6>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
 
@@ -57,12 +57,12 @@
                                     <label for="li-cat">تصنيف العرض <span class="text-danger">*</span></label>
 
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.categoryError')}}')"
-  oninput="this.setCustomValidity('')" required name="category" id="li-cat" class="myselect">
+                                            oninput="this.setCustomValidity('')" required name="category" id="li-cat" class="myselect">
                                         <option selected disabled   value="">اختر</option>
                                         @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}"
-                                            {{ old('category') == $cat->id ? 'selected' : '' }}>
-                                            {{ $cat->category_name }}</option>
+                                            <option value="{{ $cat->id }}"
+                                                {{ old('category') == $cat->id ? 'selected' : '' }}>
+                                                {{ $cat->category_name }}</option>
 
                                         @endforeach
                                     </select>
@@ -76,7 +76,7 @@
                                 <div class="form-group">
                                     <label for="Property-type">نوع العقار <span class="text-danger">*</span></label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.aqarError')}}')"
-  oninput="this.setCustomValidity('')" required name="property_type" id="Property-type" class="myselect">
+                                            oninput="this.setCustomValidity('')" required name="property_type" id="Property-type" class="myselect">
                                         <option  selected disabled   value="">اختر نوع العقار</option>
 
                                     </select>
@@ -91,12 +91,12 @@
                                 <div class="form-group">
                                     <label for="li-compound">اسم الكومبوند   (اختياري)</label>
                                     <input type="text" list="li-compound" name="compound" class="myselect"
-                                        value="{{ old('compound') }}" />
+                                           value="{{ old('compound') }}" />
                                     <datalist id="li-compound">
                                         @foreach ($compounds as $com)
-                                        <option value="{{ $com->compound }}"
-                                            {{ old('compound') == $com->id ? 'selected' : '' }}>{{ $com->compound }}
-                                        </option>
+                                            <option value="{{ $com->compound }}"
+                                                {{ old('compound') == $com->id ? 'selected' : '' }}>{{ $com->compound }}
+                                            </option>
                                         @endforeach
                                     </datalist>
                                     @error('compound')
@@ -108,7 +108,7 @@
 
                                 <div class="row" style="align-content: start;  justify-content: start;">
                                     <div class="col-lg-4">
-                                         <label for="">المحافظه <span class="text-danger">*</span></label>
+                                        <label for="">المحافظه <span class="text-danger">*</span></label>
                                         <input type="text" id="governrate_input" name="governrate_name" class="form-control"
                                                required value="{{ old('governrate_name') }}" placeholder="ابحث عن المحافظه">
                                         <input type="hidden" id="governrate_id" name="governrate_id" value="{{ old('governrate_id') }}">
@@ -120,9 +120,9 @@
                                     </div>
 
                                     <div class="col-lg-4">
-                                         <label for="">الحي <span class="text-danger">*</span></label>
+                                        <label for="">الحي <span class="text-danger">*</span></label>
                                         <select oninvalid="this.setCustomValidity('{{ trans('validation.areaError')}}')"
-  oninput="this.setCustomValidity('')" required name="district_id" id="area_input" class="myselect">
+                                                oninput="this.setCustomValidity('')" required name="district_id" id="area_input" class="myselect">
                                             <option  selected disabled  value="">اختر</option>
 
 
@@ -135,14 +135,14 @@
 
 
                                     <div class="col-lg-4">
-                                                 <label for="">المنطقه او الشارع (اختياري)</label>
+                                        <label for="">المنطقه او الشارع (اختياري)</label>
                                         <input list="areas" name="area_id" id="area" class="myselect"
-                                            placeholder="" value="{{ old('area_id') }}">
+                                               placeholder="" value="{{ old('area_id') }}">
                                         <datalist id="areas">
                                             @foreach ($areas as $area)
-                                            <option value="{{ $area->area }}"
-                                                {{ old('area_id') == $area->id ? 'selected' : '' }}>{{ $area->area }}
-                                            </option>
+                                                <option value="{{ $area->area }}"
+                                                    {{ old('area_id') == $area->id ? 'selected' : '' }}>{{ $area->area }}
+                                                </option>
                                             @endforeach
 
 
@@ -156,8 +156,8 @@
                             <div class="form-group">
                                 <label for="listing-name"> عنوان الاعلان <span class="text-danger">*</span></label>
                                 <input oninvalid="this.setCustomValidity('{{ trans('validation.titleError')}}')"
-  oninput="this.setCustomValidity('')" placeholder="" required type="text" name="title"
-                                  minlength="3"  maxlength="55" id="listing-name" class="myselect" value="{{ old('title') }}">
+                                       oninput="this.setCustomValidity('')" placeholder="" required type="text" name="title"
+                                       minlength="3"  maxlength="55" id="listing-name" class="myselect" value="{{ old('title') }}">
                                 @error('title')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
@@ -165,9 +165,9 @@
                             <div class="form-group">
                                 <label for="listing-desc"> وصف تفصيلي للاعلان <span class="text-danger">*</span></label>
                                 <textarea oninvalid="this.setCustomValidity('{{ trans('validation.descError')}}')"
-  oninput="this.setCustomValidity('')" maxlength="5000" minlength="10" placeholder="" required="required" name="description"
-                                    id="listing-desc" cols="30" class="myselect2"
-                                    rows="5">{{ old('description') }}</textarea>
+                                          oninput="this.setCustomValidity('')" maxlength="5000" minlength="10" placeholder="" required="required" name="description"
+                                          id="listing-desc" cols="30" class="myselect2"
+                                          rows="5">{{ old('description') }}</textarea>
                                 @error('description')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
@@ -177,8 +177,8 @@
                                 <div class="form-group">
                                     <label for="phone">رقم الهاتف <span class="text-danger">*</span></label>
                                     <input oninvalid="this.setCustomValidity('{{ trans('validation.phoneError')}}')"
-  oninput="this.setCustomValidity('')" disabled type="tel" name="phone" id="phone"
-                                        placeholder="{{auth()->user()->MOP}}" class="myselect">
+                                           oninput="this.setCustomValidity('')" disabled type="tel" name="phone" id="phone"
+                                           placeholder="{{auth()->user()->MOP}}" class="myselect">
                                     <small>اذا ارد تغيير رقم الهاتف الرجاء الذهاب الى <a
                                             href="{{ url(Config::get('app.locale').'/dashboard') }}">الاعدادات</a></small>
                                 </div>
@@ -188,13 +188,13 @@
                                     <label for="call-times">الاوقات المتاحه للاتصال <span
                                             class="text-danger">*</span></label>
                                     <Select oninvalid="this.setCustomValidity('{{ trans('validation.callTimeError')}}')"
-  oninput="this.setCustomValidity('')" required class="myselect" name="call_id">
+                                            oninput="this.setCustomValidity('')" required class="myselect" name="call_id">
                                         <option  selected disabled  value="">اختر الوقت المناسب</option>
 
                                         @foreach ($calls as $call)
-                                        <option value="{{ $call->id }}"
-                                            {{ old('call_id') == $call->id ? 'selected' : '' }}>{{ $call->call_time }}
-                                        </option>
+                                            <option value="{{ $call->id }}"
+                                                {{ old('call_id') == $call->id ? 'selected' : '' }}>{{ $call->call_time }}
+                                            </option>
                                         @endforeach
 
 
@@ -223,17 +223,17 @@
                                 <div class="form-group">
                                     <label for="offer-type">نوع العرض <span class="text-danger">*</span></label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.offerError')}}')"
-  oninput="this.setCustomValidity('')" required class="myselect" name="offer_type" id="offer-type">
+                                            oninput="this.setCustomValidity('')" required class="myselect" name="offer_type" id="offer-type">
                                         <option   selected disabled  value="">اختر نوع العرض</option>
 
                                         @foreach ($offerTypes as $item)
-                                        @if ($item->id != 5)
-                                        <option value="{{ $item->id }}"
-                                            {{ old('offer_type') == $item->id ? 'selected' : '' }}>
-                                            {{ $item->type_offer }}
-                                        </option>
+                                            @if ($item->id != 5)
+                                                <option value="{{ $item->id }}"
+                                                    {{ old('offer_type') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->type_offer }}
+                                                </option>
 
-                                        @endif
+                                            @endif
                                         @endforeach
                                     </select>
                                     @error('offer_type')
@@ -246,8 +246,8 @@
                                 <div class="form-group">
                                     <label for="total-area">اجمالي المساحه <span class="text-danger">*</span></label>
                                     <input oninvalid="this.setCustomValidity('{{ trans('validation.totalAreaError')}}')"
-  oninput="this.setCustomValidity('')" required type="number" class="myselect" placeholder="" min="0"
-                                        name="total_area" id="total-area" value="{{ old('total_area') }}">
+                                           oninput="this.setCustomValidity('')" required type="number" class="myselect" placeholder="" min="0"
+                                           name="total_area" id="total-area" value="{{ old('total_area') }}">
                                     @error('total_area')
                                     <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                     @enderror
@@ -258,13 +258,13 @@
                                 <div class="form-group">
                                     <label for="finish-type">التشطيب <span class="text-danger">*</span></label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.finishError')}}')"
-  oninput="this.setCustomValidity('')" class="myselect" name="finishtype" id="finish-type">
+                                            oninput="this.setCustomValidity('')" class="myselect" name="finishtype" id="finish-type">
                                         <option  selected disabled   value="">اختر نوع التشطيب</option>
                                         @foreach ($finishes as $finish)
-                                        <option value="{{ $finish->id }}"
-                                            {{ old('finishtype') == $finish->id ? 'selected' : '' }}>
-                                            {{ $finish->finish_type }}
-                                        </option>
+                                            <option value="{{ $finish->id }}"
+                                                {{ old('finishtype') == $finish->id ? 'selected' : '' }}>
+                                                {{ $finish->finish_type }}
+                                            </option>
 
                                         @endforeach
                                     </select>
@@ -278,8 +278,8 @@
                                 <div class="form-group">
                                     <label for="floors">عدد الطوابق <span class="text-danger">*</span></label>
                                     <input oninvalid="this.setCustomValidity('{{ trans('validation.floorsNumError')}}')"
-  oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
-                                        name="number_of_floors" id="floors" value="{{ old('number_of_floors') }}">
+                                           oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
+                                           name="number_of_floors" id="floors" value="{{ old('number_of_floors') }}">
                                 </div>
                                 @error('number_of_floors')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
@@ -291,12 +291,12 @@
                                 <div class="form-group">
                                     <label for="license-type">نوع الترخيص <span class="text-danger">*</span></label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.licenseError')}}')"
-  oninput="this.setCustomValidity('')" name="license_type" class="myselect" id="license-type">
+                                            oninput="this.setCustomValidity('')" name="license_type" class="myselect" id="license-type">
                                         @foreach ($lic_types as $lic)
-                                        <option value="{{ $lic->id }}"
-                                            {{ old('license_id') == $lic->id ? 'selected' : '' }}>
-                                            {{ $lic->license_type }}
-                                        </option>
+                                            <option value="{{ $lic->id }}"
+                                                {{ old('license_id') == $lic->id ? 'selected' : '' }}>
+                                                {{ $lic->license_type }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('license_type')
@@ -310,12 +310,12 @@
                                 <div class="form-group">
                                     <label for="floor-number">الدور <span class="text-danger">*</span></label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.floorError')}}')"
-  oninput="this.setCustomValidity('')" name="floor" id="floor-number" class="myselect">
+                                            oninput="this.setCustomValidity('')" name="floor" id="floor-number" class="myselect">
                                         <option  selected disabled  value="">اختر</option>
                                         @foreach ($floors as $floor)
-                                        <option value="{{ $floor->id }}"
-                                            {{ old('floor') == $floor->id ? 'selected' : '' }}>{{ $floor->floor }}
-                                        </option>
+                                            <option value="{{ $floor->id }}"
+                                                {{ old('floor') == $floor->id ? 'selected' : '' }}>{{ $floor->floor }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('floor')
@@ -332,8 +332,8 @@
                                     <div class="form-group">
                                         <label for="rooms">عدد الغرف <span class="text-danger">*</span></label>
                                         <input oninvalid="this.setCustomValidity('{{ trans('validation.roomsError')}}')"
-  oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
-                                            name="rooms" id="rooms" value="{{ old('rooms') }}">
+                                               oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
+                                               name="rooms" id="rooms" value="{{ old('rooms') }}">
                                         @error('rooms')
                                         <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                         @enderror
@@ -344,8 +344,8 @@
                                     <div class="form-group">
                                         <label for="baths">عدد الحمامات <span class="text-danger">*</span></label>
                                         <input oninvalid="this.setCustomValidity('{{ trans('validation.bathError')}}')"
-  oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
-                                            name="baths" id="baths" value="{{ old('baths') }}">
+                                               oninput="this.setCustomValidity('')" type="number" class="myselect" placeholder="" min="0"
+                                               name="baths" id="baths" value="{{ old('baths') }}">
                                         @error('baths')
                                         <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                         @enderror
@@ -360,64 +360,64 @@
                             <div id="showHide">
 
 
-                             <div id="boolean-row" class="row" style="align-content: start;
+                                <div id="boolean-row" class="row" style="align-content: start;
                             justify-content: start;">
 
-                                <!-- bank-finance -->
-                                <div class="col-lg-3">
+                                    <!-- bank-finance -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="bank-finance">تصلح تمويل عقاري <span
+                                                    class="text-danger">*</span></label>
+                                            <select required oninvalid="this.setCustomValidity('من فضلك اختر احدى الاختيارات')"
+                                                    oninput="this.setCustomValidity('')" name="finannce_bank" id="bank-finance" class="myselect">
+                                                <option  selected disabled   value="">اختر</option>
+                                                <option  value="1" >نعم
+                                                </option>
+                                                <option value="0" >كلا
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- trade -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="trade">تصلح للبدل <span class="text-danger">*</span></label>
+                                            <select required oninvalid="this.setCustomValidity('من فضلك اختر احدى الاختيارات')"
+                                                    oninput="this.setCustomValidity('')" name="trade" id="trade" class="myselect">
+                                                <option   selected disabled  value="">اختر</option>
+                                                <option value="1" >نعم</option>
+                                                <option value="0">كلا</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <!-- signed -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="signed">مسجله شهر عقاري <span class="text-danger">*</span></label>
+                                            <select required oninvalid="this.setCustomValidity('من فضلك اختر احد الاختيارات')"
+                                                    oninput="this.setCustomValidity('')" name="licensed" id="signed" class="myselect">
+                                                <option   selected disabled  value="">اختر</option>
+                                                <option value="1" >نعم
+                                                </option>
+                                                <option value="0" >كلا
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3" id="total-price-div">
                                     <div class="form-group">
-                                        <label for="bank-finance">تصلح تمويل عقاري <span
-                                                class="text-danger">*</span></label>
-                                        <select required oninvalid="this.setCustomValidity('من فضلك اختر احدى الاختيارات')"
-                         oninput="this.setCustomValidity('')" name="finannce_bank" id="bank-finance" class="myselect">
-                                            <option  selected disabled   value="">اختر</option>
-                                            <option  value="1" >نعم
-                                            </option>
-                                            <option value="0" >كلا
-                                            </option>
-                                        </select>
+                                        <label for="total-price">السعر الاجمالي <span class="text-danger">*</span></label>
+                                        <input required  oninvalid="this.setCustomValidity('من فضلك ادخل السعر الاجمالي ')"
+                                               oninput="this.setCustomValidity('')" type="number" name="total_price" id="total-price" class="myselect"
+                                               placeholder="" min="50">
 
                                     </div>
                                 </div>
-
-                                <!-- trade -->
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="trade">تصلح للبدل <span class="text-danger">*</span></label>
-                                        <select required oninvalid="this.setCustomValidity('من فضلك اختر احدى الاختيارات')"
-  oninput="this.setCustomValidity('')" name="trade" id="trade" class="myselect">
-                                            <option   selected disabled  value="">اختر</option>
-                                            <option value="1" >نعم</option>
-                                            <option value="0">كلا</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <!-- signed -->
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="signed">مسجله شهر عقاري <span class="text-danger">*</span></label>
-                                        <select required oninvalid="this.setCustomValidity('من فضلك اختر احد الاختيارات')"
-  oninput="this.setCustomValidity('')" name="licensed" id="signed" class="myselect">
-                                            <option   selected disabled  value="">اختر</option>
-                                            <option value="1" >نعم
-                                            </option>
-                                            <option value="0" >كلا
-                                            </option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                            </div>
-	     <div class="col-lg-3" id="total-price-div">
-                                <div class="form-group">
-                                    <label for="total-price">السعر الاجمالي <span class="text-danger">*</span></label>
-                                    <input required  oninvalid="this.setCustomValidity('من فضلك ادخل السعر الاجمالي ')"
-  oninput="this.setCustomValidity('')" type="number" name="total_price" id="total-price" class="myselect"
-                                        placeholder="" min="50">
-
-                                </div>
-                            </div>`
                             </div>
 
                             <div class="mt-3 mb-3" id="mzaya-div">
@@ -432,21 +432,21 @@
                                         <label for="mzaya[]">بالضغط على المربع يتم اختيار جميع المزايا</label><br>
                                     </div>
                                     @foreach ($mzaya as $maz)
-                                    <div class="col-lg-2">
-                                        <input type="checkbox" name="mzaya[]" value="{{$maz->id}}">
-                                        <label for="mzaya[]">{{ $maz->mzaya_type }}</label><br>
-                                    </div> @endforeach
+                                        <div class="col-lg-2">
+                                            <input type="checkbox" name="mzaya[]" value="{{$maz->id}}">
+                                            <label for="mzaya[]">{{ $maz->mzaya_type }}</label><br>
+                                        </div> @endforeach
 
-                                  <script language="JavaScript">
-                               function toggle(source) {
-                                  checkboxes = document.getElementsByName('mzaya[]');
-                                  for(var i=0, n=checkboxes.length;i<n;i++) {
-                                    checkboxes[i].checked = source.checked;
-                                  }
-}
+                                    <script language="JavaScript">
+                                        function toggle(source) {
+                                            checkboxes = document.getElementsByName('mzaya[]');
+                                            for(var i=0, n=checkboxes.length;i<n;i++) {
+                                                checkboxes[i].checked = source.checked;
+                                            }
+                                        }
                                     </script>
 
-                                    </div>
+                                </div>
 
                             </div>
 
@@ -466,7 +466,7 @@
 
 
                     <form method="POST" action="{{ route('aqars.upload') }}" id="form-3" files="true"
-                        enctype="multipart/form-data">
+                          enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div id="result-form-1" style="display:none;"></div>
                         <div id="result-form-2" style="display:none;"></div>
@@ -481,26 +481,26 @@
                                         <div class="d-flex w-100 justify-content-between">
 
                                             <h4>
-اضف الصور بحد اقصى  8  صور
-                                                </h4>
+                                                اضف الصور بحد اقصى  8  صور
+                                            </h4>
                                             <button id="needsclickBtn" type="button" class="btn btn-primary"
-                                                onclick="document.getElementById('image').click();">اختر الصور</button>
+                                                    onclick="document.getElementById('image').click();">اختر الصور</button>
 
                                         </div>
                                         <br>
                                         <input  accept="image/png , image/jpeg, image/jpg"  type="file" name="photos_id[]" id="image" multiple
-                                            class="d-none" onchange="image_select(this.files)">
+                                                class="d-none" onchange="image_select(this.files)">
 
                                     </div>
-                                                                            <p>الرجاء عدم وضع صور عليها لوجو منعا لرفض الإعلان</p>
+                                    <p>الرجاء عدم وضع صور عليها لوجو منعا لرفض الإعلان</p>
 
                                     <div class="dropzone mt-3 dz-message needsclick d-flex flex-wrap justify-content-center text-center containerimgs"
-                                        id="container-imgs">
+                                         id="container-imgs">
                                         <!-- image preview -->
                                         <div class="dz-message needsclick">
                                             <br>
                                             <button type="button" class="upBtn"
-                                                onclick="document.getElementById('image').click()"> <i
+                                                    onclick="document.getElementById('image').click()"> <i
                                                     class="fa fa-upload fa-7x"></i></button>
 
 
@@ -531,10 +531,10 @@
                 </div>
 
                 @if ($errors->any())
-                <h3 class="mt-3">ماذا حدث خطاء</h3>
-                @foreach ($errors->all() as $error)
-                <li class="text-danger text-sm">{{ $error }}</li>
-                @endforeach
+                    <h3 class="mt-3">ماذا حدث خطاء</h3>
+                    @foreach ($errors->all() as $error)
+                        <li class="text-danger text-sm">{{ $error }}</li>
+                    @endforeach
                 @endif
             </div>
         </div>
@@ -551,73 +551,135 @@
 
 
 
-     <?php  if (  App::getLocale()== 'en' )
+
+    <!-- ✅ FIX: لازم jQuery يبقى قبل أي ملف بيستخدمه -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <?php  if (  App::getLocale()== 'en' )
     {
 
         ?>
 
     <script src="{{ asset('assets/js/english-imgs.js') }}"></script>
-         <?php
+        <?php
     }
-else{
+    else{
 
 
-    ?>
+        ?>
 
     <script src="{{ asset('assets/js/img-upload.js') }}"></script>
 
-    <?php
-}
-?>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <?php
+    }
+        ?>
+
+
+
+        <!-- ✅ CSS بسيط للـ suggestions (كان ناقص) -->
+    <style>
+        .suggestions{
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ddd;
+            width: calc(100% - 24px);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 9999;
+            display: none;
+            margin-top: 2px;
+            border-radius: 6px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .suggestion-item{
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 14px;
+        }
+        .suggestion-item:hover{
+            background: #f7f7f7;
+        }
+    </style>
 
 
 
     <script>
         $(document).ready(function () {
-        //    $('#country').on('change', function () {
-            $('#governrate_input').on('change', function () {
-                var idCountry = $('#governrate_id').val(); // Get the value from the hidden input (should be the ID)
-                if (!idCountry) return;
+
+            function fetchDistrictsByGovernorateId(governrateId) {
+                if (!governrateId) return;
+
                 $("#area_input").html('');
                 $.ajax({
                     url: "{{ url('api/fetch-states') }}",
                     type: "POST",
                     data: {
-                        country_id: idCountry,
+                        country_id: governrateId,
                         _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
                     success: function (result) {
-                        $('#area_input').html(
-                            '<option value=""  >الحى</option>');
+                        $('#area_input').html('<option value="" selected disabled>اختر</option>');
                         $.each(result.states, function (key, value) {
-                            $("#area_input").append('<option value="' + value
-                                .id + '">' + value.district + '</option>');
+                            $("#area_input").append('<option value="' + value.id + '">' + value.district + '</option>');
                         });
+                    },
+                    error: function(xhr){
+                        console.log('fetch-states error:', xhr.status, xhr.responseText);
                     }
                 });
+            }
+
+            // ✅ لو المستخدم غيّر القيمة يدويًا، نحاول نجيب الأحياء بالـ governrate_id لو موجود
+            $('#governrate_input').on('change', function () {
+                var governrateId = $('#governrate_id').val();
+                if (!governrateId) return;
+                fetchDistrictsByGovernorateId(governrateId);
             });
 
             // Autocomplete for governorate
+            let govAjax = null; // ✅ cancel previous request
             $('#governrate_input').on('input', function() {
                 var query = $(this).val();
+
+                // ✅ reset hidden id عندما يكتب من جديد
+                $('#governrate_id').val('');
+                $("#area_input").html('<option value="" selected disabled>اختر</option>');
+
+                if (govAjax) {
+                    try { govAjax.abort(); } catch(e) {}
+                }
+
                 if (query.length > 0) {
-                    $.ajax({
+                    govAjax = $.ajax({
                         url: '{{ url(App::getLocale() . "/governorates/search") }}',
                         type: 'GET',
                         data: { q: query },
+                        dataType: 'json',
                         success: function(data) {
                             var suggestions = $('#governrate_suggestions');
                             suggestions.empty();
-                            if (data.length > 0) {
+
+                            if (Array.isArray(data) && data.length > 0) {
                                 data.forEach(function(item) {
-                                    suggestions.append('<div class="suggestion-item" data-id="' + item.id + '" data-name="' + item.governrate + '">' + item.governrate + '</div>');
+                                    // دعم أسماء مختلفة للحقول
+                                    var id = item.id ?? item.governrate_id ?? '';
+                                    var name = item.governrate ?? item.name ?? item.governorate ?? '';
+                                    if (!id || !name) return;
+
+                                    suggestions.append(
+                                        '<div class="suggestion-item" data-id="' + id + '" data-name="' + name + '">' + name + '</div>'
+                                    );
                                 });
                                 suggestions.show();
                             } else {
                                 suggestions.hide();
                             }
+                        },
+                        error: function(xhr){
+                            console.log('governorates/search error:', xhr.status, xhr.responseText);
+                            $('#governrate_suggestions').hide();
                         }
                     });
                 } else {
@@ -625,12 +687,16 @@ else{
                 }
             });
 
+            // ✅ عند اختيار المحافظة: نحدد id + نجيب الأحياء فورًا
             $(document).on('click', '.suggestion-item', function() {
                 var id = $(this).data('id');
                 var name = $(this).data('name');
+
                 $('#governrate_input').val(name);
                 $('#governrate_id').val(id);
                 $('#governrate_suggestions').hide();
+
+                fetchDistrictsByGovernorateId(id);
             });
 
             $(document).on('click', function(e) {
@@ -647,19 +713,20 @@ else{
 
         $(function(){
 
-    $("#total-area,#rooms,#baths,#total-price,#installment-time,#installment-value,#installment-date,#rent-value").keypress(function(event){
-        var ew = event.which;
-        if(ew == 32)
-            return true;
-        if(48 <= ew && ew <= 57)
-            return true;
-        if(65 <= ew && ew <= 90)
-            return true;
-        if(97 <= ew && ew <= 122)
-            return true;
-        return false;
-    });
-});
+            // ✅ FIX: أرقام فقط (بدون حروف)
+            $("#total-area,#rooms,#baths,#total-price,#installment-time,#installment-value,#installment-date,#rent-value").keypress(function(event){
+                var ew = event.which;
+
+                // backspace / delete / arrows
+                if (ew === 0 || ew === 8) return true;
+
+                // digits فقط
+                if (48 <= ew && ew <= 57) return true;
+
+                return false;
+            });
+        });
+
 
 
 

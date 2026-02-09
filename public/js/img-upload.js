@@ -1,12 +1,12 @@
 
 var images = [];
 
-//
-// $('#needsclick').click(function(){
-//
-// 	document.getElementById('image').click();
-//
-// });
+
+$('#needsclick').click(function(){
+
+	document.getElementById('image').click();
+
+});
 
 
 
