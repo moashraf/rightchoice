@@ -8,6 +8,7 @@ dist/
 .idea
 *.jar
 target/
+admin/composer.lock
 dist/
 .idea/
 .htaccess
