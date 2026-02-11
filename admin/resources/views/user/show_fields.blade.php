@@ -1,5 +1,4 @@
-    <ul class="list-group ">
-
+<ul class="list-group">
   <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> User Details </li>
 
  <ul class="list-group ">
@@ -18,7 +17,7 @@
             ];
         @endphp
 
-             @if (is_array($user->AGE) && array_key_exists($user->AGE, $ageOptions))
+             @if ($user->AGE && array_key_exists($user->AGE, $ageOptions))
                  {{ $ageOptions[$user->AGE] }}
              @else
                  Not specified
@@ -27,7 +26,13 @@
      </li>
 
 
-     <li class="list-group-item">{!! Form::label('TYPE', 'Type Of User:') !!}  {{ $user->TYPE ? ['1'=>'بائع','2'=>'مشتري','3'=>'مطور عقاري'][$user->TYPE] : 'Not specified' }}</li>
+     <li class="list-group-item">{!! Form::label('TYPE', 'Type Of User:') !!}
+         {{ $user->getUserType() ?: 'Not specified' }}
+     </li>
+
+
+
+
     <li class="list-group-item">{!! Form::label('status', 'Status:') !!}  {{ $user->status ? 'Active' : 'Un Active' }}</li>
     <li class="list-group-item">{!! Form::label('current_points', 'points:') !!}  {{ $user->current_points }}</li>
     <li class="list-group-item">{!! Form::label('invited_by', 'تم الدعوة بواسطة:') !!}  {{ $user->invited_by ? $user->invited_by : 'غير محدد' }}</li>
