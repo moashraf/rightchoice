@@ -1,4 +1,4 @@
-    <ul class="list-group ">
+<ul class="list-group ">
 
   <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> User Details </li>
 
@@ -28,12 +28,7 @@
 
 
      <li class="list-group-item">{!! Form::label('TYPE', 'Type Of User:') !!}
-         {{ $user->TYPE ? [
-     'مشتري او مستأجر' => 1,
-     'بائع او مؤجر' => 2,
-     'مطور عقاري' => 3,
-     'شركة' => 4,
-     ][$user->TYPE] : 'Not specified' }}
+         {{ $user->getUserType() ?: 'Not specified' }}
      </li>
 
 
