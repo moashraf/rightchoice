@@ -1,5 +1,4 @@
-<ul class="list-group ">
-
+<ul class="list-group">
   <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;"> User Details </li>
 
  <ul class="list-group ">
@@ -18,7 +17,7 @@
             ];
         @endphp
 
-             @if (is_array($user->AGE) && array_key_exists($user->AGE, $ageOptions))
+             @if ($user->AGE && array_key_exists($user->AGE, $ageOptions))
                  {{ $ageOptions[$user->AGE] }}
              @else
                  Not specified
