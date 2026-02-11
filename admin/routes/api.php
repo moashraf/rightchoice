@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Authentication routes
+Route::post('login', [App\Http\Controllers\API\AuthAPIController::class, 'login']);
+Route::post('logout', [App\Http\Controllers\API\AuthAPIController::class, 'logout']);
 
 Route::resource('blogs', App\Http\Controllers\API\blogAPIController::class);
 
