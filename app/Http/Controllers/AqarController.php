@@ -1502,10 +1502,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         if($cheackPoint && count($all_data)<=0){
             if($cheackPoint->current_points == 0 || $pointAqqr->points_avail > $cheackPoint->current_points){
-
-
-               return response()->json(['massage'=>'You do not have enough points to communicate with the customer, you must renew the package','status'=>202], 202);
-
+                  return response()->json(['massage'=>'You do not have enough points to communicate with the customer, you must renew the package','status'=>202], 202);
             }
 
             //dd($pointAqqr->points_avail);

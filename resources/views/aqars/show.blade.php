@@ -819,12 +819,17 @@ echo \Illuminate\Support\Str::limit($data_final , 500 , '') ;
             <br />
             @if(Auth::user()->userpricin != null)
             <p>
-                عدد النقاط التي لديك هي {{ Auth::user()->userpricin->current_points}} ويكلفك هذا العقار عدد
-                {{ $aqar->points_avail }} من النقاط <br /> هل تود الاستمرار ؟
+                عدد النقاط التي لديك هي
+                {{ Auth::user()->userpricin->current_points}}
+                ويكلفك هذا العقار عدد
+                {{ $aqar->points_avail }}
+                من النقاط <br /> هل تود الاستمرار ؟
             </p>
 
             @else
-            <p> عدد النقاط التي لديك هي 0 ويكلفك هذا العقار عدد {{ $aqar->points_avail }} من النقاط <br /> هل تود
+            <p> عدد النقاط التي لديك هي 0 ويكلفك هذا العقار عدد
+                {{ $aqar->points_avail }}
+                من النقاط <br /> هل تود
                 الاستمرار ؟ </p>
             @endif
             <div>
