@@ -808,43 +808,30 @@ $paymentStatus = $response['type']; // get response values
 
     public function storeFree(Request $request){
 
+   $check_user_one_time_ok_only = UserPriceing::where('user_id' , '=', auth()->user()->id )->where('pricing_id','=',2)->get();
 
-                $check_user_one_time_ok_only = UserPriceing::where('user_id' , '=', auth()->user()->id )->where('pricing_id','=',2)->get();
+         if(count($check_user_one_time_ok_only) == 0 ){
 
+                $pric= Pricing::find($request->price_id);
+                $subscription = new UserPriceing();
+                $subscription->user_id = auth()->user()->id;
+                $subscription->pricing_id = $request->price_id;
+                $subscription->statues = 1;
+                $subscription->start_points = $pric->points;
+              //  $subscription->current_points = $pric->points + $current;
+                $subscription->current_points = $pric->points;
+                $subscription->sub_points = 0;
+                $subscription->save();
 
- if(count($check_user_one_time_ok_only) == 0 ){
-
-
-
-  //Dd($check_user_one_time_ok_only);
-         $pric= Pricing::find($request->price_id);
-           $subscription = new UserPriceing();
-
-        $subscription->user_id = auth()->user()->id;
-        $subscription->pricing_id = $request->price_id;
-        $subscription->statues = 1;
-        $subscription->start_points = $pric->points;
-      //  $subscription->current_points = $pric->points + $current;
-        $subscription->current_points = $pric->points;
-        $subscription->sub_points = 0;
-
-        $subscription->save();
-
-        $message = " تم منحك 50 نقطه مجانا للتواصل مع الملاك";
-        session()->flash('success',$message );
-        return view('/th', compact('message'));
+                $message = " تم منحك 100 نقطه مجانا للتواصل مع الملاك";
+                session()->flash('success',$message );
+                return view('/th', compact('message'));
 
 
- }
-
-
-
-
-
-
-        $message = "انت مشترك سابقا بالباقه المجانيه للاستمرار التواصل مع الملاك  برجاء الاشتراك باحد الباقات ";
-        session()->flash('success',$message );
-        return view('/th', compact('message'));
+         }
+          $message = "انت مشترك سابقا بالباقه المجانيه للاستمرار التواصل مع الملاك  برجاء الاشتراك باحد الباقات ";
+           session()->flash('success',$message );
+          return view('/th', compact('message'));
 
     }
     /**
