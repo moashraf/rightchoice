@@ -29,7 +29,7 @@ class ComplaintsDataTable extends DataTable
      */
     public function query(Complaints $model)
     {
-        return $model->newQuery()->with(['userinfo','aqarinfo']);
+        return $model->newQuery()->with(['userinfo','aqarinfo'])->orderBy('created_at', 'DESC');
     }
 
     /**

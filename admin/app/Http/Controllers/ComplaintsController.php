@@ -35,7 +35,7 @@ class ComplaintsController extends AppBaseController
      */
     public function index(ComplaintsDataTable $complaintsDataTable)
     {
-        $complaints = comp::paginate();
+        $complaints = comp::orderBy('created_at', 'DESC')->paginate();
         return view('complaints.index',[
             'complaints' => $complaints
             ]);
