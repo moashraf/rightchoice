@@ -30,7 +30,7 @@ class ContactFormController extends AppBaseController
      */
     public function index()
     {
-       $contact_form = ContactForm::paginate();
+       $contact_form = ContactForm::orderBy('created_at', 'DESC')->paginate();
 
          return view('contact_forms.index',[
              'contact_form' => $contact_form]);

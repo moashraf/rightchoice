@@ -62,9 +62,9 @@ class AqarController extends AppBaseController
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')
              ->with('propertyType')->with('offertype');
         if($request->sortBy == 0)
-            $allAqars->orderBy('id', 'DESC');
+            $allAqars->orderBy('updated_at', 'DESC');
         else
-            $allAqars->orderBy('id', 'ASC');
+            $allAqars->orderBy('updated_at', 'ASC');
 
         if($request->filter_vip != null)
             $allAqars->where('vip',$request->filter_vip);
