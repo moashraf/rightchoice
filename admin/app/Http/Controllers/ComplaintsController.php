@@ -81,7 +81,7 @@ class ComplaintsController extends AppBaseController
 
      public function show_user($id){
         $user = User::find($id);
-        $complaints = Complaints::where('user_id', $id)->get();
+        $complaints = Complaints::where('user_id', $id)->orderBy('created_at', 'DESC')->get();
         return view('complaints.user', compact('user', 'complaints'));
      }
     public function show($id)
