@@ -37,7 +37,7 @@ class aqarDataTable extends DataTable
                 $vip = '<i class="fas fa-times" style="font-size: larger;color: red;"></i>';
             }
             return $vip;
-            
+
         })
         ->editColumn('total_price', function ($request) {
             if($request->offer_type == 3 || $request->offer_type == 4){
@@ -58,7 +58,7 @@ class aqarDataTable extends DataTable
      */
     public function query(aqar $model)
     {
-        return $model->newQuery()->with(['category','property','offertype']);
+        return $model->newQuery()->with(['category','property','offertype'])->orderBy('updated_at', 'DESC');
     }
 
     /**
