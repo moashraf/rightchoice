@@ -29,7 +29,7 @@ class ContactFormDataTable extends DataTable
      */
     public function query(ContactForm $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -68,7 +68,8 @@ class ContactFormDataTable extends DataTable
             'id',
             'phone',
             'email',
-            'subject'
+            'subject',
+            'created_at'
         ];
     }
 
