@@ -22,7 +22,9 @@
 
             <div>
                 <img width="80px" height="80px"  src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." loading="lazy" />
-                <h6 class="fw-bolder text-dark mt-5">  بعض الصور حجمها كبير قد يتسغرق رفعها 40   ثانيه (جاري التحميل)</h6>
+                <h6 class="fw-bolder text-dark mt-5">
+                    بعض الصور حجمها كبير قد يتسغرق رفعها 20   ثانيه (جاري التحميل)
+                </h6>
 
             </div>
 
