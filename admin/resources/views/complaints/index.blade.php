@@ -43,9 +43,21 @@
                             @foreach($complaints as $val)
                                 <tr>
                                     <td>{{$val->id}}</td>
-                                    <td><a href="{{route('complaintsUser',$val->userinfo->id)}}">{{$val->userinfo->name}}</a></td>
-                                   <td><a href="{{route('aqars.show',$val->aqars_id)}}">{{$val->message}}</a></td>
-                                    <td>{{$val->created_at}}</td>
+                                    <td>
+                                        @if($val->userinfo)
+                                            <a href="{{route('complaintsUser',$val->userinfo->id)}}">{{$val->userinfo->name}}</a>
+                                        @else
+                                            <span class="text-muted">N/A</span>
+                                        @endif
+                                    </td>
+                                   <td>
+                                       @if($val->aqars_id)
+                                           <a href="{{route('aqars.show',$val->aqars_id)}}">{{$val->message}}</a>
+                                       @else
+                                           {{$val->message}}
+                                       @endif
+                                   </td>
+                                    <td>{{$val->created_at->format('Y-m-d H:i')}}</td>
                                     <td>@include('complaints.datatables_actions',['id'=>$val->id])</td>
                                 </tr>
                             @endforeach
