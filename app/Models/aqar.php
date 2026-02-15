@@ -63,14 +63,14 @@ class aqar extends Model
     //public function scopeFilter($query, array fn($query, $search))
     public static function pointCalculate($price){
 
-        $points = number_format((float)($price/50000), 2, '.', '');
+        $points = number_format((float)($price/100000), 2, '.', '');
 
         return $points;
     }
-    
+
     public static function pointCalculateRent($price){
 
-        $points = number_format((float)($price/250), 2, '.', '');
+        $points = number_format((float)($price/500), 2, '.', '');
 
         return $points;
     }
@@ -89,7 +89,7 @@ class aqar extends Model
 
     public function mzaya()
     {
-        return $this->belongsToMany(Mzaya::Class, 'aqar_mzaya', 
+        return $this->belongsToMany(Mzaya::Class, 'aqar_mzaya',
           'aqar_id', 'mzaya_id');
     }
 
@@ -97,7 +97,7 @@ class aqar extends Model
     {
         return $this->hasMany(MzayaAqar::Class);
     }
-    
+
     public function floorNo()
     {
         return $this->belongsTo(Floor::class,  'floor');
@@ -110,7 +110,7 @@ class aqar extends Model
     public function offerTypes(){
         return $this->belongsTo(OfferTypes::class, 'offer_type');
     }
-    
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
@@ -142,7 +142,7 @@ class aqar extends Model
         return $this->belongsTo(SubArea::class, 'area_id');
     }
 
-    
+
     public function compounds(){
         return $this->belongsTo(Compound::class, 'compound');
     }
@@ -150,19 +150,19 @@ class aqar extends Model
     public function propertyType() {
         return $this->belongsTo(TypeOfProp::class, 'property_type');
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     public function images(){
         return $this->hasMany(Images::class);
     }
-    
+
      public function mainImage(){
         return $this->belongsTo(Images::class,'id','aqar_id')->where('main_img', 1);
     }
-    
+
     public function firstImage(){
         return $this->belongsTo(Images::class,'id','aqar_id')->where('main_img', 0);
     }
@@ -171,5 +171,5 @@ class aqar extends Model
         return $this->hasMany(wish::class);
     }
 
-    
+
 }
