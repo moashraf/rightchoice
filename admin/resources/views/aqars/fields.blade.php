@@ -346,7 +346,7 @@
     {!! Form::label('status', 'Status:') !!}
     <select class="form-control" name="status">
     @foreach(\App\Enums\StatusEnum::values() as $key => $case)
-            <option value="{{$case}}">{{$key}}</option>
+            <option value="{{$case}}" @if(@$aqar->status == $case) selected @endif>{{$key}}</option>
         @endforeach
     </select>
 </div>

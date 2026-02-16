@@ -473,11 +473,7 @@ class PageController extends Controller
 
     public function resendOTB(Request $request)
     {
-
-
-
-
-        $random_mass_num = random_int(111, 10000);
+      $random_mass_num = random_int(111, 10000);
 
         $user = User::where('id', $request->userID)->first();
         //dd($user);
