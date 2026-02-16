@@ -145,7 +145,7 @@ class PageController extends Controller
             'مشتري او مستأجر' => 1,
             'بائع او مؤجر' => 2,
             'مطور عقاري' => 3,
-            'شركة' => 4,
+//            'شركة' => 4,
         ];
 
         $invited_by = $request->query('invited_by');
