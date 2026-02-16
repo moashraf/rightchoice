@@ -10,11 +10,11 @@
 
 
             <div class="row">
-            
-                
+
+
                 <div class="col-lg-8">
                     <h4 class="mb-5" style="
-                         
+
     text-align: center;
     font-weight: bold;
     color: #196aa2; ">
@@ -30,7 +30,7 @@
                                 enctype="multipart/form-data" method="POST" files="true">
                                 @csrf
                                 <!--      <input type="hidden" name="user_id" value="">-->
-                             
+
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
 
- 
+
 
                                 </div>
 
@@ -132,10 +132,10 @@
                                     <div class="col-lg-6">
                                         <div
                                             class="form-group {{ $errors->has('Phone2') ? ' has-error' : '' }}">
-                                    <label for="company-phone2"> 
-                                      الهاتف الفرعي (اختياري) 
+                                    <label for="company-phone2">
+                                      الهاتف الفرعي (اختياري)
                                     </label>
-                                    
+
                                             <input value="{{ old('Phone2') }}"   type="number" name="Phone2" id="company-phone2"
                                                 class="form-control" value="">
                                             <small
@@ -187,7 +187,7 @@
 
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-lg-4">
                                       <div class="form-group">
 
@@ -205,11 +205,11 @@
 
 
                                 </div>
-                                
+
                                 </div>
-                                
-                                
-                                
+
+
+
                                 </div>
                                 <div class="row" style="align-content: start;
                                 justify-content: start;">
@@ -248,8 +248,7 @@
 
                                     <div class="col-lg-4">
                                                  <label for="">المنطقه او الشارع (اختياري)</label>
-                                        <input list="areas" name="area_id" id="area" class="myselect"
-                                            required  placeholder="" value="{{ old('area_id') }}">
+                                        <input list="areas" name="area_id" id="area" class="myselect"  placeholder="" value="{{ old('area_id') }}">
                                         <datalist id="areas">
                                             @foreach ($areas as $area)
                                             <option value="{{ $area->area }}"
@@ -310,8 +309,8 @@
                                                 class="text-danger">{{ $errors->first('details') }}</small>
                                         </div>
                                     </div>
-                             
-                                  
+
+
 
 
 
@@ -353,14 +352,14 @@
                     </div>
 
                 </div>
-                
-                
+
+
                     <div class="col-lg-4">
  <img src="{{asset('/images/04 (2).jpg')}}" alt="" style="  width: 100%;">
- 
+
                 </div>
-                
-                
+
+
             </div>
 
         </div>
