@@ -61,10 +61,8 @@ class AqarController extends AppBaseController
           $allAqars = aqar::with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')
              ->with('propertyType')->with('offertype');
-        if($request->sortBy == 0)
-            $allAqars->orderBy('updated_at', 'DESC');
-        else
-            $allAqars->orderBy('updated_at', 'ASC');
+        $allAqars->orderBy('status', 'ASC') ;
+
 
         if($request->filter_vip != null)
             $allAqars->where('vip',$request->filter_vip);
