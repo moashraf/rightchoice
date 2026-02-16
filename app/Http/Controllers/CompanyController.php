@@ -453,20 +453,9 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, "<?xml version='1.0' encoding='UTF-8'?>
 </SMSList>
 </SubmitSMSRequest>");
 
-
 $resp = curl_exec($curl);
 curl_close($curl);
-
-
- /******************************************************/
-
-
-                    //   session()->flash('success', 'تم أضافة الشركة بنجاح');
-                 //   session()->flash('success', 'تم اضافه الشركة بنجاح و جاري المراجعه');
-
-                  //   return Redirect::back();
-
-                  return redirect()->route('otbPage', ['userID' => $userID,'locale'=>$locale]) ;
+   return redirect()->route('otbPage', ['userID' => $userID,'locale'=>$locale]) ;
 
                 }catch (\Exception $ex) {
                      session()->flash('error', 'عفوا, يوجد خطأ ما');
