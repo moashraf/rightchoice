@@ -190,10 +190,9 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
 
-                                    <label for="togary-id">رقم السجل التجاري
-                                        <span class="text-danger">*</span>
-
-                                    </label>
+                                    <label for="togary-id"> الشركه  اسم
+                                         <span class="text-danger">*</span>
+                                     </label>
 
                                     <input type="text" autocomplete="off" name="Commercial_Register" id="togary-id"
                                            class="myselect">
