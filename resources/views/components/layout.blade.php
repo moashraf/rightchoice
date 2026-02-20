@@ -678,9 +678,9 @@ else{
 
                                         @else
 
-                                          <li><a
-
-                                            href="{{ URL::to(Config::get('app.locale').'/update_companies/'.Auth()->user()->id) }}">Update Company</a>
+                                          <li><a   href="{{ URL::to(Config::get('app.locale').'/update_companies/'.Auth()->user()->id) }}">
+                                                  {{ trans('langsite.UpdateCompany')}}
+                                              </a>
 
                                     </li>
 

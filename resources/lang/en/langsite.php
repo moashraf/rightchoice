@@ -5,10 +5,10 @@ return [
     /*
     |--------------------------------------------------------------------------
    */
-   
-   
-    
-   
+
+
+
+
     'verficationverfication' => '           A verfication code has been sent to your mobile from Rightchoice please type it below',
     'choose' => 'Choose',
     'profile' => 'profile',
@@ -18,7 +18,8 @@ return [
     'district' => 'District',
     'area' => 'Area',
     'Notifications' => 'Notifications',
-    
+    'UpdateCompany' => 'Update Company',
+
     'Section' => 'Section',
     'add_aqar-free' => 'add free ',
     'fav' => 'Wishlist  ',
@@ -137,13 +138,13 @@ return [
     'Components' => 'Components',
     'Packing' => '  Packing Content ',
     'Net weight' => 'Net weight  ',
-    'HOTLINE' => 'Hotline', 
-    'VISION' => 'Vision', 
-    'partners' => 'Some Of Our Clients', 
-    'Note' => 'Note', 
-    'not found' => 'Not Found photo ', 
-    'month' => 'Months', 
-   
+    'HOTLINE' => 'Hotline',
+    'VISION' => 'Vision',
+    'partners' => 'Some Of Our Clients',
+    'Note' => 'Note',
+    'not found' => 'Not Found photo ',
+    'month' => 'Months',
+
     'copyright' => 'All Rights Reserved |  © Cord Digital ',
     'feedback' => 'Testimonial',
     'newsletter' => 'NewsLetter',
