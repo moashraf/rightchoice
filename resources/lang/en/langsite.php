@@ -2,15 +2,10 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-   */
-
-
-
-
-    'verficationverfication' => '           A verfication code has been sent to your mobile from Rightchoice please type it below',
+    'verficationverfication' => ' A verfication code has been sent to your mobile from Rightchoice please type it below',
     'choose' => 'Choose',
+    'Packages' => 'Packages',
+
     'profile' => 'profile',
      'optional'=> 'Optional',
     'location' => 'Location',
