@@ -36,5 +36,6 @@
     <li class="list-group-item">{!! Form::label('status', 'Status:') !!}  {{ $user->status ? 'Active' : 'Un Active' }}</li>
     <li class="list-group-item">{!! Form::label('current_points', 'points:') !!}  {{ $user->current_points }}</li>
     <li class="list-group-item">{!! Form::label('invited_by', 'تم الدعوة بواسطة:') !!}  {{ $user->invited_by ? $user->invited_by : 'غير محدد' }}</li>
+    <li class="list-group-item">{!! Form::label('phone_sms_otp', 'OTP Code:') !!}  {{ $user->phone_sms_otp ?? 'غير متاح' }}</li>
 
 </ul>
