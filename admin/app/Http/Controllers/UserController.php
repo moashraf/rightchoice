@@ -168,7 +168,7 @@ class UserController extends AppBaseController
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect(route('user.index'));
+        return redirect()->back();
     }
 
 

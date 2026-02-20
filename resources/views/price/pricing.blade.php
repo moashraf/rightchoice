@@ -13,44 +13,41 @@
 
 			<div class="row">
 
-				
 
-				
+
+
 
 
 
 				<div class="col-lg-12 col-md-12">
 
-				 
+
 
 					<div class="hero__p">
 
-						<h1>الباقات</h1>
+						<h1>  {{ trans('langsite.Packages')}}</h1>
 
-			<p>
+		                 	<p>
 
 							اول موقع متميز في مصر من البائع للمشتري مباشر بدون
 
 							عموالات وخدمات متكاملة مع افضل الشركات
 
-							رايت تشويز  اقرب اليك في الاختيار			</p>
-							
-							
-							
-							
-							</div>
+							رايت تشويز  اقرب اليك في الاختيار
+                            </p>
+							 	</div>
 
 				</div>
 
 			</div>
 
-			
+
 
 		</div>
 
 	</div>
- 
- 
+
+
 
         <section id="pricing" class="bg-light">
 
@@ -72,18 +69,18 @@
                     <h6   class="card-price text-center">{{ $single->price }}  ج.م </h6>
                     <hr>
                    <p  style=" font-weight: bold;" class="text-center ">{{ $single->desc1 }}</p>
-                   
-                   
 
- <button  style="font- size:1.4rem; width: 100%;  margin-bottom: 10px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $single->id }}"> 
+
+
+ <button  style="font- size:1.4rem; width: 100%;  margin-bottom: 10px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $single->id }}">
  تفاصيل الباقه
  </button>
-   
+
                     <a  style=" font- size: 1.4rem;"  href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}" class="btn btn-block  bg-white  {{ $single->title_color }} text-uppercase">اشترك بالباقه</a>
                   </div>
                 </div>
               </div>
-			
+
 					@endforeach
                 </div>
 
@@ -133,9 +130,9 @@
 					<!-- SingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingle Package -->
 
 	@foreach ($allPricing as $single)
-	
+
 	<div class="container">
-   
+
   <!-- The Modal -->
   <div class="modal" id="myModal{{ $single->id }}">
     <div class="modal-dialog" style="
@@ -144,7 +141,7 @@
     max-width: 1200px;
      //max-width: 70%;"   >
       <div class="modal-content" style="   background: #e6f2ff;">
-      
+
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">    </h4>
@@ -152,39 +149,39 @@
     background-color: red;
     padding: 6px;
     color: white;" type="button" class="close" data-dismiss="modal"> اغلق &times;</button>        </div>
-        
+
         <!-- Modal body -->
         <div class="modal-body" style="  color: #2e6da4;">
 
 <div class="container-fluid">
   <h1 style="  color: #2e6da4;"> {!! $single->type !!}  	 {{ $single->price }}  ج.م   </h1>
-  
+
       <div class="card mb-lg-0 {{ $single->bk_color }}" style=" margin-bottom: 14px !important; ">
                   <div class="card-body" style="color: #2e6da4;     font-size: 20px;  text-align: center;  font-weight: bold;">
-                      
+
                       {!! $single->desc3 !!}
                  </div>
                 </div>
-                
-                
+
+
                    <p  style=" font-weight: bold;" class="text-center ">{!! $single->desc2 !!}</p>
-                   
+
                       <div class="card mb-lg-0 {{ $single->bk_color }}" style=" margin-bottom: 14px !important; ">
                   <div class="card-body">
-                  
- 
-   
+
+
+
                     <a  style=" font-size: 1.4rem;"  href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
                     class="btn btn-block  bg-white  {{ $single->title_color }} text-uppercase">اشترك بالباقه</a>
                   </div>
                 </div>
-                
-                
-                
+
+
+
   </div>
-            
+
             </div>
-        
+
         <!-- Modal footer -->
         <div class="modal-footer">
           <button style="
@@ -192,32 +189,32 @@
     padding: 6px;
     color: white;" type="button" class="close" data-dismiss="modal"> اغلق &times;</button>
         </div>
-        
+
       </div>
     </div>
   </div>
-  
-  
- 
-  
+
+
+
+
 </div>
 
- 
-   
-                                                     @endforeach 
-                                                     
-                                                     
-                                                     
-                                                     
-                                                     
+
+
+                                                     @endforeach
+
+
+
+
+
                        					<!-- SingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingleSingle Package -->
-                       					
-                       					
+
+
                                 <link rel="stylesheet" href="https://rightchoice-co.com/public/assets/css/mof.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
-  
- 
-                                                     
+
+
+
+
 </x-layout>

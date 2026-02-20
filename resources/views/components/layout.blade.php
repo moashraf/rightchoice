@@ -678,9 +678,9 @@ else{
 
                                         @else
 
-                                          <li><a
-
-                                            href="{{ URL::to(Config::get('app.locale').'/update_companies/'.Auth()->user()->id) }}">Update Company</a>
+                                          <li><a   href="{{ URL::to(Config::get('app.locale').'/update_companies/'.Auth()->user()->id) }}">
+                                                  {{ trans('langsite.UpdateCompany')}}
+                                              </a>
 
                                     </li>
 
@@ -1027,34 +1027,37 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
 role="contentinfo">
 
             <div class="container">
-
-
-
-
-
-                <div class="row">
-
-                    <div class="col-lg-8" style="position:static;">
-
-
-
-                        <ul class="footer-links text-center">
+  <div class="row">
+    <div class="col-lg-8" style="position:static;">
+   <ul class="footer-links text-center">
 
                             <li class="fw-bolder">
 
-                                <a href="{{ asset('/') }}" class="text-white">{{ trans('langsite.Home')}} </a>
+                                <a href="{{ asset('/') }}" class="text-white">
+                                    {{ trans('langsite.Home')}}
+                                </a>
 
                             </li>
 
                             <li class="text-white fw-bolder">
 
-                                <a href="{{ url(Config::get('app.locale').'/about-us') }}" class="text-white">{{ trans('langsite.About')}} </a>
+                                <a href="{{ url(Config::get('app.locale').'/about-us') }}" class="text-white">
+                                    {{ trans('langsite.About')}}
+                                </a>
+
+                            </li>
+                            <li class="text-white fw-bolder">
+
+                                <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}" class="text-white">
+                                    {{ trans('langsite.Packages')}}
+                                </a>
 
                             </li>
 
                             <li class="text-white fw-bolder">
 
-                                <a href="{{ url(Config::get('app.locale').'/contact-us') }}" class="text-white">{{ trans('langsite.Get_In')}}
+                                <a href="{{ url(Config::get('app.locale').'/contact-us') }}" class="text-white">
+                                    {{ trans('langsite.Get_In')}}
 
                                 </a>
 
@@ -1062,7 +1065,9 @@ role="contentinfo">
 
                             <li class="text-white fw-bolder">
 
-                                <a href="{{ URL::to(Config::get('app.locale').'/blogs')}}" class="text-white">{{ trans('langsite.blogs')}} </a>
+                                <a href="{{ URL::to(Config::get('app.locale').'/blogs')}}" class="text-white">
+                                    {{ trans('langsite.blogs')}}
+                                </a>
 
                             </li>
 
