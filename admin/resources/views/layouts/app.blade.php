@@ -75,9 +75,12 @@
                     <!-- Menu Footer-->
                     <li class="user-footer">
                         <a href="#" class="btn btn-default btn-flat">الملف الشخصي</a>
-                        <a href="/logout" class="btn btn-default btn-flat float-right">
-                            خروج
-                        </a>
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-default btn-flat float-right">
+                                خروج
+                            </button>
+                        </form>
 
                     </li>
                 </ul>
