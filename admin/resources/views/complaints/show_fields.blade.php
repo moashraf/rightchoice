@@ -7,13 +7,13 @@
 <!-- User Id Field -->
 <div class="col-sm-12">
     {!! Form::label('user_id', 'User:') !!}
-    <p>{{ $complaints->userinfo->name }}</p>
+    <p>{{ $complaints->userinfo?->name ?? 'غير متاح' }}</p>
 </div>
 
 <!-- Aqar Id Field -->
 <div class="col-sm-12">
     {!! Form::label('aqar_id', 'Aqar:') !!}
-    <p>{{ $complaints->aqarinfo->title }}</p>
+    <p>{{ $complaints->aqarinfo?->title ?? 'غير متاح' }}</p>
 </div>
 
 <!-- Message Field -->
