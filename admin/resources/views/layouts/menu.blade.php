@@ -1,4 +1,10 @@
 <li class="nav-item">
+    <a href="{{ route('home') }}"
+       class="nav-link {{ Request::is('home*') ? 'active' : '' }}">
+        <p>تقارير</p>
+    </a>
+</li>
+<li class="nav-item">
     <a href="{{ route('user.index') }}"
        class="nav-link {{ Request::is('user*') ? 'active' : '' }}">
         <p>المستخدمين</p>

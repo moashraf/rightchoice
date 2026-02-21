@@ -3,11 +3,9 @@
 namespace App\Exports;
 
 use App\Models\User;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -16,11 +14,45 @@ class LastUsersExport implements FromQuery, WithHeadings, WithMapping, WithChunk
 {
     use Exportable;
 
+    protected $filters;
+
+    public function __construct(array $filters = [])
+    {
+        $this->filters = $filters;
+    }
+
     public function query()
     {
-        return User::query()
-            ->orderByDesc('id')
-            ->limit(1000);
+        $query = User::query();
+
+        // ترتيب
+        if (isset($this->filters['sortBy']) && $this->filters['sortBy'] == 1) {
+            $query->orderBy('id', 'ASC');
+        } else {
+            $query->orderBy('id', 'DESC');
+        }
+
+        // بحث نصي
+        if (!empty($this->filters['search_key'])) {
+            $key = $this->filters['search_key'];
+            $query->where(function ($q) use ($key) {
+                $q->where('name', 'like', '%' . $key . '%')
+                  ->orWhere('MOP', 'like', '%' . $key . '%')
+                  ->orWhere('invited_by', 'like', '%' . $key . '%');
+            });
+        }
+
+        // فلتر الحالة
+        if (isset($this->filters['filter_status']) && $this->filters['filter_status'] !== '') {
+            $query->where('status', $this->filters['filter_status']);
+        }
+
+        // فلتر النوع
+        if (!empty($this->filters['filter_type'])) {
+            $query->where('TYPE', $this->filters['filter_type']);
+        }
+
+        return $query->limit(3000);
     }
 
     public function headings(): array
