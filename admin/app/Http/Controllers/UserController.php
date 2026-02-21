@@ -228,6 +228,11 @@ class UserController extends AppBaseController
 
      public function activate(User $user)
     {
+        if ($user->status != 2) {
+            Flash::error('لا يمكن تفعيل المستخدم  لانه  لم يدخل الرساله      .');
+            return redirect(route('user.index'));
+        }
+
         $user->update(['status' => 1]);
 
         Flash::success('user activated successfully.');
