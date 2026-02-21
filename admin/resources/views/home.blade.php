@@ -115,7 +115,7 @@
 
         {{-- عدد الشركات --}}
         <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-            <a href="{{ url('companys') }}" class="text-decoration-none">
+            <a href="{{ url('companies') }}" class="text-decoration-none">
                 <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #fd7e14 !important;">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
