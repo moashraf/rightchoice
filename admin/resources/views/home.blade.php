@@ -3,11 +3,51 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row mb-4">
+    <div class="row mb-2">
         <div class="col-12">
-            <h4 class="mt-3 mb-4" style="font-weight:700; color:#343a40;">
+            <h4 class="mt-3 mb-3" style="font-weight:700; color:#343a40;">
                 <i class="fas fa-tachometer-alt ml-2"></i> لوحة التحكم
             </h4>
+        </div>
+    </div>
+
+    {{-- فلتر التاريخ --}}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body py-3">
+            <form method="GET" action="{{ route('home') }}" class="form-inline flex-wrap gap-2">
+                <div class="form-group ml-3 mb-2">
+                    <label class="ml-2 font-weight-bold" style="white-space:nowrap;">
+                        <i class="fas fa-calendar-alt text-primary ml-1"></i> من تاريخ:
+                    </label>
+                    <input type="date" name="from_date" class="form-control form-control-sm"
+                           value="{{ $fromDate ?? '' }}">
+                </div>
+                <div class="form-group ml-3 mb-2">
+                    <label class="ml-2 font-weight-bold" style="white-space:nowrap;">
+                        <i class="fas fa-calendar-alt text-danger ml-1"></i> إلى تاريخ:
+                    </label>
+                    <input type="date" name="to_date" class="form-control form-control-sm"
+                           value="{{ $toDate ?? '' }}">
+                </div>
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary btn-sm ml-2">
+                        <i class="fas fa-filter ml-1"></i> تصفية
+                    </button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times ml-1"></i> إلغاء
+                    </a>
+                </div>
+                @if($fromDate || $toDate)
+                <div class="mb-2 mr-2">
+                    <span class="badge badge-info p-2" style="font-size:12px;">
+                        <i class="fas fa-info-circle ml-1"></i>
+                        النتائج مفلترة
+                        @if($fromDate) من {{ \Carbon\Carbon::parse($fromDate)->format('d/m/Y') }} @endif
+                        @if($toDate) إلى {{ \Carbon\Carbon::parse($toDate)->format('d/m/Y') }} @endif
+                    </span>
+                </div>
+                @endif
+            </form>
         </div>
     </div>
 

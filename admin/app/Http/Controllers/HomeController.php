@@ -28,17 +28,29 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $fromDate = $request->input('from_date');
+        $toDate   = $request->input('to_date');
+
+        $filter = function ($query) use ($fromDate, $toDate) {
+            if ($fromDate) {
+                $query->whereDate('created_at', '>=', $fromDate);
+            }
+            if ($toDate) {
+                $query->whereDate('created_at', '<=', $toDate);
+            }
+        };
+
         $stats = [
-            'aqars'        => aqar::count(),
-            'users'        => User::count(),
-            'complaints'   => Complaints::count(),
-            'companies'    => Company::count(),
-            'contactForms' => ContactForm::count(),
+            'aqars'        => aqar::when($fromDate || $toDate, $filter)->count(),
+            'users'        => User::when($fromDate || $toDate, $filter)->count(),
+            'complaints'   => Complaints::when($fromDate || $toDate, $filter)->count(),
+            'companies'    => Company::when($fromDate || $toDate, $filter)->count(),
+            'contactForms' => ContactForm::when($fromDate || $toDate, $filter)->count(),
         ];
 
-        return view('home', compact('stats'));
+        return view('home', compact('stats', 'fromDate', 'toDate'));
     }
 
     public function logout()
