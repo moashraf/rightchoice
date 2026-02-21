@@ -101,10 +101,17 @@ class User extends Authenticatable
 
     public function getStatus()
     {
-        if($this->status == 1)
+        if($this->status == 1)   {
             return UserStatusEnum::ACTIVE;
-        if($this->status == 0)
-            return UserStatusEnum::UNACTIVE;
+        }
+        elseif($this->status == 0){
+       return UserStatusEnum::UNACTIVE;
+        }
+        else{
+            return UserStatusEnum::BLOCK;
+
+        }
+
     }
 
     public function aqars()

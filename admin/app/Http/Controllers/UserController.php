@@ -180,13 +180,25 @@ class UserController extends AppBaseController
             ->editColumn('control', function ($model){
                 $all  = '<!--<a data-toggle="tooltip" data-skin-class="tooltip-primary"  data-placement="top" title = "Show User Profile" href = "' . url('/users/' . $model->id) . '"   class="btn btn-sm btn-outline-primary"><i class="fas fa-user"></i></a>--> ';
                 if ($model->status == 1) {
-                    $all .= '<a onClick="return confirm(\'Are You Sure You Want To Block This Users?\')" data-toggle="tooltip" data-skin-class="tooltip-danger"  data-placement="top" title = "Block User" href="' . url('/users/' . $model->id . '/block') . '"  class="btn btn-sm btn-outline-danger ml-2"><i class="fas fa-times"></i></a>';
+                    $all .= '<a onClick="return confirm(\'Are You Sure You Want To Block This Users?\')"
+                    data-toggle="tooltip" data-skin-class="tooltip-danger"  data-placement="top"
+                    title = "Block User" href="' . url('/users/' . $model->id . '/block') . '"
+                     class="btn btn-sm btn-outline-danger ml-2">
+                     <i class="fas fa-times"></i></a>';
                 } else {
 
-                    $all .= '<a onClick="return confirm(\'Are You Sure You Want To Active This User ?\')" data-toggle="tooltip" data-skin-class="tooltip-danger" data-placement="top" title = "Active User"  href="' . url('/users/' . $model->id . '/activate') . '"  class="btn btn-sm btn-outline-success ml-2"><i class="fas fa-check"></i></a>';
+                    $all .= '<a onClick="return confirm(\'Are You Sure You Want To Active This User ?\')"
+                    data-toggle="tooltip" data-skin-class="tooltip-danger" data-placement="top" title = "Active User"
+                     href="' . url('/users/' . $model->id . '/activate') . '"  class="btn btn-sm btn-outline-success ml-2">
+                     <i class="fas fa-check"></i></a>';
                 }
-                $all .= '<a onClick="return confirm(\'Are You Sure You Want To Delete This Record ?  \')" data-toggle="tooltip" data-skin-class="tooltip-danger"  data-placement="top" title = "Delete" href = "' . url('/users/' . $model->id . '/delete'). '"  class="btn btn-sm btn-outline-danger ml-2" style="margin-left:5px"><i class="fas fa-trash"></i></a>';
-                $all .= '<a     href = "' . url('/user/' . $model->id . '/edit'). '"  class="btn btn-sm btn-outline-edit   ml-2" style="margin-left:5px"><i class="fas fa-edit  "></i></a>';
+                $all .= '<a onClick="return confirm(\'Are You Sure You Want To Delete This Record ?  \')"
+                data-toggle="tooltip" data-skin-class="tooltip-danger"  data-placement="top" title = "Delete"
+                href = "' . url('/users/' . $model->id . '/delete'). '"  class="btn btn-sm btn-outline-danger ml-2"
+                 style="margin-left:5px"><i class="fas fa-trash"></i></a>';
+                $all .= '<a     href = "' . url('/user/' . $model->id . '/edit'). '"
+                 class="btn btn-sm btn-outline-edit   ml-2" style="margin-left:5px">
+                 <i class="fas fa-edit  "></i></a>';
                 return $all;
             })->editColumn('phone', function ($model) {
                  $phone = '<span class="d-block font-weight-bold small mt-1 mb-1">'.$model->MOP.'</span>';
@@ -204,20 +216,15 @@ class UserController extends AppBaseController
             })->rawColumns(['control','phone','active'])->make(true);
     }
 
-
-
     public function block(User $user)
     {
-        $user->update(['status' => 0]);
+        $user->update(['status' => 2]);
 
         Flash::success('user blocked successfully.');
 
         return redirect(route('user.index'));
 
     }
-
-
-
 
      public function activate(User $user)
     {
