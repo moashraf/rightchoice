@@ -23,8 +23,15 @@
                        href="{{ route('user.create') }}">
                         اضف جديد
                     </a>
-                    <a id="export-users-btn" class="btn btn-success float-right mr-2" href="{{ route('admin.users.export-last-1000') }}">
-                        <span id="export-users-text">تصدير     المستخدم</span>
+                    <a id="export-users-btn" class="btn btn-success float-right mr-2"
+                       href="{{ route('admin.users.export-last-1000', array_filter([
+                           'search_key'    => request('search_key'),
+                           'filter_status' => request('filter_status'),
+                           'filter_type'   => request('filter_type'),
+                           'sortBy'        => request('sortBy'),
+                       ])) }}">
+                        <i class="fa fa-file-excel ml-1"></i>
+                        <span id="export-users-text">تصدير نتائج البحث</span>
                         <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
                     </a>
                 </div>
