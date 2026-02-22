@@ -9,11 +9,11 @@
 
         <div class="mb-4 text-sm text-gray-600">
                     {{ trans('langsite.verficationverfication')}}
+            {{ $user->MOP  }}
         </div>
-<?php //dd($user) ?>
-                <form method="POST" action="{{ route('verficationApply') }}">
+                 <form method="POST" action="{{ route('verficationApply') }}">
                 @csrf
-                
+
                 <input type="hidden" name="userID" value="{{ $user->id }}" />
                     <div>
                         <x-jet-input type="text" name="otb"/>
@@ -27,7 +27,7 @@
             </form>
 
         <div class="mt-4 flex items-center justify-between">
-            
+
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -45,13 +45,13 @@
                 </button>
             </form>
         </div>
-        
+
     </x-jet-authentication-card>
 
 <style>
     .min-h-screen{
         text-align:center !important;
     }
-    
+
 </style>
 </x-guest-layout>
