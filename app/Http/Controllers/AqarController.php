@@ -39,9 +39,7 @@ class AqarController extends Controller
 
     public function submited()
     {
-
-
-        return view('aqars.thenk_you');
+  return view('aqars.thenk_you');
     }
 
 
@@ -1485,12 +1483,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
     }
 
 
-
-
             //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
      public function addContact(Request $request)
     {
@@ -1524,14 +1517,8 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         return response()->json(['massage'=> $pointAqqr->user->MOP,'status'=>200], 200);
     }
-
-
-
-
+ 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     public function updatedAqar(Request $request ,aqar $aqar)

@@ -2,7 +2,7 @@
 
 return [
 
-    'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا  ',
+    'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا ',
     'Packages' => 'الباقات',
     'choose' => 'اختر',
     'optional'=> 'اختياري',
