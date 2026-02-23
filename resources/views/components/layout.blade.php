@@ -204,54 +204,9 @@ else{
                             <a href="{{ URL::to(Config::get('app.locale').'/register') }}" class="mobile-register-btn" id="mobileRegBtn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff" viewBox="0 0 24 24">
                                     <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                <span>     اضف عقارك مجانا </span>
+                                <span>    سجل الآن مجاناً </span>
                             </a>
                             <!-- Mobile Register Button Styles -->
-                            <style>
-                                .mobile-register-btn {
-                                    display: none;
-                                }
-                                @media (max-width: 992px) {
-                                    .mobile-register-btn {
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 6px;
-                                        padding: 8px 16px;
-                                        background: linear-gradient(135deg, #196aa2 0%, #0d4a73 100%);
-                                        color: #ffffff !important;
-                                         font-size: 0.8rem;
-                                        font-weight: 700;
-                                        border-radius: 50px;
-                                        text-decoration: none !important;
-                                        white-space: nowrap;
-                                         /*transform: translateY(-50%);*/
-                                        z-index: 10;
-                                        box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35);
-                                        animation: mobileRegPulse 2s ease-in-out infinite;
-                                        transition: all 0.3s ease;
-                                    }
-                                    .mobile-register-btn:hover {
-                                        background: linear-gradient(135deg, #1a7bc0 0%, #196aa2 100%);
-                                        transform: translateY(-50%) scale(1.05);
-                                        box-shadow: 0 6px 20px rgba(25, 106, 162, 0.5);
-                                        color: #ffffff !important;
-                                    }
-                                    .mobile-register-btn svg {
-                                        flex-shrink: 0;
-                                    }
-                                    @keyframes mobileRegPulse {
-                                        0%, 100% { box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35); }
-                                        50% { box-shadow: 0 4px 25px rgba(25, 106, 162, 0.6); }
-                                    }
-
-                                }
-                                @media (max-width: 480px) {
-                                    .mobile-register-btn {
-                                        padding: 6px 12px;
-                                      }
-                                }
-
-                            </style>
 
                         @endguest
                         <a href="{{ URL::to('/'.Config::get('app.locale'))}}">
@@ -2430,6 +2385,51 @@ function updateStatus(id) {
 
 </script>
 
+    <style>
+        .mobile-register-btn {
+            display: none;
+        }
+        @media (max-width: 992px) {
+            .mobile-register-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                background: linear-gradient(135deg, #196aa2 0%, #0d4a73 100%);
+                color: #ffffff !important;
+                font-size: 0.8rem;
+                font-weight: 700;
+                border-radius: 50px;
+                text-decoration: none !important;
+                white-space: nowrap;
+                /*transform: translateY(-50%);*/
+                z-index: 10;
+                box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35);
+                animation: mobileRegPulse 2s ease-in-out infinite;
+                transition: all 0.3s ease;
+            }
+            .mobile-register-btn:hover {
+                background: linear-gradient(135deg, #1a7bc0 0%, #196aa2 100%);
+                transform: translateY(-50%) scale(1.05);
+                box-shadow: 0 6px 20px rgba(25, 106, 162, 0.5);
+                color: #ffffff !important;
+            }
+            .mobile-register-btn svg {
+                flex-shrink: 0;
+            }
+            @keyframes mobileRegPulse {
+                0%, 100% { box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35); }
+                50% { box-shadow: 0 4px 25px rgba(25, 106, 162, 0.6); }
+            }
+
+        }
+        @media (max-width: 480px) {
+            .mobile-register-btn {
+                padding: 6px 12px;
+            }
+        }
+
+    </style>
 
 </body>
 
