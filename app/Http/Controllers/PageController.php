@@ -142,7 +142,7 @@ class PageController extends Controller
 //            'شركة' => 4,
         ];
 
-        $invited_by = $request->query('invited_by');
+        $invited_by =  session('invited_by');
 
         return view('auth.register', compact('getUserType', 'invited_by'));
 
@@ -192,7 +192,7 @@ class PageController extends Controller
                 'phone_sms_otp' => $random_mass_num,
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
-                'invited_by' =>  $request['invited_by']   ,
+                'invited_by' =>  $request['invited_by'] ?? session('invited_by'),
 
             ]);
             $userID = $register_user_data->id;
