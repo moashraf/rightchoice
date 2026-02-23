@@ -269,9 +269,11 @@ class PageController extends Controller
         $user = User::where('id', $request->userID)->first();
         if ($user->phone_sms_otp == $request->otb) {
             // $user->update('phone_verfied_sms_status',true);
-            $user->update(['phone_verfied_sms_status' => true]);
-
-
+            $user->update(
+                [
+                    'phone_verfied_sms_status' => true,
+                    'status' => 1
+                ]);
 
             Auth::loginUsingId($user->id);
             return redirect()->intended('/');
