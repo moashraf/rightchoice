@@ -11,14 +11,13 @@
 
             <div class="row">
 
-
                 <div class="col-lg-8">
 
+                    <h2 style="font-weight: bold;" class="mb-5">
+                        {{ trans('langsite.register') }}
+                    </h2>
 
-                    <h2 style="font-weight: bold;" class="mb-5">سجل الان مجانا</h2>
-
-
-                    @if (count($errors) > 0)
+                     @if (count($errors) > 0)
 
                         <ul style="COLOR: red; font-size: 20px;">
 
@@ -29,21 +28,16 @@
 
                             @endforeach
 
-
                         </ul>
 
                     @endif
 
-
-
                     <form method="POST" action="{{ route('custom_register', Config::get('app.locale')) }}"
                           autocomplete="off">
-
 
                         @csrf
 
                         <div class="row">
-
 
                             <div class="col-lg-6">
 

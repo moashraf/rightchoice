@@ -105,18 +105,13 @@ class PageController extends Controller
         }
 
         $allAqars = wish::where('user_id', $getUser->id)->with('aqarInfo')->paginate(9);
-        //dd($allAqars->aqarInfo->offerTypes->offer_id);
-        //dd($allAqars);
 
         return view('auth.user_wishs', compact('allAqars', 'points'));
     }
 
 
-
     public function user_ads(Request $request)
-
     {
-
         $getUser = Auth::user();
         $points = 0;
         if (($getUser->userpricin)) {
@@ -129,7 +124,6 @@ class PageController extends Controller
         }
 
         $allAqars = aqar::where('user_id', $getUser->id)->paginate(9);
-
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
@@ -148,21 +142,16 @@ class PageController extends Controller
 //            'شركة' => 4,
         ];
 
-        $invited_by = $request->query('invited_by');
+        $invited_by =  session('invited_by');
 
         return view('auth.register', compact('getUserType', 'invited_by'));
 
     }
 
-
-
-
     ///////////////////////////////////////////////////////
 
     public function custom_register(Request $request, $locale)
     {
-
-
 
         $locale =   app()->getLocale();
 
@@ -195,18 +184,15 @@ class PageController extends Controller
                 'Commercial_Register' => $request['Commercial_Register'],
                 'Tax_card' => $request['Tax_card'],
                 'TYPE' => $request['TYPE'],
-
                 'MOP' => $request['MOP'],
-
                 'AGE' => $request['AGE'],
-
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => bcrypt($request->password),
                 'phone_sms_otp' => $random_mass_num,
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
-                'invited_by' =>  $request['invited_by']   ,
+                'invited_by' =>  $request['invited_by'] ?? session('invited_by'),
 
             ]);
             $userID = $register_user_data->id;
@@ -283,9 +269,11 @@ class PageController extends Controller
         $user = User::where('id', $request->userID)->first();
         if ($user->phone_sms_otp == $request->otb) {
             // $user->update('phone_verfied_sms_status',true);
-            $user->update(['phone_verfied_sms_status' => true]);
-
-
+            $user->update(
+                [
+                    'phone_verfied_sms_status' => true,
+                    'status' => 1
+                ]);
 
             Auth::loginUsingId($user->id);
             return redirect()->intended('/');

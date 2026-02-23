@@ -326,7 +326,7 @@
                                     <span>تواصل مباشر مع المُعلنين</span>
                                 </div>
                             </div>
-                            <a href="{{ URL::to(Config::get('app.locale').'/register') }}" class="register-cta-btn animate-fade-up-delay3">
+                            <a href="{{ URL::to(Config::get('app.locale').'/register') }}{{ session('invited_by') ? '?invited_by=' . urlencode(session('invited_by')) : '' }}" class="register-cta-btn animate-fade-up-delay3">
                                 <span>سجّل الآن مجاناً</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
                             </a>
