@@ -146,7 +146,7 @@
 <li class="nav-item">
     <a href="{{ route('priceingSales.index') }}"
        class="nav-link {{ Request::is('priceingSales*') ? 'active' : '' }}">
-        <p>تسعير المبيعات</p>
+        <p>  باقات االشتراك </p>
     </a>
 </li>
 
@@ -196,7 +196,7 @@
 <li class="nav-item">
     <a href="{{ route('priceVips.index') }}"
        class="nav-link {{ Request::is('priceVips*') ? 'active' : '' }}">
-        <p>سعر كبار الشخصيات</p>
+        <p>   باقات التمييز    </p>
     </a>
 </li>
 

@@ -4,6 +4,8 @@ return [
 
     'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا ',
     'Packages' => 'الباقات',
+    'Premium_Packages' => 'باقات التمييز',
+    'Subscription_packages' => 'باقات االشتراك',
     'choose' => 'اختر',
     'optional'=> 'اختياري',
     'location' => 'الموقع',
