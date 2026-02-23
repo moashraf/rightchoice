@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 
 
-
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 
-
 <head>
-
-
 
     <meta charset="utf-8">
 
@@ -32,8 +28,8 @@
             fbq('init', '2084977348310462');
             fbq('track', 'PageView');
             </script>
-            <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=2084977348310462&ev=PageView&noscript=1"
+            <noscript>
+                <img height="1" width="1" style="display:none"  src="https://www.facebook.com/tr?id=2084977348310462&ev=PageView&noscript=1"
             /></noscript>
             <!-- End Facebook Pixel Code -->
 
@@ -55,10 +51,7 @@
 
 
     <title>RightChoice  @if (!\Request::is('/')) | @endif @yield('title')</title>
-
-
-
-    <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
+   <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
 
 
 
@@ -96,12 +89,6 @@ else{
 
     <link rel="stylesheet" href="{{asset('assets/css/plugins/owl.theme.css')}}">
 
-
-
-
-
-
-
     <!-- Custom Color Option -->
 
 
@@ -120,68 +107,8 @@ else{
 
     <link rel="stylesheet" href="{{asset('assets/css/plugins/light-box.css')}}">
 
-    <!-- Mobile Register Button Styles -->
-    <style>
-    .mobile-register-btn {
-        display: none;
-    }
-    @media (max-width: 992px) {
-        .mobile-register-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #196aa2 0%, #0d4a73 100%);
-            color: #ffffff !important;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border-radius: 50px;
-            text-decoration: none !important;
-            white-space: nowrap;
-            position: absolute;
-            left: 60px;
-            top: 0.5%;
-            transform: translateY(-50%);
-            z-index: 10;
-            box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35);
-            animation: mobileRegPulse 2s ease-in-out infinite;
-            transition: all 0.3s ease;
-        }
-        .mobile-register-btn:hover {
-            background: linear-gradient(135deg, #1a7bc0 0%, #196aa2 100%);
-            transform: translateY(-50%) scale(1.05);
-            box-shadow: 0 6px 20px rgba(25, 106, 162, 0.5);
-            color: #ffffff !important;
-        }
-        .mobile-register-btn svg {
-            flex-shrink: 0;
-        }
-        @keyframes mobileRegPulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35); }
-            50% { box-shadow: 0 4px 25px rgba(25, 106, 162, 0.6); }
-        }
-        /*.nav-header {*/
-        /*    position: relative;*/
-        /*}*/
-    }
-    @media (max-width: 480px) {
-        .mobile-register-btn {
-            padding: 6px 12px;
-            font-size: 0.72rem;
-            left: 25%;
-        }
-    }
-    </style>
-
 
 </head>
-
-
-
-
-
-
 
 <body class="blue-skin">
 
@@ -251,19 +178,9 @@ else{
 
     <div id="main-wrapper">
 
-
-
-
-
-
-
         <!-- ============================================================== -->
 
-
-
         <!-- Top header  -->
-
-
 
         <!-- ============================================================== -->
 
@@ -279,46 +196,83 @@ else{
 
             <div class="container-fluid">
 
-
-
                 <nav style="padding-left: 10px;padding-right: 10px;" id="navigation"    class="navigation navigation-landscape container">
 
                     <div class="nav-header">
+                        @guest
+                            <!-- Mobile Floating Register Button -->
+                            <a href="{{ URL::to(Config::get('app.locale').'/register') }}" class="mobile-register-btn" id="mobileRegBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff" viewBox="0 0 24 24">
+                                    <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                <span>     اضف عقارك مجانا </span>
+                            </a>
+                            <!-- Mobile Register Button Styles -->
+                            <style>
+                                .mobile-register-btn {
+                                    display: none;
+                                }
+                                @media (max-width: 992px) {
+                                    .mobile-register-btn {
+                                        display: inline-flex;
+                                        align-items: center;
+                                        gap: 6px;
+                                        padding: 8px 16px;
+                                        background: linear-gradient(135deg, #196aa2 0%, #0d4a73 100%);
+                                        color: #ffffff !important;
+                                         font-size: 0.8rem;
+                                        font-weight: 700;
+                                        border-radius: 50px;
+                                        text-decoration: none !important;
+                                        white-space: nowrap;
+                                         /*transform: translateY(-50%);*/
+                                        z-index: 10;
+                                        box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35);
+                                        animation: mobileRegPulse 2s ease-in-out infinite;
+                                        transition: all 0.3s ease;
+                                    }
+                                    .mobile-register-btn:hover {
+                                        background: linear-gradient(135deg, #1a7bc0 0%, #196aa2 100%);
+                                        transform: translateY(-50%) scale(1.05);
+                                        box-shadow: 0 6px 20px rgba(25, 106, 162, 0.5);
+                                        color: #ffffff !important;
+                                    }
+                                    .mobile-register-btn svg {
+                                        flex-shrink: 0;
+                                    }
+                                    @keyframes mobileRegPulse {
+                                        0%, 100% { box-shadow: 0 4px 15px rgba(25, 106, 162, 0.35); }
+                                        50% { box-shadow: 0 4px 25px rgba(25, 106, 162, 0.6); }
+                                    }
 
+                                }
+                                @media (max-width: 480px) {
+                                    .mobile-register-btn {
+                                        padding: 6px 12px;
+                                      }
+                                }
+
+                            </style>
+
+                        @endguest
                         <a href="{{ URL::to('/'.Config::get('app.locale'))}}">
                            <?php  if (  App::getLocale()== 'en' )
-                            {
-
-                                ?>
-                                                <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="" />
-
-                                 <?php
-                            }
-                        else{
-
-
-                            ?>
-
-                                                <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="" />
-
-                            <?php
-                        }
-                        ?>
+                            {  ?>
+                               <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="rightchoice" />
+                         <?php   }
+                             else{ ?>
+                              <img src="{{ asset('assets/img/rclogo.png') }}" class="logo" alt="rightchoice" />
+                            <?php   }    ?>
                           </a>
 
                         <div class="nav-toggle"></div>
                     </div>
 
-
-
                     <div class="nav-menus-wrapper" style="transition-property: none;">
 
-
-
                         <ul class="nav-menu">
-                    <li class="{{ Request::is('/') ? 'active' : '' }}">
-                        <a  href="{{ asset('/').Config::get('app.locale') }}">{{ trans('langsite.Home')}}</a>
-                    </li>
+                            <li class="{{ Request::is('/') ? 'active' : '' }}">
+                                <a  href="{{ asset('/').Config::get('app.locale') }}">{{ trans('langsite.Home')}}</a>
+                            </li>
                         <li
 
                                 class="{{ Request::is('aqars-cash') || Request::is('aqars-installment') || Request::is('aqar-finnance') ? 'active' : '' }}">
@@ -470,29 +424,7 @@ else{
                             </li>
 
                         @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        </ul>
-
-
-
-
-
+                             </ul>
 
 
                         <ul class="nav-menu nav-menu-social align-to-right">
@@ -503,16 +435,8 @@ else{
 
                             ?>
                         <li>
-
-
-
-                                <a href="{{ url($newUrl) }}">عربي</a>
-
-
-
-
-
-                            </li>
+              <a href="{{ url($newUrl) }}">عربي</a>
+                     </li>
 
                              <?php
                         }
@@ -547,8 +471,7 @@ else{
                                     <img
 
                                         src="{{ asset('assets/img/submit.svg') }}"
-                                        style="    margin-right: -0.9rem!important;
-    margin-left: 10px;" width="20" alt=""
+                                        style="    margin-right: -0.9rem!important;  margin-left: 10px;" width="20" alt=""
 
                                         class="mr-2" />
                                          -->
@@ -575,8 +498,7 @@ else{
                                     <img
 
                                         src="{{ asset('assets/img/submit.svg') }}"
-                                        style="    margin-right: -0.9rem!important;
-    margin-left: 10px;" width="20" alt=""
+                                        style="    margin-right: -0.9rem!important;  margin-left: 10px;" width="20" alt=""
 
                                         class="mr-2" />
                                          -->
@@ -2508,21 +2430,9 @@ function updateStatus(id) {
 
 </script>
 
-@guest
-<!-- Mobile Floating Register Button -->
-<a href="{{ URL::to(Config::get('app.locale').'/register') }}" class="mobile-register-btn" id="mobileRegBtn">
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff" viewBox="0 0 24 24">
-        <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    <span>سجل الآن مجاناً</span>
-</a>
-@endguest
 
 </body>
 
-
-
 <x-cookies/>
-
-
 
 </html>
