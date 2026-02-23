@@ -105,18 +105,13 @@ class PageController extends Controller
         }
 
         $allAqars = wish::where('user_id', $getUser->id)->with('aqarInfo')->paginate(9);
-        //dd($allAqars->aqarInfo->offerTypes->offer_id);
-        //dd($allAqars);
 
         return view('auth.user_wishs', compact('allAqars', 'points'));
     }
 
 
-
     public function user_ads(Request $request)
-
     {
-
         $getUser = Auth::user();
         $points = 0;
         if (($getUser->userpricin)) {
@@ -129,7 +124,6 @@ class PageController extends Controller
         }
 
         $allAqars = aqar::where('user_id', $getUser->id)->paginate(9);
-
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
@@ -154,15 +148,10 @@ class PageController extends Controller
 
     }
 
-
-
-
     ///////////////////////////////////////////////////////
 
     public function custom_register(Request $request, $locale)
     {
-
-
 
         $locale =   app()->getLocale();
 
@@ -195,11 +184,8 @@ class PageController extends Controller
                 'Commercial_Register' => $request['Commercial_Register'],
                 'Tax_card' => $request['Tax_card'],
                 'TYPE' => $request['TYPE'],
-
                 'MOP' => $request['MOP'],
-
                 'AGE' => $request['AGE'],
-
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => bcrypt($request->password),
