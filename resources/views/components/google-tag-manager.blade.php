@@ -10,15 +10,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-MXSN7S5R');</script>
 <!-- End Google Tag Manager -->
-@endif
 
-@if(isset($section) && $section === 'body')
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MXSN7S5R"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-@endif
-
+meta name="facebook-domain-verification" content="k6v3agddx5gb0bvfva7xsnguqsrleg" />
 
 
 <!-- Facebook Pixel Code -->
@@ -55,3 +48,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </script>
 
 
+
+
+@endif
+
+@if(isset($section) && $section === 'body')
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MXSN7S5R"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+@endif
+
+<

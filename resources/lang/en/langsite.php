@@ -5,6 +5,8 @@ return [
     'verficationverfication' => ' A verfication code has been sent to your mobile from Rightchoice please type it below',
     'choose' => 'Choose',
     'Packages' => 'Packages',
+    'Premium_Packages' => 'Premium Packages',
+    'Subscription_packages' => ' Subscription packages  ',
 
     'profile' => 'profile',
      'optional'=> 'Optional',
