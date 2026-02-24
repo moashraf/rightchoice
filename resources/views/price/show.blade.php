@@ -164,13 +164,14 @@
 		$merchantRefNum = $six_digit_random_number;
 		$numsort = 55555;
 		$customerProfileId = $single->id . $numsort . $six_digit_random_number;
-		$amount = number_format((float)$single->price, 2, '.', '');
-		$paymentMethod = 'CARD';
-		// Signature = SHA256(merchantCode + merchantRefNum + customerProfileId + paymentMethod + amount + hashKey)
-		$signature = hash('sha256', $merchantCode . $merchantRefNum . $customerProfileId . $paymentMethod . $amount . $hashKey);
+		$itemId = '23432';
+		$itemQuantity = 1;
+		$itemPrice = number_format((float)$single->price, 2, '.', '');
 		// Set payment expiry to 24 hours from now (in milliseconds)
-		$paymentExpiry = (time() + 86400) * 1000;
-		$returnUrl = url(Config::get('app.locale') . '/fawryCallback');
+		$paymentExpiry = strval((time() + 86400)) . '000';
+		$returnUrl = 'https://rightchoice-co.com/' . config('app.locale') . '/fawryCallback';
+		// FawryPay Plugin Signature = SHA256(merchantCode + merchantRefNum + customerProfileId + returnUrl + itemId + quantity + price + secureKey)
+		$signature = hash('sha256', $merchantCode . $merchantRefNum . $customerProfileId . $returnUrl . $itemId . $itemQuantity . $itemPrice . $hashKey);
 	?>
 	<script>
 
@@ -197,15 +198,14 @@ function buildChargeRequest() {
 		customerProfileId: '<?php echo $customerProfileId; ?>',
 		chargeItems: [
 			{
-				itemId: '23432',
-				description: '23423423',
-				price: {{$single->price}},
-				quantity: 1,
+				itemId: '<?php echo $itemId; ?>',
+				description: 'اشتراك باقة',
+				price: <?php echo $itemPrice; ?>,
+				quantity: <?php echo $itemQuantity; ?>,
 				imageUrl: 'https://www.atfawry.com/ECommercePlugin/resources/images/atfawry-ar-logo.png'
 			}
 		],
 
-		paymentMethod: '<?php echo $paymentMethod; ?>',
 		returnUrl: '<?php echo $returnUrl; ?>',
 		signature: '<?php echo $signature; ?>'
 	};
