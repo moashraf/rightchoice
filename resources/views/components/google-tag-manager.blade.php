@@ -28,7 +28,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     fbq('track', 'PageView');
 </script>
 <noscript>
-    <img height="1" width="1" style="display:none"  src="https://www.facebook.com/tr?id=2084977348310462&ev=PageView&noscript=1"
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=2084977348310462&ev=PageView&noscript=1"
     /></noscript>
 <!-- End Facebook Pixel Code -->
 
@@ -38,8 +39,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @if(isset($section) && $section === 'body')
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MXSN7S5R"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
 <!-- End Google Tag Manager (noscript) -->
 @endif
 
-<
+

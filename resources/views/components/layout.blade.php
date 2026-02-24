@@ -124,18 +124,11 @@ else{
 
     <!-- <div id="preloader"><div class="preloader"><span></span><span></span></div></div> -->
 
-
-
-
-
-
-
     <!-- ============================================================== -->
 
 
 
     <!-- Main wrapper - style you can find in pages.scss -->
-
 
 
     <!-- ============================================================== -->
@@ -144,17 +137,7 @@ else{
 
     <div id="main-wrapper">
 
-        <!-- ============================================================== -->
-
-        <!-- Top header  -->
-
-        <!-- ============================================================== -->
-
-
-
         <!-- Start Navigation -->
-
-
 
         <div class="header header-light head-shadow">
 
