@@ -12,8 +12,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="facebook-domain-verification" content="k6v3agddx5gb0bvfva7xsnguqsrleg" />
-    @include('components.google-tag-manager', ['section' => 'body'])
+    @include('components.google-tag-manager', ['section' => 'head'])
 
 
     <title>RightChoice  @if (!\Request::is('/')) | @endif @yield('title')</title>
@@ -77,6 +76,7 @@ else{
 </head>
 
 <body class="blue-skin">
+@include('components.google-tag-manager', ['section' => 'body'])
 
     <div id="loader-wrapper">
 
