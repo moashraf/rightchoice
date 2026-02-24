@@ -32,24 +32,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /></noscript>
 <!-- End Facebook Pixel Code -->
 
-
-
-
-<!-- Hotjar Tracking Code for https://rightchoice-co.com/ -->
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:2759523,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-
-
+<script src="https://t.contentsquare.net/uxa/2a9ac81a6defe.js"></script>
 @endif
 
 @if(isset($section) && $section === 'body')
