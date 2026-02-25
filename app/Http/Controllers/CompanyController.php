@@ -29,6 +29,7 @@ use Auth;
 use App;
 use Redirect;
 use Config;
+use App\Services\SmsService;
 
 
 class CompanyController extends Controller
@@ -337,41 +338,10 @@ class CompanyController extends Controller
                     /******************************************************/
 
                     $MOP = $request['Phone'];
+                    SmsService::sendOtp($MOP, $random_mass_num);
 
-                    $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-                    $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
-                    $code = "D8FBFDD3DD684C85BC00E708FC5872EB";
-                    $sig = hash_hmac('sha256', $stringnalue, $code);
-                    $str = strtoupper($sig);
+                    /******************************************************/
 
-                    echo($random_mass_num);
-                    $curl = curl_init($url);
-                    curl_setopt($curl, CURLOPT_URL, $url);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-                    $headers = array(
-                        "Accept: application/xml",
-                        "Content-Type: application/xml",
-                    );
-                    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//for debug only!
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, "<?xml version='1.0' encoding='UTF-8'?>
-<SubmitSMSRequest xmlns:='http://www.edafa.com/web2sms/sms/model/' xmlns:xsi='http://www.w3.org/2001/XMLSchemainstance' xsi:schemaLocation='http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd ' xsi:type='SubmitSMSRequest'>
-<AccountId>200002798</AccountId>
-<Password>Vodafone.1</Password>
-<SecureHash>$str</SecureHash>
-<SMSList>
-<SenderName>RightChoice</SenderName>
-<ReceiverMSISDN>$MOP</ReceiverMSISDN>
-<SMSText>$random_mass_num is your verification code for  RightChoice </SMSText>
-</SMSList>
-</SubmitSMSRequest>");
-
-                    $resp = curl_exec($curl);
-                    curl_close($curl);
                     return redirect()->route('otbPage', ['userID' => $userID, 'locale' => $locale]);
 
                 } catch (\Exception $ex) {
