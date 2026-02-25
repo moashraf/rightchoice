@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace App\Http\Controllers;
 
 use Laravel\Jetstream\Jetstream;
@@ -26,6 +25,7 @@ use Validator;
 use Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RequestPhotoSession;
+use App\Services\SmsService;
 
 
 class PageController extends Controller
@@ -33,21 +33,19 @@ class PageController extends Controller
 {
 
 
-
-
     public function customLoginManual(request $request)
     {
         //dd('hello admin');
-        $locale =   app()->getLocale();
+        $locale = app()->getLocale();
         if (is_numeric($request->email)) {
             $userdata = array(
                 'MOP' => $request->email,
-                'password' =>  $request->password
+                'password' => $request->password
             );
         } else {
             $userdata = array(
                 'email' => $request->email,
-                'password' =>  $request->password
+                'password' => $request->password
             );
         }
 
@@ -61,7 +59,7 @@ class PageController extends Controller
                 if (\Auth::attempt($userdata)) {
                     //dd("تم");
 
-                    return  redirect()->intended('/');
+                    return redirect()->intended('/');
                 } else {
                     //dd("no");
                     if ($locale == 'ar') {
@@ -127,22 +125,23 @@ class PageController extends Controller
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
+
     public function register(Request $request, $locale)
 
     {
         $getUser = Auth::user();
 
-        if ($getUser || $getUser != null  ){
+        if ($getUser || $getUser != null) {
             return redirect()->intended('/');
         }
-        $getUserType=[
+        $getUserType = [
             'مشتري او مستأجر' => 1,
             'بائع او مؤجر' => 2,
             'مطور عقاري' => 3,
 //            'شركة' => 4,
         ];
 
-        $invited_by =  session('invited_by');
+        $invited_by = session('invited_by');
 
         return view('auth.register', compact('getUserType', 'invited_by'));
 
@@ -153,16 +152,13 @@ class PageController extends Controller
     public function custom_register(Request $request, $locale)
     {
 
-        $locale =   app()->getLocale();
-
+        $locale = app()->getLocale();
         $random_mass_num = random_int(111, 10000);
-
-
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|min:3|max:90',
             'MOP' => 'required|min:10|max:11|unique:users',
-            'password'  => 'required|confirmed|max:255',
+            'password' => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
 
             //    'TYPE' => 'required|max:90',
@@ -171,15 +167,13 @@ class PageController extends Controller
         ]);
 
 
-
         if ($validator->fails()) {
 
             return \Redirect::back()->withErrors($validator)->withInput($request->all());
         } else {
 
 
-
-            $register_user_data =  User::create([
+            $register_user_data = User::create([
 
                 'Commercial_Register' => $request['Commercial_Register'],
                 'Tax_card' => $request['Tax_card'],
@@ -192,51 +186,15 @@ class PageController extends Controller
                 'phone_sms_otp' => $random_mass_num,
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
-                'invited_by' =>  $request['invited_by'] ?? session('invited_by'),
+                'invited_by' => $request['invited_by'] ?? session('invited_by'),
 
             ]);
             $userID = $register_user_data->id;
 
             /******************************************************/
 
-            $MOP  = $request['MOP'];
-
-            $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-            $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
-            $code = "D8FBFDD3DD684C85BC00E708FC5872EB";
-            $sig = hash_hmac('sha256', $stringnalue, $code);
-            $str = strtoupper($sig);
-
-            echo ($random_mass_num);
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-            $headers = array(
-                "Accept: application/xml",
-                "Content-Type: application/xml",
-            );
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            //for debug only!
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($curl, CURLOPT_POSTFIELDS, "<?xml version='1.0' encoding='UTF-8'?>
-<SubmitSMSRequest xmlns:='http://www.edafa.com/web2sms/sms/model/' xmlns:xsi='http://www.w3.org/2001/XMLSchemainstance' xsi:schemaLocation='http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd ' xsi:type='SubmitSMSRequest'>
-<AccountId>200002798</AccountId>
-<Password>Vodafone.1</Password>
-<SecureHash>$str</SecureHash>
-<SMSList>
-<SenderName>RightChoice</SenderName>
-<ReceiverMSISDN>$MOP</ReceiverMSISDN>
-<SMSText>$random_mass_num is your verification code for RightChoice</SMSText>
-</SMSList>
-</SubmitSMSRequest>");
-
-
-            $resp = curl_exec($curl);
-            curl_close($curl);
-
+            $MOP = $request['MOP'];
+            SmsService::sendOtp($MOP, $random_mass_num);
 
             /******************************************************/
 
@@ -246,22 +204,18 @@ class PageController extends Controller
 
     public function otbPage()
     {
-         $user = User::where('id', $_GET['userID'])->first();
+        $user = User::where('id', $_GET['userID'])->first();
 
         return view('auth.otb-page', compact('user'));
-     }
-
+    }
 
 
     public function otbReset()
     {
-         $user = User::where('id', $_GET['userID'])->first();
+        $user = User::where('id', $_GET['userID'])->first();
 
         return view('auth.otb-reset', compact('user'));
     }
-
-
-
 
 
     public function verifyOtbPage(Request $request)
@@ -301,7 +255,6 @@ class PageController extends Controller
     }
 
 
-
     public function phoneResetPassword(Request $request)
     {
 
@@ -315,15 +268,10 @@ class PageController extends Controller
     }
 
 
-
-
     public function donePhoneVerf()
     {
         return View('auth.phone_ver');
     }
-
-
-
 
 
     public function usersession(Request $request)
@@ -349,7 +297,6 @@ class PageController extends Controller
                 $request->merge(['description' => $request->session_description]);
 
                 $session = RequestPhotoSession::create($request->all());
-
 
 
                 return response()->json(['massage' => 'تم إرسال بياناتك بنجاح , وسوف يتم التواصل مع سيادتكم فى اقرب وقت', 'status' => 200], 200);
@@ -387,9 +334,9 @@ class PageController extends Controller
         if (count($FawryPayment_data) != 0) {
             foreach ($FawryPayment_data as $FawryPayment_data_val) {
 
-                $merchantCode    = 'TUDH+sU93QqTh4bRQqAadQ==';
-                $merchantRefNumber  = $FawryPayment_data_val->merchantRefNumber;
-                $merchant_sec_key =  '160224c0e40347318144da5efa284eda'; // For the sake of demonstration
+                $merchantCode = 'TUDH+sU93QqTh4bRQqAadQ==';
+                $merchantRefNumber = $FawryPayment_data_val->merchantRefNumber;
+                $merchant_sec_key = '160224c0e40347318144da5efa284eda'; // For the sake of demonstration
                 $signature = hash('sha256', $merchantCode . $merchantRefNumber . $merchant_sec_key);
 
 
@@ -411,12 +358,8 @@ class PageController extends Controller
         }
 
 
-
-        return view('user_point_count_history', compact('FawryPayment_data', 'FawryPayment_data_unpaid','all_data', 'points', 'all_history_of_point_of_user'));
+        return view('user_point_count_history', compact('FawryPayment_data', 'FawryPayment_data_unpaid', 'all_data', 'points', 'all_history_of_point_of_user'));
     }
-
-
-
 
 
     public function notification()
@@ -435,9 +378,7 @@ class PageController extends Controller
         }
 
 
-
         $notifications = Notification::where('user_id', $getUser->id)
-
             ->paginate(9);
         return view('notifications.notifications', compact('points', 'notifications'));
     }
@@ -461,51 +402,13 @@ class PageController extends Controller
 
     public function resendOTB(Request $request)
     {
-      $random_mass_num = random_int(111, 10000);
+        $random_mass_num = random_int(111, 10000);
 
         $user = User::where('id', $request->userID)->first();
-        //dd($user);
         $user->update(['phone_sms_otp' => $random_mass_num]);
 
-        $MOP  = $request['MOP'];
-
-        $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
-        $stringnalue = "AccountId=200002798&Password=Vodafone.1&SenderName=RightChoice&ReceiverMSISDN=$MOP&SMSText=$random_mass_num is your verification code for RightChoice";
-        $code = "D8FBFDD3DD684C85BC00E708FC5872EB";
-        $sig = hash_hmac('sha256', $stringnalue, $code);
-        $str = strtoupper($sig);
-
-        echo ($random_mass_num);
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-        $headers = array(
-            "Accept: application/xml",
-            "Content-Type: application/xml",
-        );
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        //for debug only!
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, "<?xml version='1.0' encoding='UTF-8'?>
-        <SubmitSMSRequest xmlns:='http://www.edafa.com/web2sms/sms/model/' xmlns:xsi='http://www.w3.org/2001/XMLSchemainstance' xsi:schemaLocation='http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd ' xsi:type='SubmitSMSRequest'>
-        <AccountId>200002798</AccountId>
-        <Password>Vodafone.1</Password>
-        <SecureHash>$str</SecureHash>
-        <SMSList>
-        <SenderName>RightChoice</SenderName>
-        <ReceiverMSISDN>$MOP</ReceiverMSISDN>
-        <SMSText>$random_mass_num is your verification code for RightChoice</SMSText>
-        </SMSList>
-        </SubmitSMSRequest>");
-
-
-        $resp = curl_exec($curl);
-         curl_close($curl);
-
-
+        $MOP = $request['MOP'];
+        SmsService::sendOtp($MOP, $random_mass_num);
 
         return \Redirect::back()->withInput($request->all());
     }
