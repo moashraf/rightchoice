@@ -11999,15 +11999,11 @@ span.tag_t {
 }
 
 .property-listing.property-2 .listing-img-wrapper img{
-
-	/*max-height: 200px;*/
-
- /*   min-height: 200px;*/
-
+max-height: 200px;
+   min-height: 200px;
 	width: 100%;
   background-color: #ccc;
   object-fit: contain;
-
 }
 
 .property-listing.property-2 .listing-detail-wrapper {
