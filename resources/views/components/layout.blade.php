@@ -129,6 +129,17 @@
                 margin: 5px 0;
             }
         }
+
+        /* Mobile sticky header */
+        @media (max-width: 991px) {
+            .header {
+                position: sticky !important;
+                top: 0;
+                z-index: 999;
+                background: #ffffff;
+                box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
+            }
+        }
     </style>
 
 </head>
