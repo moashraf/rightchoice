@@ -13,7 +13,7 @@
 				<div class="container">
 
 					<div class="row">
-						<div class="col-lg-6 col-md-6">
+						<div class=" form_form col-lg-6 col-md-6 order-2 order-lg-1">
 							<form action="{{ Config::get('app.locale') }}/search" method="GET">
 
 								<div class="hero-search-wrap">
@@ -85,7 +85,7 @@
 
 						</div>
 
-						<div class="col-lg-6 col-md-12">
+						<div class="col-lg-6 col-md-12 order-1 order-lg-2">
 							<div class="hero__p"><h1>
 							    @if(App::isLocale('en'))
 							    {{$slid->title_en}}
