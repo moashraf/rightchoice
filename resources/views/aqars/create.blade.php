@@ -123,21 +123,21 @@
                                                 <div id="governrate_dropdown" class="gov-dropdown-content w-100">
                                                     <input
                                                         type="text"
-                                                        id="governrate_input"
-                                                        name="governrate_name"
+                                                        id="governrate_search"
                                                         class="gov-search-input"
                                                         placeholder="ابحث عن المحافظه..."
                                                         autocomplete="off"
-                                                        value="{{ old('governrate_name') }}"
-                                                        required
                                                     />
 
                                                     <div id="governrate_results" class="gov-results">
-                                                        <div class="gov-empty">اكتب للبحث...</div>
+                                                        @foreach($governrate as $gov)
+                                                            <div class="gov-item" data-id="{{ $gov->id }}" data-name="{{ $gov->governrate }}">{{ $gov->governrate }}</div>
+                                                        @endforeach
                                                     </div>
                                                 </div>
 
                                                 <input type="hidden" id="governrate_id" name="governrate_id" value="{{ old('governrate_id') }}">
+                                                <input type="hidden" id="governrate_input" name="governrate_name" value="{{ old('governrate_name') }}">
                                             </div>
 
                                             @error('governrate_id')
@@ -669,9 +669,12 @@
                 $('#governrate_btn').on('click', function(){
                     $('#governrate_dropdown').toggleClass('show');
 
-                    // focus على input
                     if ($('#governrate_dropdown').hasClass('show')) {
-                        setTimeout(() => $('#governrate_input').focus(), 0);
+                        $('#governrate_search').val('');
+                        // اظهر كل المحافظات
+                        $('#governrate_results .gov-item').show();
+                        $('#governrate_results .gov-empty').remove();
+                        setTimeout(() => $('#governrate_search').focus(), 0);
                     }
                 });
 
@@ -682,52 +685,26 @@
                     }
                 });
 
-                let govAjax = null;
+                // فلترة المحافظات محلياً
+                $('#governrate_search').on('keyup', function(){
+                    const query = $(this).val().trim().toLowerCase();
+                    let found = false;
 
-                // البحث داخل dropdown
-                $('#governrate_input').on('keyup', function(){
-                    const query = $(this).val().trim();
-
-                    // reset id + district
-                    $('#governrate_id').val('');
-                    $('#area_input').html('<option value="" selected disabled>اختر</option>');
-
-                    if (govAjax) { try { govAjax.abort(); } catch(e) {} }
-
-                    if (query.length === 0) {
-                        $('#governrate_results').html('<div class="gov-empty">اكتب للبحث...</div>');
-                        return;
-                    }
-
-                    $('#governrate_results').html('<div class="gov-empty">جاري البحث...</div>');
-
-                    govAjax = $.ajax({
-                        url: '{{ url(App::getLocale() . "/governorates/search") }}',
-                        type: 'GET',
-                        dataType: 'json',
-                        data: { q: query },
-                        success: function(data){
-                            if (!Array.isArray(data) || data.length === 0) {
-                                $('#governrate_results').html('<div class="gov-empty">لا توجد نتائج</div>');
-                                return;
-                            }
-
-                            let html = '';
-                            data.forEach(function(item){
-                                const id = item.id ?? item.governrate_id ?? '';
-                                const name = item.governrate ?? item.name ?? item.governorate ?? '';
-                                if (!id || !name) return;
-
-                                html += `<div class="gov-item" data-id="${id}" data-name="${name}">${name}</div>`;
-                            });
-
-                            $('#governrate_results').html(html || '<div class="gov-empty">لا توجد نتائج</div>');
-                        },
-                        error: function(xhr){
-                            console.log('governorates/search error:', xhr.status, xhr.responseText);
-                            $('#governrate_results').html('<div class="gov-empty">حصل خطأ أثناء البحث</div>');
+                    $('#governrate_results .gov-item').each(function(){
+                        const name = $(this).data('name').toString().toLowerCase();
+                        if (name.indexOf(query) > -1) {
+                            $(this).show();
+                            found = true;
+                        } else {
+                            $(this).hide();
                         }
                     });
+
+                    // اظهار رسالة لو مفيش نتائج
+                    $('#governrate_results .gov-empty').remove();
+                    if (!found) {
+                        $('#governrate_results').append('<div class="gov-empty">لا توجد نتائج</div>');
+                    }
                 });
 
                 // اختيار محافظة
