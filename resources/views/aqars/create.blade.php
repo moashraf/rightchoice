@@ -1,6 +1,6 @@
 <x-layout>
     @section('title')
-        اضف اعلان
+        {{ trans('langsite.add_an_advertisement')}}
     @endsection
 
     <link href="{{ asset('assets/css/img-upload.css') }}" rel="stylesheet">
@@ -264,7 +264,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" class="btn our-btn" value="اكمل">
+                        <input type="submit" class="btn our-btn" value="{{ trans('langsite.complete')}}">
+
                     </form>
                 </div>
                 <div class="content-2">
@@ -530,7 +531,7 @@
                         </div>
 
 
-                        <input type="submit" value="اضف اعلان" class="btn our-btn"/>
+                        <input type="submit" value=" {{ trans('langsite.add_an_advertisement')}}" class=" add_an_advertisement btn our-btn"/>
                         <button id="back-form-1" class="btn btn-light">الرجوع</button>
                     </form>
                 </div>

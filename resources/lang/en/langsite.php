@@ -16,6 +16,8 @@ return [
     'area' => 'Area',
     'Notifications' => 'Notifications',
     'UpdateCompany' => 'Update Company',
+    'complete' => "complete",
+    'add_an_advertisement' => ' add_an_advertisement  ',
 
     'Section' => 'Section',
     'add_aqar-free' => 'add free ',
