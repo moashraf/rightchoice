@@ -153,12 +153,29 @@
 
                                     <div class="col-lg-4">
                                         <label for="">الحي <span class="text-danger">*</span></label>
-                                        <select oninvalid="this.setCustomValidity('{{ trans('validation.areaError')}}')"
-                                                oninput="this.setCustomValidity('')" required name="district_id" id="area_input" class="myselect">
-                                            <option  selected disabled  value="">اختر</option>
 
+                                        <div class="gov-dropdown w-100" id="district-dropdown-wrapper">
+                                            <button type="button" id="district_btn" class="myselect gov-dropbtn w-100">
+                                                <span id="district_btn_text">اختر</span>
+                                                <span class="gov-caret">▾</span>
+                                            </button>
 
-                                        </select>
+                                            <div id="district_dropdown" class="gov-dropdown-content w-100">
+                                                <input
+                                                    type="text"
+                                                    id="district_search"
+                                                    class="gov-search-input"
+                                                    placeholder="ابحث عن الحي..."
+                                                    autocomplete="off"
+                                                />
+                                                <div id="district_results" class="gov-results">
+                                                    <div class="gov-empty">اختر المحافظه اولاً</div>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" id="district_id" name="district_id" value="{{ old('district_id') }}">
+                                        </div>
+
                                         @error('district_id')
                                         <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                         @enderror
@@ -640,7 +657,10 @@
                 function fetchDistrictsByGovernorateId(governrateId) {
                     if (!governrateId) return;
 
-                    $("#area_input").html('<option value="" selected disabled>جاري التحميل...</option>');
+                    // reset district selection
+                    $('#district_id').val('');
+                    $('#district_btn_text').text('جاري التحميل...');
+                    $('#district_results').html('<div class="gov-empty">جاري التحميل...</div>');
 
                     $.ajax({
                         url: "{{ url('api/fetch-states') }}",
@@ -651,16 +671,21 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function (result) {
-                            $('#area_input').html('<option value="" selected disabled>اختر</option>');
-                            if (result && result.states) {
+                            $('#district_btn_text').text('اختر');
+                            let html = '';
+                            if (result && result.states && result.states.length > 0) {
                                 $.each(result.states, function (key, value) {
-                                    $("#area_input").append('<option value="' + value.id + '">' + value.district + '</option>');
+                                    html += '<div class="gov-item district-item" data-id="' + value.id + '" data-name="' + value.district + '">' + value.district + '</div>';
                                 });
+                                $('#district_results').html(html);
+                            } else {
+                                $('#district_results').html('<div class="gov-empty">لا توجد أحياء</div>');
                             }
                         },
                         error: function(xhr){
                             console.log('fetch-states error:', xhr.status, xhr.responseText);
-                            $('#area_input').html('<option value="" selected disabled>خطأ في التحميل</option>');
+                            $('#district_btn_text').text('اختر');
+                            $('#district_results').html('<div class="gov-empty">خطأ في التحميل</div>');
                         }
                     });
                 }
@@ -682,6 +707,7 @@
                 $(document).on('click', function(e){
                     if (!$(e.target).closest('.gov-dropdown').length) {
                         $('#governrate_dropdown').removeClass('show');
+                        $('#district_dropdown').removeClass('show');
                     }
                 });
 
@@ -690,7 +716,10 @@
                     return str
                         .replace(/[أإآٱ]/g, 'ا')
                         .replace(/ة/g, 'ه')
-                           .replace(/[َُِّْٰـًٌٍ]/g, '')
+                        .replace(/ى/g, 'ي')
+                        .replace(/ؤ/g, 'و')
+                        .replace(/ئ/g, 'ي')
+                        .replace(/[َُِّْٰـًٌٍ]/g, '')
                         .replace(/\s+/g, ' ')
                         .trim()
                         .toLowerCase();
@@ -724,8 +753,8 @@
                     }
                 });
 
-                // اختيار محافظة
-                $(document).on('click', '.gov-item', function(){
+                // اختيار محافظة (فقط العناصر داخل governrate_results)
+                $(document).on('click', '#governrate_results .gov-item', function(){
                     const id = $(this).data('id');
                     const name = $(this).data('name');
 
@@ -738,8 +767,63 @@
                     // اقفل dropdown
                     $('#governrate_dropdown').removeClass('show');
 
+                    // reset الحي
+                    $('#district_id').val('');
+                    $('#district_btn_text').text('اختر');
+
                     // هات الأحياء
                     fetchDistrictsByGovernorateId(id);
+                });
+
+                // ===== District Dropdown =====
+
+                // فتح/غلق dropdown الحي
+                $('#district_btn').on('click', function(){
+                    $('#district_dropdown').toggleClass('show');
+
+                    if ($('#district_dropdown').hasClass('show')) {
+                        $('#district_search').val('');
+                        $('#district_results .gov-item').show();
+                        $('#district_results .gov-empty').remove();
+                        setTimeout(() => $('#district_search').focus(), 0);
+                    }
+                });
+
+                // فلترة الأحياء محلياً مع بحث ذكي
+                $('#district_search').on('keyup', function(){
+                    const query = normalizeArabic($(this).val());
+                    let found = false;
+
+                    if (query.length === 0) {
+                        $('#district_results .gov-item').show();
+                        $('#district_results .gov-empty').remove();
+                        return;
+                    }
+
+                    $('#district_results .gov-item').each(function(){
+                        const name = normalizeArabic($(this).data('name').toString());
+                        if (name.indexOf(query) > -1) {
+                            $(this).show();
+                            found = true;
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    $('#district_results .gov-empty').remove();
+                    if (!found) {
+                        $('#district_results').append('<div class="gov-empty">لا توجد نتائج</div>');
+                    }
+                });
+
+                // اختيار حي
+                $(document).on('click', '#district_results .gov-item', function(){
+                    const id = $(this).data('id');
+                    const name = $(this).data('name');
+
+                    $('#district_id').val(id);
+                    $('#district_btn_text').text(name);
+                    $('#district_dropdown').removeClass('show');
                 });
 
                 // لو فيه old value من السيرفر (edit/validation) هات الأحياء تلقائيًا
