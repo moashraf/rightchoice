@@ -12,7 +12,7 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
-     
+
     'categoryError' => 'من فضلك اختار تصنيف العقار',
     'aqarError' => 'من فضلك اختار نوع العقار',
     'countryError' =>'من فضلك اختار المحافظه',
