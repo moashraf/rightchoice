@@ -5,13 +5,45 @@ $(function () {
 
 
 
-	
+
 $('.content-2').hide();
 $('.content-3').hide();
 
 $('#form-1').submit(function (e) {
-  
-  
+     let valid = true;
+
+    // التحقق من المحافظه
+    if (!$('#governrate_id').val()) {
+        $('#governrate_btn').addClass('gov-invalid');
+        $('#governrate_error').show();
+        valid = false;
+    } else {
+        $('#governrate_btn').removeClass('gov-invalid');
+        $('#governrate_error').hide();
+    }
+
+    // التحقق من الحي
+    if (!$('#district_id').val()) {
+        $('#district_btn').addClass('gov-invalid');
+        $('#district_error').show();
+        valid = false;
+    } else {
+        $('#district_btn').removeClass('gov-invalid');
+        $('#district_error').hide();
+    }
+
+    if (!valid) {
+        e.preventDefault();
+        // scroll الى أول حقل فاضي
+        var firstInvalid = $('.gov-invalid').first();
+        if (firstInvalid.length) {
+            $('html, body').animate({
+                scrollTop: firstInvalid.offset().top - 150
+            }, 300);
+        }
+        return false;
+    }
+
 	e.preventDefault();
 	var x = $("#form-1").serializeArray();
 	$("#result-form-1").empty();
@@ -29,14 +61,14 @@ $('#form-1').submit(function (e) {
 
 
 $('#form-2').submit(function (e) {
-	
+
 	e.preventDefault();
 	var y = $("#form-2").serializeArray();
 	$("#result-form-2").empty();
 	$.each(y, function(i, field){
 		$("#result-form-2").append(`<input name="${field.name}" value="${field.value}" />`);
 	  });
-	  
+
 	$('.content-1').hide();
 	$('.content-2').hide();
 	$('.content-3').show();
@@ -85,12 +117,12 @@ $('#li-cat').on('change', function () {
 		<option value="21">مصانع</option>
 				<option value="24">عيادات</option>
 
-		
+
 		`);
 		$('#floor-div').hide();
 		$('select[name="floor"]').attr('required', true);
-	
-		
+
+
 	} else if ($(this).val() == "3") {
 		$('#Property-type').html(`
 		<option   selected disabled value="">اختر نوع العقار</option>
@@ -101,7 +133,7 @@ $('#li-cat').on('change', function () {
 		`);
 		$('#floor-div').show();
 		$('#floor-div select').prop('required',true);
-	
+
 	} else {
 		$('#Property-type').html(`
 		<option   selected disabled value="">اختر نوع العقار</option>
@@ -128,12 +160,12 @@ $('#installment-div').hide();
 /*
 $('#Property-type').on('change', function () {
   	if ($(this).val() == 7 || $(this).val() == 9 || $(this).val() == 17 || $(this).val() == 21 || $(this).val() == 22) {
-  	 
+
   	    $('#inner-floor').hide();
   	    $('#inner-floor input').attr('required', false);
   	}
   	else{
-  	    
+
   	      // alert($(this).val() );
   	     $('#inner-floor').show();
   	    $('#inner-floor input').attr('required', true);
@@ -143,10 +175,10 @@ $('#Property-type').on('change', function () {
 */
 
 $('#offer-type').on('change', function () {
-    
-    
+
+
 	if ($(this).val() == 2) {
-		
+
 	/*	$('#installment-div').show();
 		$('#installment-div input').prop('required',true);
 		$('#boolean-row').show();
@@ -174,7 +206,7 @@ $('#offer-type').on('change', function () {
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
 
@@ -188,7 +220,7 @@ $('#offer-type').on('change', function () {
                                             <option value="1" >نعم</option>
                                             <option value="0">كلا</option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
                                 <!-- signed -->
@@ -203,7 +235,7 @@ $('#offer-type').on('change', function () {
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +245,7 @@ $('#offer-type').on('change', function () {
                                     <input required  oninvalid="this.setCustomValidity('من فضلك ادخل السعر الاجمالي ')"
   oninput="this.setCustomValidity('')" type="number" name="total_price" id="total-price" class="myselect"
                                         placeholder="" min="50">
-                                   
+
                                 </div>
                             </div>
 		                <div id="installment-div" class="row" style="align-content: start;
@@ -224,7 +256,7 @@ $('#offer-type').on('change', function () {
                                         <label for="mtr-price">سعر المتر</label>
                                         <input required type="number" name="mtr_price" id="mtr-price" class="myselect"
                                             placeholder="500 L.E" min="0" >
-                                     
+
                                     </div>
                                 </div>-->
                                 <!-- down payment -->
@@ -234,22 +266,22 @@ $('#offer-type').on('change', function () {
                                         <input required oninvalid="this.setCustomValidity('من فضلك ادخل قيمه المقدم')"
                         oninput="this.setCustomValidity('')" type="number" name="downpayment" id="down-payment" class="myselect"
                                             placeholder="" value="">
-                                        
+
                                     </div>
                                 </div>
                                 <!-- installment length -->
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                 
-                                 <label for="installment-time"> 
+
+                                 <label for="installment-time">
                                   مده الاقساط بالاشهر
                                   <span class="text-danger"> *</span></label>
-                                 
+
                                         <input required oninvalid="this.setCustomValidity('من افضلك ادخل مده الاقساط')"
   oninput="this.setCustomValidity('')"  type="number" name="installment_time" id="installment-time"
                                             class="myselect" placeholder="" min="0"
                                             value="">
-                                    
+
                                     </div>
                                 </div>
                                 <!-- installment value -->
@@ -258,7 +290,7 @@ $('#offer-type').on('change', function () {
                                         <label for="installment-value">قيمه القسط</label>
                                         <input required type="number" name="installment_value" id="installment-value"
                                             class="myselect" placeholder="5000 L.E شهريا" min="0">
-                                     
+
                                     </div>
                                 </div> -->
                                 <!-- installment time to recive -->
@@ -271,7 +303,7 @@ $('#offer-type').on('change', function () {
                                             <option value="1">فوري</option>
                                             <option value="0">غير فوري</option>
                                         </select>
-                                  
+
                                     </div>
                                 </div>
                                 <!-- installment time  -->
@@ -282,7 +314,7 @@ $('#offer-type').on('change', function () {
                                        <input required  oninvalid="this.setCustomValidity('من فضلك ادخل  سنه الاستلام')"
                                      oninput="this.setCustomValidity('')"  placeholder="" type="text" name="rec_time"
                                  id="installment-date" min="2022" max="2029" class="myselect" >
-                                      
+
                                     </div>
                                 </div>
 
@@ -299,13 +331,13 @@ $('#offer-type').on('change', function () {
 
 		$('#installment-div').hide();
 		$('#installment-div input').prop('required',false);
-		
+
 		$('#boolean-row').hide();
 		$('select[name="trade"]').attr('required', false);
 		$('select[name="finannce_bank"]').attr('required', false);
 		$('select[name="licensed"]').attr('required', false);*/
 		$('#showHide').html( `
-		
+
 		                                <div class="row" id="rent-div" style="align-content: start;
                             justify-content: start;">
                                 <!-- rent-value -->
@@ -316,7 +348,7 @@ $('#offer-type').on('change', function () {
                                         <input required min="50" oninvalid="this.setCustomValidity('من فضلك ادخل قيمه الايجار الشهري اعلى من 50')"
                                     oninput="this.setCustomValidity('')"  type="number" name="monthly_rent" id="rent-value" class="myselect"
                                             placeholder="" min="0" >
-                                        
+
                                     </div>
                                 </div>
 
@@ -341,7 +373,7 @@ $('#offer-type').on('change', function () {
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
 
@@ -355,7 +387,7 @@ $('#offer-type').on('change', function () {
                                             <option value="1" >نعم</option>
                                             <option value="0">كلا</option>
                                         </select>
-                                     
+
                                     </div>
                                 </div>
                                 <!-- signed -->
@@ -370,7 +402,7 @@ $('#offer-type').on('change', function () {
                                             <option value="0" >كلا
                                             </option>
                                         </select>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -380,14 +412,14 @@ $('#offer-type').on('change', function () {
                                     <input required  oninvalid="this.setCustomValidity('من فضلك ادخل السعر الاجمالي ')"
   oninput="this.setCustomValidity('')" type="number" name="total_price" id="total-price" class="myselect"
                                         placeholder="" min="50">
-                                   
+
                                 </div>
                             </div>`);
       /*  $('#installment-div').hide();
 		$('#installment-div input').prop('required',false);
 		$('#total-price-div').show();
 		$('#total-price-div input').prop('required',true);
-		
+
 		$('#rent-div').hide();
 		$('#rent-div input').prop('required',false);
 		$('#boolean-row').show();
@@ -406,8 +438,8 @@ $('#installment-date-div').hide();*/
 /*
 $('#reciving').on('change',function(){
 	if ($(this).val() == 1){
-	
-	
+
+
 		$('.recivingTime').html('');
 
 	}else {
@@ -418,7 +450,7 @@ $('#reciving').on('change',function(){
                                        <input required  oninvalid="this.setCustomValidity('من فضلك ادخل  سنه الاستلام')"
                                      oninput="this.setCustomValidity('')"  placeholder="" type="text" name="rec_time"
                                  id="installment-date" min="2022" max="2029" class="myselect" >
-                                      
+
                                     </div>
 		`);
 
@@ -440,11 +472,11 @@ $('#Property-type').on('change', function () {
 		$('#inner-floor').hide();
 		$('#inner-floor input').prop('required',false);
 
-		
-	
+
+
 	}
-	else if ($(this).val() == 7 || $(this).val() == 20 ||  
-	 $(this).val() == 21 || 
+	else if ($(this).val() == 7 || $(this).val() == 20 ||
+	 $(this).val() == 21 ||
  $(this).val() == 23 ||   $(this).val() == 16  ){
 		$('#license-type-div').hide();
 		$('#license-type-div input').prop('required',false);
@@ -457,15 +489,15 @@ $('#Property-type').on('change', function () {
 				////////////////////////////////////
  	$('#inner-floor').hide();
 		$('#inner-floor input').prop('required',false);
-		
 
-		
+
+
 	}
 	else if (  $(this).val() == 22 ||  $(this).val() == 24 ||
 	$(this).val() == 12 || 	$(this).val() == 13 ||  $(this).val() == 18 || $(this).val() == 19 ||
 	$(this).val() == 15 ||   $(this).val() == 14 ||
 	$(this).val() == 17 )
-	
+
 	{
 		$('#license-type-div').hide();
 		$('#license-type-div input').prop('required',false);
@@ -478,9 +510,9 @@ $('#Property-type').on('change', function () {
 				////////////////////////////////////
  	$('#inner-floor').hide();
 		$('#inner-floor input').prop('required',false);
-		
 
-		
+
+
 	}
 	else if ($(this).val() == 2){
 		$('#license-type-div').hide();
@@ -490,10 +522,10 @@ $('#Property-type').on('change', function () {
 		$('select[name="floor"]').attr('required', false);
 
 	}
-	
- 
-  	
-  	
+
+
+
+
 	else{
 		$('#inner-floor input').prop('required',true);
 		$('#inner-floor').show();
@@ -501,18 +533,18 @@ $('#Property-type').on('change', function () {
 		$('#license-type-div').hide();
 		$('#license-type-div input').prop('required',false);
 
-		$('#finish-type-div').show();	
+		$('#finish-type-div').show();
 		$('select[name="finishtype"]').attr('required', true);
 		$('#floor-div').show();
-		
+
 		$('select[name="floor"]').attr('required', true);
-		
+
 		$('#floors-div').hide();
 		$('#floors-div input').prop('required',false);
 
-	
 
-		
+
+
 	}
 });
 
@@ -524,8 +556,8 @@ $('#Property-type').on('change', function () {
     $("#pageloader").removeClass('d-none');
     $("#pageloader").addClass('d-flex');
   });//submit
-  
-  
+
+
 
 
 });

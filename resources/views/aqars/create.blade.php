@@ -849,40 +849,6 @@
             if (oldGovId) fetchDistrictsByGovernorateId(oldGovId);
 
             // ===== Form Validation for required dropdowns =====
-            $('#form-1').on('submit', function (e) {
-                let valid = true;
-
-                // التحقق من المحافظه
-                if (!$('#governrate_id').val()) {
-                    $('#governrate_btn').addClass('gov-invalid');
-                    $('#governrate_error').show();
-                    valid = false;
-                } else {
-                    $('#governrate_btn').removeClass('gov-invalid');
-                    $('#governrate_error').hide();
-                }
-
-                // التحقق من الحي
-                if (!$('#district_id').val()) {
-                    $('#district_btn').addClass('gov-invalid');
-                    $('#district_error').show();
-                    valid = false;
-                } else {
-                    $('#district_btn').removeClass('gov-invalid');
-                    $('#district_error').hide();
-                }
-
-                if (!valid) {
-                    e.preventDefault();
-                    // scroll الى أول حقل فاضي
-                    var firstInvalid = $('.gov-invalid').first();
-                    if (firstInvalid.length) {
-                        $('html, body').animate({
-                            scrollTop: firstInvalid.offset().top - 150
-                        }, 300);
-                    }
-                }
-            });
 
             // شيل البوردر الأحمر والرسالة لما يختار محافظة
             $(document).on('click', '#governrate_results .gov-item', function () {
