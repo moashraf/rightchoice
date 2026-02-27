@@ -685,13 +685,30 @@
                     }
                 });
 
-                // فلترة المحافظات محلياً
+                // تطبيع النص العربي للبحث الذكي
+                function normalizeArabic(str) {
+                    return str
+                        .replace(/[أإآٱ]/g, 'ا')
+                        .replace(/ة/g, 'ه')
+                           .replace(/[َُِّْٰـًٌٍ]/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .toLowerCase();
+                }
+
+                // فلترة المحافظات محلياً مع بحث ذكي
                 $('#governrate_search').on('keyup', function(){
-                    const query = $(this).val().trim().toLowerCase();
+                    const query = normalizeArabic($(this).val());
                     let found = false;
 
+                    if (query.length === 0) {
+                        $('#governrate_results .gov-item').show();
+                        $('#governrate_results .gov-empty').remove();
+                        return;
+                    }
+
                     $('#governrate_results .gov-item').each(function(){
-                        const name = $(this).data('name').toString().toLowerCase();
+                        const name = normalizeArabic($(this).data('name').toString());
                         if (name.indexOf(query) > -1) {
                             $(this).show();
                             found = true;
