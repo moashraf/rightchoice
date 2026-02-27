@@ -12,6 +12,12 @@ class CaptureInvitedBy
      */
     public function handle(Request $request, Closure $next)
     {
+
+        if (request()->is('*gcamp*')) {
+            session(['invited_by' => 'google']);
+
+        }
+
         if ($request->has('invited_by') && $request->query('invited_by')) {
             session(['invited_by' => $request->query('invited_by')]);
         }
