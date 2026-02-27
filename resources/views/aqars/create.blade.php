@@ -1,6 +1,4 @@
 <x-layout>
-
-
     @section('title')
         اضف اعلان
     @endsection
@@ -259,17 +257,13 @@
                                             </option>
                                         @endforeach
 
-
                                     </Select>
                                     @error('call_id')
                                     <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                     @enderror
-
-
                                 </div>
                             </div>
                         </div>
-
                         <input type="submit" class="btn our-btn" value="اكمل">
                     </form>
                 </div>
