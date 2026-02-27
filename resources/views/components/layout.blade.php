@@ -499,7 +499,7 @@
                                             <a href="{{ URL::to(Config::get('app.locale').'/notification')}}">
                                                 {{ trans('langsite.Notifications')}}
                                                 @if($countNotifi > 0)
-                                                    <span   class="badge badgedanger badge-pill noti-icon-badge ml-1">
+                                                    <span class="badge badgedanger badge-pill noti-icon-badge ml-1">
                                                         {{$countNotifi}}
                                                     </span>
                                                 @endif
@@ -1095,58 +1095,33 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
 </style>
 
 <!-- ============================================================== -->
-
-
 <!-- End Wrapper -->
-
-
 <!-- ============================================================== -->
-
-
-<!-- ============================================================== -->
-
-
 <!-- All Jquery -->
-
-
 <!-- ============================================================== -->
-
 
 <script src="{{asset('assets/js/jquery.min.js')}}"></script>
 
-
 <script src="{{asset('assets/js/jquery.popup.js')}}"></script>
-
 
 <script src="{{asset('assets/js/popper.min.js')}}"></script>
 
-
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-
 
 <script src="{{asset('assets/js/rangeslider.js')}}"></script>
 
-
 <script src="{{asset('assets/js/select2.min.js')}}"></script>
 
-
 <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
-
-
 <script src="{{asset('assets/js/slick.js')}}"></script>
-
 
 <script src="{{asset('assets/js/slider-bg.js')}}"></script>
 
-
 <script src="{{asset('assets/js/lightbox.js')}}"></script>
-
 
 <script src="{{asset('assets/js/imagesloaded.js')}}"></script>
 
-
 <script src="{{asset('assets/js/owl.carousel.js')}}"></script>
-
 
 <?php if (App::getLocale() == 'en')
 {
@@ -1170,45 +1145,33 @@ else{
 
 <?php if (App::getLocale() == 'en')
 {
-
     ?>
 
 <script src="{{asset('assets/js/english-listing.js')}}"></script>
     <?php
 }
 else{
-
-
     ?>
 
 <script src="{{asset('assets/js/arabic-listing.js')}}"></script>
-
     <?php
 }
 ?>
 
 
-
-
-
     <!-- ============================================================== -->
-
 
 <!-- This page plugins -->
 
-
 <!-- ============================================================== -->
 
-
 <!-- /GetButton.io widget -->
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js?ver=1.1"></script>
 
 <link rel="stylesheet" type="text/css"
 
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css?ver=1.1">
-
 
 @if(Session::has('success'))
 
