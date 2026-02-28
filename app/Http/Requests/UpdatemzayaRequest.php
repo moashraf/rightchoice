@@ -26,8 +26,8 @@ class UpdatemzayaRequest extends FormRequest
     public function rules()
     {
         return [
-            'mzaya_type'      => 'required',
-            'img'             => 'required|image|mimes:jpeg,jpg,png,gif',
+            'mzaya_type' => 'required',
+            'img'        => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ];
     }
 }

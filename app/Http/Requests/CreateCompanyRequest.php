@@ -25,6 +25,8 @@ class CreateCompanyRequest extends FormRequest
      */
     public function rules()
     {
-        return Company::$rules;
+        return [
+            'Name' => 'required',
+        ];
     }
 }

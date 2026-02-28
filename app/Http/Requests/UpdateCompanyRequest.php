@@ -25,8 +25,8 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = Company::$rules;
-        
-        return $rules;
+        return [
+            'Name' => 'required',
+        ];
     }
 }

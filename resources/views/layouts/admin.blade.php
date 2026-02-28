@@ -112,6 +112,42 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>Companies</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.mzayas.index') }}" class="nav-link {{ request()->is('sitemanagement/mzayas*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-star"></i>
+                            <p>Mzaya</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>Priceing Sales</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.adminServices.index') }}" class="nav-link {{ request()->is('sitemanagement/adminServices*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-concierge-bell"></i>
+                            <p>Services</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>Sub Areas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.licenseTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/licenseTypes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-id-card"></i>
+                            <p>License Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
