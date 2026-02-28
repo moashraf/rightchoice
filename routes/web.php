@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade');
+Route::get('/', 'App\Http\Controllers\SiteHomeController@home');
 Route::get('/changeLang/{url}', 'App\Http\Controllers\PageController@changeLang')->name('changeLang');
 //clear cache
 Route::get('/clear-cache', function () {
@@ -144,7 +144,7 @@ Route::group(['prefix' => '{locale?}'], function () {
 
     Route::get('/login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'create'])
         ->middleware(['guest:' . config('fortify.guard')])
-        ->name('login')->middleware('setLocale');
+        ->name('user.login')->middleware('setLocale');
 
 
     $limiter = config('fortify.limiters.login');
@@ -156,13 +156,13 @@ Route::group(['prefix' => '{locale?}'], function () {
         ]))->middleware('setLocale');
 
     Route::post('/customLoginManual', 'App\Http\Controllers\PageController@customLoginManual')->name('customLoginManual')->middleware('setLocale');
-    Route::get('/register', 'App\Http\Controllers\PageController@register')->name('register')->middleware('setLocale');
+    Route::get('/register', 'App\Http\Controllers\PageController@register')->name('user.register')->middleware('setLocale');
     Route::get('/verify-your-phone', 'App\Http\Controllers\PageController@otbPage')->name('otbPage')->middleware('setLocale');
     Route::get('/reset-your-password', 'App\Http\Controllers\PageController@otbReset')->name('otbReset')->middleware('setLocale');
     Route::get('/donePhoneVerf', 'App\Http\Controllers\PageController@donePhoneVerf')->name('donePhoneVerf')->middleware('setLocale');
     Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register')->middleware('setLocale');
     Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade')->middleware(['setLocale']);
-    Route::get('/gcamp', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade')->middleware(['setLocale']);
+    Route::get('/gcamp', 'App\Http\Controllers\SiteHomeController@home')->name('gcamp')->middleware(['setLocale']);
     Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar')->middleware('setLocale');
     Route::get('/all_aqar_for_sale', 'App\Http\Controllers\AqarController@all_aqar_for_sale')->middleware('setLocale');
     Route::get('/all_aqar_for_rent', 'App\Http\Controllers\AqarController@all_aqar_for_rent')->middleware('setLocale');
@@ -229,7 +229,7 @@ Route::post('/aqars', 'App\Http\Controllers\AqarController@store')->name('aqars.
 //Route::get('/aqars-installment', 'App\Http\Controllers\AqarController@installment');
 //Route::get('/aqars-rent-new', 'App\Http\Controllers\AqarController@rentNew');
 //Route::get('/aqars-rent-finish', 'App\Http\Controllers\AqarController@rentFinish');
-Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance')->name('aqar-finnance');
+Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance');
 Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar');
 Route::post('/add-wish_list', 'App\Http\Controllers\AqarController@addwish_list')->name('add-wish_list');
 Route::post('/remove-wish_list', 'App\Http\Controllers\AqarController@removewish_list')->name('remove-wish_list');
