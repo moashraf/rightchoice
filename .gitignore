@@ -4,6 +4,8 @@
 /public/images-OLD
 /public/storage
 /storage/*.key
+/storage/framework/
+/storage/logs/
 *.zip
 .idea
 *.md

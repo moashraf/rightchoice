@@ -73,7 +73,7 @@
                         @endif
                     </td>
                     <td>{{ $allAqars_val->views }}</td>
-                    <td>{{ date_format($allAqars_val->created_at, "Y/m/d") }}</td>
+                    <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                     <td>
                         {!! Form::open(['route' => ['sitemanagement.aqars.destroy', $allAqars_val->id], 'method' => 'delete']) !!}
                         <div class="btn-group gap-2">

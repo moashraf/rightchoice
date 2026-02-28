@@ -39,8 +39,9 @@
             {!! Form::close() !!}
         </div>
     </div>
+@endsection
 
-@section('footerScript')
+@section('third_party_scripts')
 <script>
     $(document).ready(function() {
         var cheackus = $("select[name='user_id']").val();
@@ -123,5 +124,4 @@
         });
     });
 </script>
-@endsection
 @endsection
