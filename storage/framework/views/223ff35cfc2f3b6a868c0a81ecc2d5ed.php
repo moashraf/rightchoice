@@ -221,6 +221,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?php echo e(route('sitemanagement.aqars.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/aqars*') ? 'active' : ''); ?>">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>Aqars</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?php echo e(url('/')); ?>" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>

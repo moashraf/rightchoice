@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Enums\StatusEnum;
+use App\Enums\VIPEnum;
 
 class aqar extends Model
 {
@@ -21,6 +23,7 @@ class aqar extends Model
         'compound',
         'vip',
         'finance_bank',
+        'finannce_bank',
         'licensed',
         'category',
         'trade',
@@ -42,6 +45,7 @@ class aqar extends Model
         'mtr_price',
         'reciving',
         'rec_time',
+        'user_id',
         'loc_id',
         'cat_id',
         'call_id',
@@ -58,6 +62,25 @@ class aqar extends Model
         'description_en',
         'slug_en'
     ];
+
+    public function getStatus()
+    {
+        if ($this->status == 0)
+            return StatusEnum::WAITACTIVE;
+        else if ($this->status == 1)
+            return StatusEnum::ACTIVE;
+        else
+            return StatusEnum::UNACTIVE;
+    }
+
+    public function getVIP()
+    {
+        if ($this->vip == 0)
+            return VIPEnum::NOTVIP;
+        else if ($this->vip == 1)
+            return VIPEnum::VIP;
+        return '';
+    }
 
 
     //public function scopeFilter($query, array fn($query, $search))
