@@ -1,4 +1,4 @@
-@foreach (session('flash_notification', collect())->toArray() as $message)
+@foreach (Illuminate\Support\Arr::wrap(session('flash_notification', [])) as $message)
     @if ($message['overlay'])
         @include('flash::modal', [
             'modalClass' => 'flash-modal',
@@ -24,4 +24,4 @@
     @endif
 @endforeach
 
-{{ session()->forget('flash_notification') }}
+@php session()->forget('flash_notification') @endphp

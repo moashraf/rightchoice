@@ -9,6 +9,7 @@
         "anhskohbo/no-captcha": "^3.5",
         "guzzlehttp/guzzle": "^7.2",
         "infyomlabs/laravel-generator": "^6.0",
+        "intervention/image": "^2.7",
         "laracasts/flash": "^3.2",
         "laravel/framework": "^10.0",
         "laravel/jetstream": "^3.0",
