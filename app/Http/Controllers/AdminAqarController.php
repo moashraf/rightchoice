@@ -192,7 +192,7 @@ class AdminAqarController extends AppBaseController
         // Upload images
         if (is_array($request->images)) {
             foreach ($request->images as $fil) {
-                Images::create(['aqar_id' => $id, 'main_img' => 0, 'img_url' => _uploadFileWebAqar($fil, '')]);
+       Images::create(['aqar_id' => $id, 'main_img' => 0, 'img_url' => _uploadFileWebAqar($fil, '')]);
             }
         }
 

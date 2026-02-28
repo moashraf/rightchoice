@@ -41,11 +41,12 @@
             {!! Form::close() !!}
         </div>
     </div>
+@endsection
 
-@section('footerScript')
+@section('third_party_scripts')
 <script>
     $(window).on("load", function () {
-        var max_fields = 1;
+        var max_fields = 10;
         var wrapper = $(".imagesmore");
         var add_button = $(".addimg");
         var x = 0;
@@ -254,5 +255,4 @@
         });
     });
 </script>
-@endsection
 @endsection
