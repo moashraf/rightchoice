@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\blog;
+use App\Models\Blog;
 
 class UpdateblogRequest extends FormRequest
 {

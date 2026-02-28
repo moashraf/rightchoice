@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\blog;
+use App\Models\Blog;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreateblogAPIRequest extends APIRequest
@@ -24,6 +24,6 @@ class CreateblogAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return blog::$rules;
+        return Blog::$rules;
     }
 }
