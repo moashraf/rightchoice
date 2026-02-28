@@ -136,6 +136,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>Sub Areas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
