@@ -190,6 +190,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.offerTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/offerTypes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tag"></i>
+                            <p>Offer Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>

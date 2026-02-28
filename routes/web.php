@@ -102,6 +102,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('compounds', App\Http\Controllers\AdminCompoundController::class);
     Route::resource('callTimes', App\Http\Controllers\AdminCallTimeController::class);
     Route::resource('aqarCategories', App\Http\Controllers\AdminAqarCategoryController::class);
+    Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class);
 });
 
 
