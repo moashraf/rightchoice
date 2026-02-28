@@ -84,12 +84,6 @@
     @endif
 </div>
 
-<!-- Description Field -->
-<div class="col-sm-12">
-    {!! Form::label('description', 'Description:') !!}
-    <p>{{ $company->description }}</p>
-</div>
-
 <!-- Details Field -->
 <div class="col-sm-12">
     {!! Form::label('details', 'Details:') !!}

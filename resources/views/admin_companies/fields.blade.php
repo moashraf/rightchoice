@@ -56,19 +56,19 @@
 <!-- Building Number Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('building_number', 'Building Number:') !!}
-    {!! Form::number('building_number', null, ['class' => 'form-control']) !!}
+    {!! Form::text('building_number', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Floor Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('Floor', 'Floor:') !!}
-    {!! Form::number('Floor', null, ['class' => 'form-control']) !!}
+    {!! Form::text('Floor', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Unit Number Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('unit_number', 'Unit Number:') !!}
-    {!! Form::number('unit_number', null, ['class' => 'form-control']) !!}
+    {!! Form::text('unit_number', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Tax Card Field -->
@@ -101,12 +101,6 @@
             {!! Form::label('photo', 'Choose file', ['class' => 'custom-file-label']) !!}
         </div>
     </div>
-</div>
-
-<!-- Description Field -->
-<div class="form-group col-sm-12">
-    {!! Form::label('description', 'Description:') !!}
-    {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 3]) !!}
 </div>
 
 <!-- Details Field -->
