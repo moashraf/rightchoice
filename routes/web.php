@@ -17,17 +17,12 @@ use Illuminate\Support\Facades\Mail;
 */
 
 Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade');
-
-
 Route::get('/changeLang/{url}', 'App\Http\Controllers\PageController@changeLang')->name('changeLang');
-
-
 //clear cache
 Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('cache:clear');
     return '<h1>Cache facade value cleared</h1>';
 });
-
 
 Route::get('send-email', function () {
     // Mail::to('recipient@example.com')->send(new TestEmail());
@@ -70,6 +65,28 @@ Route::get('/config-clear', function () {
     $exitCode = Artisan::call('config:clear');
     return '<h1>Clear Config cleared</h1>';
 });
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Auth Routes (login / logout)
+|--------------------------------------------------------------------------
+*/
+Route::get('/admin/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfShowLoginForm'])->name('admin.login');
+Route::post('/admin/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogin'])->name('admin.login.submit');
+Route::post('/admin/logout', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogout'])->name('admin.logout');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Protected Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->middleware(['web', 'adminfCheckAdmin'])->group(function () {
+    Route::resource('blogs', App\Http\Controllers\AdminBlogController::class);
+});
+
+
 
 /*   Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
@@ -262,3 +279,9 @@ Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersessio
 
 Route::post('/resend-otb', 'App\Http\Controllers\PageController@resendOTB')->name('resendOTB');
 
+
+/*
+|--------------------------------------------------------------------------
+| Admin Blog Routes (migrated from ADMIN project)
+|--------------------------------------------------------------------------
+*/

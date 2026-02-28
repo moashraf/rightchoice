@@ -9,7 +9,6 @@ use App\SystemSettings;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\User;
-
 function loadAssets($asset)
 {
     return url($asset);

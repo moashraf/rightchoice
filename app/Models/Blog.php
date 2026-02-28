@@ -29,7 +29,8 @@ class Blog extends Model
         'description_en',
         'main_img_alt',
         'main_img_alt_en',
-        'body'
+        'body',
+        'sort_num'
         
     ];
 
