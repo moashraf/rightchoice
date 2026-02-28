@@ -88,6 +88,30 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.settingSites.index') }}" class="nav-link {{ request()->is('sitemanagement/settingSites*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Site Settings</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.requestPhotoSessions.index') }}" class="nav-link {{ request()->is('sitemanagement/requestPhotoSessions*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-camera"></i>
+                            <p>Photo Sessions</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-gem"></i>
+                            <p>Price VIP</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.pages.index') }}" class="nav-link {{ request()->is('sitemanagement/pages*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <p>Pages</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
