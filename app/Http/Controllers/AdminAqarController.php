@@ -64,7 +64,7 @@ class AdminAqarController extends AppBaseController
             });
         }
 
-        $allAqars = $allAqars->paginate(100);
+        $allAqars = $allAqars->paginate(50);
 
         return view('admin_aqars.index', compact('allAqars'));
     }

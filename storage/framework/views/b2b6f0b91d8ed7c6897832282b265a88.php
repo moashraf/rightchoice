@@ -247,10 +247,10 @@
 
 <!-- Total Price Field -->
 <div id="total_price" class="form-group col-sm-6">
-    <?php echo Form::label('total_price', 'Total Price:'); ?> <span class="text-danger">*</span>
+    <?php echo Form::label('total_price', 'Total Price:'); ?>
+
     <?php echo Form::text('total_price', null, ['class' => 'form-control']); ?>
 
-    <small class="text-danger"><?php echo e($errors->first('total_price')); ?></small>
 </div>
 
 <div class="row col-md-12">

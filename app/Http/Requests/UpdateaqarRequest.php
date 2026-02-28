@@ -35,7 +35,7 @@ class UpdateaqarRequest extends FormRequest
             'title'               => 'required',
             'description'         => 'required',
             'offer_type'          => 'required|integer',
-            'total_price'         => 'required|integer|min:0',
+            'total_price'         => 'nullable|integer|min:0',
             'monthly_rent'        => (Request()->offer_type == 3 || Request()->offer_type == 4) ? 'required|integer|min:0' : '',
         ];
     }
