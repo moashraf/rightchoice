@@ -88,6 +88,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class);
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
     Route::resource('priceVips', App\Http\Controllers\AdminPriceVipController::class);
+    Route::resource('pages', App\Http\Controllers\AdminPagesController::class);
 });
 
 
