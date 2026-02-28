@@ -104,6 +104,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('aqarCategories', App\Http\Controllers\AdminAqarCategoryController::class);
     Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class);
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class);
+    Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class);
 });
 
 
