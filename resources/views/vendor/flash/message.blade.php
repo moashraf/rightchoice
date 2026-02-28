@@ -1,17 +1,17 @@
 @foreach (Illuminate\Support\Arr::wrap(session('flash_notification', [])) as $message)
-    @if ($message['overlay'])
+    @if ($message['overlay'] ?? false)
         @include('flash::modal', [
             'modalClass' => 'flash-modal',
-            'title'      => $message['title'],
-            'body'       => $message['message']
+            'title'      => $message['title'] ?? '',
+            'body'       => $message['message'] ?? ''
         ])
     @else
         <div class="alert
-                    alert-{{ $message['level'] }}
-                    {{ $message['important'] ? 'alert-important' : '' }}"
+                    alert-{{ $message['level'] ?? 'info' }}
+                    {{ ($message['important'] ?? false) ? 'alert-important' : '' }}"
                     role="alert"
         >
-            @if ($message['important'])
+            @if ($message['important'] ?? false)
                 <button type="button"
                         class="close"
                         data-dismiss="alert"
@@ -19,7 +19,7 @@
                 >&times;</button>
             @endif
 
-            {!! $message['message'] !!}
+            {!! $message['message'] ?? '' !!}
         </div>
     @endif
 @endforeach
