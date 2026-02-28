@@ -84,6 +84,7 @@ Route::post('/sitemanagement/logout', [App\Http\Controllers\AdminfLoginControlle
 */
 Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'adminfCheckAdmin'])->group(function () {
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class);
 });
 
 

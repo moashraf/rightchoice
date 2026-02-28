@@ -82,6 +82,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.sliders.index') }}" class="nav-link {{ request()->is('sitemanagement/sliders*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-images"></i>
+                            <p>Sliders</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
