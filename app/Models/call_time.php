@@ -23,7 +23,8 @@ class call_time extends Model
 
 
     public $fillable = [
-        'call_time'
+        'call_time',
+        'call_time_en'
     ];
 
     /**

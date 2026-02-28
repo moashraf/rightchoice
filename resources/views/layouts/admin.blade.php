@@ -178,6 +178,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.callTimes.index') }}" class="nav-link {{ request()->is('sitemanagement/callTimes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-phone-alt"></i>
+                            <p>Call Times</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
