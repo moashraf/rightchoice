@@ -95,6 +95,15 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class);
     Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class);
     Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class);
+    Route::resource('floors', App\Http\Controllers\AdminFloorController::class);
+    Route::resource('finishTypes', App\Http\Controllers\AdminFinishTypeController::class);
+    Route::resource('districts', App\Http\Controllers\AdminDistrictController::class);
+    Route::resource('governrates', App\Http\Controllers\AdminGovernrateController::class);
+    Route::resource('compounds', App\Http\Controllers\AdminCompoundController::class);
+    Route::resource('callTimes', App\Http\Controllers\AdminCallTimeController::class);
+    Route::resource('aqarCategories', App\Http\Controllers\AdminAqarCategoryController::class);
+    Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class);
+    Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class);
 });
 
 

@@ -18,13 +18,19 @@ class Notification extends Model
         'title',
         'message',
         'title_en',
-        'message_en'
+        'message_en',
+        'status'
     ];
 
 
        
 
    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function userinfo()
     {
         return $this->belongsTo(User::class,'user_id');
     }

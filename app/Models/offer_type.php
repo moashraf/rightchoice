@@ -23,7 +23,9 @@ class offer_type extends Model
 
 
     public $fillable = [
-        'type_offer'
+        'type_offer',
+        'slug',
+        'type_offer_en'
     ];
 
     /**
