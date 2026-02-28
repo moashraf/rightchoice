@@ -73,16 +73,16 @@ Route::get('/config-clear', function () {
 | Admin Auth Routes (login / logout)
 |--------------------------------------------------------------------------
 */
-Route::get('/sitemanagement/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfShowLoginForm'])->name('admin.login');
-Route::post('/sitemanagement/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogin'])->name('admin.login.submit');
-Route::post('/sitemanagement/logout', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogout'])->name('admin.logout');
+Route::get('/sitemanagement/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfShowLoginForm'])->name('sitemanagement.login');
+Route::post('/sitemanagement/login', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogin'])->name('sitemanagement.login.submit');
+Route::post('/sitemanagement/logout', [App\Http\Controllers\AdminfLoginController::class, 'adminfLogout'])->name('sitemanagement.logout');
 
 /*
 |--------------------------------------------------------------------------
 | Admin Protected Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('sitemanagement')->name('admin.')->middleware(['web', 'adminfCheckAdmin'])->group(function () {
+Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'adminfCheckAdmin'])->group(function () {
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class);
 });
 

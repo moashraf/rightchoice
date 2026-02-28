@@ -40,7 +40,7 @@
             </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.login.submit') }}">
+            <form method="POST" action="{{ route('sitemanagement.login.submit') }}">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="email"

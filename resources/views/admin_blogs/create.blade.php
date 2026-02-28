@@ -25,7 +25,7 @@
 
         <div class="card">
 
-            {!! Form::open(['route' => 'admin.blogs.store' ,'files' => true,'enctype' => 'multipart/form-data']) !!}
+            {!! Form::open(['route' => 'sitemanagement.blogs.store' ,'files' => true,'enctype' => 'multipart/form-data']) !!}
 
             <div class="card-body">
 
@@ -37,7 +37,7 @@
 
             <div class="card-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('admin.blogs.index') }}" class="btn btn-default">الغاء</a>
+                <a href="{{ route('sitemanagement.blogs.index') }}" class="btn btn-default">الغاء</a>
             </div>
 
             {!! Form::close() !!}

@@ -67,7 +67,7 @@ class AdminBlogController extends AppBaseController
 
         Flash::success('Blog saved successfully.');
 
-        return redirect(route('admin.blogs.index'));
+        return redirect(route('sitemanagement.blogs.index'));
     }
 
     /**
@@ -84,7 +84,7 @@ class AdminBlogController extends AppBaseController
         if (empty($blog)) {
             Flash::error('Blog not found');
 
-            return redirect(route('admin.blogs.index'));
+            return redirect(route('sitemanagement.blogs.index'));
         }
 
         return view('admin_blogs.show')->with('blog', $blog);
@@ -104,7 +104,7 @@ class AdminBlogController extends AppBaseController
         if (empty($blog)) {
             Flash::error('Blog not found');
 
-            return redirect(route('admin.blogs.index'));
+            return redirect(route('sitemanagement.blogs.index'));
         }
 
         return view('admin_blogs.edit')->with('blog', $blog);
@@ -125,7 +125,7 @@ class AdminBlogController extends AppBaseController
         if (empty($blog)) {
             Flash::error('Blog not found');
 
-            return redirect(route('admin.blogs.index'));
+            return redirect(route('sitemanagement.blogs.index'));
         }
 
         //generate => image file
@@ -143,7 +143,7 @@ class AdminBlogController extends AppBaseController
 
         Flash::success('Blog updated successfully.');
 
-        return redirect(route('admin.blogs.index'));
+        return redirect(route('sitemanagement.blogs.index'));
     }
 
     /**
@@ -160,13 +160,13 @@ class AdminBlogController extends AppBaseController
         if (empty($blog)) {
             Flash::error('Blog not found');
 
-            return redirect(route('admin.blogs.index'));
+            return redirect(route('sitemanagement.blogs.index'));
         }
 
         $this->blogRepository->delete($id);
 
         Flash::success('Blog deleted successfully.');
 
-        return redirect(route('admin.blogs.index'));
+        return redirect(route('sitemanagement.blogs.index'));
     }
 }

@@ -55,7 +55,7 @@
                     </li>
                     <li class="user-footer">
                         <a href="{{ url('/') }}" class="btn btn-default btn-flat">Back to Site</a>
-                        <form action="{{ route('admin.logout') }}" method="POST" style="display:inline;">
+                        <form action="{{ route('sitemanagement.logout') }}" method="POST" style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-default btn-flat float-right">
                                 Logout
@@ -76,7 +76,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item">
-                        <a href="{{ route('admin.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
+                        <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-blog"></i>
                             <p>Blogs</p>
                         </a>
