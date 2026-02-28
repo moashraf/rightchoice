@@ -23,7 +23,8 @@ class aqar_category extends Model
 
 
     public $fillable = [
-        'category_name'
+        'category_name',
+        'category_name_en'
     ];
 
     /**

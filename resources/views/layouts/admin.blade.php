@@ -184,6 +184,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.aqarCategories.index') }}" class="nav-link {{ request()->is('sitemanagement/aqarCategories*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-th-list"></i>
+                            <p>Aqar Categories</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
