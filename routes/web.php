@@ -92,6 +92,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class);
     Route::resource('mzayas', App\Http\Controllers\AdminMzayaController::class);
     Route::resource('priceingSales', App\Http\Controllers\AdminPriceingSaleController::class);
+    Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class);
 });
 
 

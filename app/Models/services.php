@@ -25,9 +25,13 @@ class services extends Model
     public $fillable = [
         'Service',
         'image',
-    'description',
+        'description',
         'Service_en',
-        'description_en'
+        'description_en',
+        'slug',
+        'title',
+        'title_en',
+        'slug_en',
     ];
 
     /**
