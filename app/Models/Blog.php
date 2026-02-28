@@ -31,7 +31,18 @@ class Blog extends Model
         'main_img_alt_en',
         'body',
         'sort_num'
-        
+    ];
+
+    public static $rules = [
+        'title'            => 'required',
+        'description'      => 'required',
+        'slug'             => 'required',
+        'status'           => 'required',
+        'seo_title'        => 'required',
+        'meta_description' => 'required',
+        'canonical'        => 'required',
+        'sort_num'         => 'required|integer|min:1',
+        'number_of_visits' => 'required|integer|min:0',
     ];
 
     public function userprising(){

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateblogAPIRequest;
 use App\Http\Requests\API\UpdateblogAPIRequest;
-use App\Models\blog;
+use App\Models\Blog;
 use App\Repositories\blogRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
