@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title')</title>
+    <title><?php echo $__env->yieldContent('title'); ?></title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
@@ -26,9 +26,9 @@
           integrity="sha512-8vq2g5nHE062j3xor4XxPeZiPjmRDh6wlufQlfC6pdQ/9urJkU07NM0tEREeymP++NczacJ/Q59ul+/K2eYvcg=="
           crossorigin="anonymous"/>
 
-    @yield('third_party_stylesheets')
+    <?php echo $__env->yieldContent('third_party_stylesheets'); ?>
 
-    @stack('page_css')
+    <?php echo $__env->yieldPushContent('page_css'); ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -44,19 +44,20 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                    <span class="d-none d-md-inline"><?php echo e(Auth::user()->name); ?></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <li class="user-header bg-primary">
                         <p>
-                            {{ Auth::user()->name }}
-                            <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
+                            <?php echo e(Auth::user()->name); ?>
+
+                            <small>Member since <?php echo e(Auth::user()->created_at->format('M. Y')); ?></small>
                         </p>
                     </li>
                     <li class="user-footer">
-                        <a href="{{ url('/') }}" class="btn btn-default btn-flat">Back to Site</a>
-                        <form action="{{ route('sitemanagement.logout') }}" method="POST" style="display:inline;">
-                            @csrf
+                        <a href="<?php echo e(url('/')); ?>" class="btn btn-default btn-flat">Back to Site</a>
+                        <form action="<?php echo e(route('sitemanagement.logout')); ?>" method="POST" style="display:inline;">
+                            <?php echo csrf_field(); ?>
                             <button type="submit" class="btn btn-default btn-flat float-right">
                                 Logout
                             </button>
@@ -69,140 +70,140 @@
 
     <!-- Left side column -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="{{ url('/sitemanagement/blogs') }}" class="brand-link">
+        <a href="<?php echo e(url('/sitemanagement/blogs')); ?>" class="brand-link">
             <span class="brand-text font-weight-light">Admin Panel</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.blogs.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/blogs*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-blog"></i>
                             <p>Blogs</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.sliders.index') }}" class="nav-link {{ request()->is('sitemanagement/sliders*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.sliders.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/sliders*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-images"></i>
                             <p>Sliders</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.settingSites.index') }}" class="nav-link {{ request()->is('sitemanagement/settingSites*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.settingSites.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/settingSites*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>Site Settings</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.requestPhotoSessions.index') }}" class="nav-link {{ request()->is('sitemanagement/requestPhotoSessions*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.requestPhotoSessions.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/requestPhotoSessions*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-camera"></i>
                             <p>Photo Sessions</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.priceVips.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/priceVips*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-gem"></i>
                             <p>Price VIP</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.pages.index') }}" class="nav-link {{ request()->is('sitemanagement/pages*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.pages.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/pages*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-file-alt"></i>
                             <p>Pages</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.companies.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/companies*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-building"></i>
                             <p>Companies</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.mzayas.index') }}" class="nav-link {{ request()->is('sitemanagement/mzayas*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.mzayas.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/mzayas*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-star"></i>
                             <p>Mzaya</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.priceingSales.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/priceingSales*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-tags"></i>
                             <p>Priceing Sales</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.adminServices.index') }}" class="nav-link {{ request()->is('sitemanagement/adminServices*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.adminServices.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/adminServices*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-concierge-bell"></i>
                             <p>Services</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.subareas.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/subareas*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-map-marker-alt"></i>
                             <p>Sub Areas</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.licenseTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/licenseTypes*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.licenseTypes.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/licenseTypes*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>License Types</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.floors.index') }}" class="nav-link {{ request()->is('sitemanagement/floors*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.floors.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/floors*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-building"></i>
                             <p>Floors</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.finishTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/finishTypes*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.finishTypes.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/finishTypes*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-paint-roller"></i>
                             <p>Finish Types</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.districts.index') }}" class="nav-link {{ request()->is('sitemanagement/districts*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.districts.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/districts*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-map"></i>
                             <p>Districts</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.governrates.index') }}" class="nav-link {{ request()->is('sitemanagement/governrates*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.governrates.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/governrates*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-flag"></i>
                             <p>Governrates</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.compounds.index') }}" class="nav-link {{ request()->is('sitemanagement/compounds*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.compounds.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/compounds*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-city"></i>
                             <p>Compounds</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.callTimes.index') }}" class="nav-link {{ request()->is('sitemanagement/callTimes*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.callTimes.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/callTimes*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-phone-alt"></i>
                             <p>Call Times</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.aqarCategories.index') }}" class="nav-link {{ request()->is('sitemanagement/aqarCategories*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.aqarCategories.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/aqarCategories*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-th-list"></i>
                             <p>Aqar Categories</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.offerTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/offerTypes*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.offerTypes.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/offerTypes*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-tag"></i>
                             <p>Offer Types</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.notifications.index') }}" class="nav-link {{ request()->is('sitemanagement/notifications*') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('sitemanagement.notifications.index')); ?>" class="nav-link <?php echo e(request()->is('sitemanagement/notifications*') ? 'active' : ''); ?>">
                             <i class="nav-icon fas fa-bell"></i>
                             <p>Notifications</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/') }}" class="nav-link">
+                        <a href="<?php echo e(url('/')); ?>" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
                         </a>
@@ -215,7 +216,7 @@
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <section class="content">
-            @yield('content')
+            <?php echo $__env->yieldContent('content'); ?>
         </section>
     </div>
 
@@ -259,9 +260,10 @@
     });
 </script>
 
-@yield('third_party_scripts')
+<?php echo $__env->yieldContent('third_party_scripts'); ?>
 
-@stack('page_scripts')
+<?php echo $__env->yieldPushContent('page_scripts'); ?>
 
 </body>
 </html>
+<?php /**PATH /var/www/html/resources/views/layouts/admin.blade.php ENDPATH**/ ?>
