@@ -44,7 +44,7 @@
 <!-- Slug (Governrate) Field -->
 <div class="form-group col-sm-4">
     <?php echo Form::label('slug', 'Slug:'); ?> <span class="text-danger">*</span>
-    <?php echo Form::select('slug', $governrate, null, ['class' => 'form-control custom-select']); ?>
+    <?php echo Form::text('slug', null, ['class' => 'form-control']); ?>
 
     <small class="text-danger"><?php echo e($errors->first('slug')); ?></small>
 </div>

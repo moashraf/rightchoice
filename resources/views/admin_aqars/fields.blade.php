@@ -41,7 +41,7 @@
 <!-- Slug (Governrate) Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('slug', 'Slug:') !!} <span class="text-danger">*</span>
-    {!! Form::select('slug', $governrate, null, ['class' => 'form-control custom-select']) !!}
+    {!! Form::text('slug', null, ['class' => 'form-control']) !!}
     <small class="text-danger">{{ $errors->first('slug') }}</small>
 </div>
 
@@ -209,9 +209,8 @@
 
 <!-- Total Price Field -->
 <div id="total_price" class="form-group col-sm-6">
-    {!! Form::label('total_price', 'Total Price:') !!} <span class="text-danger">*</span>
+    {!! Form::label('total_price', 'Total Price:') !!}
     {!! Form::text('total_price', null, ['class' => 'form-control']) !!}
-    <small class="text-danger">{{ $errors->first('total_price') }}</small>
 </div>
 
 <div class="row col-md-12">
