@@ -54,7 +54,7 @@ class AdminfLoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/admin/blogs');
+            return redirect()->intended('/sitemanagement/blogs');
         }
 
         return back()->withErrors([

@@ -69,14 +69,14 @@
 
     <!-- Left side column -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="{{ url('/admin/blogs') }}" class="brand-link">
+        <a href="{{ url('/sitemanagement/blogs') }}" class="brand-link">
             <span class="brand-text font-weight-light">Admin Panel</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item">
-                        <a href="{{ route('admin.blogs.index') }}" class="nav-link {{ request()->is('admin/blogs*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-blog"></i>
                             <p>Blogs</p>
                         </a>
