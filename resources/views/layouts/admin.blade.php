@@ -142,6 +142,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.licenseTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/licenseTypes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-id-card"></i>
+                            <p>License Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
