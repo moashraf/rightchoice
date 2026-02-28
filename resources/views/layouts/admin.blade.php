@@ -154,6 +154,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.finishTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/finishTypes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-paint-roller"></i>
+                            <p>Finish Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
