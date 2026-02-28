@@ -25,6 +25,6 @@ class CreateRequestPhotoSessionRequest extends FormRequest
      */
     public function rules()
     {
-        return RequestPhotoSession::$rules;
+        return [];
     }
 }
