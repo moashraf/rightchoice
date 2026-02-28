@@ -160,6 +160,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.districts.index') }}" class="nav-link {{ request()->is('sitemanagement/districts*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map"></i>
+                            <p>Districts</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
