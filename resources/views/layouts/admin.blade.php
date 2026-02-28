@@ -100,6 +100,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-gem"></i>
+                            <p>Price VIP</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
