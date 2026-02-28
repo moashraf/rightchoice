@@ -106,6 +106,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class);
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class);
     Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class);
+    Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class);
 });
 
 
