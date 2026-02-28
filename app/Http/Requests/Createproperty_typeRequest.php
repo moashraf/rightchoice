@@ -27,7 +27,7 @@ class Createproperty_typeRequest extends FormRequest
     {
         return [
             'property_type'     => 'required',
-            'cat_id'            => "required|numeric|min:1|if_find:App\aqar_category,$request->cat_id",
+            'cat_id'            => 'required|numeric|min:1|exists:aqar_category,id',
         ];
     }
 }

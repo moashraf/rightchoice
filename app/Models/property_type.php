@@ -23,7 +23,9 @@ class property_type extends Model
 
 
     public $fillable = [
-        'property_type'
+        'property_type',
+        'property_type_en',
+        'cat_id'
     ];
 
     /**
