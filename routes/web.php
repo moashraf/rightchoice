@@ -98,6 +98,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('floors', App\Http\Controllers\AdminFloorController::class);
     Route::resource('finishTypes', App\Http\Controllers\AdminFinishTypeController::class);
     Route::resource('districts', App\Http\Controllers\AdminDistrictController::class);
+    Route::resource('governrates', App\Http\Controllers\AdminGovernrateController::class);
 });
 
 
