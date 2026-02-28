@@ -76,7 +76,7 @@
 @if(Route::current()->getName() == 'sitemanagement.aqars.edit')
     <div id="user_phonediv" class="form-group col-sm-4">
         {!! Form::label('user_phone', 'User Phone:') !!}
-        {!! Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP, ['class' => 'form-control user_phone', 'readonly']) !!}
+        {!! Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP ?? '', ['class' => 'form-control user_phone', 'readonly']) !!}
     </div>
 @endif
 

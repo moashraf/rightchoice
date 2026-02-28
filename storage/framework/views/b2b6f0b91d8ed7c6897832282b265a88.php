@@ -84,7 +84,7 @@
     <div id="user_phonediv" class="form-group col-sm-4">
         <?php echo Form::label('user_phone', 'User Phone:'); ?>
 
-        <?php echo Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP, ['class' => 'form-control user_phone', 'readonly']); ?>
+        <?php echo Form::input('user_phone', 'user_phone', $getPhoneFirst->MOP ?? '', ['class' => 'form-control user_phone', 'readonly']); ?>
 
     </div>
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

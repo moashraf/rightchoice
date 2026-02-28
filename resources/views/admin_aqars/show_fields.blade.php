@@ -5,9 +5,9 @@
         <li class="list-group-item">{!! Form::label('slug', 'Slug:') !!} {{ $aqar->slug }}</li>
         <li class="list-group-item">{!! Form::label('title', 'Title:') !!} {{ $aqar->title }}</li>
         <li class="list-group-item">{!! Form::label('description', 'Description:') !!} {{ $aqar->description }}</li>
-        <li class="list-group-item">{!! Form::label('governrate', 'Governrate:') !!} {{ $aqar->governrateq->governrate ?? '' }}</li>
-        <li class="list-group-item">{!! Form::label('property_type', 'Property Type:') !!} {{ $aqar->propertyType->property_type ?? '' }}</li>
-        <li class="list-group-item">{!! Form::label('number_of_floors', 'Number Of Floors:') !!} {{ $aqar->number_of_floors }}</li>
+        <li class="list-group-item">{!! Form::label('governrate', 'Governrate:') !!} {{ $aqar->governrateq->governrate ?? 'N/A' }}</li>
+        <li class="list-group-item">{!! Form::label('property_type', 'Property Type:') !!} {{ $aqar->propertyType->property_type ?? 'N/A' }}</li>
+        <li class="list-group-item">{!! Form::label('number_of_floors', 'Number Of Floors:') !!} {{ $aqar->number_of_floors ?? 'N/A' }}</li>
         <li class="list-group-item">{!! Form::label('total_area', 'Total Area:') !!} {{ $aqar->total_area }}</li>
         <li class="list-group-item">{!! Form::label('rooms', 'Rooms:') !!} {{ $aqar->rooms }}</li>
         <li class="list-group-item">{!! Form::label('baths', 'Baths:') !!} {{ $aqar->baths }}</li>
@@ -35,9 +35,9 @@
             <li class="list-group-item">{!! Form::label('user_id', 'User Id:') !!} {{ $aqar->user_id }}</li>
         </ul>
         <ul class="list-group">
-            <li class="list-group-item">{!! Form::label('user_name', 'User Name:') !!} {{ $aqar->user->name ?? '' }}</li>
-            <li class="list-group-item">{!! Form::label('email', 'Email:') !!} {{ $aqar->user->email ?? '' }}</li>
-            <li class="list-group-item">{!! Form::label('mobile', 'Mobile:') !!} {{ $aqar->user->MOP ?? '' }}</li>
+            <li class="list-group-item">{!! Form::label('user_name', 'User Name:') !!} {{ $aqar->user->name ?? 'N/A' }}</li>
+            <li class="list-group-item">{!! Form::label('email', 'Email:') !!} {{ $aqar->user->email ?? 'N/A' }}</li>
+            <li class="list-group-item">{!! Form::label('mobile', 'Mobile:') !!} {{ $aqar->user->MOP ?? 'N/A' }}</li>
         </ul>
     </ul>
 

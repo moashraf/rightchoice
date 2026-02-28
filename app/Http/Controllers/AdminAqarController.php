@@ -207,19 +207,21 @@ class AdminAqarController extends AppBaseController
         }
 
         // Send notification based on status
-        if ($request->status == 1) {
-            $message = 'تم قبول الاعلان';
-            $message .= "<br/><br/><div class='btnAdds' style='text-align: center;'><a href='/ar/aqars/$aqar->slug' class='btn btn-outline-primary ml-2'>عرض</a></div>";
-        } else {
-            $message = 'تم رفض الاعلان بسبب احد الاسباب الاتيه<br/>1/عدم وجود صور بالإعلان<br/>2/ عدم استكمال البيانات<br/>3 / محتوى غير لائق<br/>4/ وجود اكثر من عرض في وصف الإعلان<br/>5/عرض اكثر من وحده في الإعلان';
-        }
+        if ($user) {
+            if ($request->status == 1) {
+                $message = 'تم قبول الاعلان';
+                $message .= "<br/><br/><div class='btnAdds' style='text-align: center;'><a href='/ar/aqars/$aqar->slug' class='btn btn-outline-primary ml-2'>عرض</a></div>";
+            } else {
+                $message = 'تم رفض الاعلان بسبب احد الاسباب الاتيه<br/>1/عدم وجود صور بالإعلان<br/>2/ عدم استكمال البيانات<br/>3 / محتوى غير لائق<br/>4/ وجود اكثر من عرض في وصف الإعلان<br/>5/عرض اكثر من وحده في الإعلان';
+            }
 
-        Notification::create([
-            'user_id' => $user->id,
-            'type'    => 0,
-            'title'   => 'حاله الاعلان رقم ' . $aqar->id,
-            'message' => $message,
-        ]);
+            Notification::create([
+                'user_id' => $user->id,
+                'type'    => 0,
+                'title'   => 'حاله الاعلان رقم ' . $aqar->id,
+                'message' => $message,
+            ]);
+        }
 
         Flash::success('تم تحديث العقار بنجاح.');
         return redirect(route('sitemanagement.aqars.index'));

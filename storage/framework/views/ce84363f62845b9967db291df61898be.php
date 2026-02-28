@@ -74,7 +74,7 @@
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
                     <td><?php echo e($allAqars_val->views); ?></td>
-                    <td><?php echo e(date_format($allAqars_val->created_at, "Y/m/d")); ?></td>
+                    <td><?php echo e($allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : ''); ?></td>
                     <td>
                         <?php echo Form::open(['route' => ['sitemanagement.aqars.destroy', $allAqars_val->id], 'method' => 'delete']); ?>
 
