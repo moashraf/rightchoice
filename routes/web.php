@@ -95,6 +95,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class);
     Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class);
     Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class);
+    Route::resource('floors', App\Http\Controllers\AdminFloorController::class);
 });
 
 
