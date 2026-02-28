@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('admin.blogs.index') }}">
+                       href="{{ route('sitemanagement.blogs.index') }}">
                         رجوع
                     </a>
                 </div>

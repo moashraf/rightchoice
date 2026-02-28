@@ -1,9 +1,9 @@
-{!! Form::open(['route' => ['admin.blogs.destroy', $id], 'method' => 'delete']) !!}
+{!! Form::open(['route' => ['sitemanagement.blogs.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
-    <a href="{{ route('admin.blogs.show', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('sitemanagement.blogs.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="fas fa-eye text-info font-18"></i>
     </a>
-    <a href="{{ route('admin.blogs.edit', $id) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('sitemanagement.blogs.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="fas fa-edit text-info font-18"></i>
     </a>
     {!! Form::button('<i class="fa fa-trash text-danger font-18"></i>', [

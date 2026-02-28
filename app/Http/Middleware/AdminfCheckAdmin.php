@@ -24,12 +24,12 @@ class AdminfCheckAdmin
         $user = Auth::user();
 
         if (!$user) {
-            return redirect()->route('admin.login');
+            return redirect()->route('sitemanagement.login');
         }
 
         if (!$user->isAdmin) {
             Auth::logout();
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('sitemanagement.login')->withErrors([
                 'email' => 'This account does not have admin access.',
             ]);
         }

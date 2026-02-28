@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
-                       href="{{ route('admin.blogs.create') }}">
+                       href="{{ route('sitemanagement.blogs.create') }}">
                         اضف جديد
                     </a>
                 </div>
@@ -31,7 +31,7 @@
 
                 <div class="card-footer clearfix float-right">
                     <div class="float-right">
-                        
+
                     </div>
                 </div>
             </div>

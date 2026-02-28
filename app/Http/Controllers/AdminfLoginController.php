@@ -18,7 +18,7 @@ class AdminfLoginController extends Controller
     public function adminfShowLoginForm()
     {
         if (Auth::check() && Auth::user()->isAdmin) {
-            return redirect()->route('admin.blogs.index');
+            return redirect()->route('sitemanagement.blogs.index');
         }
 
         return view('admin_auth.login');
@@ -54,7 +54,7 @@ class AdminfLoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/admin/blogs');
+            return redirect()->intended('/sitemanagement/blogs');
         }
 
         return back()->withErrors([
@@ -71,6 +71,6 @@ class AdminfLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('sitemanagement.login');
     }
 }
