@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\UserTypeEnum;
+use App\Enums\UserStatusEnum;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -109,6 +111,40 @@ class User extends Authenticatable implements MustVerifyEmail
     public function notification()
     {
         return $this->hasMany(Notification::class,'user_id','id');
+    }
+
+    public function UserPriceing()
+    {
+        return $this->belongsToMany(priceing_sale::class, 'users_priceing_sale', 'user_id', 'pricing_id');
+    }
+
+    public function getUserType()
+    {
+        if($this->TYPE == 1)
+            return UserTypeEnum::Buyer;
+        if($this->TYPE == 2)
+            return UserTypeEnum::SALER;
+        if($this->TYPE == 3)
+            return UserTypeEnum::DEVELOPER;
+        if($this->TYPE == 4)
+            return UserTypeEnum::COMPANY;
+        return '';
+    }
+
+    public function getStatus()
+    {
+        if($this->status == 1) {
+            return UserStatusEnum::ACTIVE;
+        } elseif($this->status == 0) {
+            return UserStatusEnum::UNACTIVE;
+        } else {
+            return UserStatusEnum::BLOCK;
+        }
+    }
+
+    public function aqars()
+    {
+        return $this->hasMany(aqar::class, 'user_id');
     }
 
 }

@@ -113,6 +113,17 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['web', 'ad
     Route::post('ajax-getPhoneUser', [App\Http\Controllers\AdminAqarController::class, 'getPhoneUser'])->name('aqars.getPhoneUser');
     Route::get('RemoveImageAqar/{Images}', [App\Http\Controllers\AdminAqarController::class, 'removeImage'])->name('aqars.removeImage');
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints');
+
+    Route::resource('users', App\Http\Controllers\AdminUserController::class);
+    Route::get('users/{user}/block', [App\Http\Controllers\AdminUserController::class, 'block'])->name('users.block');
+    Route::get('users/{user}/activate', [App\Http\Controllers\AdminUserController::class, 'activate'])->name('users.activate');
+    Route::get('users/{user}/delete', [App\Http\Controllers\AdminUserController::class, 'destroy'])->name('users.delete');
+    Route::get('users/{user}/aqars', [App\Http\Controllers\AdminUserController::class, 'aqars'])->name('users.aqars');
+    Route::get('users/{user}/contact-forms', [App\Http\Controllers\AdminUserController::class, 'contactForms'])->name('users.contactForms');
+    Route::get('users/{user}/packages', [App\Http\Controllers\AdminUserController::class, 'packages'])->name('users.packages');
+    Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers');
+
+    Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index');
 });
 
 

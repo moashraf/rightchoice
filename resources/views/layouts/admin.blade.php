@@ -226,6 +226,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>Reports</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
