@@ -208,6 +208,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.propertyTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/propertyTypes*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>Property Types</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>Back to Site</p>
