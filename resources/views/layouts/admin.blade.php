@@ -50,15 +50,15 @@
                     <li class="user-header bg-primary">
                         <p>
                             {{ Auth::user()->name }}
-                            <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
+                            <small>{{ __('admin.member_since') }} {{ Auth::user()->created_at->format('M. Y') }}</small>
                         </p>
                     </li>
                     <li class="user-footer">
-                        <a href="{{ url('/') }}" class="btn btn-default btn-flat">Back to Site</a>
+                        <a href="{{ url('/') }}" class="btn btn-default btn-flat">{{ __('admin.back_to_site') }}</a>
                         <form action="{{ route('sitemanagement.logout') }}" method="POST" style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-default btn-flat float-right">
-                                Logout
+                                {{ __('admin.logout') }}
                             </button>
                         </form>
                     </li>
@@ -70,7 +70,7 @@
     <!-- Left side column -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="{{ url('/sitemanagement/blogs') }}" class="brand-link">
-            <span class="brand-text font-weight-light">Admin Panel</span>
+            <span class="brand-text font-weight-light">{{ __('admin.admin_panel') }}</span>
         </a>
         <div class="sidebar">
             <nav class="mt-2">
@@ -78,169 +78,169 @@
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-blog"></i>
-                            <p>Blogs</p>
+                            <p>{{ __('admin.blogs') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.sliders.index') }}" class="nav-link {{ request()->is('sitemanagement/sliders*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-images"></i>
-                            <p>Sliders</p>
+                            <p>{{ __('admin.sliders') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.settingSites.index') }}" class="nav-link {{ request()->is('sitemanagement/settingSites*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
-                            <p>Site Settings</p>
+                            <p>{{ __('admin.site_settings') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.requestPhotoSessions.index') }}" class="nav-link {{ request()->is('sitemanagement/requestPhotoSessions*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-camera"></i>
-                            <p>Photo Sessions</p>
+                            <p>{{ __('admin.photo_sessions') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-gem"></i>
-                            <p>Price VIP</p>
+                            <p>{{ __('admin.price_vip') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.pages.index') }}" class="nav-link {{ request()->is('sitemanagement/pages*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Pages</p>
+                            <p>{{ __('admin.pages') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-building"></i>
-                            <p>Companies</p>
+                            <p>{{ __('admin.companies') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.mzayas.index') }}" class="nav-link {{ request()->is('sitemanagement/mzayas*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-star"></i>
-                            <p>Mzaya</p>
+                            <p>{{ __('admin.mzaya') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tags"></i>
-                            <p>Priceing Sales</p>
+                            <p>{{ __('admin.pricing_sales') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.adminServices.index') }}" class="nav-link {{ request()->is('sitemanagement/adminServices*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-concierge-bell"></i>
-                            <p>Services</p>
+                            <p>{{ __('admin.services') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-map-marker-alt"></i>
-                            <p>Sub Areas</p>
+                            <p>{{ __('admin.sub_areas') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.licenseTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/licenseTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-id-card"></i>
-                            <p>License Types</p>
+                            <p>{{ __('admin.license_types') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.floors.index') }}" class="nav-link {{ request()->is('sitemanagement/floors*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-building"></i>
-                            <p>Floors</p>
+                            <p>{{ __('admin.floors') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.finishTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/finishTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-paint-roller"></i>
-                            <p>Finish Types</p>
+                            <p>{{ __('admin.finish_types') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.districts.index') }}" class="nav-link {{ request()->is('sitemanagement/districts*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-map"></i>
-                            <p>Districts</p>
+                            <p>{{ __('admin.districts') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.governrates.index') }}" class="nav-link {{ request()->is('sitemanagement/governrates*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-flag"></i>
-                            <p>Governrates</p>
+                            <p>{{ __('admin.governrates') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.compounds.index') }}" class="nav-link {{ request()->is('sitemanagement/compounds*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-city"></i>
-                            <p>Compounds</p>
+                            <p>{{ __('admin.compounds') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.callTimes.index') }}" class="nav-link {{ request()->is('sitemanagement/callTimes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-phone-alt"></i>
-                            <p>Call Times</p>
+                            <p>{{ __('admin.call_times') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.aqarCategories.index') }}" class="nav-link {{ request()->is('sitemanagement/aqarCategories*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-th-list"></i>
-                            <p>Aqar Categories</p>
+                            <p>{{ __('admin.aqar_categories') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.offerTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/offerTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tag"></i>
-                            <p>Offer Types</p>
+                            <p>{{ __('admin.offer_types') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.notifications.index') }}" class="nav-link {{ request()->is('sitemanagement/notifications*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-bell"></i>
-                            <p>Notifications</p>
+                            <p>{{ __('admin.notifications') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-envelope"></i>
-                            <p>Contact Forms</p>
+                            <p>{{ __('admin.contact_forms') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.propertyTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/propertyTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-building"></i>
-                            <p>Property Types</p>
+                            <p>{{ __('admin.property_types') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.complaints.index') }}" class="nav-link {{ request()->is('sitemanagement/complaints*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-exclamation-circle"></i>
-                            <p>Complaints</p>
+                            <p>{{ __('admin.complaints') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.aqars.index') }}" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-home"></i>
-                            <p>Aqars</p>
+                            <p>{{ __('admin.aqars') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
-                            <p>Users</p>
+                            <p>{{ __('admin.users') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-chart-line"></i>
-                            <p>Reports</p>
+                            <p>{{ __('admin.reports') }}</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
-                            <p>Back to Site</p>
+                            <p>{{ __('admin.back_to_site') }}</p>
                         </a>
                     </li>
                 </ul>
@@ -257,7 +257,7 @@
 
     <!-- Main Footer -->
     <footer class="main-footer">
-        <strong>Admin Panel</strong>
+        <strong>{{ __('admin.admin_panel') }}</strong>
     </footer>
 </div>
 
