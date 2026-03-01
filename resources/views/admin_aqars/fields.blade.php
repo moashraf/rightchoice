@@ -14,7 +14,8 @@
     {!! Form::label('property_type', 'Property Type:') !!} <span class="text-danger">*</span>
     <select name="property_type" class="form-control custom-select">
         @foreach ($propertytype as $propertytype_val)
-            <option value="{{ $propertytype_val->id }}" @if(@$aqar->property_type == $propertytype_val->id) selected @endif>{{ $propertytype_val->property_type }}</option>
+            <option value="{{ $propertytype_val->id }}"
+                    @if(@$aqar->property_type == $propertytype_val->id) selected @endif>{{ $propertytype_val->property_type }}</option>
         @endforeach
     </select>
     <small class="text-danger">{{ $errors->first('property_type') }}</small>
@@ -26,7 +27,8 @@
     <select name="compound" class="form-control custom-select">
         <option value="">اختار</option>
         @foreach ($compound as $cat_compound)
-            <option value="{{ $cat_compound->id }}" @if(@$aqar->compound == $cat_compound->id) selected @endif>{{ $cat_compound->compound }}</option>
+            <option value="{{ $cat_compound->id }}"
+                    @if(@$aqar->compound == $cat_compound->id) selected @endif>{{ $cat_compound->compound }}</option>
         @endforeach
     </select>
 </div>
@@ -50,7 +52,8 @@
     {!! Form::label('district_id', 'District:') !!} <span class="text-danger">*</span>
     <select name="district_id" class="form-control custom-select">
         @foreach ($district as $cat)
-            <option value="{{ $cat->id }}" @if(@$aqar->district_id == $cat->id) selected @endif>{{ $cat->district }}</option>
+            <option value="{{ $cat->id }}"
+                    @if(@$aqar->district_id == $cat->id) selected @endif>{{ $cat->district }}</option>
         @endforeach
     </select>
     <small class="text-danger">{{ $errors->first('district_id') }}</small>
@@ -237,12 +240,12 @@
         {!! Form::label('vip', 'Vip:') !!}
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-yes" value="1"
-                @if(@$aqar->vip == 1) checked @endif>
+                   @if(@$aqar->vip == 1) checked @endif>
             <label class="form-check-label" for="vip-yes">Yes</label>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-no" value="0"
-                @if(@$aqar->vip == 0) checked @endif>
+                   @if(@$aqar->vip == 0) checked @endif>
             <label class="form-check-label" for="vip-no">No</label>
         </div>
     </div>
@@ -270,7 +273,7 @@
 <div class="form-group col-sm-6">
     {!! Form::label('status', 'Status:') !!}
     <select class="form-control" name="status">
-        @foreach(\App\Enums\StatusEnum::values() as $key => $case)
+        @foreach(\App\Enums\StatusEnumAqar::values() as $key => $case)
             <option value="{{ $case }}" @if(@$aqar->status == $case) selected @endif>{{ $key }}</option>
         @endforeach
     </select>
@@ -289,10 +292,10 @@
         @if(!empty($mzaya))
             @foreach($mzaya as $use)
                 <option value="{{ $use->id }}"
-                    @if(!empty($mzayaAqar))
-                        @foreach($mzayaAqar as $gt)
-                            @if($gt->mzaya_id == $use->id) selected @endif
-                        @endforeach
+                        @if(!empty($mzayaAqar))
+                            @foreach($mzayaAqar as $gt)
+                                @if($gt->mzaya_id == $use->id) selected @endif
+                    @endforeach
                     @endif
                 >{{ $use->mzaya_type }}</option>
             @endforeach
@@ -322,7 +325,7 @@
             <div class="col-md-3 mt-3">
                 <div class="col-md-8 ml-4">
                     <input type="text" @if($img->main_img == 1) value="Main Image" @else value="Normal Image" @endif
-                        class="form-control" style="text-align: center;" readonly>
+                    class="form-control" style="text-align: center;" readonly>
                 </div>
                 <div class="img-thumbnail text-center">
                     @if(!empty($img->img_url))
