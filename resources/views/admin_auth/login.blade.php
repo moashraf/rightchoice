@@ -81,9 +81,7 @@
                 </div>
             </form>
 
-            <p class="mt-3 mb-0 text-center">
-                <a href="{{ url('/login') }}">تسجيل دخول كمستخدم</a>
-            </p>
+
         </div>
     </div>
 

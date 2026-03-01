@@ -7,17 +7,11 @@ use App\Http\Requests\API\UpdateblogAPIRequest;
 use App\Models\Blog;
 use App\Repositories\blogRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
-use Response;
-
-/**
- * Class blogController
- * @package App\Http\Controllers\API
- */
 
 class blogAPIController extends AppBaseController
 {
-    /** @var  blogRepository */
     private $blogRepository;
 
     public function __construct(blogRepository $blogRepo)
@@ -25,107 +19,53 @@ class blogAPIController extends AppBaseController
         $this->blogRepository = $blogRepo;
     }
 
-    /**
-     * Display a listing of the blog.
-     * GET|HEAD /blogs
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function index(Request $request)
+    /** GET /api/blogs */
+    public function index(Request $request): JsonResponse
     {
         $blogs = $this->blogRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
-
         return $this->sendResponse($blogs->toArray(), 'Blogs retrieved successfully');
     }
 
-    /**
-     * Store a newly created blog in storage.
-     * POST /blogs
-     *
-     * @param CreateblogAPIRequest $request
-     *
-     * @return Response
-     */
-    public function store(CreateblogAPIRequest $request)
+    /** POST /api/blogs */
+    public function store(CreateblogAPIRequest $request): JsonResponse
     {
-        $input = $request->all();
-
-        $blog = $this->blogRepository->create($input);
-
+        $blog = $this->blogRepository->create($request->all());
         return $this->sendResponse($blog->toArray(), 'Blog saved successfully');
     }
 
-    /**
-     * Display the specified blog.
-     * GET|HEAD /blogs/{id}
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function show($id)
+    /** GET /api/blogs/{id} */
+    public function show($id): JsonResponse
     {
-        /** @var blog $blog */
         $blog = $this->blogRepository->find($id);
-
         if (empty($blog)) {
             return $this->sendError('Blog not found');
         }
-
         return $this->sendResponse($blog->toArray(), 'Blog retrieved successfully');
     }
 
-    /**
-     * Update the specified blog in storage.
-     * PUT/PATCH /blogs/{id}
-     *
-     * @param int $id
-     * @param UpdateblogAPIRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, UpdateblogAPIRequest $request)
+    /** PUT /api/blogs/{id} */
+    public function update($id, UpdateblogAPIRequest $request): JsonResponse
     {
-        $input = $request->all();
-
-        /** @var blog $blog */
         $blog = $this->blogRepository->find($id);
-
         if (empty($blog)) {
             return $this->sendError('Blog not found');
         }
-
-        $blog = $this->blogRepository->update($input, $id);
-
-        return $this->sendResponse($blog->toArray(), 'blog updated successfully');
+        $blog = $this->blogRepository->update($request->all(), $id);
+        return $this->sendResponse($blog->toArray(), 'Blog updated successfully');
     }
 
-    /**
-     * Remove the specified blog from storage.
-     * DELETE /blogs/{id}
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    public function destroy($id)
+    /** DELETE /api/blogs/{id} */
+    public function destroy($id): JsonResponse
     {
-        /** @var blog $blog */
         $blog = $this->blogRepository->find($id);
-
         if (empty($blog)) {
             return $this->sendError('Blog not found');
         }
-
         $blog->delete();
-
         return $this->sendSuccess('Blog deleted successfully');
     }
 }
