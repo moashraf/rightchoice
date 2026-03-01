@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Enums\StatusEnum;
+use App\Enums\StatusEnumAqar;
 use App\Enums\VIPEnum;
 
 class aqar extends Model
@@ -66,11 +66,11 @@ class aqar extends Model
     public function getStatus()
     {
         if ($this->status == 0)
-            return StatusEnum::WAITACTIVE;
+            return StatusEnumAqar::WAITACTIVE;
         else if ($this->status == 1)
-            return StatusEnum::ACTIVE;
+            return StatusEnumAqar::ACTIVE;
         else
-            return StatusEnum::UNACTIVE;
+            return StatusEnumAqar::UNACTIVE;
     }
 
     public function getVIP()

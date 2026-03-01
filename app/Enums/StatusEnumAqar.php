@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class StatusEnum
+class StatusEnumAqar
 {
     const WAITACTIVE = 'معلق';
     const ACTIVE = 'نشط';
