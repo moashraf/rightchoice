@@ -75,6 +75,26 @@
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.aqars.index') }}" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>{{ __('admin.aqars') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>{{ __('admin.users') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>{{ __('admin.reports') }}</p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-blog"></i>
@@ -219,24 +239,7 @@
                             <p>{{ __('admin.complaints') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.aqars.index') }}" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-home"></i>
-                            <p>{{ __('admin.aqars') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>{{ __('admin.users') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-chart-line"></i>
-                            <p>{{ __('admin.reports') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
