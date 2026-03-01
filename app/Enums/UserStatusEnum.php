@@ -5,14 +5,14 @@ namespace App\Enums;
 class UserStatusEnum
 {
     const ACTIVE = 'نشط';
-    const UNACTIVE = 'متوقف';
+    const UNACTIVE = 'قيد التفعيل';
     const  BLOCK = 'محظور';
 
     public static function values(): array
     {
         return [
             'نشط' => 1,
-            'متوقف' => 0,
+            'قيد التفعيل' => 0,
             'محظور ' => 2,
         ];
     }
