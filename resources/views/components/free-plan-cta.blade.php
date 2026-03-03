@@ -35,12 +35,11 @@
                         <div class="fp-price-badge">
                             <span class="fp-free-label">مجاناً</span>
                             <span class="fp-price-value">0 ج.م</span>
-                            <span class="fp-price-period">للأبد</span>
-                        </div>
+                         </div>
 
                         <h3 class="fp-plan-name">الباقة المجانية</h3>
                         <p class="fp-plan-desc">
-                            ابدأ الآن واحصل على 100 نقطة فور تسجيلك، استخدمها لنشر عقاراتك والتواصل مع العملاء
+                            اشترك الان مجاناً واحصل على 100 نقطه مجانية وتواصل مع مالك الوحده مباشرة واشتري عقارك بدون عمولة وبدون وسيط
                         </p>
 
                         @auth
@@ -90,15 +89,7 @@
                                 </div>
                             </div>
 
-                            <div class="fp-feature-item">
-                                <div class="fp-feature-icon fp-icon-blue">
-                                    <i class="fa fa-home"></i>
-                                </div>
-                                <div class="fp-feature-text">
-                                    <strong>نشر عقاراتك</strong>
-                                    <span>أضف عقاراتك واعرضها لآلاف الزوار</span>
-                                </div>
-                            </div>
+
 
                             <div class="fp-feature-item">
                                 <div class="fp-feature-icon fp-icon-green">
@@ -120,15 +111,6 @@
                                 </div>
                             </div>
 
-                            <div class="fp-feature-item">
-                                <div class="fp-feature-icon fp-icon-orange">
-                                    <i class="fa fa-building"></i>
-                                </div>
-                                <div class="fp-feature-text">
-                                    <strong>عقارات للبيع والإيجار</strong>
-                                    <span>وحدات بيع وإيجار بنظام النقاط</span>
-                                </div>
-                            </div>
 
                             <div class="fp-feature-item">
                                 <div class="fp-feature-icon fp-icon-teal">
@@ -156,32 +138,6 @@
             </div>
         </div>
 
-        <!-- Bottom Counter Row -->
-        <div class="row justify-content-center mt-4">
-            <div class="col-lg-10">
-                <div class="fp-stats-row">
-                    <div class="fp-stat-item">
-                        <span class="fp-stat-num">+5,000</span>
-                        <span class="fp-stat-label">مستخدم نشط</span>
-                    </div>
-                    <div class="fp-stat-divider"></div>
-                    <div class="fp-stat-item">
-                        <span class="fp-stat-num">+10,000</span>
-                        <span class="fp-stat-label">عقار مُدرج</span>
-                    </div>
-                    <div class="fp-stat-divider"></div>
-                    <div class="fp-stat-item">
-                        <span class="fp-stat-num">100%</span>
-                        <span class="fp-stat-label">مجاني للأبد</span>
-                    </div>
-                    <div class="fp-stat-divider"></div>
-                    <div class="fp-stat-item">
-                        <span class="fp-stat-num">24/7</span>
-                        <span class="fp-stat-label">دعم فني متواصل</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 </section>
