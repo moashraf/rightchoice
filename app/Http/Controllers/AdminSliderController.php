@@ -41,10 +41,10 @@ class AdminSliderController extends AppBaseController
     public function store(CreateSliderRequest $request)
     {
         //generate => image file
-        if ($request->has('img') && !is_null($request->img))
-            $request->merge(['image' => _uploadFileWebSlid($request->img, 'slider/')]);
+        if ($request->hasFile('img') && $request->file('img')->isValid())
+            $request->merge(['image' => _uploadFileWebSlid($request->file('img'), 'slider/')]);
         else
-            $request->merge(['image' => $request->img]);
+            $request->merge(['image' => null]);
 
         $slider = $this->sliderRepository->create($request->all());
 
@@ -96,8 +96,8 @@ class AdminSliderController extends AppBaseController
         }
 
         //generate => image file
-        if ($request->has('img') && !is_null($request->img))
-            $request->merge(['image' => _uploadFileWebSlid($request->img, 'slider/')]);
+        if ($request->hasFile('img') && $request->file('img')->isValid())
+            $request->merge(['image' => _uploadFileWebSlid($request->file('img'), 'slider/')]);
         else
             $request->merge(['image' => $slider->image]);
 

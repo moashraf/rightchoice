@@ -2,34 +2,19 @@
 
 
  @section('title')
-{{$getService->title}} 
+{{$getService->title}}
 @endsection
 
-   <div class="image-cover hero-banner" style="background:url('{{ URL::to('/').'/admin/public/'.$getService->image}}') no-repeat;">
+   <div class="image-cover hero-banner" style="background:url('{{ URL::to('/').'/'.$getService->image}}') no-repeat;">
 
       <div class="container">
 
          <div class="row">
-
-            
-
-            
-
-
-
-            <div class="col-lg-12 col-md-12">
-
-             
-
-               <div class="hero__p">
+   <div class="col-lg-12 col-md-12">
+  <div class="hero__p">
 
                   <h1>
-
-                      
-
-                      
-
-               @if(!empty($getService->Service)) 
+       @if(!empty($getService->Service))
                @if(App::isLocale('ar'))
                {{$getService->Service}}
                @else
@@ -37,18 +22,18 @@
                @endif
                @endif
 
-                      
 
-                      
 
-                      
+
+
+
 
                   </h1>
 
-                   
 
-                  <p>@if(!empty($getService->description)) 
-                  
+
+                  <p>@if(!empty($getService->description))
+
                    @if(App::isLocale('ar'))
                {{$getService->description}}
                @else
@@ -62,14 +47,14 @@
 
          </div>
 
-         
+
 
       </div>
 
    </div>
-  
 
-           
+
+
 
 
 
@@ -79,7 +64,7 @@
 
 
 
-    
+
 
 
 
@@ -89,26 +74,26 @@
 
 <!--	<h2> {{ trans('langsite.all_companies')}} </h2> -->
 
-   
-          
-               
-                     
-                     
+
+
+
+
+
                      <br>
                      <br>
-                     
+
     <div class="row">
  <form action="{{  URL::to('/'.Config::get('app.locale').'/ourcompanies-'.$getService->slug.'/filterby') }}" id="sortform" method="get">
                                         @csrf
- 
+
     <div class="col-lg-12 row searchRow">
-        
+
            <div class="col-lg-2">
                   </div>
                   <div class="col-lg-2">
-                   
+
                 </div>
-                      
+
          <div class="col-lg-4">
                    <input name="keywords" type="text" class="form-control" placeholder="كلمه البحث" tabindex="0">
                    </div>
@@ -165,12 +150,12 @@
 
 
 
- </div> 
+ </div>
         @endforeach
-        
+
       </div>
 
-       
+
 
 
 
@@ -180,7 +165,7 @@
 
 
 
-          {{ $companies->links() }}  
+          {{ $companies->links() }}
 
 
 
@@ -192,23 +177,23 @@
 
 
 <section>
-    
-    
+
+
   <div class="container">
-      
+
       	<div class="row justify-content-center">
 			<div class="col-lg-7 col-md-10 text-center">
 				<div class="sec-heading center mb-4">
 					<h2 class="headingTitle">العقارات المميزه</h2>
-					
+
 				</div>
 			</div>
 		</div>
-		
+
         	 <div class="row">
 			<div class="col-lg-12 col-md-12">
 				<div class="property-slide">
-					
+
 					  @foreach ($allAqars as $aqarSim)
                       <div class="single-items">
                         <div class="property-listing shadow-none property-2 border bg-light">
@@ -221,20 +206,20 @@
                                      <!--   @foreach ($aqarSim->images as $images_url)
                                         <div><a href="{{ URL::to('aqars/' . $aqarSim->slug) }}"><img
                                             src="{{ URL::to('/').'/images/'.$images_url->img_url}}"
-                                            class="img-fluid mx-auto" alt="" /></a></div>	
+                                            class="img-fluid mx-auto" alt="" /></a></div>
                                         @endforeach-->
-                                                    
+
                                          <div><a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarSim->slug) }}" target="_blank">
-                                             
+
                                                     @if($aqarSim->mainImage)
                                  <img src="{{ URL::to('/').'/images/'.$aqarSim->mainImage->img_url}}"   class="img-fluid mx-auto"  alt="main">
-                            
+
                                 @else
-                                
-							
-							
-							
-							
+
+
+
+
+
                                              @if($aqarSim->firstImage)<img
                                             src="{{ URL::to('/').'/images/'.$aqarSim->firstImage->img_url}}"
                                             class="img-fluid mx-auto" alt="" />
@@ -243,14 +228,14 @@
                                             alt="main">
                                             @endif
                                             @endif
-                                            
+
                                             </a></div>
-                                        
-                                        
+
+
                                     </div>
                                 </div>
                                 	               <div class="views">
-                    
+
                         <div class="views-2">
                             <i class="fa fa-eye"></i>
                             <span>{{ $aqarSim->views }}</span>
@@ -266,13 +251,13 @@
                                                 class="" target="_blank">{{ \Illuminate\Support\Str::limit($aqarSim->title, $limit = 33, $end = '...') }}</a></h4>
                                         <!-- <h4 class="listing-name verified"><a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
                                     </div>
-                                    
+
                                 </div>
-                                
+
                             </div>
                             <div  class="listing-short-detail-flex">
                                 @if ($aqarSim->offer_type == 1 || $aqarSim->offer_type == 2)
-                                
+
                                 <h6 class="listing-card-info-price">{{ $aqarSim->total_price }} {{ trans('langsite.egyptian_pound') }}</h6>
 
                                 @endif
@@ -280,16 +265,16 @@
                                 <h6 class="listing-card-info-price">{{ $aqarSim->monthly_rent }} {{ trans('langsite.egyptian_pound') }}</h6>
 
                                 @endif
-                                
+
                             </div>
                             <div class="price-features-wrapper" >
                                 <div class="list-fx-features" >
-                                
-                                    
-                                    
-                                
-                                    
-                                    <div class="listing-card-info-icon"> 
+
+
+
+
+
+                                    <div class="listing-card-info-icon">
                                     {{ $aqarSim->baths }} حمام
                                         <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
                                                 alt="" /></div>
@@ -299,32 +284,32 @@
                                         <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
                                                 alt="" /></div>
                                     </div>
-                                    
+
                                     <div class="listing-card-info-icon">
-                                        {{ $aqarSim->total_area }}  م² 
+                                        {{ $aqarSim->total_area }}  م²
                                         <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
                                                 alt="" /></div>
                                     </div>
-                                    
-                                    
+
+
                                 </div>
                             </div>
 
                             <div class="listing-detail-footer">
                                 <div class="footer-first">
                                     <div class="foot-location">
-                                        
+
                                     @if ($aqarSim->governrateq)
-                                     
-                                        {{ $aqarSim->governrateq->governrate }}	
+
+                                        {{ $aqarSim->governrateq->governrate }}
                                     @endif
-                                    
+
                                     @if ($aqarSim->districte)
-                                    
+
                                         {{ $aqarSim->districte->district }}
                                     @endif
-                                  
-                                    
+
+
                                         <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
                                     </div>
                                 </div>
@@ -335,16 +320,16 @@
                             </div>
 
                         </div>
-                    </div>   
+                    </div>
                    @endforeach
-					
-					
+
+
 						</div>
 			</div>
 		</div>
   </div>
 
-    
+
 </section>
 
 
