@@ -59,24 +59,64 @@
 <p ><strong>3 /</strong> <strong>توفير الوقت والمجهود في البحث عن العقار المناسب وسهولة التعامل والاختيار من خلال الموقع  . </strong></p>
 
 
-				<div class="row pricingVip mt-5">
+				<div class="row pricingVip mt-5 align-items-center">
 					@foreach ($allPricing as $single)
+					@php $isFree = ($single->price == 0); @endphp
 					<!-- Single Package -->
-            <div class="col-lg-4 mb-2">
-                <div class="card mb-lg-0 {{ $single->bk_color }}" style=" margin-bottom: 14px !important; ">
-                  <div class="card-body">
-                    <h5  style="  font- size: 1.9rem;" class="card-title text-uppercase text-center {{ $single->title_color }}">{!! $single->type  !!}</h5>
-                    <h6   class="card-price text-center">{{ $single->price }}  ج.م </h6>
+            <div class="col-lg-4 mb-2 {{ $isFree ? 'free-plan-col' : '' }}">
+                <div class="card mb-lg-0 {{ $single->bk_color }} {{ $isFree ? 'free-plan-card' : '' }}" style="margin-bottom: 14px !important; {{ $isFree ? 'position:relative; overflow:visible;' : '' }}">
+
+                  {{-- ===  شريط "مجاناً" للباقة المجانية === --}}
+                  @if($isFree)
+                   <div class="free-plan-popular-badge">⭐ الأكثر اختياراً</div>
+                  @endif
+
+                  <div class="card-body {{ $isFree ? 'free-plan-body' : '' }}">
+
+                    @if($isFree)
+                    <div class="free-plan-icon-wrap">
+                        <span class="free-plan-icon">🎁</span>
+                    </div>
+                    @endif
+
+                    <h5 style="font-size: 1.9rem;" class="card-title text-uppercase text-center {{ $single->title_color }}">{!! $single->type !!}</h5>
+
+                    @if($isFree)
+                    <h6 class="card-price text-center free-plan-price">
+                        <span class="free-plan-price-text">مجاناً</span>
+                        <small class="free-plan-price-sub d-block">0 ج.م</small>
+                    </h6>
+                    @else
+                    <h6 class="card-price text-center">{{ $single->price }} ج.م</h6>
+                    @endif
+
                     <hr>
-                   <p  style=" font-weight: bold;" class="text-center ">{{ $single->desc1 }}</p>
+                    <p style="font-weight: bold;" class="text-center">{{ $single->desc1 }}</p>
+
+                    @if($isFree)
+                    <div class="free-plan-features">
+                        <div class="free-plan-feature"><span class="fcheck">✓</span> 100 نقطة مجانية فور التسجيل</div>
+                        <div class="free-plan-feature"><span class="fcheck">✓</span> تواصل مباشر مع الملاك</div>
+                        <div class="free-plan-feature"><span class="fcheck">✓</span> بدون بطاقة ائتمان</div>
+                    </div>
+                    @endif
+
+                    <button style="font-size:1.4rem; width:100%; margin-bottom:10px;"
+                            type="button"
+                            class="btn {{ $isFree ? 'btn-outline-warning' : 'btn-primary' }}"
+                            data-toggle="modal"
+                            data-target="#myModal{{ $single->id }}">
+                        تفاصيل الباقه
+                    </button>
+
+                    <a style="font-size:1.4rem;"
+                       href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
+                       class="btn btn-block {{ $isFree ? 'free-plan-cta-btn' : 'bg-white ' . $single->title_color }} text-uppercase">
+                       {{ $isFree ? '🚀 اشترك مجاناً الآن' : 'اشترك بالباقه' }}
+                    </a>
 
 
 
- <button  style="font- size:1.4rem; width: 100%;  margin-bottom: 10px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{ $single->id }}">
- تفاصيل الباقه
- </button>
-
-                    <a  style=" font- size: 1.4rem;"  href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}" class="btn btn-block  bg-white  {{ $single->title_color }} text-uppercase">اشترك بالباقه</a>
                   </div>
                 </div>
               </div>
@@ -118,8 +158,141 @@
 
 </section>
 <style>
-    .btn:hover{
-        color:#212529;
+    .btn:hover { color: #212529; }
+
+    /* ========= FREE PLAN HIGHLIGHT ========= */
+
+    /* الكولم بيكبر شوية */
+    .free-plan-col { transform: translateY(-12px); z-index: 5; position: relative; }
+
+    /* البوردر الذهبي المتوهج */
+    .free-plan-card {
+        border: 3px solid #f7971e !important;
+        border-radius: 16px !important;
+        box-shadow:
+            0 0 0 4px rgba(247,151,30,0.18),
+            0 0 30px rgba(247,151,30,0.35),
+            0 12px 40px rgba(0,0,0,0.15) !important;
+        animation: freeCardPulse 2.5s ease-in-out infinite;
+        overflow: visible !important;
+    }
+    @keyframes freeCardPulse {
+        0%,100% { box-shadow: 0 0 0 4px rgba(247,151,30,0.18), 0 0 30px rgba(247,151,30,0.35), 0 12px 40px rgba(0,0,0,0.15); }
+        50%      { box-shadow: 0 0 0 6px rgba(255,210,0,0.25),  0 0 50px rgba(255,210,0,0.55),  0 16px 50px rgba(0,0,0,0.2);  }
+    }
+
+    /* شريط الـ Ribbon */
+    .free-plan-ribbon {
+        position: absolute;
+        top: -1px; right: -1px;
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 5px 18px;
+        border-radius: 0 14px 0 14px;
+        z-index: 10;
+        box-shadow: 0 3px 10px rgba(247,151,30,0.4);
+        letter-spacing: 0.3px;
+    }
+
+    /* بادج "الأكثر اختياراً" */
+    .free-plan-popular-badge {
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 5px 20px;
+        border-radius: 50px;
+        white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(247,151,30,0.5);
+        z-index: 10;
+    }
+
+    /* أيقونة الهدية */
+    .free-plan-icon-wrap { text-align: center; margin-bottom: 8px; }
+    .free-plan-icon { font-size: 2.4rem; }
+
+    /* السعر */
+    .free-plan-price { margin-bottom: 4px; }
+    .free-plan-price-text {
+        font-size: 2.2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+    }
+    .free-plan-price-sub { font-size: 13px; color: #aaa; font-weight: 600; margin-top: 2px; }
+
+    /* المميزات */
+    .free-plan-features { margin: 12px 0 14px; }
+    .free-plan-feature {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+    .fcheck {
+        width: 20px; height: 20px;
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #fff;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    /* زر الـ CTA */
+    .free-plan-cta-btn {
+        background: linear-gradient(135deg, #f7971e, #ffd200) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 10px !important;
+        font-weight: 800 !important;
+        font-size: 1rem !important;
+        box-shadow: 0 4px 16px rgba(247,151,30,0.4);
+        transition: all 0.3s ease !important;
+        position: relative;
+        overflow: hidden;
+    }
+    .free-plan-cta-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+    .free-plan-cta-btn:hover::after { left: 100%; }
+    .free-plan-cta-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 24px rgba(247,151,30,0.6) !important;
+        color: #fff !important;
+    }
+
+    /* ملاحظة أسفل الزر */
+    .free-plan-note {
+        text-align: center;
+        font-size: 11px;
+        color: #aaa;
+        margin: 8px 0 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .free-plan-col { transform: none; margin-bottom: 28px; }
     }
 </style>
 
