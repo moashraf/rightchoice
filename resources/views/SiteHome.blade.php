@@ -9,11 +9,11 @@
 		    @if(!empty($slider))
 		    @foreach($slider as $slid)
 			<div class="image-cover hero-banner single-items"
-				style="background:url('{{ URL::to('/').'/admin/public/'.$slid->image}}') no-repeat;">
+				style="background:url('{{ URL::to('/').'/'.$slid->image}}') no-repeat;">
 				<div class="container">
 
 					<div class="row">
-						<div class=" form_form col-lg-6 col-md-6 order-2 order-lg-1">
+						<div class=" form_form col-lg-6 col-md-6 order-2 order-lg-1 d-none d-md-block">
 							<form action="{{ Config::get('app.locale') }}/search" method="GET">
 
 								<div class="hero-search-wrap">
@@ -1024,7 +1024,7 @@
 								<div class="location-property-wrap">
 									<div class="location-property-thumb">
 										<!-- <a target="_blank" href="listings-list-with-sidebar.html"><img src="https://via.placeholder.com/1200x800" class="img-fluid" alt=""></a> -->
-										<a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}"><img src="{{ URL::to('/').'/admin/public/'.$serv->image}}" class="img-fluid" alt="" loading="lazy" ></a>
+										<a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}"><img src="{{ URL::to('/').'/'.$serv->image}}" class="img-fluid" alt="" loading="lazy" ></a>
 									</div>
 									<div class="location-property-content">
 										<div class="lp-content-flex">
