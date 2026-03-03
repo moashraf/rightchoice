@@ -43,10 +43,17 @@
                             ابدأ الآن واحصل على 100 نقطة فور تسجيلك، استخدمها لنشر عقاراتك والتواصل مع العملاء
                         </p>
 
-                        <a href="/ar/register" class="fp-cta-btn">
-                            <span>اشترك مجاناً الآن</span>
-                            <i class="fa fa-arrow-left fp-btn-icon"></i>
-                        </a>
+                        @auth
+                            <a href="/ar/pricing-seller" class="fp-cta-btn">
+                                <span>اشترك مجاناً الآن</span>
+                                <i class="fa fa-arrow-left fp-btn-icon"></i>
+                            </a>
+                        @else
+                            <a href="/ar/register" class="fp-cta-btn">
+                                <span>اشترك مجاناً الآن</span>
+                                <i class="fa fa-arrow-left fp-btn-icon"></i>
+                            </a>
+                        @endauth
 
                         <div class="fp-trust-row">
                             <div class="fp-trust-item">
@@ -186,7 +193,7 @@
 .free-plan-section {
     position: relative;
     padding: 90px 0 80px;
-    background: linear-gradient(135deg, #0f0c29 0%, #1a1040 40%, #24243e 100%);
+    background: linear-gradient(135deg, #0f0c29 0%, #196aa2  40%, #24243e 100%);
     overflow: hidden;
 }
 
