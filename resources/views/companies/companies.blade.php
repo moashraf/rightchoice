@@ -10,26 +10,11 @@
       <div class="container">
 
          <div class="row">
-
-
-
-
-
-
-
-            <div class="col-lg-12 col-md-12">
-
-
-
-               <div class="hero__p">
+   <div class="col-lg-12 col-md-12">
+  <div class="hero__p">
 
                   <h1>
-
-
-
-
-
-               @if(!empty($getService->Service))
+       @if(!empty($getService->Service))
                @if(App::isLocale('ar'))
                {{$getService->Service}}
                @else
