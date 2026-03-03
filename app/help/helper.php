@@ -185,21 +185,25 @@ function _uploadFileWeb($image_file, $path)
         $pathfile = 'uploads/'.$path;
         $namerand = '-'.rand(1,900).'-';
         $filename = $namerand . '.' . $file->getClientOriginalName();
-        if (!file_exists('public/uploads/'.$path)) {
-            mkdir('public/uploads/'.$path, 0777, true);
+
+        $fullDir = public_path('uploads/'.$path);
+        if (!file_exists($fullDir)) {
+            mkdir($fullDir, 0777, true);
         }
 
+        $savePath = public_path($pathfile . $filename);
         $image_resize100 = Image::make($file->getRealPath());
-        $image_resize100->resize(300,300);
-        $image_resize100->save(public_path($pathfile .$filename));
+        $image_resize100->resize(300, 300);
+        $image_resize100->save($savePath);
 
-        $rezult = $pathfile .$filename;
+        return $pathfile . $filename;
 
-        return $rezult ;
-
-    }
-    catch (Exception $exception){
-        return "" ;
+    } catch (\Exception $exception) {
+        \Log::error('_uploadFileWeb error: ' . $exception->getMessage(), [
+            'path'  => $path,
+            'trace' => $exception->getTraceAsString(),
+        ]);
+        return "";
     }
 
 }
@@ -213,18 +217,24 @@ function _uploadFileWebNoCrop($image_file, $path)
         $pathfile = 'uploads/'.$path;
         $namerand = '-'.rand(1,900).'-';
         $filename = $namerand . '.' . $file->getClientOriginalName();
-        if (!file_exists('public/uploads/'.$path)) {
-            mkdir('public/uploads/'.$path, 0777, true);
+
+        $fullDir = public_path('uploads/'.$path);
+        if (!file_exists($fullDir)) {
+            mkdir($fullDir, 0777, true);
         }
-         $imagesave = Image::make($file->getRealPath());
-        $imagesave->save(public_path($pathfile .$filename));
-        $rezult = $pathfile .$filename;
 
-        return $rezult ;
+        $savePath = public_path($pathfile . $filename);
+        $imagesave = Image::make($file->getRealPath());
+        $imagesave->save($savePath);
 
-    }
-    catch (Exception $exception){
-        return "" ;
+        return $pathfile . $filename;
+
+    } catch (\Exception $exception) {
+        \Log::error('_uploadFileWebNoCrop error: ' . $exception->getMessage(), [
+            'path'  => $path,
+            'trace' => $exception->getTraceAsString(),
+        ]);
+        return "";
     }
 
 }
@@ -238,21 +248,25 @@ function _uploadFileWebSlid($image_file, $path)
         $pathfile = 'uploads/'.$path;
         $namerand = '-'.rand(1,900).'-';
         $filename = $namerand . '.' . $file->getClientOriginalName();
-        if (!file_exists('public/uploads/'.$path)) {
-            mkdir('public/uploads/'.$path, 0777, true);
+
+        $fullDir = public_path('uploads/'.$path);
+        if (!file_exists($fullDir)) {
+            mkdir($fullDir, 0777, true);
         }
 
+        $savePath = public_path($pathfile . $filename);
         $image_resize100 = Image::make($file->getRealPath());
-        $image_resize100->resize(732,549);
-        $image_resize100->save(public_path($pathfile .$filename));
+        $image_resize100->resize(732, 549);
+        $image_resize100->save($savePath);
 
-        $rezult = $pathfile .$filename;
+        return $pathfile . $filename;
 
-        return $rezult ;
-
-    }
-    catch (Exception $exception){
-        return "" ;
+    } catch (\Exception $exception) {
+        \Log::error('_uploadFileWebSlid error: ' . $exception->getMessage(), [
+            'path'  => $path,
+            'trace' => $exception->getTraceAsString(),
+        ]);
+        return "";
     }
 
 }
@@ -266,21 +280,25 @@ function _uploadFileWebAqar($image_file, $path)
         $pathfile = $path;
         $namerand = '-'.rand(1,900).'-';
         $filename = $namerand . '.' . $file->getClientOriginalName();
-        if (!file_exists('public/'.$path)) {
-            mkdir('public/'.$path, 0777, true);
+
+        $fullDir = public_path($path);
+        if (!file_exists($fullDir)) {
+            mkdir($fullDir, 0777, true);
         }
 
+        $savePath = public_path($pathfile . $filename);
         $image_resize100 = Image::make($file->getRealPath());
-        $image_resize100->resize(512,613);
-        $image_resize100->save(public_path($pathfile .$filename));
+        $image_resize100->resize(512, 613);
+        $image_resize100->save($savePath);
 
-        $rezult = $pathfile .$filename;
+        return $pathfile . $filename;
 
-        return $rezult ;
-
-    }
-    catch (Exception $exception){
-        return "" ;
+    } catch (\Exception $exception) {
+        \Log::error('_uploadFileWebAqar error: ' . $exception->getMessage(), [
+            'path'  => $path,
+            'trace' => $exception->getTraceAsString(),
+        ]);
+        return "";
     }
 
 }
