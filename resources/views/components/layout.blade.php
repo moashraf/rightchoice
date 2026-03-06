@@ -149,17 +149,10 @@
 
 <div id="loader-wrapper">
 
-
     <div id="loader">
-
-
         <div class="lds-circle">
-
             <div></div>
-
         </div>
-
-
     </div>
 
 
@@ -170,6 +163,15 @@
 
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var loaderWrapper = document.getElementById('loader-wrapper');
+        if (loaderWrapper) {
+            loaderWrapper.style.display = 'none';
+        }
+    });
+</script>
 
 
 <!-- ============================================================== -->
