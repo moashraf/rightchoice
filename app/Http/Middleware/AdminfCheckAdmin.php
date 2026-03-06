@@ -8,27 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Middleware to restrict access to admin-only routes.
- * Checks if the authenticated user has isAdmin flag set.
+ * Uses 'admin' guard to check isolated admin session.
  */
 class AdminfCheckAdmin
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user();
 
         if (!$user) {
             return redirect()->route('sitemanagement.login');
         }
 
         if (!$user->isAdmin) {
-            Auth::logout();
+            Auth::guard('admin')->logout();
             return redirect()->route('sitemanagement.login')->withErrors([
                 'email' => 'This account does not have admin access.',
             ]);

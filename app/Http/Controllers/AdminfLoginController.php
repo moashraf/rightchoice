@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller for admin-specific login.
- * Separates admin authentication from regular user login.
+ * Uses 'admin' guard to isolate admin session from user session.
  */
 class AdminfLoginController extends Controller
 {
@@ -17,7 +17,7 @@ class AdminfLoginController extends Controller
      */
     public function adminfShowLoginForm()
     {
-        if (Auth::check() && Auth::user()->isAdmin) {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdmin) {
             return redirect()->route('sitemanagement.blogs.index');
         }
 
@@ -52,7 +52,7 @@ class AdminfLoginController extends Controller
             ])->withInput($request->only('email'));
         }
 
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()->intended('/sitemanagement/blogs');
         }
@@ -67,10 +67,12 @@ class AdminfLoginController extends Controller
      */
     public function adminfLogout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('sitemanagement.login');
     }
 }
+
+
