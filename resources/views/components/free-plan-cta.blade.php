@@ -534,6 +534,7 @@
 @media (max-width: 768px) {
     .free-plan-section { padding: 60px 0; }
     .fp-main-title { font-size: 26px; }
+    .fp-right-panel { display: none; }
     .fp-features-grid {
         grid-template-columns: 1fr;
     }
