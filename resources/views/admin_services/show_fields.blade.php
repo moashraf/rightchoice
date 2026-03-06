@@ -2,8 +2,8 @@
 @if(!empty($services->image))
 <div class="col-sm-12 mb-2">
     {!! Form::label('image', 'Image:') !!}
-    <div>
-        <img src="{{ asset('uploads/service/' . $services->image) }}" alt="" class="img-fluid img-thumbnail" style="max-width: 200px;">
+    <div class="services_servicesservices">
+        <img src="{{ asset('/' . $services->image) }}" alt="" class="img-fluid img-thumbnail" style="max-width: 200px;">
     </div>
 </div>
 @endif

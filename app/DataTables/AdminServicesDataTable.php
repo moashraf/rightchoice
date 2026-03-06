@@ -15,7 +15,7 @@ class AdminServicesDataTable extends DataTable
         return $dataTable->addColumn('action', 'admin_services.datatables_actions')
             ->addColumn('image', function ($row) {
                 if ($row->image) {
-                    return '<img src="' . asset('uploads/service/' . $row->image) . '" height="50"/>';
+                    return '<img src="' . asset('/' . $row->image) . '" height="50"/>';
                 }
                 return '';
             })
