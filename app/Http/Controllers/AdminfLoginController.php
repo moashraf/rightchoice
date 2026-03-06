@@ -17,7 +17,9 @@ class AdminfLoginController extends Controller
      */
     public function adminfShowLoginForm()
     {
-        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdmin) {
+        /** @var User|null $admin */
+        $admin = Auth::guard('admin')->user();
+        if ($admin && $admin->isAdmin) {
             return redirect()->route('sitemanagement.blogs.index');
         }
 
@@ -35,9 +37,9 @@ class AdminfLoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        $remember = $request->filled('remember');
+        $remember    = $request->filled('remember');
 
-        // Find the user first to check if they are admin
+        /** @var User|null $user */
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
@@ -74,5 +76,3 @@ class AdminfLoginController extends Controller
         return redirect()->route('sitemanagement.login');
     }
 }
-
-

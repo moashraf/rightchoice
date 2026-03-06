@@ -18,7 +18,9 @@ class AdminSliderDataTable extends DataTable
         return $dataTable->addColumn('action', 'admin_sliders.datatables_actions')
             ->editColumn('image', function ($slider) {
                 if (!empty($slider->image)) {
-                    return '<a href="' . url($slider->image) . '" data-toggle="lightbox"><img src="' . url($slider->image) . '" height="60" class="img-thumbnail"/></a>';
+                    return '<a href="' . url($slider->image) . '" data-toggle="lightbox">
+                    <img src="' . url($slider->image) . '" height="100" width="100" class="img-thumbnail"/>
+                    </a>';
                 }
                 return '-';
             })

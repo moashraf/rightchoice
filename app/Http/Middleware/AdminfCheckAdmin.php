@@ -14,6 +14,7 @@ class AdminfCheckAdmin
 {
     public function handle(Request $request, Closure $next)
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::guard('admin')->user();
 
         if (!$user) {
