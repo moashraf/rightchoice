@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller for admin-specific login.
- * Separates admin authentication from regular user login.
+ * Uses 'admin' guard to isolate admin session from user session.
  */
 class AdminfLoginController extends Controller
 {
@@ -17,7 +17,9 @@ class AdminfLoginController extends Controller
      */
     public function adminfShowLoginForm()
     {
-        if (Auth::check() && Auth::user()->isAdmin) {
+        /** @var User|null $admin */
+        $admin = Auth::guard('admin')->user();
+        if ($admin && $admin->isAdmin) {
             return redirect()->route('sitemanagement.blogs.index');
         }
 
@@ -35,9 +37,9 @@ class AdminfLoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        $remember = $request->filled('remember');
+        $remember    = $request->filled('remember');
 
-        // Find the user first to check if they are admin
+        /** @var User|null $user */
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
@@ -52,7 +54,7 @@ class AdminfLoginController extends Controller
             ])->withInput($request->only('email'));
         }
 
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
             $request->session()->regenerate();
             return redirect()->intended('/sitemanagement/blogs');
         }
@@ -67,7 +69,7 @@ class AdminfLoginController extends Controller
      */
     public function adminfLogout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

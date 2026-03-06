@@ -31,7 +31,7 @@
                     @if($services->image)
                         <div class="col-sm-12 mb-3">
                             <label>Current Image:</label><br>
-                            <img src="{{ asset('uploads/service/' . $services->image) }}" alt="" style="max-height:120px;" class="img-thumbnail">
+                            <img src="{{ asset('/' . $services->image) }}" alt="" style="max-height:120px;" class="img-thumbnail">
                         </div>
                     @endif
                     @include('admin_services.fields')

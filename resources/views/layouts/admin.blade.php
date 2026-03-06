@@ -44,13 +44,13 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                    <span class="d-none d-md-inline">{{ Auth::guard('admin')->user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <li class="user-header bg-primary">
                         <p>
-                            {{ Auth::user()->name }}
-                            <small>{{ __('admin.member_since') }} {{ Auth::user()->created_at->format('M. Y') }}</small>
+                            {{ Auth::guard('admin')->user()->name }}
+                            <small>{{ __('admin.member_since') }} {{ Auth::guard('admin')->user()->created_at->format('M. Y') }}</small>
                         </p>
                     </li>
                     <li class="user-footer">

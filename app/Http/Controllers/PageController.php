@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Laravel\Jetstream\Jetstream;
@@ -27,15 +26,13 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\RequestPhotoSession;
 use App\Services\SmsService;
 
-
 class PageController extends Controller
 
 {
 
-
     public function customLoginManual(request $request)
     {
-        //dd('hello admin');
+
         $locale = app()->getLocale();
         if (is_numeric($request->email)) {
             $userdata = array(
@@ -49,20 +46,16 @@ class PageController extends Controller
             );
         }
 
-        $user = User::where('email', $request->email)->orWhere('MOP', $request->email)->first();
-
-        // dd($user->status);
+        $user = User::where('email', $request->email)
+            ->orWhere('MOP', $request->email)->first();
         if ($user) {
-            if ($user->status == 1 && $user->phone_verfied_sms_status == 1) {
-
-                // attempt to do the login
+            if ($user->status == 1 && $user->phone_verfied_sms_status == 1 && $user->isAdmin != 1) {
+               // attempt to do the login
                 if (\Auth::attempt($userdata)) {
-                    //dd("تم");
 
                     return redirect()->intended('/');
                 } else {
-                    //dd("no");
-                    if ($locale == 'ar') {
+                     if ($locale == 'ar') {
                         return back()->withErrors([
                             'email' => 'البيانات التى تم ادخالها غير صحيحه.',
                         ]);
@@ -73,7 +66,6 @@ class PageController extends Controller
                     }
                 }
             } else if ($user->phone_verfied_sms_status != 1) {
-
                 return redirect()->route('otbPage', ['userID' => $user->id, 'locale' => $locale]);
             } else {
                 return back()->withErrors([
