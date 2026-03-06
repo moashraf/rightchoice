@@ -966,7 +966,6 @@ class AqarController extends Controller
         return view('aqars.create',compact('compounds','floors', 'offerTypes', 'categories', 'properties', 'governrate', 'district', 'areas', 'calls', 'finishes','lic_types','mzaya'));
     }
 
-
 public function replaceLongPhoneNumbersWithStars($text) {
     // التعبير المنتظم لاستخراج الأرقام التي تحتوي على أكثر من 8 أرقام متصلة
     $pattern = '/\b\d{9,}\b/';
@@ -974,7 +973,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
     // استبدال الأرقام التي تحتوي على أكثر من 8 أرقام بـ ***
     return preg_replace($pattern, '***', $text);
 }
-
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1285,7 +1283,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
         //        return redirect("aqars/$aqar->id")->with('status', '  تم الحفظ بنجاح!');
     }
 
-
          //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function show($locale, $aqar)
 {
@@ -1302,14 +1299,9 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
       if(Auth::user() && Auth::user()->id == $aqar_chexk->user_id ){
 
-         // dd($aqar);
              $aqar = aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
              ->with('propertyType')->with('offerTypes')->with('floorNo') ->first();
-          $fgfg=55;
-
-
-
             }
 
       else{
@@ -1323,7 +1315,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         if (!empty($aqar)) {
 
- //dd( $aqar->offer_type);
 
         $allAqars = aqar::where('offer_type',$aqar->offer_type)
         ->where('category',$aqar->category)
@@ -1339,15 +1330,12 @@ public function replaceLongPhoneNumbersWithStars($text) {
         $show2 = false;
             if(Auth::user() && Auth::user()->userpricin){
                          $userSeenAqar= UserContactAqar::with('all_aqat_viw')->where('aqars_id',$aqar->id)->where('user_id',$getUser->id)->first();
-               if( $userSeenAqar != null  || Auth::user()->id ==    $aqar->user->id){
-
-                             $show2 = true;
+               if( $userSeenAqar != null  || (  $aqar->user && Auth::user() &&  Auth::user()->id ==    $aqar->user->id) ){
+                        $show2 = true;
                         $show = true;
                     }else if( Auth::user()->userpricin->current_points >= $aqar->points_avail){
                            $show2 = false;
-
                             $show = true;
-
                     }
                     else{
                             $show2 = false;
@@ -1359,15 +1347,11 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         }
 
-
-
        if (!empty($updateview)) {
                $updateview->increment('views' , 1);
         return view('aqars.show', ['aqar' => $aqar], compact('allAqars', 'show', 'show2','random_ads'));
        }else{
-                 return redirect()->route('homeBlade', [ 'locale'=>$locale]) ;
-
-
+         return redirect()->route('homeBlade', [ 'locale'=>$locale]) ;
        }
 
     }
@@ -1466,7 +1450,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
     public function removewish_list(Request $request)
     {
 
@@ -1517,7 +1500,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
         return response()->json(['massage'=> $pointAqqr->user->MOP,'status'=>200], 200);
     }
- 
+
             //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1707,9 +1690,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
         return Redirect::back();
     }
 
-
             //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
     public function destroyImages(Request $request ,Images $img)
@@ -1742,7 +1723,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
       public function removeuserAds(Request $request)
     {
-       // DD('FF');
 
         $cheackAqar = aqar::find($request->item_id)->delete();
 
@@ -1756,8 +1736,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
     }
 
-
-                //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
      public function usercomplain(Request $request)
     {
@@ -1791,7 +1770,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
     }
 
-                //////////////////////////////////////////////////////////////////////////////////////////////////////
+     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
        public function all_aqar_for_rent (Request $request,$locale )
@@ -1971,7 +1950,6 @@ public function replaceLongPhoneNumbersWithStars($text) {
       ,'districtw', 'areaw', 'finishType','minPrice', 'maxPrice' , 'minArea' , 'maxArea'  , 'minRooms' ,'maxRooms' , 'minBaths', 'maxBaths' , 'maz', 'offs' ,'sort'));
 
     }
-
 
 
     public function searchGovernorates(Request $request)
