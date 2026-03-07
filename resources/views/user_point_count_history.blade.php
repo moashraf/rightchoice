@@ -254,65 +254,8 @@
 
 
                     </div>
+                    @include('components.profile-sidebar')
 
-
-                    <div class="col-md-4">
-
-                        <div class="card mt-3">
-
-                            <div class="card-body">
-
-                                <div class="d-flex flex-column align-items-center text-center">
-
-                                    @if (!empty(Auth::user()->profile_image))
-                                        <img src="{{ URL::to('/') . '/images/' . Auth::user()->profile_image }}"
-                                             alt="Admin" class="rounded-circle admin" loading="lazy">
-                                    @else
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                             class="rounded-circle admin" loading="lazy">
-                                    @endif
-
-                                    <div class="mt-3">
-
-                                        <h4> {{ $user->name }} </h4>
-                                        <a
-                                            href="{{ URL::to(Config::get('app.locale') . '/user_point_count_history') }}">
-                                            <p><strong>عدد النقاط</strong>
-                                                <span> {{ $points }}</span>
-                                                <i class=" fa fa-check-circle "></i>
-                                        </a>
-
-                                        <hr class="hr-add">
-
-
-                                        <a data-toggle="tooltip" title="التنبيهات  !"
-                                           href="{{ URL::to(Config::get('app.locale') . '/notification') }}"
-                                           style="<?php if($countNotifi > 0){ ?> color:gold; <?php }?>  "><i
-                                                class="fa fa-bell"></i></a>
-
-                                        <a data-toggle="tooltip" title=" اعلاناتي !"
-                                           href="{{ URL::to(Config::get('app.locale') . '/user_ads') }}"
-                                           style="margin:0 10px" type="button"><i class="fa fa-building"></i></a>
-                                        <a data-toggle="tooltip" title="المفضله !"
-                                           href="{{ URL::to(Config::get('app.locale') . '/user_wishs') }}"
-                                           type="button"><i class="fa fa-heart"></i></a>
-
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="sticky mt-3">
-                            <x-purchase-now/>
-
-                        </div>
-
-                    </div>
 
 
                 </div>
