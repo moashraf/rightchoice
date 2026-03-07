@@ -13,7 +13,9 @@ class AdminAccountDeleteRequestController extends Controller
      */
     public function index(Request $request)
     {
-        $query = AccountDeleteRequest::with('user')->latest();
+        $query = AccountDeleteRequest::with(['user', 'user' => function($q){
+            $q->withTrashed(); // show soft-deleted users too
+        }])->latest();
 
         if ($request->filter_status) {
             $query->where('status', $request->filter_status);
@@ -21,7 +23,8 @@ class AdminAccountDeleteRequestController extends Controller
 
         if ($request->search_key) {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search_key . '%')
+                $q->withTrashed()
+                  ->where('name', 'like', '%' . $request->search_key . '%')
                   ->orWhere('MOP', 'like', '%' . $request->search_key . '%');
             });
         }
@@ -32,7 +35,7 @@ class AdminAccountDeleteRequestController extends Controller
     }
 
     /**
-     * Approve a delete request (and delete the user).
+     * Approve a delete request (soft delete the user).
      */
     public function approve(Request $request, $id)
     {
@@ -43,13 +46,35 @@ class AdminAccountDeleteRequestController extends Controller
             'admin_note' => $request->admin_note ?? null,
         ]);
 
-        // Delete the user account
+        // Soft delete the user account
         $user = User::find($deleteRequest->user_id);
         if ($user) {
-            $user->delete();
+            $user->delete(); // SoftDeletes trait => sets deleted_at
         }
 
-        flash('تم قبول طلب الحذف وتم حذف الحساب بنجاح.')->success();
+        flash('تم قبول طلب الحذف وتم تعطيل الحساب بنجاح (Soft Delete).')->success();
+
+        return redirect(route('sitemanagement.accountDeleteRequests.index'));
+    }
+
+    /**
+     * Restore a soft-deleted user (undo approve).
+     */
+    public function restore($id)
+    {
+        $deleteRequest = AccountDeleteRequest::findOrFail($id);
+
+        $user = User::withTrashed()->find($deleteRequest->user_id);
+        if ($user && $user->trashed()) {
+            $user->restore();
+        }
+
+        $deleteRequest->update([
+            'status'     => 'rejected',
+            'admin_note' => 'تم استعادة الحساب بواسطة الأدمن.',
+        ]);
+
+        flash('تم استعادة حساب المستخدم بنجاح.')->success();
 
         return redirect(route('sitemanagement.accountDeleteRequests.index'));
     }

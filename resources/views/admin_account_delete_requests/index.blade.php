@@ -77,8 +77,11 @@
                                     @if($req->user)
                                         {{ $req->user->name }}
                                         <br><small class="text-muted">ID: {{ $req->user_id }}</small>
+                                        @if($req->user->deleted_at)
+                                            <br><span class="badge badge-danger">محذوف (Soft)</span>
+                                        @endif
                                     @else
-                                        <span class="text-muted">(تم حذف الحساب)</span>
+                                        <span class="text-muted">(مستخدم غير موجود)</span>
                                     @endif
                                 </td>
                                 <td>{{ $req->user->MOP ?? '-' }}</td>
@@ -109,8 +112,18 @@
                                                 data-target="#rejectModal{{ $req->id }}">
                                             <i class="fas fa-times"></i> رفض
                                         </button>
+                                    @elseif($req->status === 'approved')
+                                        <span class="badge badge-success ml-1">تم الحذف</span>
+                                        {{-- Restore Button --}}
+                                        <form action="{{ route('sitemanagement.accountDeleteRequests.restore', $req->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-warning"
+                                                    onclick="return confirm('هل تريد استعادة حساب هذا المستخدم؟')">
+                                                <i class="fas fa-undo"></i> استعادة الحساب
+                                            </button>
+                                        </form>
                                     @else
-                                        <span class="text-muted">تم البت فيه</span>
+                                        <span class="badge badge-secondary">مرفوض</span>
                                     @endif
                                 </td>
                             </tr>
@@ -127,17 +140,21 @@
                                                 <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p class="text-danger">
-                                                    <strong>تحذير:</strong> سيتم حذف حساب المستخدم <strong>{{ $req->user->name ?? '' }}</strong> نهائياً. هل أنت متأكد؟
-                                                </p>
+                                                <div class="alert alert-info">
+                                                    <i class="fas fa-info-circle ml-1"></i>
+                                                    <strong>ملاحظة:</strong> سيتم تعطيل الحساب مؤقتاً <strong>(Soft Delete)</strong> — يمكن استعادته لاحقاً من نفس الصفحة.
+                                                </div>
+                                                <p>المستخدم: <strong>{{ $req->user->name ?? '' }}</strong></p>
                                                 <div class="form-group">
-                                                    <label>ملاحظة (اختياري)</label>
-                                                    <textarea name="admin_note" class="form-control" rows="3" placeholder="ملاحظة للسجل..."></textarea>
+                                                    <label>ملاحظة للسجل (اختياري)</label>
+                                                    <textarea name="admin_note" class="form-control" rows="3" placeholder="ملاحظة..."></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-                                                <button type="submit" class="btn btn-success">تأكيد القبول وحذف الحساب</button>
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fas fa-check ml-1"></i> تأكيد القبول وتعطيل الحساب
+                                                </button>
                                             </div>
                                         </form>
                                     </div>

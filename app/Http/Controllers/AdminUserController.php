@@ -225,4 +225,48 @@ class AdminUserController extends Controller
 
         return Excel::download(new LastUsersExport($filters), $filename);
     }
+
+    /**
+     * Show all soft-deleted users.
+     */
+    public function deletedUsers(Request $request)
+    {
+        $users = User::onlyTrashed();
+
+        if ($request->search_key)
+            $users->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search_key . '%')
+                  ->orWhere('MOP',  'like', '%' . $request->search_key . '%');
+            });
+
+        $users = $users->orderBy('deleted_at', 'DESC')->paginate($request->show ?? 10);
+
+        return view('admin_users.deleted', compact('users'));
+    }
+
+    /**
+     * Restore a soft-deleted user.
+     */
+    public function restoreUser($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        flash('تم استعادة المستخدم بنجاح.')->success();
+
+        return redirect(route('sitemanagement.users.deleted'));
+    }
+
+    /**
+     * Permanently delete a soft-deleted user.
+     */
+    public function forceDeleteUser($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+
+        flash('تم الحذف النهائي للمستخدم بنجاح.')->success();
+
+        return redirect(route('sitemanagement.users.deleted'));
+    }
 }

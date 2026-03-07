@@ -83,9 +83,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
+                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users') || request()->is('sitemanagement/users?*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>{{ __('admin.users') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.users.deleted') }}" class="nav-link {{ request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-slash text-danger"></i>
+                            <p>المستخدمون المحذوفون
+                                @php $deletedCount = \App\Models\User::onlyTrashed()->count(); @endphp
+                                @if($deletedCount > 0)
+                                    <span class="badge badge-danger badge-pill mr-1">{{ $deletedCount }}</span>
+                                @endif
+                            </p>
                         </a>
                     </li>
                     <li class="nav-item">
