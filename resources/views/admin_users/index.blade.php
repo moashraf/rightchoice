@@ -146,7 +146,7 @@
                                            class="btn btn-sm btn-outline-danger ml-2">
                                             <i class="fas fa-times"></i>
                                         </a>
-                                    @else
+                                    @elseif($user->status != 0)
                                         <a onClick="return confirm('هل انت متأكد من تفعيل هذا المستخدم؟')"
                                            data-toggle="tooltip" title="تفعيل المستخدم"
                                            href="{{ route('sitemanagement.users.activate', $user->id) }}"
