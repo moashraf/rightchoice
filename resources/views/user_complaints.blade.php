@@ -88,11 +88,10 @@
 
                                     {{-- Delete Button --}}
                                     <div class="col-md-2 text-center mt-2 mt-md-0">
-                                        <form action="{{ URL::to(Config::get('app.locale').'/user_complaints/'.$complaint->id.'/delete') }}"
+                                        <form action="{{ route('user_complaints.delete', ['id' => $complaint->id]) }}"
                                               method="POST"
                                               onsubmit="return confirm('هل أنت متأكد من حذف هذه الشكوى؟')">
                                             @csrf
-                                            @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger"
                                                     title="حذف الشكوى">
                                                 <i class="fa fa-trash ml-1"></i> حذف

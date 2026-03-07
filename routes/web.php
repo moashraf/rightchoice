@@ -178,7 +178,6 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
         Route::get('/user_complaints', 'App\Http\Controllers\PageController@user_complaints')->name('user_complaints')->middleware(['setLocale']);
-        Route::delete('/user_complaints/{id}/delete', 'App\Http\Controllers\PageController@deleteComplaint')->name('user_complaints.delete')->middleware(['setLocale']);
         /*   Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
         Route::get('/user_companies', 'App\Http\Controllers\CompanyController@userComp')->middleware('setLocale');
         */
@@ -329,6 +328,9 @@ Route::group(['middleware' => 'CheackUser'], function () {
 
     // Account Delete Request
     Route::post('/request-account-delete', 'App\Http\Controllers\AccountDeleteRequestController@store')->name('request-account-delete');
+
+    // Delete Complaint
+    Route::post('/user_complaints/{id}/delete', 'App\Http\Controllers\PageController@deleteComplaint')->name('user_complaints.delete');
 });
 Route::post('/updatedProfileUser', 'App\Http\Controllers\UpdateProfileUserController@UpdateProfileUser');
 Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session');

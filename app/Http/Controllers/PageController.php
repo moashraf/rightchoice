@@ -423,8 +423,8 @@ class PageController extends Controller
     public function deleteComplaint($id)
     {
         $complaint = \App\Models\Complaints::where('id', $id)
-        ->where('user_id', Auth::id())
-            ->first();
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
         $complaint->delete(); // Soft Delete
 
