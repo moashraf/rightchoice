@@ -847,13 +847,11 @@
                                                         <small>السبب: {{ $rejectedDeleteReq->admin_note }}</small><br>
                                                     @endif
                                                 </div>
-                                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-toggle="modal"
-                                                        data-target="#deleteAccountModal">
+                                                <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">
                                                     <i class="fa fa-trash ml-1"></i> طلب حذف الحساب مجدداً
                                                 </button>
                                             @else
-                                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-toggle="modal"
-                                                        data-target="#deleteAccountModal">
+                                                <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">
                                                     <i class="fa fa-trash ml-1"></i> طلب حذف الحساب
                                                 </button>
                                             @endif
@@ -941,5 +939,44 @@
 
     </section>
 
+<script>
+    window.addEventListener('load', function () {
+        var btn = document.getElementById('openDeleteModalBtn');
+        if (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
+                    $('#deleteAccountModal').modal('show');
+                } else {
+                    var modal = document.getElementById('deleteAccountModal');
+                    if (modal) {
+                        modal.style.display = 'block';
+                        modal.classList.add('show');
+                        document.body.classList.add('modal-open');
+                        var backdrop = document.createElement('div');
+                        backdrop.className = 'modal-backdrop fade show';
+                        backdrop.id = 'deleteModalBackdrop';
+                        document.body.appendChild(backdrop);
+                    }
+                }
+            });
+        }
+
+        // Close modal on [data-dismiss="modal"] click
+        document.querySelectorAll('#deleteAccountModal [data-dismiss="modal"]').forEach(function(el){
+            el.addEventListener('click', function(){
+                if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
+                    $('#deleteAccountModal').modal('hide');
+                } else {
+                    var modal = document.getElementById('deleteAccountModal');
+                    if (modal) { modal.style.display = 'none'; modal.classList.remove('show'); document.body.classList.remove('modal-open'); }
+                }
+                var bd = document.getElementById('deleteModalBackdrop');
+                if (bd) bd.remove();
+            });
+        });
+    });
+</script>
 
 </x-layout>
