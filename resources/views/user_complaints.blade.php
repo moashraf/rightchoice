@@ -23,6 +23,14 @@
                         </a>
                     </div>
 
+                    {{-- Flash Message --}}
+                    @if(session('complaint_deleted'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check-circle ml-1"></i> {{ session('complaint_deleted') }}
+                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                        </div>
+                    @endif
+
                     {{-- Stats Badge --}}
                     <div class="mb-3">
                         <span class="badge badge-warning p-2" style="font-size:14px;">
@@ -37,7 +45,7 @@
                                 <div class="row align-items-center">
 
                                     {{-- Aqar Info --}}
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <h6 class="font-weight-bold mb-1">
                                             <i class="fa fa-home ml-1 text-primary"></i>
                                             @if($complaint->aqarinfo)
@@ -57,10 +65,8 @@
                                     </div>
 
                                     {{-- Status --}}
-                                    <div class="col-md-4 text-center mt-2 mt-md-0">
-                                        @php
-                                            $statusVal = $complaint->status;
-                                        @endphp
+                                    <div class="col-md-3 text-center mt-2 mt-md-0">
+                                        @php $statusVal = $complaint->status; @endphp
                                         @if($statusVal == 1 || $statusVal == 'pending' || $statusVal === null)
                                             <span class="badge badge-warning p-2" style="font-size:13px;">
                                                 <i class="fa fa-clock ml-1"></i> قيد المراجعة
@@ -78,6 +84,20 @@
                                                 {{ $statusVal ?? 'غير محدد' }}
                                             </span>
                                         @endif
+                                    </div>
+
+                                    {{-- Delete Button --}}
+                                    <div class="col-md-2 text-center mt-2 mt-md-0">
+                                        <form action="{{ URL::to(Config::get('app.locale').'/user_complaints/'.$complaint->id.'/delete') }}"
+                                              method="POST"
+                                              onsubmit="return confirm('هل أنت متأكد من حذف هذه الشكوى؟')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                    title="حذف الشكوى">
+                                                <i class="fa fa-trash ml-1"></i> حذف
+                                            </button>
+                                        </form>
                                     </div>
 
                                 </div>

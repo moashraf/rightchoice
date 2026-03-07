@@ -419,4 +419,15 @@ class PageController extends Controller
 
         return view('user_complaints', compact('complaints'));
     }
+
+    public function deleteComplaint($id)
+    {
+        $complaint = \App\Models\Complaints::where('id', $id)
+        ->where('user_id', Auth::id())
+            ->first();
+
+        $complaint->delete(); // Soft Delete
+
+        return redirect()->back()->with('complaint_deleted', 'تم حذف الشكوى بنجاح.');
+    }
 }

@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
 
 class Complaints extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     const COMPLAINT_PENDING    = 1;
     const COMPLAINT_INPROGRESS = 2;
