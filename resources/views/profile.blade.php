@@ -5,7 +5,7 @@
                     <div class="main-body">
 
                           <div class="row gutters-sm">
-                            <div class="col-md-4 mb-3">
+                            <div class="Data_data col-md-4 mb-3">
                               <div class="card">
                                 <div class="card-body">
                                   <div class="profile_profile  d-flex flex-column align-items-center text-center">
