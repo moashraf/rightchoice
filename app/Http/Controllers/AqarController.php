@@ -1126,13 +1126,14 @@ public function replaceLongPhoneNumbersWithStars($text) {
         }
         $aqar->district_id = request('district_id');
 
-
-//        dd(request('photos_id'));
+        // Generate unique reference code
+        if (empty($aqar->ref_code)) {
+            $aqar->ref_code = aqar::generateRefCode();
+        }
 
         $aqar->save();
         $id = $aqar->id;
-        // dd($request->mzaya);
-        if($request->mzaya){
+         if($request->mzaya){
              foreach($request->mzaya as $maz)
                 {
 
