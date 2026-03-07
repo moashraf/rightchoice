@@ -14,10 +14,10 @@
         <!-- Styles
            <link rel="stylesheet" href="{{ mix('css/app.css') }}">
             -->
-        <link rel="stylesheet" href="assets/new/app_app.css">
+        <link rel="stylesheet" href="/assets/new/app_app.css">
 
         <!-- Scripts -->
-        <script src="assets/new/app_app.js" defer></script>
+        <script src="/assets/new/app_app.js" defer></script>
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">
