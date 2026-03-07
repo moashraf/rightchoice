@@ -63,6 +63,18 @@ class aqar extends Model
         'slug_en'
     ];
 
+    /**
+     * Generate a unique reference code like RC-A3F9X2
+     */
+    public static function generateRefCode(): string
+    {
+        do {
+            $code = 'RC-' . strtoupper(substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 6));
+        } while (self::withTrashed()->where('ref_code', $code)->exists());
+
+        return $code;
+    }
+
     public function getStatus()
     {
         if ($this->status == 0)

@@ -116,6 +116,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('RemoveImageAqar/{Images}', [App\Http\Controllers\AdminAqarController::class, 'removeImage'])->name('aqars.removeImage');
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints');
 
+    Route::get('users/deleted', [App\Http\Controllers\AdminUserController::class, 'deletedUsers'])->name('users.deleted');
+    Route::post('users/{id}/restore', [App\Http\Controllers\AdminUserController::class, 'restoreUser'])->name('users.restore');
+    Route::delete('users/{id}/force-delete', [App\Http\Controllers\AdminUserController::class, 'forceDeleteUser'])->name('users.forceDelete');
     Route::resource('users', App\Http\Controllers\AdminUserController::class);
     Route::get('users/{user}/block', [App\Http\Controllers\AdminUserController::class, 'block'])->name('users.block');
     Route::get('users/{user}/activate', [App\Http\Controllers\AdminUserController::class, 'activate'])->name('users.activate');
@@ -126,6 +129,12 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers');
 
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index');
+
+    // Account Delete Requests
+    Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index');
+    Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve');
+    Route::post('accountDeleteRequests/{id}/reject', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'reject'])->name('accountDeleteRequests.reject');
+    Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore');
 });
 
 
@@ -168,6 +177,7 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
+        Route::get('/user_complaints', 'App\Http\Controllers\PageController@user_complaints')->name('user_complaints')->middleware(['setLocale']);
         /*   Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
         Route::get('/user_companies', 'App\Http\Controllers\CompanyController@userComp')->middleware('setLocale');
         */
@@ -315,6 +325,12 @@ Route::group(['middleware' => 'CheackUser'], function () {
     Route::post('/remove-user-Ads', 'App\Http\Controllers\AqarController@removeuserAds')->name('remove-user-Ads');
     // Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
     Route::post('/change-user-notfi', 'App\Http\Controllers\PageController@ChangeStatus')->name('change-user-notfi');
+
+    // Account Delete Request
+    Route::post('/request-account-delete', 'App\Http\Controllers\AccountDeleteRequestController@store')->name('request-account-delete');
+
+    // Delete Complaint
+    Route::post('/user_complaints/{id}/delete', 'App\Http\Controllers\PageController@deleteComplaint')->name('user_complaints.delete');
 });
 Route::post('/updatedProfileUser', 'App\Http\Controllers\UpdateProfileUserController@UpdateProfileUser');
 Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session');

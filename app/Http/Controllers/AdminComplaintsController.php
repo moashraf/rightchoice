@@ -25,7 +25,13 @@ class AdminComplaintsController extends AppBaseController
 
     public function index(AdminComplaintsDataTable $complaintsDataTable)
     {
-        return $complaintsDataTable->render('admin_complaints.index');
+        $users    = User::orderBy('name')->pluck('name', 'id');
+        $statuses = [
+            \App\Models\Complaints::COMPLAINT_PENDING    => 'متوقف',
+            \App\Models\Complaints::COMPLAINT_INPROGRESS => 'جاري العمل',
+            \App\Models\Complaints::COMPLAINT_SOLVED     => 'تم الحل',
+        ];
+        return $complaintsDataTable->render('admin_complaints.index', compact('users', 'statuses'));
     }
 
     public function create()

@@ -381,9 +381,7 @@
                                         @endforeach
                                     @endif
 
-
                                 </ul>
-
 
                             </li>
 
@@ -506,6 +504,11 @@
                                             </li>
                                             <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">النقاط</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">
+                                                    <i class="fa fa-exclamation-circle ml-1"></i> شكاواي
+                                                </a>
                                             </li>
                                         @endif
                                         <li>

@@ -109,6 +109,47 @@
                             <small class="text-danger">{{ $errors->first('status') }}</small>
                         </div>
 
+                        <!-- Profile Image Field -->
+                        <div class="form-group col-sm-12">
+                            <label>صورة الملف الشخصي:</label>
+                            <div class="row align-items-center">
+                                <div class="col-sm-2 text-center">
+                                    @if($user->profile_image)
+                                        <img id="profilePreview"
+                                             src="{{ URL::to('/').'/'.$user->profile_image }}"
+                                             alt="profile"
+                                             class="img-thumbnail"
+                                             style="width:100px; height:100px; object-fit:cover; border-radius:50%;">
+                                    @else
+                                        <div id="profilePreviewEmpty"
+                                             style="width:100px; height:100px; border-radius:50%; background:#e9ecef; display:flex; align-items:center; justify-content:center; margin:auto;">
+                                            <i class="fas fa-user fa-2x text-muted"></i>
+                                        </div>
+                                        <img id="profilePreview" src="" alt="profile"
+                                             class="img-thumbnail d-none"
+                                             style="width:100px; height:100px; object-fit:cover; border-radius:50%;">
+                                    @endif
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="imgInput"
+                                               name="img" accept="image/*"
+                                               onchange="previewProfileImage(event)">
+                                        <label class="custom-file-label" for="imgInput">اختر صورة...</label>
+                                    </div>
+                                    <small class="text-muted">JPG, PNG, GIF - بحد أقصى 2MB</small>
+                                    @if($user->profile_image)
+                                        <div class="mt-1">
+                                            <input type="checkbox" name="remove_profile_image" value="1" id="removeImg">
+                                            <label for="removeImg" class="text-danger" style="font-size:13px;">
+                                                <i class="fas fa-trash ml-1"></i> حذف الصورة الحالية
+                                            </label>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -119,4 +160,24 @@
             </form>
         </div>
     </div>
+
+@push('page_scripts')
+<script>
+    function previewProfileImage(event) {
+        var file  = event.target.files[0];
+        var preview = document.getElementById('profilePreview');
+        var empty   = document.getElementById('profilePreviewEmpty');
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+                if (empty) empty.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+@endpush
+
 @endsection

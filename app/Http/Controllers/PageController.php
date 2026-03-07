@@ -409,4 +409,25 @@ class PageController extends Controller
     {
         return Redirect::back();
     }
+
+    public function user_complaints(Request $request)
+    {
+        $complaints = \App\Models\Complaints::where('user_id', Auth::id())
+            ->with('aqarinfo')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('user_complaints', compact('complaints'));
+    }
+
+    public function deleteComplaint($id)
+    {
+        $complaint = \App\Models\Complaints::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $complaint->delete(); // Soft Delete
+
+        return redirect()->back()->with('complaint_deleted', 'تم حذف الشكوى بنجاح.');
+    }
 }

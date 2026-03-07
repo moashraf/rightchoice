@@ -120,10 +120,32 @@ class AdminUserController extends Controller
             }
         }
 
+        // Handle profile image
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            // Delete old image file if exists
+            if ($user->profile_image) {
+                $oldPath = public_path('images/' . $user->profile_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            //dd($request->img);
+            $request->merge(['profile_image' => _uploadFileWeb($request->img, 'images/')]);
+        } elseif ($request->remove_profile_image) {
+            // Delete old image file
+            if ($user->profile_image) {
+                $oldPath = public_path('images/' . $user->profile_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            $request->merge(['profile_image' => null]);
+        }
+
         $user->phone_verfied_sms_status = $request->phone_verfied_sms_status;
         $user->save();
 
-        $user->update($request->except(['_token', '_method', 'current_points']));
+        $user->update($request->except(['_token', '_method', 'current_points', 'img', 'remove_profile_image']));
 
         flash('تم تحديث المستخدم بنجاح.')->success();
 
@@ -224,5 +246,49 @@ class AdminUserController extends Controller
         $filename = 'users_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
 
         return Excel::download(new LastUsersExport($filters), $filename);
+    }
+
+    /**
+     * Show all soft-deleted users.
+     */
+    public function deletedUsers(Request $request)
+    {
+        $users = User::onlyTrashed();
+
+        if ($request->search_key)
+            $users->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search_key . '%')
+                  ->orWhere('MOP',  'like', '%' . $request->search_key . '%');
+            });
+
+        $users = $users->orderBy('deleted_at', 'DESC')->paginate($request->show ?? 10);
+
+        return view('admin_users.deleted', compact('users'));
+    }
+
+    /**
+     * Restore a soft-deleted user.
+     */
+    public function restoreUser($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        flash('تم استعادة المستخدم بنجاح.')->success();
+
+        return redirect(route('sitemanagement.users.deleted'));
+    }
+
+    /**
+     * Permanently delete a soft-deleted user.
+     */
+    public function forceDeleteUser($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+
+        flash('تم الحذف النهائي للمستخدم بنجاح.')->success();
+
+        return redirect(route('sitemanagement.users.deleted'));
     }
 }
