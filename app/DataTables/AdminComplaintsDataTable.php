@@ -31,18 +31,32 @@ class AdminComplaintsDataTable extends DataTable
 
     public function query(Complaints $model)
     {
-        return $model->newQuery()->with(['userinfo', 'aqarinfo']);
+        $query = $model->newQuery()->with(['userinfo', 'aqarinfo']);
+
+        if (request()->filled('user_id')) {
+            $query->where('user_id', request('user_id'));
+        }
+
+        if (request()->filled('status')) {
+            $query->where('status', request('status'));
+        }
+
+        return $query;
     }
 
     public function html()
     {
         return $this->builder()
+            ->setTableId('complaints-table')
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->minifiedAjax('', "
+                data.user_id = $('#filter_user_id').val();
+                data.status  = $('#filter_status').val();
+            ")
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
                 'dom'       => 'Bfrtip',
-                'stateSave' => true,
+                'stateSave' => false,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [],
             ]);
