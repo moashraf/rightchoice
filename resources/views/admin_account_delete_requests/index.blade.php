@@ -20,39 +20,44 @@
         @endif
 
         <div class="card">
-            <form action="{{ route('sitemanagement.accountDeleteRequests.index') }}" class="container justify-content-center m-3 row align-items-end">
-                <div class="row justify-content-center m-2">
-                    <div class="col-md-4">
-                        <label>
-                            بحث باسم المستخدم أو رقمه
+            <div class="card-header">
+                <form action="{{ route('sitemanagement.accountDeleteRequests.index') }}" method="GET">
+                    <div class="row align-items-end">
+                        <div class="col-md-4">
+                            <label>بحث باسم المستخدم أو رقمه</label>
                             <input type="text" class="form-control" name="search_key"
                                    placeholder="بحث ..." value="{{ request('search_key') }}">
-                        </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>الحالة</label>
+                            <select class="form-control" name="filter_status">
+                                <option value="">الكل</option>
+                                <option value="pending"  {{ request('filter_status') == 'pending'  ? 'selected' : '' }}>قيد الانتظار</option>
+                                <option value="approved" {{ request('filter_status') == 'approved' ? 'selected' : '' }}>موافق عليه</option>
+                                <option value="rejected" {{ request('filter_status') == 'rejected' ? 'selected' : '' }}>مرفوض</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>اظهار</label>
+                            <select name="show" class="form-control">
+                                <option value="10">10</option>
+                                <option value="25"  {{ request('show') == 25  ? 'selected' : '' }}>25</option>
+                                <option value="50"  {{ request('show') == 50  ? 'selected' : '' }}>50</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fa fa-filter ml-1"></i> بحث
+                            </button>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ route('sitemanagement.accountDeleteRequests.index') }}" class="btn btn-secondary btn-block">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label>الحالة</label>
-                        <select class="form-control" name="filter_status">
-                            <option value="">الكل</option>
-                            <option value="pending" {{ request('filter_status') == 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
-                            <option value="approved" {{ request('filter_status') == 'approved' ? 'selected' : '' }}>موافق عليه</option>
-                            <option value="rejected" {{ request('filter_status') == 'rejected' ? 'selected' : '' }}>مرفوض</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 m-2">
-                        <label>اظهار</label>
-                        <select name="show" class="form-control">
-                            <option value="10">10</option>
-                            <option value="25" {{ 25 == request('show') ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ 50 == request('show') ? 'selected' : '' }}>50</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <button class="btn btn-success col-md-2">
-                        <i class="fa fa-filter"></i> بحث
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <div class="card-body p-0">
                 <div class="table-responsive">

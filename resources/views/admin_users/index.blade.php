@@ -44,62 +44,62 @@
 
         <div class="card">
 
-            <form action="{{ route('sitemanagement.users.index') }}" class="container justify-content-center m-3 row align-items-end">
-                <div class="row justify-content-center m-2">
-                    <div class="col-md-3">
-                        <label>
-                            بحث
+            <div class="card-header">
+                <form action="{{ route('sitemanagement.users.index') }}" method="GET">
+                    <div class="row align-items-end">
+                        <div class="col-md-3">
+                            <label>بحث</label>
                             <input type="text" class="form-control" name="search_key"
-                                   placeholder="بحث ... " value="{{ request('search_key') }}">
-                        </label>
-                    </div>
-                    <div class="row col-md-3 align-items-center">
-                        <div class="col-md-6">
-                            <label>
-                                اظهار
-                                <select name="show" class="form-control">
-                                    <option value="10">10</option>
-                                    <option value="25" {{ 25 == request('show') ? 'selected' : '' }}>25</option>
-                                    <option value="50" {{ 50 == request('show') ? 'selected' : '' }}>50</option>
-                                    <option value="100" {{ 100 == request('show') ? 'selected' : '' }}>100</option>
-                                </select>
-                            </label>
+                                   placeholder="بحث ..." value="{{ request('search_key') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <label>الحالة</label>
+                            <select class="form-control" name="filter_status">
+                                <option value="">اختر</option>
+                                @foreach(\App\Enums\UserStatusEnum::values() as $key => $case)
+                                    <option value="{{ $case }}" {{ request('filter_status') == $case ? 'selected' : '' }}>{{ $key }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>النوع</label>
+                            <select class="form-control" name="filter_type">
+                                <option value="">اختر</option>
+                                @foreach(\App\Enums\UserTypeEnum::values() as $key => $case)
+                                    <option value="{{ $case }}" {{ request('filter_type') == $case ? 'selected' : '' }}>{{ $key }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>ترتيب حسب</label>
+                            <select class="form-control" name="sortBy">
+                                <option value="">اختر</option>
+                                <option value="0" {{ request('sortBy') == '0' ? 'selected' : '' }}>من الأحدث للأقدم</option>
+                                <option value="1" {{ request('sortBy') == '1' ? 'selected' : '' }}>من الأقدم للأحدث</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <label>اظهار</label>
+                            <select name="show" class="form-control">
+                                <option value="10">10</option>
+                                <option value="25"  {{ request('show') == 25  ? 'selected' : '' }}>25</option>
+                                <option value="50"  {{ request('show') == 50  ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('show') == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fa fa-filter"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-secondary btn-block">
+                                <i class="fa fa-times"></i>
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-2 m-2">
-                    <label>الحالة</label>
-                    <select class="form-control" name="filter_status">
-                        <option value="">اختر</option>
-                        @foreach(\App\Enums\UserStatusEnum::values() as $key => $case)
-                            <option value="{{ $case }}" {{ request('filter_status') !== null ? (request('filter_status') == $case ? 'selected' : '') : '' }}>{{ $key }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 m-2">
-                    <label>النوع</label>
-                    <select class="form-control" name="filter_type">
-                        <option value="">اختر</option>
-                        @foreach(\App\Enums\UserTypeEnum::values() as $key => $case)
-                            <option value="{{ $case }}" {{ request('filter_type') !== null ? (request('filter_type') == $case ? 'selected' : '') : '' }}>{{ $key }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3 m-2">
-                    <label>ترتيب حسب</label>
-                    <select class="form-control" name="sortBy">
-                        <option value="">اختر</option>
-                        <option value="0" {{ request('sortBy') !== null ? (request('sortBy') == 0 ? 'selected' : '') : '' }}>من الاحدث للاقدم</option>
-                        <option value="1" {{ request('sortBy') !== null ? (request('sortBy') == 1 ? 'selected' : '') : '' }}>من الاقدم للاحدث</option>
-                    </select>
-                </div>
-
-                <div class="row justify-content-center">
-                    <button class="btn btn-success col-md-2">
-                        <i class="fa fa-filter"></i>
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <div class="card-body p-0">
                 <div class="table-responsive">
