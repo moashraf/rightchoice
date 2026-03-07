@@ -46,7 +46,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /></noscript>
 <!-- End Facebook Pixel Code -->
 
-<script src="https://t.contentsquare.net/uxa/2a9ac81a6defe.js"></script>
+{{--<script src="https://t.contentsquare.net/uxa/2a9ac81a6defe.js"></script>--}}
 @endif
 
 @if(isset($section) && $section === 'body')

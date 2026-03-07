@@ -126,6 +126,11 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers');
 
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index');
+
+    // Account Delete Requests
+    Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index');
+    Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve');
+    Route::post('accountDeleteRequests/{id}/reject', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'reject'])->name('accountDeleteRequests.reject');
 });
 
 
@@ -315,6 +320,9 @@ Route::group(['middleware' => 'CheackUser'], function () {
     Route::post('/remove-user-Ads', 'App\Http\Controllers\AqarController@removeuserAds')->name('remove-user-Ads');
     // Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
     Route::post('/change-user-notfi', 'App\Http\Controllers\PageController@ChangeStatus')->name('change-user-notfi');
+
+    // Account Delete Request
+    Route::post('/request-account-delete', 'App\Http\Controllers\AccountDeleteRequestController@store')->name('request-account-delete');
 });
 Route::post('/updatedProfileUser', 'App\Http\Controllers\UpdateProfileUserController@UpdateProfileUser');
 Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session');

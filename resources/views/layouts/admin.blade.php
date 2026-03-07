@@ -241,6 +241,18 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.accountDeleteRequests.index') }}" class="nav-link {{ request()->is('sitemanagement/accountDeleteRequests*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-times"></i>
+                            <p>طلبات حذف الحسابات
+                                @php $pendingCount = \App\Models\AccountDeleteRequest::where('status','pending')->count(); @endphp
+                                @if($pendingCount > 0)
+                                    <span class="badge badge-danger badge-pill mr-1">{{ $pendingCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>
                             <p>{{ __('admin.back_to_site') }}</p>

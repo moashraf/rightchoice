@@ -183,12 +183,12 @@
                                         <select   id="inputState" name="AGE" class="myselect">
 
                                             <option value="" >   اختار</option>
- 
+
                                             <option value="1" {{ Auth::user()->AGE == 1 ? 'selected' : '' }}>من 18 - الى
 
                                                 25</option>
 
- 
+
 
                                             <option value="2" {{ Auth::user()->AGE == 2 ? 'selected' : '' }}>من 26 الى
 
@@ -418,21 +418,21 @@
 
                                     </div>
 
-                                </div>   
+                                </div>
 
                                 @endIf
 
                                     <div class="form-group {{ $errors->has('img') ? ' has-error' : '' }}">
 
                                         <label for="logo-company">الصورة الشخصية</label>
-                                                
+
                                         @if(!empty(Auth::user()->profile_image))
                                         <div class="mb-2">
                                             <a href="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" data-toggle="lightbox">
                                                 <img src="{{ URL::to('/').'/images/'.Auth::user()->profile_image}}" alt=""  class="img-fluid img-thumbnail" style="max-width: 60%;" loading="lazy">
                                             </a>
                                         </div>
-                                        @endif        
+                                        @endif
 
                                         <div>
 
@@ -798,40 +798,111 @@
 
 
                                         </p>
- 
 
 
                                         <hr class="hr-add">
 
 
- <a  data-toggle="tooltip" title="التنبيهات  !"  href="{{ URL::to(Config::get('app.locale').'/notification')}}" style="<?php if($countNotifi > 0){ ?> color:gold; <?php }?>  "  ><i class="fa fa-bell"></i></a>
+ <a  data-toggle="tooltip" title="التنبيهات  !"  href="{{ URL::to(Config::get('app.locale').'/notification')}}"
+     style="<?php if($countNotifi > 0){ ?> color:gold; <?php }?>  "  >
+     <i class="fa fa-bell"></i>
+ </a>
 
-<a data-toggle="tooltip" title=" اعلاناتي !" href="{{ URL::to(Config::get('app.locale').'/user_ads') }}" style="margin:0 10px" type="button"><i class="fa fa-building"></i></a>
-  <a   data-toggle="tooltip" title="المفضله !"  href="{{ URL::to(Config::get('app.locale').'/user_wishs')}}" type="button"><i class="fa fa-heart"></i></a>
+<a data-toggle="tooltip" title=" اعلاناتي !" href="{{ URL::to(Config::get('app.locale').'/user_ads') }}"
+   style="margin:0 10px" type="button"><i class="fa fa-building"></i>
+</a>
+  <a   data-toggle="tooltip" title="المفضله !"  href="{{ URL::to(Config::get('app.locale').'/user_wishs')}}"
+       type="button"><i class="fa fa-heart"></i>
+  </a>
 
+                                        {{-- Delete Account Request Button --}}
+                                        <div class="mt-3">
+                                            @if(session('delete_request_success'))
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    <i class="fa fa-check-circle ml-1"></i> {{ session('delete_request_success') }}
+                                                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                </div>
+                                            @endif
+                                            @if(session('delete_request_error'))
+                                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    <i class="fa fa-exclamation-triangle ml-1"></i> {{ session('delete_request_error') }}
+                                                    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                                                </div>
+                                            @endif
 
-                                            
-                                        
+                                            @php
+                                                $pendingDeleteReq = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','pending')->first();
+                                                $rejectedDeleteReq = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','rejected')->orderBy('id','desc')->first();
+                                            @endphp
 
+                                            @if($pendingDeleteReq)
+                                                <div class="alert alert-warning" style="font-size:13px;">
+                                                    <i class="fa fa-clock ml-1"></i> <strong>طلب حذف الحساب قيد المراجعة</strong><br>
+                                                    <small>تم تقديم الطلب بتاريخ {{ $pendingDeleteReq->created_at->format('Y-m-d') }}</small>
+                                                </div>
+                                            @elseif($rejectedDeleteReq && !$pendingDeleteReq)
+                                                <div class="alert alert-danger" style="font-size:13px;">
+                                                    <i class="fa fa-times-circle ml-1"></i> <strong>تم رفض طلب حذف حسابك</strong><br>
+                                                    @if($rejectedDeleteReq->admin_note)
+                                                        <small>السبب: {{ $rejectedDeleteReq->admin_note }}</small><br>
+                                                    @endif
+                                                </div>
+                                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-toggle="modal"
+                                                        data-target="#deleteAccountModal">
+                                                    <i class="fa fa-trash ml-1"></i> طلب حذف الحساب مجدداً
+                                                </button>
+                                            @else
+                                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-toggle="modal"
+                                                        data-target="#deleteAccountModal">
+                                                    <i class="fa fa-trash ml-1"></i> طلب حذف الحساب
+                                                </button>
+                                            @endif
+                                        </div>
 
-
+                                        {{-- Delete Account Modal --}}
+                                        <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <form action="{{ URL::to('request-account-delete') }}" method="POST">
+                                                        @csrf
+                                                        <div class="modal-header" style="background:#dc3545; color:#fff;">
+                                                            <h5 class="modal-title" id="deleteAccountModalLabel">
+                                                                <i class="fa fa-trash ml-1"></i> طلب حذف الحساب
+                                                            </h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="alert alert-warning">
+                                                                <i class="fa fa-exclamation-triangle ml-1"></i>
+                                                                <strong>تنبيه:</strong> سيتم إرسال طلب حذف حسابك للإدارة للمراجعة. سيتم إبلاغك بالقرار.
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="deleteReason"><strong>سبب طلب الحذف <span style="color:red">*</span></strong></label>
+                                                                <textarea id="deleteReason" name="reason" class="form-control" rows="4"
+                                                                    placeholder="اكتب سبب رغبتك في حذف الحساب..." required minlength="10"></textarea>
+                                                                @error('reason')
+                                                                    <small class="text-danger">{{ $message }}</small>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fa fa-paper-plane ml-1"></i> إرسال الطلب
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                              <!--         <a href="{{ URL::to(Config::get('app.locale').'/notification')}}" class="btn btn-info">
-                                               
-                                               
+
+
                                                 {{ trans('langsite.Notifications')}}
                                                @if($countNotifi > 0)<span class="badge badgedanger badge-pill noti-icon-badge ml-1">{{$countNotifi}}</span>@endif</a>-->
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -840,24 +911,11 @@
 
 
 
-
-
-
-
                                 </div>
 
 
 
-
-
-
-
                             </div>
-
-
-
-
-
 
 
                         </div>
@@ -866,92 +924,22 @@
 
 
 
-<div class="sticky mt-3">
-                                    <x-purchase-now />
+                <div class="sticky mt-3">
+                   <x-purchase-now />
 
-</div>
-        
-
-
-
-
-
-
-
-
-
-
-
-
+                </div>
 
                     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
-
-
-
-
-
-
-
-
 
             </div>
 
 
-
-
-
-
-
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </section>
-
-
-
- 
-
-
-
-
 
 
 </x-layout>
