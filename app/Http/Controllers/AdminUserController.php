@@ -120,10 +120,32 @@ class AdminUserController extends Controller
             }
         }
 
+        // Handle profile image
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            // Delete old image file if exists
+            if ($user->profile_image) {
+                $oldPath = public_path('images/' . $user->profile_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            //dd($request->img);
+            $request->merge(['profile_image' => _uploadFileWeb($request->img, 'images/')]);
+        } elseif ($request->remove_profile_image) {
+            // Delete old image file
+            if ($user->profile_image) {
+                $oldPath = public_path('images/' . $user->profile_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+            $request->merge(['profile_image' => null]);
+        }
+
         $user->phone_verfied_sms_status = $request->phone_verfied_sms_status;
         $user->save();
 
-        $user->update($request->except(['_token', '_method', 'current_points']));
+        $user->update($request->except(['_token', '_method', 'current_points', 'img', 'remove_profile_image']));
 
         flash('تم تحديث المستخدم بنجاح.')->success();
 

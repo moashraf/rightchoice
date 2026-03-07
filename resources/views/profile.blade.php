@@ -3,18 +3,18 @@
 <section id="profile-info" class="bg-light" style="direction: rtl;">
                 <div class="container">
                     <div class="main-body">
-                    
+
                           <div class="row gutters-sm">
                             <div class="col-md-4 mb-3">
                               <div class="card">
                                 <div class="card-body">
-                                  <div class="d-flex flex-column align-items-center text-center">
+                                  <div class="profile_profile  d-flex flex-column align-items-center text-center">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150" loading="lazy" >
                                     <div class="mt-3">
                                       <h4>علي حسن</h4>
 									  <p><strong>عدد النقاط</strong> 10,000</p>
 									  <hr class="hr-add">
-									  
+
 									  <a href=""class="btn btn-info">الباقات</a>
 									  <a href="" type="button" class="btn btn-info">اعلاناتي</a>
 									  <a href="#" class="btn btn-light mt-3 ml-2 mr-2"> قائمه المفضلات <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
@@ -26,15 +26,15 @@
                               </div>
                               <div class="card mt-3">
                                 <form class="list-group list-group-flush">
-                                  
+
 									<li  class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 										<i class="ti-facebook text-info"></i>
 										<div class="text-secondary">
                                         <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="https/ialyzaafan.com">
                                       </div>
-                                       
+
                                 </li>
-                                  
+
                                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 									<i class="ti-youtube text-danger"></i>
 									<div class="text-secondary">
@@ -55,7 +55,7 @@
                                   </li>
                                 </form>
                               </div>
-                              
+
                             </div>
                             <div class="col-md-8">
                               <div class="card mb-3">
@@ -69,12 +69,12 @@
                                         <label for="exampleInputEmail1">البريد الاكترومي</label>
                                         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ialyzaafan@gmail.com">
                                       </div>
-                                     
+
                                       <div class="form-group">
                                         <label for="exampleInputEmail1">الهاتف</label>
                                         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="01119255735">
                                       </div>
-                                
+
                                       <div class="form-group">
                                         <label for="inputState">العمر</label>
                                 <select id="inputState" class="form-control">
@@ -94,7 +94,7 @@
                                   <option>بائع و مشتري</option>
                                 </select>
                                     </div>
-									
+
 									<div class="accordion" id="accordionExample">
                                         <div class="accordion-item">
                                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -116,31 +116,31 @@
 													<label for="password">اعد ادخال كامه المرور الجديده</label>
 													<input type="password" class="form-control" id="password" aria-describedby="password" placeholder="***********">
 												  </div>
-												  <a href="./forget-pass.html">هل نسيت كلمه المرور ؟</a>                                          
+												  <a href="./forget-pass.html">هل نسيت كلمه المرور ؟</a>
 												  </div>
                                         </div>
 
 
                                     </div>
-									
-                                                                                                                                                                                                                                                 
+
+
                                   </form>
 								  <div class="links">
-								
+
 								</div>
                                 </div>
                               </div>
 							  <a href="" type="button" class="btn btn-primary">حفظ</a>
 
-                              
+
                             </div>
 
                           </div>
-                          
+
                         </div>
                     </div>
-               
-                
+
+
             </section>
 
 </x-layout>

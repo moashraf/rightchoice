@@ -14,17 +14,17 @@ Use Redirect;
 
 class UpdateProfileUserController extends Controller
 {
-   
+
    public function UpdateProfileUser(Request $request)
-    {   
+    {
         $vendor = Auth::user();
-        
+
         $oldmob= $vendor->MOP;
-        
+
         $locale=   app()->getLocale();
 
         $random_mass_num= random_int(111, 10000);
-        
+
         if ($request->isMethod('post')) {
             $rules = [
                 'name'                  => 'required|max:255',
@@ -45,44 +45,32 @@ class UpdateProfileUserController extends Controller
             if ($Validator->fails()) {
                 return redirect()->back()->withErrors($Validator)->withInput($request->all());
             } else {
-              
+
                 try {
 
                       //Upload Image
-                       if ($request->has('img') && !is_null($request->img))
+                       if ($request->hasFile('img') && !is_null($request->img))
                        {
-                                
-                               $photoexplode = $request->img->getClientOriginalName();
-                               $photoexplode = explode(".", $photoexplode);
-                           //    $namerand = '-'.rand(1,900).'-';
-                                                           $namerand = '-'.rand(1,999900).rand(1,999900).rand(1,999900).'-';
-
-                               $namerand.= $photoexplode[0];
-                               $imageNameGallery2 = $namerand . '.' . $request->img->getClientOriginalExtension();
-                               $request->img->move(base_path() . '/public/images/', $imageNameGallery2);
-                               $input['img'] =    $imageNameGallery2; 
-                     
-                               $request->merge(['profile_image' =>  $input['img']]);
-                                  
+                               $request->merge(['profile_image' => _uploadFileWeb($request->img, 'user/')]);
                        }
                        //Change Password
                        if($request->old_password && $request->password){
-                           if (Hash::check($request->old_password, $vendor->password)) { 
-                            
+                           if (Hash::check($request->old_password, $vendor->password)) {
+
                                    $request->merge(['password' =>  Hash::make($request->password)]);
-                                   
+
                                    //update User
                                     $vendor->update($request->only(['name','email','MOP','password','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
-                                    
+
                                     session()->flash('success', 'تم التعديل بنجاح');
                                      return Redirect::back();
-                             
+
                             } else {
                                    session()->flash('error', 'كلمة المرور القديمة غير صحيحة');
                                    return Redirect::back();
                             }
                         }else{
-                            
+
                             //update User
                             $vendor->update($request->only(['name','email','MOP','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
 
@@ -90,19 +78,19 @@ class UpdateProfileUserController extends Controller
                                  session()->flash('success', 'تم التعديل بنجاح');
                              return Redirect::back();
                             }else{
-                                
-                                
+
+
 
 
                             }
                         }
                 }catch (\Exception $ex) {
                     session()->flash('error', 'عفوا, يوجد خطأ ما');
-            
+
                     return Redirect::back()->withInput($request->all());
                 }
             }
         }
-       
-    } 
+
+    }
 }
