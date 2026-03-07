@@ -814,6 +814,10 @@
   <a   data-toggle="tooltip" title="المفضله !"  href="{{ URL::to(Config::get('app.locale').'/user_wishs')}}"
        type="button"><i class="fa fa-heart"></i>
   </a>
+<a data-toggle="tooltip" title="شكاواي !" href="{{ URL::to(Config::get('app.locale').'/user_complaints')}}"
+   style="margin:0 10px" type="button">
+    <i class="fa fa-exclamation-circle"></i>
+</a>
 
                                         {{-- Delete Account Request Button --}}
                                         <div class="mt-3">

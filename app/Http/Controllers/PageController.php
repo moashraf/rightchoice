@@ -409,4 +409,14 @@ class PageController extends Controller
     {
         return Redirect::back();
     }
+
+    public function user_complaints(Request $request)
+    {
+        $complaints = \App\Models\Complaints::where('user_id', Auth::id())
+            ->with('aqarinfo')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('user_complaints', compact('complaints'));
+    }
 }

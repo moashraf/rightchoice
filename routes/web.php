@@ -177,6 +177,7 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
+        Route::get('/user_complaints', 'App\Http\Controllers\PageController@user_complaints')->name('user_complaints')->middleware(['setLocale']);
         /*   Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
         Route::get('/user_companies', 'App\Http\Controllers\CompanyController@userComp')->middleware('setLocale');
         */
