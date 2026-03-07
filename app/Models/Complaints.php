@@ -26,6 +26,12 @@ class Complaints extends Model
         'status',
     ];
 
+    public static $rules = [
+        'user_id'  => 'required',
+        'aqars_id' => 'required',
+       // 'message'  => 'required',
+    ];
+
     public function userinfo()
     {
         return $this->belongsTo(User::class, 'user_id');
