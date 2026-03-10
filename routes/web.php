@@ -161,9 +161,9 @@ Route::get('/dashboard', function () {
 Route::group(['prefix' => '{locale?}'], function () {
      Route::group(['middleware' => 'CheackUser'], function () {
         Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
-
         Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale']);
-        Route::get('/governorates/search', 'App\Http\Controllers\AqarController@searchGovernorates')->middleware(['setLocale']);
+        Route::get('/governorates/search', 'App\Http\Controllers\AqarController@searchGovernorates')
+            ->middleware(['setLocale']);
         Route::get('/dashboard', function () {
 
             return View('dashboard');
@@ -228,7 +228,8 @@ Route::group(['prefix' => '{locale?}'], function () {
     // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
     // Route::get('/tamyeez_vip/{vipid}/{aqarSingle_id}', 'App\Http\Controllers\PricController@tamyeez_vip')->middleware('setLocale');
 
-    Route::get('/search', 'App\Http\Controllers\AqarController@search')->name('search')->middleware('setLocale');
+    Route::get('/search', 'App\Http\Controllers\AqarController@search')->name('search')
+        ->middleware('setLocale');
     Route::get('/filter', 'App\Http\Controllers\AqarController@filter')->name('filter')->middleware('setLocale');
     Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
