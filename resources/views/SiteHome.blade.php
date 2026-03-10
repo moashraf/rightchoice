@@ -14,7 +14,7 @@
 
 					<div class="row">
 						<div class=" form_form col-lg-6 col-md-6 order-2 order-lg-1 d-none d-md-block">
-							<form action="{{ Config::get('app.locale') }}/search" method="GET">
+							<form action="{{ url(App::getLocale() . '/search') }}" method="GET">
 
 								<div class="hero-search-wrap">
 									<div class="hero-search">
