@@ -550,6 +550,7 @@
                                     <th>اسم المستخدم</th>
                                     <th>رقم الموبايل</th>
                                     <th style="width:150px;">عدد العقارات</th>
+                                    <th style="width:100px;">التفاصيل</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -567,7 +568,14 @@
                                     <td><strong>{{ $item->name }}</strong></td>
                                     <td>{{ $item->MOP ?? '' }}</td>
                                     <td>
-                                        <span class="badge badge-success p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                        <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="text-decoration-none">
+                                            <span class="badge badge-success p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-building ml-1"></i> عقاراته
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach

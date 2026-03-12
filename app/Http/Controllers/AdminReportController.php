@@ -109,12 +109,12 @@ class AdminReportController extends Controller
         // ===== أكثر المستخدمين نشاطاً (عدد العقارات) =====
         $topUsersByAqars = DB::table('aqar')
             ->join('users', 'aqar.user_id', '=', 'users.id')
-            ->select('users.name', 'users.MOP', DB::raw('count(aqar.id) as total'))
+            ->select('users.id', 'users.name', 'users.MOP', DB::raw('count(aqar.id) as total'))
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
             })
-            ->groupBy('users.name', 'users.MOP')
+            ->groupBy('users.id', 'users.name', 'users.MOP')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
