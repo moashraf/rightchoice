@@ -109,12 +109,12 @@ class AdminReportController extends Controller
         // ===== أكثر المستخدمين نشاطاً (عدد العقارات) =====
         $topUsersByAqars = DB::table('aqar')
             ->join('users', 'aqar.user_id', '=', 'users.id')
-            ->select('users.name', 'users.MOP', DB::raw('count(aqar.id) as total'))
+            ->select('users.id', 'users.name', 'users.MOP', DB::raw('count(aqar.id) as total'))
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
             })
-            ->groupBy('users.name', 'users.MOP')
+            ->groupBy('users.id', 'users.name', 'users.MOP')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
@@ -122,6 +122,39 @@ class AdminReportController extends Controller
         return view('admin_reports.index', compact(
             'stats', 'fromDate', 'toDate', 'invitedByStats', 'userTypeStats',
             'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars'
+        ));
+    }
+
+    public function invitedByDetails(Request $request)
+    {
+        $invitedBy = $request->input('invited_by');
+        $fromDate  = $request->input('from_date');
+        $toDate    = $request->input('to_date');
+
+        $users = User::query()
+            ->when($invitedBy, function ($q) use ($invitedBy) {
+                $q->where('invited_by', $invitedBy);
+            })
+            ->when($fromDate, function ($q) use ($fromDate) {
+                $q->whereDate('created_at', '>=', $fromDate);
+            })
+            ->when($toDate, function ($q) use ($toDate) {
+                $q->whereDate('created_at', '<=', $toDate);
+            })
+            ->orderByDesc('id')
+            ->paginate(20)
+            ->appends($request->all());
+
+        // Summary of all invited_by values
+        $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
+            ->whereNotNull('invited_by')
+            ->where('invited_by', '!=', '')
+            ->groupBy('invited_by')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('admin_reports.invited_by_details', compact(
+            'users', 'invitedBy', 'fromDate', 'toDate', 'invitedByStats'
         ));
     }
 }
