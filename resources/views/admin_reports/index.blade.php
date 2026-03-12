@@ -157,62 +157,70 @@
 
         {{-- العقارات النشطة --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #28a745 !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">عقارات نشطة</p>
-                        <h2 class="font-weight-bold mb-0" style="color:#28a745;">{{ number_format($stats['aqars_active']) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:#28a745; opacity:.25;">
-                        <i class="fas fa-check-circle"></i>
+            <a href="{{ route('sitemanagement.aqars.index', ['filter_status' => 1]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #28a745 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">عقارات نشطة</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#28a745;">{{ number_format($stats['aqars_active']) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:#28a745; opacity:.25;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         {{-- عقارات في الانتظار --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #ffc107 !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">عقارات في الانتظار</p>
-                        <h2 class="font-weight-bold mb-0" style="color:#ffc107;">{{ number_format($stats['aqars_pending']) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:#ffc107; opacity:.25;">
-                        <i class="fas fa-hourglass-half"></i>
+            <a href="{{ route('sitemanagement.aqars.index', ['filter_status' => 0]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #ffc107 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">عقارات في الانتظار</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#ffc107;">{{ number_format($stats['aqars_pending']) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:#ffc107; opacity:.25;">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         {{-- عقارات متوقفة --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #dc3545 !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">عقارات متوقفة</p>
-                        <h2 class="font-weight-bold mb-0" style="color:#dc3545;">{{ number_format($stats['aqars_inactive']) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:#dc3545; opacity:.25;">
-                        <i class="fas fa-times-circle"></i>
+            <a href="{{ route('sitemanagement.aqars.index', ['filter_status' => 2]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #dc3545 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">عقارات متوقفة</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#dc3545;">{{ number_format($stats['aqars_inactive']) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:#dc3545; opacity:.25;">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         {{-- عقارات VIP --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #e83e8c !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">عقارات VIP</p>
-                        <h2 class="font-weight-bold mb-0" style="color:#e83e8c;">{{ number_format($stats['aqars_vip']) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:#e83e8c; opacity:.25;">
-                        <i class="fas fa-star"></i>
+            <a href="{{ route('sitemanagement.aqars.index', ['filter_vip' => 1]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #e83e8c !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">عقارات VIP</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#e83e8c;">{{ number_format($stats['aqars_vip']) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:#e83e8c; opacity:.25;">
+                            <i class="fas fa-star"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -367,17 +375,19 @@
 
         {{-- تواصل المستخدمين مع العقارات --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #795548 !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">تواصل مع العقارات</p>
-                        <h2 class="font-weight-bold mb-0" style="color:#795548;">{{ number_format($stats['userContacts']) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:#795548; opacity:.25;">
-                        <i class="fas fa-phone-alt"></i>
+            <a href="{{ route('sitemanagement.users.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #795548 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">تواصل مع العقارات</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#795548;">{{ number_format($stats['userContacts']) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:#795548; opacity:.25;">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         {{-- اشتراكات الباقات --}}
@@ -501,17 +511,19 @@
         @endphp
         @foreach($userTypeStats as $typeStat)
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid {{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }} !important;">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <div>
-                        <p class="text-muted mb-1" style="font-size:14px;">{{ $typeNames[$typeStat->TYPE] ?? 'غير محدد' }}</p>
-                        <h2 class="font-weight-bold mb-0" style="color:{{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }};">{{ number_format($typeStat->total) }}</h2>
-                    </div>
-                    <div style="font-size:42px; color:{{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }}; opacity:.25;">
-                        <i class="fas {{ $typeIcons[$typeStat->TYPE] ?? 'fa-user' }}"></i>
+            <a href="{{ route('sitemanagement.users.index', ['filter_type' => $typeStat->TYPE]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid {{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }} !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">{{ $typeNames[$typeStat->TYPE] ?? 'غير محدد' }}</p>
+                            <h2 class="font-weight-bold mb-0" style="color:{{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }};">{{ number_format($typeStat->total) }}</h2>
+                        </div>
+                        <div style="font-size:42px; color:{{ $typeColors[$typeStat->TYPE] ?? '#6c757d' }}; opacity:.25;">
+                            <i class="fas {{ $typeIcons[$typeStat->TYPE] ?? 'fa-user' }}"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         @endforeach
     </div>
@@ -589,19 +601,31 @@
                                     <th>الداعي (Invited By)</th>
                                     <th style="width:150px;">عدد المدعوين</th>
                                     <th style="width:200px;">النسبة</th>
+                                    <th style="width:120px;">التفاصيل</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $totalInvited = $invitedByStats->sum('total'); @endphp
                                 @foreach($invitedByStats as $index => $item)
+                                @php
+                                    $detailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
+                                        'invited_by' => $item->invited_by,
+                                        'from_date'  => $fromDate ?? null,
+                                        'to_date'    => $toDate ?? null,
+                                    ]));
+                                @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>
-                                        <i class="fas fa-user text-primary ml-1"></i>
-                                        <strong>{{ $item->invited_by }}</strong>
+                                        <a href="{{ $detailsUrl }}" class="text-decoration-none">
+                                            <i class="fas fa-user text-primary ml-1"></i>
+                                            <strong>{{ $item->invited_by }}</strong>
+                                        </a>
                                     </td>
                                     <td>
-                                        <span class="badge badge-info p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                        <a href="{{ $detailsUrl }}" class="text-decoration-none">
+                                            <span class="badge badge-info p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="progress" style="height:20px;">
@@ -612,14 +636,28 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td>
+                                        <a href="{{ $detailsUrl }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye ml-1"></i> عرض
+                                        </a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                             <tfoot class="bg-light">
                                 <tr>
                                     <td colspan="2" class="font-weight-bold">الإجمالي</td>
-                                    <td><span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($totalInvited) }}</span></td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="text-decoration-none">
+                                            <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($totalInvited) }}</span>
+                                        </a>
+                                    </td>
                                     <td><strong>100%</strong></td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="btn btn-sm btn-dark">
+                                            <i class="fas fa-list ml-1"></i> الكل
+                                        </a>
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
