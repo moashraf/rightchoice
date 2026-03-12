@@ -46,7 +46,7 @@
 
             <div class="card-header">
                 <form action="{{ route('sitemanagement.users.index') }}" method="GET">
-                    <div class="row align-items-end">
+                    <div class=" users_users_users row align-items-end">
                         <div class="col-md-3">
                             <label>بحث</label>
                             <input type="text" class="form-control" name="search_key"
@@ -57,7 +57,9 @@
                             <select class="form-control" name="filter_status">
                                 <option value="">اختر</option>
                                 @foreach(\App\Enums\UserStatusEnum::values() as $key => $case)
-                                    <option value="{{ $case }}" {{ request('filter_status') == $case ? 'selected' : '' }}>{{ $key }}</option>
+                                    <option value="{{ $case }}" {{ request('filter_status') !== null && request('filter_status') !== '' && (string)request('filter_status') === (string)$case ? 'selected' : '' }}>
+                                        {{ $key }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
