@@ -83,59 +83,156 @@ Route::middleware('admin-web')->group(function () {
 |--------------------------------------------------------------------------
 | Admin Protected Routes
 |--------------------------------------------------------------------------
+| All routes here require admin-web middleware + adminfCheckAdmin (role gate).
+| Individual routes are further restricted with fine-grained `permission`
+| middleware. The viewer role can access *.view permissions only; user role
+| has no admin panel access; admin role has access to everything.
+|--------------------------------------------------------------------------
 */
 Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web', 'adminfCheckAdmin'])->group(function () {
-    Route::resource('blogs', App\Http\Controllers\AdminBlogController::class);
+
+    // ── Blogs ────────────────────────────────────────────────────────────
+    Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
+        ->middleware([
+            'index,show'    => 'permission:blogs.view',
+            'create,store'  => 'permission:blogs.create',
+            'edit,update'   => 'permission:blogs.update',
+            'destroy'       => 'permission:blogs.delete',
+        ]);
+
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class);
-    Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class);
+
+    // ── Settings ─────────────────────────────────────────────────────────
+    Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
+        ->middleware('permission:settings.manage');
+
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
-    Route::resource('priceVips', App\Http\Controllers\AdminPriceVipController::class);
+    Route::resource('priceVips', App\Http\Controllers\AdminPriceVipController::class)
+        ->middleware('permission:pricing.manage');
     Route::resource('pages', App\Http\Controllers\AdminPagesController::class);
-    Route::resource('companies', App\Http\Controllers\AdminCompanyController::class);
+
+    // ── Companies ────────────────────────────────────────────────────────
+    Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
+        ->middleware([
+            'index,show'    => 'permission:companies.view',
+            'create,store'  => 'permission:companies.create',
+            'edit,update'   => 'permission:companies.update',
+            'destroy'       => 'permission:companies.delete',
+        ]);
+
     Route::resource('mzayas', App\Http\Controllers\AdminMzayaController::class);
-    Route::resource('priceingSales', App\Http\Controllers\AdminPriceingSaleController::class);
-    Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class);
-    Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class);
-    Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class);
-    Route::resource('floors', App\Http\Controllers\AdminFloorController::class);
-    Route::resource('finishTypes', App\Http\Controllers\AdminFinishTypeController::class);
-    Route::resource('districts', App\Http\Controllers\AdminDistrictController::class);
-    Route::resource('governrates', App\Http\Controllers\AdminGovernrateController::class);
-    Route::resource('compounds', App\Http\Controllers\AdminCompoundController::class);
-    Route::resource('callTimes', App\Http\Controllers\AdminCallTimeController::class);
-    Route::resource('aqarCategories', App\Http\Controllers\AdminAqarCategoryController::class);
-    Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class);
-    Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class);
-    Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class);
-    Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class);
-    Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class);
-    Route::resource('aqars', App\Http\Controllers\AdminAqarController::class);
+    Route::resource('priceingSales', App\Http\Controllers\AdminPriceingSaleController::class)
+        ->middleware('permission:pricing.manage');
+    Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class)
+        ->middleware('permission:settings.manage');
+
+    // ── Location Data ────────────────────────────────────────────────────
+    Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('floors', App\Http\Controllers\AdminFloorController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('finishTypes', App\Http\Controllers\AdminFinishTypeController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('districts', App\Http\Controllers\AdminDistrictController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('governrates', App\Http\Controllers\AdminGovernrateController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('compounds', App\Http\Controllers\AdminCompoundController::class)
+        ->middleware('permission:locations.view');
+    Route::resource('callTimes', App\Http\Controllers\AdminCallTimeController::class)
+        ->middleware('permission:settings.manage');
+    Route::resource('aqarCategories', App\Http\Controllers\AdminAqarCategoryController::class)
+        ->middleware('permission:locations.manage');
+    Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class)
+        ->middleware('permission:settings.manage');
+
+    // ── Notifications ────────────────────────────────────────────────────
+    Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
+        ->middleware([
+            'index,show'    => 'permission:notifications.view',
+            'create,store,edit,update,destroy' => 'permission:notifications.manage',
+        ]);
+
+    // ── Contact Forms ────────────────────────────────────────────────────
+    Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
+        ->middleware([
+            'index,show'    => 'permission:contact_forms.view',
+            'destroy'       => 'permission:contact_forms.delete',
+        ]);
+
+    Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class)
+        ->middleware('permission:settings.manage');
+
+    // ── Complaints ───────────────────────────────────────────────────────
+    Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
+        ->middleware([
+            'index,show'    => 'permission:complaints.view',
+            'edit,update'   => 'permission:complaints.update',
+            'destroy'       => 'permission:complaints.delete',
+        ]);
+
+    // ── Real Estate (Aqars) ──────────────────────────────────────────────
+    Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
+        ->middleware([
+            'index,show'    => 'permission:aqars.view',
+            'create,store'  => 'permission:aqars.create',
+            'edit,update'   => 'permission:aqars.update',
+            'destroy'       => 'permission:aqars.delete',
+        ]);
     Route::post('ajax-getpropertyByCat', [App\Http\Controllers\AdminAqarController::class, 'getPropertyByCat'])->name('aqars.getPropertyByCat');
     Route::post('ajax-getdistrictByGovernrate', [App\Http\Controllers\AdminAqarController::class, 'getDistrictByGovernrate'])->name('aqars.getDistrictByGovernrate');
     Route::post('ajax-getPhoneUser', [App\Http\Controllers\AdminAqarController::class, 'getPhoneUser'])->name('aqars.getPhoneUser');
-    Route::get('RemoveImageAqar/{Images}', [App\Http\Controllers\AdminAqarController::class, 'removeImage'])->name('aqars.removeImage');
-    Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints');
+    Route::get('RemoveImageAqar/{Images}', [App\Http\Controllers\AdminAqarController::class, 'removeImage'])->name('aqars.removeImage')
+        ->middleware('permission:aqars.update');
+    Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints')
+        ->middleware('permission:aqars.refund');
 
-    Route::get('users/deleted', [App\Http\Controllers\AdminUserController::class, 'deletedUsers'])->name('users.deleted');
-    Route::post('users/{id}/restore', [App\Http\Controllers\AdminUserController::class, 'restoreUser'])->name('users.restore');
-    Route::delete('users/{id}/force-delete', [App\Http\Controllers\AdminUserController::class, 'forceDeleteUser'])->name('users.forceDelete');
-    Route::resource('users', App\Http\Controllers\AdminUserController::class);
-    Route::get('users/{user}/block', [App\Http\Controllers\AdminUserController::class, 'block'])->name('users.block');
-    Route::get('users/{user}/activate', [App\Http\Controllers\AdminUserController::class, 'activate'])->name('users.activate');
-    Route::get('users/{user}/delete', [App\Http\Controllers\AdminUserController::class, 'destroy'])->name('users.delete');
-    Route::get('users/{user}/aqars', [App\Http\Controllers\AdminUserController::class, 'aqars'])->name('users.aqars');
-    Route::get('users/{user}/contact-forms', [App\Http\Controllers\AdminUserController::class, 'contactForms'])->name('users.contactForms');
-    Route::get('users/{user}/packages', [App\Http\Controllers\AdminUserController::class, 'packages'])->name('users.packages');
-    Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers');
+    // ── Users ────────────────────────────────────────────────────────────
+    Route::get('users/deleted', [App\Http\Controllers\AdminUserController::class, 'deletedUsers'])->name('users.deleted')
+        ->middleware('permission:users.delete');
+    Route::post('users/{id}/restore', [App\Http\Controllers\AdminUserController::class, 'restoreUser'])->name('users.restore')
+        ->middleware('permission:users.delete');
+    Route::delete('users/{id}/force-delete', [App\Http\Controllers\AdminUserController::class, 'forceDeleteUser'])->name('users.forceDelete')
+        ->middleware('permission:users.delete');
+    Route::resource('users', App\Http\Controllers\AdminUserController::class)
+        ->middleware([
+            'index,show'    => 'permission:users.view',
+            'create,store'  => 'permission:users.create',
+            'edit,update'   => 'permission:users.update',
+            'destroy'       => 'permission:users.delete',
+        ]);
+    Route::get('users/{user}/block', [App\Http\Controllers\AdminUserController::class, 'block'])->name('users.block')
+        ->middleware('permission:users.block');
+    Route::get('users/{user}/activate', [App\Http\Controllers\AdminUserController::class, 'activate'])->name('users.activate')
+        ->middleware('permission:users.block');
+    Route::get('users/{user}/delete', [App\Http\Controllers\AdminUserController::class, 'destroy'])->name('users.delete')
+        ->middleware('permission:users.delete');
+    Route::get('users/{user}/aqars', [App\Http\Controllers\AdminUserController::class, 'aqars'])->name('users.aqars')
+        ->middleware('permission:users.view');
+    Route::get('users/{user}/contact-forms', [App\Http\Controllers\AdminUserController::class, 'contactForms'])->name('users.contactForms')
+        ->middleware('permission:users.view');
+    Route::get('users/{user}/packages', [App\Http\Controllers\AdminUserController::class, 'packages'])->name('users.packages')
+        ->middleware('permission:users.view');
+    Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers')
+        ->middleware('permission:users.export');
 
-    Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index');
-    Route::get('reports/invited-by-details', [App\Http\Controllers\AdminReportController::class, 'invitedByDetails'])->name('reports.invitedByDetails');
+    // ── Reports ──────────────────────────────────────────────────────────
+    Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index')
+        ->middleware('permission:reports.view');
+    Route::get('reports/invited-by-details', [App\Http\Controllers\AdminReportController::class, 'invitedByDetails'])->name('reports.invitedByDetails')
+        ->middleware('permission:reports.view');
 
-    // Account Delete Requests
-    Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index');
-    Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve');
-    Route::post('accountDeleteRequests/{id}/reject', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'reject'])->name('accountDeleteRequests.reject');
-    Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore');
+    // ── Account Delete Requests ──────────────────────────────────────────
+    Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index')
+        ->middleware('permission:users.view');
+    Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve')
+        ->middleware('permission:users.delete');
+    Route::post('accountDeleteRequests/{id}/reject', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'reject'])->name('accountDeleteRequests.reject')
+        ->middleware('permission:users.delete');
+    Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
+        ->middleware('permission:users.delete');
 });
 
 

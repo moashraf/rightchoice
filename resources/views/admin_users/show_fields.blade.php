@@ -68,6 +68,22 @@
         @if($user->Tax_card)
             <li class="list-group-item"><strong>Tax Card:</strong> {{ $user->Tax_card }}</li>
         @endif
+
+        {{-- ── RBAC: Role Display ─────────────────────────────────────── --}}
+        <li class="list-group-item">
+            <strong>Role:</strong>
+            @if($user->role)
+                @php
+                    $roleColors = ['admin' => 'danger', 'user' => 'primary', 'viewer' => 'secondary'];
+                    $roleColor  = $roleColors[$user->role->name] ?? 'dark';
+                @endphp
+                <span class="badge badge-{{ $roleColor }} px-2 py-1">
+                    {{ $user->role->label ?? ucfirst($user->role->name) }}
+                </span>
+            @else
+                <span class="badge badge-light">No Role Assigned</span>
+            @endif
+        </li>
     </ul>
 </ul>
 

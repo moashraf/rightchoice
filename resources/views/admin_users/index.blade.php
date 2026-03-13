@@ -8,10 +8,16 @@
                     <h1>المستخدمون</h1>
                 </div>
                 <div class="col-sm-6">
+                    {{-- RBAC: Only users with users.create permission can add new users --}}
+                    @haspermission('users.create')
                     <a class="btn btn-primary float-right"
                        href="{{ route('sitemanagement.users.create') }}">
                         اضف جديد
                     </a>
+                    @endhaspermission
+
+                    {{-- RBAC: Only users with users.export permission can export --}}
+                    @haspermission('users.export')
                     <a id="export-users-btn" class="btn btn-success float-right mr-2"
                        href="{{ route('sitemanagement.users.exportUsers', array_filter([
                            'search_key'    => request('search_key'),
@@ -23,6 +29,7 @@
                         <span id="export-users-text">تصدير نتائج البحث</span>
                         <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
                     </a>
+                    @endhaspermission
                 </div>
             </div>
         </div>
@@ -151,6 +158,8 @@
                                     @endif
                                 </td>
                                 <td>
+                                    {{-- RBAC: Block / Activate — requires users.block permission --}}
+                                    @haspermission('users.block')
                                     @if($user->status == 1)
                                         <a onClick="return confirm('هل انت متأكد من حظر هذا المستخدم؟')"
                                            data-toggle="tooltip" title="حظر المستخدم"
@@ -166,20 +175,33 @@
                                             <i class="fas fa-check"></i>
                                         </a>
                                     @endif
+                                    @endhaspermission
+
+                                    {{-- RBAC: Delete — requires users.delete permission --}}
+                                    @haspermission('users.delete')
                                     <a onClick="return confirm('هل انت متأكد من حذف هذا السجل؟')"
                                        data-toggle="tooltip" title="حذف"
                                        href="{{ route('sitemanagement.users.delete', $user->id) }}"
                                        class="btn btn-sm btn-outline-danger ml-2">
                                         <i class="fas fa-trash"></i>
                                     </a>
+                                    @endhaspermission
+
+                                    {{-- RBAC: Edit — requires users.update permission --}}
+                                    @haspermission('users.update')
                                     <a href="{{ route('sitemanagement.users.edit', $user->id) }}"
                                        class="btn btn-sm btn-outline-info ml-2">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    @endhaspermission
+
+                                    {{-- RBAC: View — requires users.view permission --}}
+                                    @haspermission('users.view')
                                     <a href="{{ route('sitemanagement.users.show', $user->id) }}"
                                        class="btn btn-sm btn-outline-primary ml-2">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    @endhaspermission
                                 </td>
                             </tr>
                         @endforeach

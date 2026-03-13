@@ -76,5 +76,11 @@ class Kernel extends HttpKernel
         'CheackUser'  => \App\Http\Middleware\CheackUser::class,
         'adminfCheckAdmin' => \App\Http\Middleware\AdminfCheckAdmin::class,
         'admin.session' => \App\Http\Middleware\AdminSessionCookie::class,
+
+        // ── RBAC ──────────────────────────────────────────────────────────
+        // Usage: ->middleware('role:admin')
+        'role'       => \App\Http\Middleware\CheckRole::class,
+        // Usage: ->middleware('permission:users.delete')
+        'permission' => \App\Http\Middleware\CheckPermission::class,
     ];
 }

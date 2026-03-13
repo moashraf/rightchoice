@@ -11,6 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\RoleEnum;
 use App\Enums\UserTypeEnum;
 use App\Enums\UserStatusEnum;
 
@@ -44,7 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
          'phone_verfied_sms_status',
          'phone_sms_otp',
          'isAdmin',
-         'invited_by'
+         'invited_by',
+         'role_id',
     ];
 
     /**
@@ -147,6 +149,70 @@ class User extends Authenticatable implements MustVerifyEmail
     public function aqars()
     {
         return $this->hasMany(aqar::class, 'user_id');
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // RBAC Relationship & Helpers
+    // ─────────────────────────────────────────────────────────
+
+    /**
+     * The role assigned to this user.
+     */
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Role::class, 'role_id');
+    }
+
+    /**
+     * Check if the user has the given role name.
+     *
+     * Usage: $user->hasRole('admin')
+     *        $user->hasRole(RoleEnum::ADMIN)
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role && $this->role->name === $role;
+    }
+
+    /**
+     * Check if the user has a specific permission through their role.
+     * Caches the role+permissions on first call to avoid N+1.
+     *
+     * Usage: $user->hasPermission('users.delete')
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if (! $this->role) {
+            return false;
+        }
+
+        // Eager-load permissions only once per request
+        if (! $this->relationLoaded('role') || ! $this->role->relationLoaded('permissions')) {
+            $this->load('role.permissions');
+        }
+
+        return $this->role->permissions->contains('name', $permission);
+    }
+
+    /**
+     * True if this user is a read-only viewer (cannot create/update/delete).
+     *
+     * Usage in Blade: @if(auth()->user()->canViewOnly())
+     */
+    public function canViewOnly(): bool
+    {
+        return $this->hasRole(RoleEnum::VIEWER);
+    }
+
+    /**
+     * True if the user has the admin role.
+     * Replaces direct checks on the legacy isAdmin column in new code.
+     *
+     * Usage: $user->isAdminRole()
+     */
+    public function isAdminRole(): bool
+    {
+        return $this->hasRole(RoleEnum::ADMIN);
     }
 
 }
