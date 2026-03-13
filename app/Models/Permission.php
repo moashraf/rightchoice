@@ -20,6 +20,9 @@ class Permission extends Model
 {
     protected $fillable = ['name', 'label', 'module'];
 
+    /** Always eager-load roles so $permission->roles->count() is free */
+    protected $with = ['roles'];
+
     // ─────────────────────────────────────────────────────────
     // Relationships
     // ─────────────────────────────────────────────────────────

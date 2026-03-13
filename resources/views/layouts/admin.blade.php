@@ -263,6 +263,21 @@
                         </a>
                     </li>
 
+                    {{-- ── RBAC Management (admin only) ───────────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.rbac.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/rbac*') ? 'active' : '' }}"
+                           style="{{ request()->is('sitemanagement/rbac*') ? '' : '' }}">
+                            <i class="nav-icon fas fa-shield-alt text-warning"></i>
+                            <p>
+                                إدارة الصلاحيات
+                                <span class="badge badge-warning badge-pill mr-1">RBAC</span>
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
                     <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
                             <i class="nav-icon fas fa-home"></i>

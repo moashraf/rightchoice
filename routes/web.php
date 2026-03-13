@@ -233,6 +233,31 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:users.delete');
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
+
+    // ── RBAC Management Panel (admin-only) ───────────────────────────────
+    Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
+        ->name('rbac.index')
+        ->middleware('role:admin');
+
+    Route::post('rbac/matrix', [App\Http\Controllers\AdminRolesPermissionsController::class, 'updateMatrix'])
+        ->name('rbac.updateMatrix')
+        ->middleware('role:admin');
+
+    Route::post('rbac/roles', [App\Http\Controllers\AdminRolesPermissionsController::class, 'storeRole'])
+        ->name('rbac.roles.store')
+        ->middleware('role:admin');
+
+    Route::delete('rbac/roles/{role}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyRole'])
+        ->name('rbac.roles.destroy')
+        ->middleware('role:admin');
+
+    Route::post('rbac/permissions', [App\Http\Controllers\AdminRolesPermissionsController::class, 'storePermission'])
+        ->name('rbac.permissions.store')
+        ->middleware('role:admin');
+
+    Route::delete('rbac/permissions/{permission}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyPermission'])
+        ->name('rbac.permissions.destroy')
+        ->middleware('role:admin');
 });
 
 
