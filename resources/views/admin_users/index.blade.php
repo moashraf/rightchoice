@@ -123,7 +123,7 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
                                 <td>{{ $user->getUserType() }}</td>
                                 <td>
                                     @foreach($user->UserPriceing as $val)
@@ -137,7 +137,10 @@
                                         {{ $user->aqars_count }}
                                     </a>
                                 </td>
-                                <td>{{ $user->created_at }}</td>
+                                <td>
+                                    <div>{{ $user->created_at->format('Y-m-d') }}</div>
+                                    <div class="text-muted small">{{ $user->created_at->format('H:i:s') }}</div>
+                                </td>
                                 <td>
                                     @if($user->status == 1)
                                         <span class="badge badge-success">{{ $user->getStatus() }}</span>

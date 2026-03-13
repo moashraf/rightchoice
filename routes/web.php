@@ -18,11 +18,7 @@ use Illuminate\Support\Facades\Mail;
 
 Route::get('/', 'App\Http\Controllers\SiteHomeController@home');
 Route::get('/changeLang/{url}', 'App\Http\Controllers\PageController@changeLang')->name('changeLang');
-//clear cache
-Route::get('/clear-cache', function () {
-    $exitCode = Artisan::call('cache:clear');
-    return '<h1>Cache facade value cleared</h1>';
-});
+
 
 Route::get('send-email', function () {
     // Mail::to('recipient@example.com')->send(new TestEmail());
@@ -65,7 +61,11 @@ Route::get('/config-clear', function () {
     $exitCode = Artisan::call('config:clear');
     return '<h1>Clear Config cleared</h1>';
 });
-
+//clear cache
+Route::get('/clear-cache', function () {
+    $exitCode = Artisan::call('cache:clear');
+    return '<h1>Cache facade value cleared</h1>';
+});
 
 
 /*
@@ -139,10 +139,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 });
 
 
-
 /*   Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-
-
         return view('dashboard');
     })->name('dashboard');  */
 
@@ -160,7 +157,7 @@ Route::get('/dashboard', function () {
 
 
 Route::group(['prefix' => '{locale?}'], function () {
-     Route::group(['middleware' => 'CheackUser'], function () {
+    Route::group(['middleware' => 'CheackUser'], function () {
         Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
         Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale']);
