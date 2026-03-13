@@ -13,7 +13,7 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::query();
+        $users = User::withCount('aqars');
 
         if ($request->sortBy == 0)
             $users->orderBy('id', 'DESC');

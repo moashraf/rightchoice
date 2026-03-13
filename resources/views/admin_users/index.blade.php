@@ -113,6 +113,7 @@
                             <th>نوع</th>
                             <th>الباقة</th>
                             <th>التليفون المحمول</th>
+                            <th>عدد العقارات</th>
                             <th>التاريخ</th>
                             <th>حالة</th>
                             <th>حدث</th>
@@ -130,6 +131,12 @@
                                     @endforeach
                                 </td>
                                 <td>{{ $user->MOP }}</td>
+                                <td>
+                                    <a href="{{ route('sitemanagement.users.aqars', $user->id) }}"
+                                       class="badge badge-info" style="font-size:13px;">
+                                        {{ $user->aqars_count }}
+                                    </a>
+                                </td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>
                                     @if($user->status == 1)
