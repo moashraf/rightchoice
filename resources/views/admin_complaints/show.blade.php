@@ -20,7 +20,10 @@
             </div>
             <div class="card-footer">
                 <a href="{{ route('sitemanagement.complaints.index') }}" class="btn btn-default">رجوع</a>
-                <a href="{{ route('sitemanagement.complaints.edit', $complaints->id) }}" class="btn btn-primary">تعديل</a>
+                @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+                @if($authUser && $authUser->hasPermission('complaints.update'))
+                    <a href="{{ route('sitemanagement.complaints.edit', $complaints->id) }}" class="btn btn-primary">تعديل</a>
+                @endif
             </div>
         </div>
     </div>
