@@ -1,5 +1,20 @@
 @extends('layouts.admin')
 @section('title', 'المستخدمون')
+
+@php
+    /* ── RBAC: resolve the correct guard once for the whole page ── */
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canCreate  = $__au && $__au->hasPermission('users.create');
+    $canExport  = $__au && $__au->hasPermission('users.export');
+    $canView    = $__au && $__au->hasPermission('users.view');
+    $canUpdate  = $__au && $__au->hasPermission('users.update');
+    $canDelete  = $__au && $__au->hasPermission('users.delete');
+    $canBlock   = $__au && $__au->hasPermission('users.block');
+@endphp
+
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -8,16 +23,14 @@
                     <h1>المستخدمون</h1>
                 </div>
                 <div class="col-sm-6">
-                    {{-- RBAC: Only users with users.create permission can add new users --}}
-                    @haspermission('users.create')
+                    @if($canCreate)
                     <a class="btn btn-primary float-right"
                        href="{{ route('sitemanagement.users.create') }}">
                         اضف جديد
                     </a>
-                    @endhaspermission
+                    @endif
 
-                    {{-- RBAC: Only users with users.export permission can export --}}
-                    @haspermission('users.export')
+                    @if($canExport)
                     <a id="export-users-btn" class="btn btn-success float-right mr-2"
                        href="{{ route('sitemanagement.users.exportUsers', array_filter([
                            'search_key'    => request('search_key'),
@@ -29,7 +42,7 @@
                         <span id="export-users-text">تصدير نتائج البحث</span>
                         <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
                     </a>
-                    @endhaspermission
+                    @endif
                 </div>
             </div>
         </div>
@@ -50,10 +63,9 @@
         @endif
 
         <div class="card">
-
             <div class="card-header">
                 <form action="{{ route('sitemanagement.users.index') }}" method="GET">
-                    <div class=" users_users_users row align-items-end">
+                    <div class="users_users_users row align-items-end">
                         <div class="col-md-3">
                             <label>بحث</label>
                             <input type="text" class="form-control" name="search_key"
@@ -158,50 +170,46 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{-- RBAC: Block / Activate — requires users.block permission --}}
-                                    @haspermission('users.block')
-                                    @if($user->status == 1)
-                                        <a onClick="return confirm('هل انت متأكد من حظر هذا المستخدم؟')"
-                                           data-toggle="tooltip" title="حظر المستخدم"
-                                           href="{{ route('sitemanagement.users.block', $user->id) }}"
+                                    @if($canBlock)
+                                        @if($user->status == 1)
+                                            <a onclick="return confirm('هل انت متأكد من حظر هذا المستخدم؟')"
+                                               data-toggle="tooltip" title="حظر المستخدم"
+                                               href="{{ route('sitemanagement.users.block', $user->id) }}"
+                                               class="btn btn-sm btn-outline-danger ml-2">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        @elseif($user->status != 0)
+                                            <a onclick="return confirm('هل انت متأكد من تفعيل هذا المستخدم؟')"
+                                               data-toggle="tooltip" title="تفعيل المستخدم"
+                                               href="{{ route('sitemanagement.users.activate', $user->id) }}"
+                                               class="btn btn-sm btn-outline-success ml-2">
+                                                <i class="fas fa-check"></i>
+                                            </a>
+                                        @endif
+                                    @endif
+
+                                    @if($canDelete)
+                                        <a onclick="return confirm('هل انت متأكد من حذف هذا السجل؟')"
+                                           data-toggle="tooltip" title="حذف"
+                                           href="{{ route('sitemanagement.users.delete', $user->id) }}"
                                            class="btn btn-sm btn-outline-danger ml-2">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                    @elseif($user->status != 0)
-                                        <a onClick="return confirm('هل انت متأكد من تفعيل هذا المستخدم؟')"
-                                           data-toggle="tooltip" title="تفعيل المستخدم"
-                                           href="{{ route('sitemanagement.users.activate', $user->id) }}"
-                                           class="btn btn-sm btn-outline-success ml-2">
-                                            <i class="fas fa-check"></i>
+                                            <i class="fas fa-trash"></i>
                                         </a>
                                     @endif
-                                    @endhaspermission
 
-                                    {{-- RBAC: Delete — requires users.delete permission --}}
-                                    @haspermission('users.delete')
-                                    <a onClick="return confirm('هل انت متأكد من حذف هذا السجل؟')"
-                                       data-toggle="tooltip" title="حذف"
-                                       href="{{ route('sitemanagement.users.delete', $user->id) }}"
-                                       class="btn btn-sm btn-outline-danger ml-2">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                    @endhaspermission
+                                    @if($canUpdate)
+                                        <a href="{{ route('sitemanagement.users.edit', $user->id) }}"
+                                           class="btn btn-sm btn-outline-info ml-2">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
 
-                                    {{-- RBAC: Edit — requires users.update permission --}}
-                                    @haspermission('users.update')
-                                    <a href="{{ route('sitemanagement.users.edit', $user->id) }}"
-                                       class="btn btn-sm btn-outline-info ml-2">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @endhaspermission
-
-                                    {{-- RBAC: View — requires users.view permission --}}
-                                    @haspermission('users.view')
-                                    <a href="{{ route('sitemanagement.users.show', $user->id) }}"
-                                       class="btn btn-sm btn-outline-primary ml-2">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    @endhaspermission
+                                    @if($canView)
+                                        <a href="{{ route('sitemanagement.users.show', $user->id) }}"
+                                           class="btn btn-sm btn-outline-primary ml-2">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -214,24 +222,24 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
+
 @section('third_party_scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var exportBtn = document.getElementById('export-users-btn');
-            var exportText = document.getElementById('export-users-text');
+            var exportBtn     = document.getElementById('export-users-btn');
+            var exportText    = document.getElementById('export-users-text');
             var exportSpinner = document.getElementById('export-users-spinner');
             if (exportBtn) {
-                exportBtn.addEventListener('click', function (e) {
+                exportBtn.addEventListener('click', function () {
                     exportBtn.classList.add('disabled');
-                    exportText.style.display = 'none';
+                    exportText.style.display    = 'none';
                     exportSpinner.style.display = '';
                     setTimeout(function () {
                         exportBtn.classList.remove('disabled');
-                        exportText.style.display = '';
+                        exportText.style.display    = '';
                         exportSpinner.style.display = 'none';
                     }, 5000);
                 });

@@ -176,22 +176,24 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user has a specific permission through their role.
-     * Caches the role+permissions on first call to avoid N+1.
+     * Loads role.permissions once and caches it for the lifetime of the request.
      *
      * Usage: $user->hasPermission('users.delete')
      */
     public function hasPermission(string $permission): bool
     {
-        if (! $this->role) {
+        if (! $this->role_id) {
             return false;
         }
 
-        // Eager-load permissions only once per request
-        if (! $this->relationLoaded('role') || ! $this->role->relationLoaded('permissions')) {
+        // Load role with permissions if not already eager-loaded
+        if (! $this->relationLoaded('role')) {
             $this->load('role.permissions');
+        } elseif ($this->role && ! $this->role->relationLoaded('permissions')) {
+            $this->role->load('permissions');
         }
 
-        return $this->role->permissions->contains('name', $permission);
+        return $this->role && $this->role->permissions->contains('name', $permission);
     }
 
     /**
