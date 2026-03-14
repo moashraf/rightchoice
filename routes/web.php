@@ -411,29 +411,17 @@ Route::post('/add-wish_list', 'App\Http\Controllers\AqarController@addwish_list'
 Route::post('/remove-wish_list', 'App\Http\Controllers\AqarController@removewish_list')->name('remove-wish_list');
 Route::post('/add-contactaqar', 'App\Http\Controllers\AqarController@addContact')->name('add-contactaqar');
 Route::post('/ajx_main_img_edit_only', 'App\Http\Controllers\AqarController@ajx_main_img_edit_only')->name('ajx_main_img_edit_only');
-//Route::get('/search', 'App\Http\Controllers\AqarController@index')->name('search');
-//Route::get('/blogs', 'App\Http\Controllers\blogsController@index')->name('blogs');
-//Route::get('/blogs/{slug}', 'App\Http\Controllers\blogsController@show')->name('blog');
-//Route::get('/aqars/{aqar}', 'App\Http\Controllers\AqarController@show');
-//Route::get('/terms-conditions', 'App\Http\Controllers\PagesController@index');
-//Route::get('/contact-us', 'App\Http\Controllers\PagesController@contact');
+
 Route::post('/contact-info', 'App\Http\Controllers\PagesController@store')->name('contact-info');
-//Route::get('/about-us', 'App\Http\Controllers\PagesController@about');
-// Route::get('/companies-furnitures', 'App\Http\Controllers\CompanyController@furn');
-// Route::get('/companies-finish', 'App\Http\Controllers\CompanyController@finish');
-// Route::get('/companies-home-sale', 'App\Http\Controllers\CompanyController@homeSale');
-// Route::get('/companies-electronics', 'App\Http\Controllers\CompanyController@electronics');
+
 Route::get('/ourcompanies-{slug}', 'App\Http\Controllers\CompanyController@furn');
 Route::get('/companies/{compan}', 'App\Http\Controllers\CompanyController@show');
 Route::get('/ourcompanies-{slug}/filterby', 'App\Http\Controllers\CompanyController@sorting');
-//Route::get('/filter', 'App\Http\Controllers\AqarController@filter')->name('filter');
-//Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort');
-//Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou');
+
 Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricController@add_to_vip');
 //Route::get('dashboard', 'App\Http\Controllers\UserController@profile')->middleware('auth');
 Route::post('api/fetch-states', [App\Http\Controllers\DropdownController::class, 'fetchState']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//Route::post('/customLogin', 'App\Http\Controllers\HomeController@customLogin')->name('customLogin');
 
 Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbPage')->name('verficationApply');
 
