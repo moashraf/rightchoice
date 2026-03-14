@@ -101,7 +101,14 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.delete')->only(['destroy']);
 
-    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
+        ->middleware('permission:sliders.view')->only(['index', 'show']);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
+        ->middleware('permission:sliders.create')->only(['create', 'store']);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
+        ->middleware('permission:sliders.update')->only(['edit', 'update']);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
+        ->middleware('permission:sliders.delete')->only(['destroy']);
 
     // ── Settings ─────────────────────────────────────────────────────────
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
