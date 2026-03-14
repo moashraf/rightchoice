@@ -219,7 +219,7 @@
                                 <th>الاسم (key)</th>
                                 <th>التسمية</th>
                                 <th>الصلاحيات</th>
-                                <th>المستخدمون</th>
+                                <th>المستخدمون <small class="text-muted">(isAdmin=1)</small></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -232,6 +232,7 @@
                                         default  => 'primary',
                                     };
                                     $isCore = in_array($role->name, ['admin','user','viewer']);
+                                    $roleUserCount = \App\Models\User::where('isAdmin', 1)->where('role_id', $role->id)->count();
                                 @endphp
                                 <tr>
                                     <td>{{ $role->id }}</td>
@@ -243,9 +244,10 @@
                                         <span class="badge badge-info">{{ $role->permissions->count() }}</span>
                                     </td>
                                     <td>
-                                        <span class="badge badge-secondary">
-                                            {{ \App\Models\User::where('role_id', $role->id)->count() }}
-                                        </span>
+                                        <a href="{{ route('sitemanagement.users.index', ['filter_role' => $role->id, 'filter_isAdmin' => 1]) }}"
+                                           title="عرض المستخدمين">
+                                            <span class="badge badge-secondary">{{ $roleUserCount }}</span>
+                                        </a>
                                     </td>
                                     <td>
                                         @if(!$isCore)
@@ -375,17 +377,21 @@
     </div>
 
     {{-- ══════════════════════════════════════════════════════════════
-         SECTION 3: Role → Users quick-view
+         SECTION 3: Role → Users quick-view  (isAdmin = 1 only)
     ══════════════════════════════════════════════════════════════ --}}
     <div class="card card-rbac mb-4">
-        <div class="card-header">
+        <div class="card-header d-flex align-items-center justify-content-between">
             <h5 class="mb-0"><i class="fas fa-users mr-1 text-info"></i> توزيع المستخدمين على الأدوار</h5>
+            <span class="badge badge-dark p-2">
+                <i class="fas fa-filter mr-1"></i> isAdmin = 1 فقط
+            </span>
         </div>
         <div class="card-body">
             <div class="row text-center">
+                @php $total = \App\Models\User::where('isAdmin', 1)->count() ?: 1; @endphp
                 @foreach($roles as $role)
                     @php
-                        $count      = \App\Models\User::where('role_id', $role->id)->count();
+                        $count      = \App\Models\User::where('isAdmin', 1)->where('role_id', $role->id)->count();
                         $colorClass = match($role->name) {
                             'admin'  => 'danger',
                             'viewer' => 'secondary',
@@ -398,47 +404,71 @@
                         };
                     @endphp
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="info-box shadow-sm">
-                            <span class="info-box-icon bg-{{ $colorClass }} elevation-1">
-                                <i class="{{ $icon }}"></i>
-                            </span>
-                            <div class="info-box-content text-left">
-                                <span class="info-box-text">{{ $role->label ?? $role->name }}</span>
-                                <span class="info-box-number">{{ $count }} مستخدم</span>
-                                <div class="progress">
-                                    @php $total = \App\Models\User::count() ?: 1; @endphp
-                                    <div class="progress-bar bg-{{ $colorClass }}"
-                                         style="width: {{ round($count / $total * 100) }}%"></div>
-                                </div>
-                                <span class="progress-description">
-                                    {{ round($count / $total * 100) }}% من المستخدمين
+                        <a href="{{ route('sitemanagement.users.index', ['filter_role' => $role->id, 'filter_isAdmin' => 1]) }}"
+                           class="text-decoration-none" title="عرض مستخدمي دور {{ $role->label ?? $role->name }}">
+                            <div class="info-box shadow-sm border-{{ $colorClass }}" style="border:1px solid; border-radius:6px; transition:.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                                <span class="info-box-icon bg-{{ $colorClass }} elevation-1">
+                                    <i class="{{ $icon }}"></i>
                                 </span>
+                                <div class="info-box-content text-left">
+                                    <span class="info-box-text font-weight-bold">{{ $role->label ?? $role->name }}</span>
+                                    <span class="info-box-number text-{{ $colorClass }}">{{ $count }} مستخدم</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-{{ $colorClass }}"
+                                             style="width: {{ round($count / $total * 100) }}%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        {{ round($count / $total * 100) }}% &nbsp;
+                                        <i class="fas fa-external-link-alt fa-xs text-muted"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
-                {{-- No role --}}
-                @php $noRole = \App\Models\User::whereNull('role_id')->count(); @endphp
+
+                {{-- No role (isAdmin=1 but role_id is null) --}}
+                @php $noRole = \App\Models\User::where('isAdmin', 1)->whereNull('role_id')->count(); @endphp
                 @if($noRole > 0)
                     <div class="col-md-3 col-6 mb-3">
-                        <div class="info-box shadow-sm">
-                            <span class="info-box-icon bg-warning elevation-1">
-                                <i class="fas fa-question"></i>
-                            </span>
-                            <div class="info-box-content text-left">
-                                <span class="info-box-text">بدون دور</span>
-                                <span class="info-box-number text-danger">{{ $noRole }} مستخدم</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-warning"
-                                         style="width: {{ round($noRole / $total * 100) }}%"></div>
-                                </div>
-                                <span class="progress-description text-danger">
-                                    يجب تعيين دور لهم
+                        <a href="{{ route('sitemanagement.users.index', ['filter_isAdmin' => 1, 'filter_no_role' => 1]) }}"
+                           class="text-decoration-none" title="عرض المستخدمين بدون دور">
+                            <div class="info-box shadow-sm border-warning" style="border:1px solid; border-radius:6px;">
+                                <span class="info-box-icon bg-warning elevation-1">
+                                    <i class="fas fa-question"></i>
                                 </span>
+                                <div class="info-box-content text-left">
+                                    <span class="info-box-text font-weight-bold">بدون دور</span>
+                                    <span class="info-box-number text-danger">{{ $noRole }} مستخدم</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning"
+                                             style="width: {{ round($noRole / $total * 100) }}%"></div>
+                                    </div>
+                                    <span class="progress-description text-danger">
+                                        يجب تعيين دور لهم &nbsp;
+                                        <i class="fas fa-external-link-alt fa-xs"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endif
+            </div>
+
+            {{-- Summary bar --}}
+            <div class="mt-2 pt-2 border-top">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle text-info mr-1"></i>
+                    إجمالي المستخدمين ذوي صلاحيات الإدارة (isAdmin=1):
+                    <strong class="text-dark">{{ $total }}</strong> مستخدم &nbsp;|&nbsp;
+                    <a href="{{ route('sitemanagement.users.index', ['filter_isAdmin' => 1]) }}" class="text-primary">
+                        <i class="fas fa-list mr-1"></i> عرض الكل
+                    </a>
+                    &nbsp;|&nbsp;
+                    <a href="{{ route('sitemanagement.reports.index') }}" class="text-success">
+                        <i class="fas fa-chart-bar mr-1"></i> تقرير شامل
+                    </a>
+                </small>
             </div>
         </div>
     </div>
