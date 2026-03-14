@@ -10,10 +10,15 @@
                     <h1>المدونات</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('sitemanagement.blogs.create') }}">
-                        اضف جديد
-                    </a>
+                    @php
+                        $authUser = auth()->guard('admin')->user() ?? auth()->user();
+                    @endphp
+                    @if($authUser && $authUser->hasPermission('blogs.create'))
+                        <a class="btn btn-primary float-right"
+                           href="{{ route('sitemanagement.blogs.create') }}">
+                            اضف جديد
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
