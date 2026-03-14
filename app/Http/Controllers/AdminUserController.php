@@ -34,8 +34,14 @@ class AdminUserController extends Controller
             $users->where('TYPE', $request->filter_type);
 
         // ── RBAC filters (from RBAC page links) ──────────────────────────
-        if ($request->filled('filter_isAdmin'))
+        if ($request->filled('filter_isAdmin')) {
             $users->where('isAdmin', (int) $request->filter_isAdmin);
+        } else {
+            // افتراضياً: عرض المستخدمين العاديين فقط (isAdmin != 1)
+            $users->where(function ($q) {
+                $q->where('isAdmin', '!=', 1);
+             });
+        }
 
         if ($request->filled('filter_role'))
             $users->where('role_id', (int) $request->filter_role);
