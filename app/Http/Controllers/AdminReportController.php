@@ -36,14 +36,14 @@ class AdminReportController extends Controller
 
         // ===== إحصائيات المستخدمين =====
         $stats = [
-            'users'          => User::when($fromDate || $toDate, $filter)->count(),
-            'users_active'   => User::where('status', 1)->when($fromDate || $toDate, $filter)->count(),
-            'users_inactive' => User::where('status', 0)->when($fromDate || $toDate, $filter)->count(),
-            'users_blocked'  => User::where('status', 2)->when($fromDate || $toDate, $filter)->count(),
+            'users'          => User::whereNull('deleted_at')->when($fromDate || $toDate, $filter)->count(),
+            'users_active'   => User::whereNull('deleted_at')->where('status', 1)->when($fromDate || $toDate, $filter)->count(),
+            'users_inactive' => User::whereNull('deleted_at')->where('status', 0)->when($fromDate || $toDate, $filter)->count(),
+            'users_blocked'  => User::whereNull('deleted_at')->where('status', 2)->when($fromDate || $toDate, $filter)->count(),
         ];
 
         // ===== إحصائيات عامة (من الأدمين القديم) =====
-        $stats['aqars']        = aqar::when($fromDate || $toDate, $filter)->count();
+        $stats['aqars']        = aqar::whereNull('deleted_at')->when($fromDate || $toDate, $filter)->count();
         $stats['complaints']   = Complaints::when($fromDate || $toDate, $filter)->count();
         $stats['companies']    = Company::when($fromDate || $toDate, $filter)->count();
         $stats['contactForms'] = ContactForm::when($fromDate || $toDate, $filter)->count();
@@ -57,15 +57,16 @@ class AdminReportController extends Controller
         $stats['subscriptions'] = UserPriceing::when($fromDate || $toDate, $filter)->count();
 
         // عقارات نشطة / في الانتظار / متوقفة
-        $stats['aqars_active']   = aqar::where('status', 1)->when($fromDate || $toDate, $filter)->count();
-        $stats['aqars_pending']  = aqar::where('status', 0)->when($fromDate || $toDate, $filter)->count();
-        $stats['aqars_inactive'] = aqar::where('status', 2)->when($fromDate || $toDate, $filter)->count();
+        $stats['aqars_active']   = aqar::whereNull('deleted_at')->where('status', 1)->when($fromDate || $toDate, $filter)->count();
+        $stats['aqars_pending']  = aqar::whereNull('deleted_at')->where('status', 0)->when($fromDate || $toDate, $filter)->count();
+        $stats['aqars_inactive'] = aqar::whereNull('deleted_at')->where('status', 2)->when($fromDate || $toDate, $filter)->count();
 
         // عقارات VIP
-        $stats['aqars_vip'] = aqar::where('vip', 1)->when($fromDate || $toDate, $filter)->count();
+        $stats['aqars_vip'] = aqar::whereNull('deleted_at')->where('vip', 1)->when($fromDate || $toDate, $filter)->count();
 
         // ===== إحصائيات الدعوات =====
         $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
+            ->whereNull('deleted_at')
             ->whereNotNull('invited_by')
             ->where('invited_by', '!=', '')
             ->when($fromDate || $toDate, $filter)
@@ -73,8 +74,18 @@ class AdminReportController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        // المستخدمون غير المدعوين (invited_by فارغ أو null)
+        $notInvitedCount = User::whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('invited_by')
+                  ->orWhere('invited_by', '');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
         // ===== إحصائيات أنواع المستخدمين =====
         $userTypeStats = User::select('TYPE', DB::raw('count(*) as total'))
+            ->whereNull('deleted_at')
             ->whereNotNull('TYPE')
             ->when($fromDate || $toDate, $filter)
             ->groupBy('TYPE')
@@ -85,6 +96,7 @@ class AdminReportController extends Controller
         $aqarsByOfferType = DB::table('aqar')
             ->join('offer_type', 'aqar.offer_type', '=', 'offer_type.id')
             ->select('offer_type.type_offer as offer_name', DB::raw('count(aqar.id) as total'))
+            ->whereNull('aqar.deleted_at')
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
@@ -97,6 +109,7 @@ class AdminReportController extends Controller
         $aqarsByGovernrate = DB::table('aqar')
             ->join('governrate', 'aqar.governrate_id', '=', 'governrate.id')
             ->select('governrate.governrate as gov_name', DB::raw('count(aqar.id) as total'))
+            ->whereNull('aqar.deleted_at')
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
@@ -110,6 +123,8 @@ class AdminReportController extends Controller
         $topUsersByAqars = DB::table('aqar')
             ->join('users', 'aqar.user_id', '=', 'users.id')
             ->select('users.id', 'users.name', 'users.MOP', DB::raw('count(aqar.id) as total'))
+            ->whereNull('aqar.deleted_at')
+            ->whereNull('users.deleted_at')
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
@@ -119,9 +134,26 @@ class AdminReportController extends Controller
             ->limit(10)
             ->get();
 
+        // ===== المستخدمون الذين أضافوا عقارات =====
+        $usersWithAqars = User::whereNull('deleted_at')
+            ->whereHas('aqars', function ($q) {
+                $q->whereNull('deleted_at');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
+        // ===== المستخدمون الذين لم يضيفوا أي عقار =====
+        $usersWithoutAqars = User::whereNull('deleted_at')
+            ->whereDoesntHave('aqars', function ($q) {
+                $q->whereNull('deleted_at');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
         return view('admin_reports.index', compact(
-            'stats', 'fromDate', 'toDate', 'invitedByStats', 'userTypeStats',
-            'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars'
+            'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount',
+            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars',
+            'usersWithAqars', 'usersWithoutAqars'
         ));
     }
 
@@ -132,6 +164,7 @@ class AdminReportController extends Controller
         $toDate    = $request->input('to_date');
 
         $users = User::query()
+            ->whereNull('deleted_at')
             ->when($invitedBy, function ($q) use ($invitedBy) {
                 $q->where('invited_by', $invitedBy);
             })
@@ -147,6 +180,7 @@ class AdminReportController extends Controller
 
         // Summary of all invited_by values
         $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
+            ->whereNull('deleted_at')
             ->whereNotNull('invited_by')
             ->where('invited_by', '!=', '')
             ->groupBy('invited_by')

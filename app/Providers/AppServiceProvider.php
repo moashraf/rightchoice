@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 
 use App\Models\Service;
 
@@ -78,6 +79,42 @@ class AppServiceProvider extends ServiceProvider
 
         });
 
+        // ── RBAC Blade Directives ────────────────────────────────────────────
+        // @role('admin') ... @endrole
+        // Shows content only to users with a specific role.
+        Blade::directive('role', function (string $expression) {
+            return "<?php if(auth()->check() && auth()->user()->hasRole({$expression})): ?>";
+        });
+        Blade::directive('endrole', function () {
+            return '<?php endif; ?>';
+        });
+
+        // @haspermission('users.create') ... @endhaspermission
+        // Shows content only when the current user has the given permission.
+        Blade::directive('haspermission', function (string $expression) {
+            return "<?php if(auth()->check() && auth()->user()->hasPermission({$expression})): ?>";
+        });
+        Blade::directive('endhaspermission', function () {
+            return '<?php endif; ?>';
+        });
+
+        // @cannotdo('users.delete') ... @endcannotdo
+        // Shows content (e.g. disabled button / warning) when user LACKS a permission.
+        Blade::directive('cannotdo', function (string $expression) {
+            return "<?php if(!auth()->check() || !auth()->user()->hasPermission({$expression})): ?>";
+        });
+        Blade::directive('endcannotdo', function () {
+            return '<?php endif; ?>';
+        });
+
+        // @vieweronly ... @endvieweronly
+        // Shows content only for read-only viewer role.
+        Blade::directive('vieweronly', function () {
+            return "<?php if(auth()->check() && auth()->user()->canViewOnly()): ?>";
+        });
+        Blade::directive('endvieweronly', function () {
+            return '<?php endif; ?>';
+        });
 
     }
 }

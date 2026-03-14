@@ -129,6 +129,84 @@
         </div>
     </div>
 
+    {{-- ===== المستخدمون والعقارات ===== --}}
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5 class="mt-2 mb-3" style="font-weight:700; color:#343a40;">
+                <i class="fas fa-home ml-2"></i> المستخدمون والعقارات
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        @php
+            $totalUsersForAqarStats = $usersWithAqars + $usersWithoutAqars;
+            $withPercent    = $totalUsersForAqarStats > 0 ? round($usersWithAqars    / $totalUsersForAqarStats * 100, 1) : 0;
+            $withoutPercent = $totalUsersForAqarStats > 0 ? round($usersWithoutAqars / $totalUsersForAqarStats * 100, 1) : 0;
+        @endphp
+
+        {{-- أضافوا عقارات --}}
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-4">
+            <a href="{{ route('sitemanagement.users.index', ['has_aqars' => 1]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #28a745 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">
+                                <i class="fas fa-check-circle text-success ml-1"></i>
+                                مستخدمون أضافوا عقارات
+                            </p>
+                            <h2 class="font-weight-bold mb-0" style="color:#28a745;">
+                                {{ number_format($usersWithAqars) }}
+                            </h2>
+                            <div class="progress mt-2" style="height:6px;">
+                                <div class="progress-bar bg-success" style="width:{{ $withPercent }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ $withPercent }}% من المستخدمين</small>
+                        </div>
+                        <div style="font-size:52px; color:#28a745; opacity:.2;">
+                            <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <small class="text-success font-weight-bold">
+                            <i class="fas fa-external-link-alt ml-1"></i> عرض القائمة &rarr;
+                        </small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {{-- لم يضيفوا عقارات --}}
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-4">
+            <a href="{{ route('sitemanagement.users.index', ['has_aqars' => 0]) }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #dc3545 !important;">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">
+                                <i class="fas fa-times-circle text-danger ml-1"></i>
+                                مستخدمون لم يضيفوا أي عقار
+                            </p>
+                            <h2 class="font-weight-bold mb-0" style="color:#dc3545;">
+                                {{ number_format($usersWithoutAqars) }}
+                            </h2>
+                            <div class="progress mt-2" style="height:6px;">
+                                <div class="progress-bar bg-danger" style="width:{{ $withoutPercent }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ $withoutPercent }}% من المستخدمين</small>
+                        </div>
+                        <div style="font-size:52px; color:#dc3545; opacity:.2;">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <small class="text-danger font-weight-bold">
+                            <i class="fas fa-external-link-alt ml-1"></i> عرض القائمة &rarr;
+                        </small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
     {{-- ===== سكشن العقارات ===== --}}
     <div class="row mb-2">
         <div class="col-12">
@@ -651,6 +729,40 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
+                                {{-- ===== المستخدمون غير المدعوين ===== --}}
+                                @if(isset($notInvitedCount) && $notInvitedCount > 0)
+                                <tr class="table-warning">
+                                    <td><i class="fas fa-minus-circle text-warning"></i></td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.users.index', array_filter(['filter_isAdmin' => 0])) }}" class="text-decoration-none">
+                                            <i class="fas fa-user-slash text-warning ml-1"></i>
+                                            <strong>بدون داعي (غير مدعوين)</strong>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvitedCount) }}</span>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $totalAll = $totalInvited + $notInvitedCount;
+                                            $notInvitedPercent = $totalAll > 0 ? round(($notInvitedCount / $totalAll) * 100, 1) : 0;
+                                        @endphp
+                                        <div class="progress" style="height:20px;">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 style="width: {{ $notInvitedPercent }}%;">
+                                                {{ $notInvitedPercent }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-eye ml-1"></i> عرض
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
+
                             </tbody>
                             <tfoot class="bg-light">
                                 <tr>

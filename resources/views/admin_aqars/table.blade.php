@@ -82,19 +82,36 @@
                 <td>{{ $allAqars_val->views }}</td>
                 <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                 <td>
-                    {!! Form::open(['route' => ['sitemanagement.aqars.destroy', $allAqars_val->id], 'method' => 'delete']) !!}
+                    @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
                     <div class="btn-group gap-2">
+
+                        {{-- عرض: يظهر دائماً لمن عنده aqars.view --}}
                         <a href="{{ route('sitemanagement.aqars.show', [$allAqars_val->id]) }}"
-                           class="btn btn-info btn-sm">
+                           class="btn btn-info btn-sm" title="عرض">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route('sitemanagement.aqars.edit', [$allAqars_val->id]) }}"
-                           class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        {!! Form::button('<i class="fas fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
+
+                        {{-- تعديل: aqars.update فقط --}}
+                        @if($authUser && $authUser->hasPermission('aqars.update'))
+                            <a href="{{ route('sitemanagement.aqars.edit', [$allAqars_val->id]) }}"
+                               class="btn btn-primary btn-sm" title="تعديل">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        @endif
+
+                        {{-- حذف: aqars.delete فقط --}}
+                        @if($authUser && $authUser->hasPermission('aqars.delete'))
+                            {!! Form::open(['route' => ['sitemanagement.aqars.destroy', $allAqars_val->id], 'method' => 'delete', 'style' => 'display:inline']) !!}
+                                {!! Form::button('<i class="fas fa-trash"></i>', [
+                                    'type'    => 'submit',
+                                    'class'   => 'btn btn-danger btn-sm',
+                                    'title'   => 'حذف',
+                                    'onclick' => "return confirm('هل أنت متأكد من الحذف؟')"
+                                ]) !!}
+                            {!! Form::close() !!}
+                        @endif
+
                     </div>
-                    {!! Form::close() !!}
                 </td>
             </tr>
         @endforeach

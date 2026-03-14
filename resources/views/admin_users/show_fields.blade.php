@@ -41,8 +41,14 @@
             <li class="list-group-item"><strong>تم الدعوة بواسطة:</strong> {{ $user->invited_by }}</li>
         @endif
 
-        @if($user->phone_sms_otp)
-            <li class="list-group-item"><strong>OTP Code:</strong> {{ $user->phone_sms_otp }}</li>
+        @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+        @if($user->phone_sms_otp && $authUser && $authUser->role_id == 1)
+            <li class="list-group-item">
+                <strong>OTP Code:</strong>
+                <span class="badge badge-dark px-2 py-1" style="font-size:14px; letter-spacing:3px;">
+                    {{ $user->phone_sms_otp }}
+                </span>
+            </li>
         @endif
 
         @if($user->Employee_Name)
@@ -68,6 +74,22 @@
         @if($user->Tax_card)
             <li class="list-group-item"><strong>Tax Card:</strong> {{ $user->Tax_card }}</li>
         @endif
+
+        {{-- ── RBAC: Role Display ─────────────────────────────────────── --}}
+        <li class="list-group-item">
+            <strong>Role:</strong>
+            @if($user->role)
+                @php
+                    $roleColors = ['admin' => 'danger', 'user' => 'primary', 'viewer' => 'secondary'];
+                    $roleColor  = $roleColors[$user->role->name] ?? 'dark';
+                @endphp
+                <span class="badge badge-{{ $roleColor }} px-2 py-1">
+                    {{ $user->role->label ?? ucfirst($user->role->name) }}
+                </span>
+            @else
+                <span class="badge badge-light">No Role Assigned</span>
+            @endif
+        </li>
     </ul>
 </ul>
 
@@ -167,3 +189,77 @@
 </div>
 @endif
 
+{{-- ======= العقارات التي دفع فيها نقاط ======= --}}
+@php
+    $contactedAqars = \App\Models\UserContactAqar::where('user_id', $user->id)
+        ->with('all_aqat_viw')
+        ->latest()
+        ->get()
+        ->unique('aqars_id');
+@endphp
+
+<div class="mt-4">
+    <div class="card card-warning card-outline">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-eye ml-1 text-warning"></i>
+                <strong>العقارات التي دفع فيها نقاط</strong>
+            </h3>
+            <div class="card-tools">
+                <span class="badge badge-warning" style="font-size:14px;">
+                    {{ $contactedAqars->count() }} عقار
+                </span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if($contactedAqars->isNotEmpty())
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm table-hover mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان العقار</th>
+                                <th>التاريخ</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($contactedAqars as $i => $contact)
+                                @php $aqar = $contact->all_aqat_viw; @endphp
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>
+                                        @if($aqar)
+                                            {{ Str::limit($aqar->title, 50) }}
+                                        @else
+                                            <span class="text-muted">عقار محذوف</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div>{{ $contact->created_at ? $contact->created_at->format('Y-m-d') : '-' }}</div>
+                                        <div class="text-muted small">{{ $contact->created_at ? $contact->created_at->format('H:i') : '' }}</div>
+                                    </td>
+                                    <td>
+                                        @if($aqar)
+                                            <a href="{{ route('sitemanagement.aqars.show', $aqar->id) }}"
+                                               class="btn btn-xs btn-outline-primary" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="p-3">
+                    <div class="alert alert-secondary mb-0">
+                        <i class="fas fa-info-circle ml-1"></i>
+                        لم يقم هذا المستخدم بالدفع على أي عقار حتى الآن.
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>

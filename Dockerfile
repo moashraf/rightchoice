@@ -25,6 +25,9 @@ RUN apt-get update && apt-get install -y \
         pcntl \
         bcmath \
         gd \
+        opcache \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*
 
 # تثبيت Composer

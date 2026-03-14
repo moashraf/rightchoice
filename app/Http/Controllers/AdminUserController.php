@@ -13,7 +13,7 @@ class AdminUserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::query();
+        $users = User::withCount('aqars');
 
         if ($request->sortBy == 0)
             $users->orderBy('id', 'DESC');
@@ -32,6 +32,35 @@ class AdminUserController extends Controller
 
         if ($request->filter_type)
             $users->where('TYPE', $request->filter_type);
+
+        // ── RBAC filters (from RBAC page links) ──────────────────────────
+        if ($request->filled('filter_isAdmin')) {
+            $users->where('isAdmin', (int) $request->filter_isAdmin);
+        } else {
+            // افتراضياً: عرض المستخدمين العاديين فقط (isAdmin != 1)
+            $users->where(function ($q) {
+                $q->where('isAdmin', '!=', 1);
+             });
+        }
+
+        if ($request->filled('filter_role'))
+            $users->where('role_id', (int) $request->filter_role);
+
+        if ($request->filled('filter_no_role'))
+            $users->whereNull('role_id');
+
+        // فلتر المستخدمين حسب وجود عقارات أو عدمها
+        if ($request->filled('has_aqars')) {
+            if ((int) $request->has_aqars === 1) {
+                $users->whereHas('aqars', function ($q) {
+                    $q->whereNull('deleted_at');
+                });
+            } else {
+                $users->whereDoesntHave('aqars', function ($q) {
+                    $q->whereNull('deleted_at');
+                });
+            }
+        }
 
         $users = $users->paginate($request->show ?? 10);
 

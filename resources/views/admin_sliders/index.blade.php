@@ -8,9 +8,12 @@
                     <h1>شريط التمرير</h1>
                 </div>
                 <div class="col-sm-6">
-                    <a class="btn btn-primary float-right" href="{{ route('sitemanagement.sliders.create') }}">
-                        اضف جديد
-                    </a>
+                    @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+                    @if($authUser && $authUser->hasPermission('sliders.create'))
+                        <a class="btn btn-primary float-right" href="{{ route('sitemanagement.sliders.create') }}">
+                            اضف جديد
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

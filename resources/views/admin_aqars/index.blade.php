@@ -7,10 +7,18 @@
                 <div class="col-sm-6">
                     <h1>العقارات</h1>
                 </div>
-                <div class="col-sm-6">
-                    <a class="btn btn-primary float-right" href="{{ route('sitemanagement.aqars.create') }}">
-                        إضافة جديد
-                    </a>
+                <div class="col-sm-6 text-right">
+                    @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+                    @if($authUser && $authUser->hasPermission('aqars.delete'))
+                        <a class="btn btn-danger mr-2" href="{{ route('sitemanagement.aqars.deleted') }}">
+                            <i class="fas fa-trash-restore mr-1"></i> العقارات المحذوفة
+                        </a>
+                    @endif
+                    @if($authUser && $authUser->hasPermission('aqars.create'))
+                        <a class="btn btn-primary" href="{{ route('sitemanagement.aqars.create') }}">
+                            <i class="fas fa-plus mr-1"></i> إضافة جديد
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

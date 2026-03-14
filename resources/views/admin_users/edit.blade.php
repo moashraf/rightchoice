@@ -109,6 +109,32 @@
                             <small class="text-danger">{{ $errors->first('status') }}</small>
                         </div>
 
+                        {{-- ── RBAC: Role Assignment ────────────────────────────────── --}}
+                        @haspermission('users.update')
+                        <div class="form-group col-sm-4">
+                            <label for="role_id">
+                                <i class="fas fa-user-shield mr-1 text-primary"></i>
+                                Role: <span class="text-danger">*</span>
+                            </label>
+                            <select name="role_id" class="form-control custom-select">
+                                <option value="">-- Select Role --</option>
+                                @foreach(\App\Models\Role::orderBy('name')->get() as $role)
+                                    <option value="{{ $role->id }}"
+                                        {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                        {{ $role->label ?? ucfirst($role->name) }}
+                                        ({{ $role->name }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-muted">
+                                admin = full access &nbsp;|&nbsp;
+                                viewer = read-only &nbsp;|&nbsp;
+                                user = front-facing
+                            </small>
+                            <small class="text-danger">{{ $errors->first('role_id') }}</small>
+                        </div>
+                        @endhaspermission
+
                         <!-- Profile Image Field -->
                         <div class="form-group col-sm-12">
                             <label>صورة الملف الشخصي:</label>

@@ -15,7 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            AqarSeeder::class
+            AqarSeeder::class,
+
+            // ── RBAC ────────────────────────────────────────────────────
+            // 1. Create roles + permissions and assign them
+//            RolesAndPermissionsSeeder::class,
+            // 2. Map existing users: isAdmin=1 → admin, others → user
+//            MigrateUsersToRolesSeeder::class,
         ]);
     }
 }
