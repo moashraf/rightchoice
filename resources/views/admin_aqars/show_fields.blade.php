@@ -64,22 +64,27 @@
                         </td>
                         <td>{{ $aqar_viewer->points }}</td>
                         <td>
-                            @if($aqar_viewer->refund == 1)
-                                <span data-toggle="modal" data-target="#change_aqar_status_modal">
-                                    <button type="button"
-                                            data-placement="top"
-                                            data-toggle="tooltip"
-                                            title="ارجاع النقاط"
-                                            data-url="{{ route('sitemanagement.aqars.refundPoints', $aqar_viewer->id) }}"
-                                            id="change_aqar_status_btn"
-                                            class="btn btn-raised btn-icon btn-danger mr-1">
-                                        ارجاع النقاط
+                            @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+                            @if($authUser && $authUser->hasPermission('aqars.refund'))
+                                @if($aqar_viewer->refund == 1)
+                                    <span data-toggle="modal" data-target="#change_aqar_status_modal">
+                                        <button type="button"
+                                                data-placement="top"
+                                                data-toggle="tooltip"
+                                                title="ارجاع النقاط"
+                                                data-url="{{ route('sitemanagement.aqars.refundPoints', $aqar_viewer->id) }}"
+                                                id="change_aqar_status_btn"
+                                                class="btn btn-raised btn-icon btn-danger mr-1">
+                                            ارجاع النقاط
+                                        </button>
+                                    </span>
+                                @else
+                                    <button type="button" class="btn btn-raised btn-icon btn-secondary mr-1">
+                                        تم ارجاع النقاط
                                     </button>
-                                </span>
+                                @endif
                             @else
-                                <button type="button" class="btn btn-raised btn-icon btn-secondary mr-1">
-                                    تم ارجاع النقاط
-                                </button>
+                                <span class="text-muted">—</span>
                             @endif
                         </td>
                     </tr>
