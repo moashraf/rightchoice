@@ -176,6 +176,12 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:complaints.delete')->only(['destroy']);
 
     // ── Real Estate (Aqars) ──────────────────────────────────────────────
+    Route::get('aqars/deleted', [App\Http\Controllers\AdminAqarController::class, 'deletedAqars'])->name('aqars.deleted')
+        ->middleware('permission:aqars.delete');
+    Route::post('aqars/{id}/restore', [App\Http\Controllers\AdminAqarController::class, 'restoreAqar'])->name('aqars.restore')
+        ->middleware('permission:aqars.delete');
+    Route::delete('aqars/{id}/force-delete', [App\Http\Controllers\AdminAqarController::class, 'forceDeleteAqar'])->name('aqars.forceDelete')
+        ->middleware('permission:aqars.delete');
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
         ->middleware('permission:aqars.view')->only(['index', 'show']);
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)

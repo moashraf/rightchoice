@@ -311,4 +311,60 @@ class AdminAqarController extends AppBaseController
 
         return redirect()->route('sitemanagement.aqars.show', $viewer->aqar_id);
     }
+
+    /**
+     * Display all soft-deleted aqars.
+     */
+    public function deletedAqars(Request $request)
+    {
+        $allAqars = aqar::onlyTrashed()
+            ->with('user', 'governrateq', 'districte')
+            ->orderBy('deleted_at', 'DESC');
+
+        if ($request->key_word) {
+            $allAqars->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->key_word . '%')
+                  ->orWhereHas('user', function ($q2) use ($request) {
+                      $q2->where('name', 'like', '%' . $request->key_word . '%');
+                  });
+            });
+        }
+
+        $allAqars = $allAqars->paginate(50);
+
+        return view('admin_aqars.deleted', compact('allAqars'));
+    }
+
+    /**
+     * Restore a soft-deleted aqar.
+     */
+    public function restoreAqar($id)
+    {
+        $aqar = aqar::onlyTrashed()->findOrFail($id);
+        $aqar->restore();
+
+        Flash::success('تم استعادة العقار بنجاح.');
+        return redirect()->route('sitemanagement.aqars.deleted');
+    }
+
+    /**
+     * Permanently delete a soft-deleted aqar.
+     */
+    public function forceDeleteAqar($id)
+    {
+        $aqar = aqar::onlyTrashed()->findOrFail($id);
+
+        // Delete related images files
+        foreach ($aqar->images ?? [] as $img) {
+            $path = public_path('images/' . $img->img_url);
+            if (file_exists($path)) @unlink($path);
+            $img->delete();
+        }
+
+        Viewer::where('aqar_id', $aqar->id)->delete();
+        $aqar->forceDelete();
+
+        Flash::success('تم الحذف النهائي للعقار بنجاح.');
+        return redirect()->route('sitemanagement.aqars.deleted');
+    }
 }
