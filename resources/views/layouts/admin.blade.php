@@ -76,28 +76,67 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
 
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.aqars.index') }}" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
+                    <li class="nav-item {{ request()->is('sitemanagement/aqars*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-home"></i>
-                            <p>{{ __('admin.aqars') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.users.index') }}" class="nav-link {{ request()->is('sitemanagement/users') || request()->is('sitemanagement/users?*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>{{ __('admin.users') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.users.deleted') }}" class="nav-link {{ request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-slash text-danger"></i>
-                            <p>المستخدمون المحذوفون
-                                @php $deletedCount = \App\Models\User::onlyTrashed()->count(); @endphp
-                                @if($deletedCount > 0)
-                                    <span class="badge badge-danger badge-pill mr-1">{{ $deletedCount }}</span>
-                                @endif
+                            <p>
+                                {{ __('admin.aqars') }}
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.aqars.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/aqars') || (request()->is('sitemanagement/aqars*') && !request()->is('sitemanagement/aqars/deleted*')) ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>كل العقارات</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.aqars.deleted') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/aqars/deleted*') ? 'active' : '' }}">
+                                    <i class="far fa-trash-alt nav-icon text-danger"></i>
+                                    <p>
+                                        العقارات المحذوفة
+                                        @php $deletedAqarsCount = \App\Models\aqar::onlyTrashed()->count(); @endphp
+                                        @if($deletedAqarsCount > 0)
+                                            <span class="badge badge-danger badge-pill mr-1">{{ $deletedAqarsCount }}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                {{ __('admin.users') }}
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index') }}"
+                                   class="nav-link {{ (request()->is('sitemanagement/users') || request()->is('sitemanagement/users?*')) && !request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>كل المستخدمين</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.deleted') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
+                                    <i class="far fa-trash-alt nav-icon text-danger"></i>
+                                    <p>
+                                        المستخدمون المحذوفون
+                                        @php $deletedCount = \App\Models\User::onlyTrashed()->count(); @endphp
+                                        @if($deletedCount > 0)
+                                            <span class="badge badge-danger badge-pill mr-1">{{ $deletedCount }}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
