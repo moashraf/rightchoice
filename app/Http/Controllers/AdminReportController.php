@@ -74,6 +74,15 @@ class AdminReportController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        // المستخدمون غير المدعوين (invited_by فارغ أو null)
+        $notInvitedCount = User::whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('invited_by')
+                  ->orWhere('invited_by', '');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
         // ===== إحصائيات أنواع المستخدمين =====
         $userTypeStats = User::select('TYPE', DB::raw('count(*) as total'))
             ->whereNull('deleted_at')
@@ -126,8 +135,8 @@ class AdminReportController extends Controller
             ->get();
 
         return view('admin_reports.index', compact(
-            'stats', 'fromDate', 'toDate', 'invitedByStats', 'userTypeStats',
-            'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars'
+            'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount',
+            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars'
         ));
     }
 

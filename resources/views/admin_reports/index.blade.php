@@ -651,6 +651,40 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
+                                {{-- ===== المستخدمون غير المدعوين ===== --}}
+                                @if(isset($notInvitedCount) && $notInvitedCount > 0)
+                                <tr class="table-warning">
+                                    <td><i class="fas fa-minus-circle text-warning"></i></td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.users.index', array_filter(['filter_isAdmin' => 0])) }}" class="text-decoration-none">
+                                            <i class="fas fa-user-slash text-warning ml-1"></i>
+                                            <strong>بدون داعي (غير مدعوين)</strong>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvitedCount) }}</span>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $totalAll = $totalInvited + $notInvitedCount;
+                                            $notInvitedPercent = $totalAll > 0 ? round(($notInvitedCount / $totalAll) * 100, 1) : 0;
+                                        @endphp
+                                        <div class="progress" style="height:20px;">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 style="width: {{ $notInvitedPercent }}%;">
+                                                {{ $notInvitedPercent }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-eye ml-1"></i> عرض
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
+
                             </tbody>
                             <tfoot class="bg-light">
                                 <tr>
