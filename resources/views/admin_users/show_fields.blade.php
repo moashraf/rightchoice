@@ -42,7 +42,10 @@
         @endif
 
         @if($user->phone_sms_otp)
-            <li class="list-group-item"><strong>OTP Code:</strong> {{ $user->phone_sms_otp }}</li>
+            <li class="list-group-item">
+                <strong>OTP Code:</strong>
+                {{ $user->phone_sms_otp }}
+            </li>
         @endif
 
         @if($user->Employee_Name)
