@@ -41,10 +41,13 @@
             <li class="list-group-item"><strong>تم الدعوة بواسطة:</strong> {{ $user->invited_by }}</li>
         @endif
 
-        @if($user->phone_sms_otp)
+        @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
+        @if($user->phone_sms_otp && $authUser && $authUser->role_id == 1)
             <li class="list-group-item">
                 <strong>OTP Code:</strong>
-                {{ $user->phone_sms_otp }}
+                <span class="badge badge-dark px-2 py-1" style="font-size:14px; letter-spacing:3px;">
+                    {{ $user->phone_sms_otp }}
+                </span>
             </li>
         @endif
 
