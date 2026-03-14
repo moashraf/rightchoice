@@ -49,6 +49,19 @@ class AdminUserController extends Controller
         if ($request->filled('filter_no_role'))
             $users->whereNull('role_id');
 
+        // فلتر المستخدمين حسب وجود عقارات أو عدمها
+        if ($request->filled('has_aqars')) {
+            if ((int) $request->has_aqars === 1) {
+                $users->whereHas('aqars', function ($q) {
+                    $q->whereNull('deleted_at');
+                });
+            } else {
+                $users->whereDoesntHave('aqars', function ($q) {
+                    $q->whereNull('deleted_at');
+                });
+            }
+        }
+
         $users = $users->paginate($request->show ?? 10);
 
         return view('admin_users.index', compact('users'));

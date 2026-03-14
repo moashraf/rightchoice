@@ -134,9 +134,26 @@ class AdminReportController extends Controller
             ->limit(10)
             ->get();
 
+        // ===== المستخدمون الذين أضافوا عقارات =====
+        $usersWithAqars = User::whereNull('deleted_at')
+            ->whereHas('aqars', function ($q) {
+                $q->whereNull('deleted_at');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
+        // ===== المستخدمون الذين لم يضيفوا أي عقار =====
+        $usersWithoutAqars = User::whereNull('deleted_at')
+            ->whereDoesntHave('aqars', function ($q) {
+                $q->whereNull('deleted_at');
+            })
+            ->when($fromDate || $toDate, $filter)
+            ->count();
+
         return view('admin_reports.index', compact(
             'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount',
-            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars'
+            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars',
+            'usersWithAqars', 'usersWithoutAqars'
         ));
     }
 
