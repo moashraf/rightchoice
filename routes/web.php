@@ -434,6 +434,7 @@ Route::get('/ourcompanies-{slug}/filterby', 'App\Http\Controllers\CompanyControl
 Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricController@add_to_vip');
 //Route::get('dashboard', 'App\Http\Controllers\UserController@profile')->middleware('auth');
 Route::post('api/fetch-states', [App\Http\Controllers\DropdownController::class, 'fetchState']);
+Route::get('api/fetch-property-types', 'App\Http\Controllers\AqarController@fetchPropertyTypesByCat')->name('api.fetchPropertyTypes');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbPage')->name('verficationApply');

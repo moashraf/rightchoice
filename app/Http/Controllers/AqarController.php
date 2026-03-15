@@ -29,6 +29,7 @@ use Auth;
 use App\Models\wish;
 use App\Models\UserPriceing;
 use App\Models\Complaints;
+use App\Models\property_type;
 use Redirect;
 use Config;
 use App;
@@ -36,6 +37,17 @@ use App;
 class AqarController extends Controller
 {
 
+    /**
+     * AJAX: Fetch property types by category ID (public).
+     */
+    public function fetchPropertyTypesByCat(Request $request)
+    {
+        $types = property_type::select('id', 'property_type')
+            ->where('cat_id', $request->cat_id)
+            ->get();
+
+        return response()->json($types);
+    }
 
     public function submited()
     {
