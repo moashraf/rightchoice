@@ -146,9 +146,15 @@ class aqar extends Model
         return $this->belongsTo(OfferTypes::class, 'offer_type');
     }
 
+    public function categoryRel(){
+        return $this->belongsTo(Category::class, 'category');
+    }
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+
     public function location(){
         return $this->belongsTo(Location::class);
     }

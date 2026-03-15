@@ -2,10 +2,6 @@
 $(function () {
 	"use strict";
 
-
-
-
-
 $('.content-2').hide();
 $('.content-3').hide();
 
@@ -102,57 +98,37 @@ $('#mzaya').select2({
 
 
 $('#li-cat').on('change', function () {
-	if ($(this).val() == "2") {
-		$('#Property-type').html(`
-		<option  selected disabled  value="">اختر نوع العقار</option>
-		<option value="12">محلات</option>
-		<option value="13">حضانات</option>
-		<option value="14">مخازن</option>
-		<option value="15">كافيهات</option>
-		<option value="16">مولات</option>
-		<option value="17">صيدليه</option>
-		<option value="18">معرض</option>
-		<option value="19">مطاعم</option>
- 		<option value="20">مدارس</option>
-		<option value="21">مصانع</option>
-				<option value="24">عيادات</option>
+	var catId = $(this).val();
+	var $propertyType = $('#Property-type');
 
+	$propertyType.html('<option selected disabled value="">جاري التحميل...</option>');
 
-		`);
-		$('#floor-div').hide();
-		$('select[name="floor"]').attr('required', true);
+	$.ajax({
+		url: '/api/fetch-property-types',
+		type: 'GET',
+		data: {
+			cat_id: catId
+		},
+		success: function (data) {
+			var options = '<option selected disabled value="">اختر نوع العقار</option>';
+			$.each(data, function (i, item) {
+				options += '<option value="' + item.id + '">' + item.property_type + '</option>';
+			});
+			$propertyType.html(options);
 
-
-	} else if ($(this).val() == "3") {
-		$('#Property-type').html(`
-		<option   selected disabled value="">اختر نوع العقار</option>
-		<option value="1">شقه</option>
-		<option value="7">عمارات</option>
-		<option value="24">عيادات</option>
-		<option value="13">دور كامل</option>0
-		`);
-		$('#floor-div').show();
-		$('#floor-div select').prop('required',true);
-
-	} else {
-		$('#Property-type').html(`
-		<option   selected disabled value="">اختر نوع العقار</option>
-		<option value="1">شقه</option>
-		<option value="2">فلل خاصه</option>
-		<option value="3">روف</option>
-		<option value="4">استديو</option>
-		<option value="5">شاليهات</option>
-		<option value="6">غرف مشاركه</option>
-		<option value="7">عمارات</option>
-<option value="8">فلل دوبلكس</option>
-<option value="9">اراضي</option>
-		<option value="10">توين هاوس</option>
-		<option value="11">بنتاهاوس</option>
-		`);
-		$('#floor-div').show();
-		$('select[name="floor"]').attr('required', true);
-
-	}
+			// Reset floor visibility based on category
+			if (catId == "2") {
+				$('#floor-div').hide();
+				$('select[name="floor"]').attr('required', false);
+			} else {
+				$('#floor-div').show();
+				$('select[name="floor"]').attr('required', true);
+			}
+		},
+		error: function () {
+			$propertyType.html('<option selected disabled value="">اختر نوع العقار</option>');
+		}
+	});
 });
 $('#installment-div').hide();
 
@@ -472,8 +448,6 @@ $('#Property-type').on('change', function () {
 		$('#inner-floor').hide();
 		$('#inner-floor input').prop('required',false);
 
-
-
 	}
 	else if ($(this).val() == 7 || $(this).val() == 20 ||
 	 $(this).val() == 21 ||
@@ -523,9 +497,6 @@ $('#Property-type').on('change', function () {
 
 	}
 
-
-
-
 	else{
 		$('#inner-floor input').prop('required',true);
 		$('#inner-floor').show();
@@ -542,21 +513,13 @@ $('#Property-type').on('change', function () {
 		$('#floors-div').hide();
 		$('#floors-div input').prop('required',false);
 
-
-
-
 	}
 });
-
-
-
-
 
   $("#form-3").on("submit", function(){
     $("#pageloader").removeClass('d-none');
     $("#pageloader").addClass('d-flex');
   });//submit
-
 
 
 

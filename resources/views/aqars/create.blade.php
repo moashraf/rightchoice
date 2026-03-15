@@ -46,12 +46,10 @@
                         @csrf
                         <h3>نوع العقار و الموقع</h3>
 
-
                         <div class="row mt-3" style="align-content: start;
                         justify-content: start;">
                             <div class="col-lg-2">
                                 <div class="form-group">
-
 
                                     <label for="li-cat">تصنيف العرض <span class="text-danger">*</span></label>
 
@@ -74,7 +72,9 @@
                             </div>
                             <div class="col-lg-3">
                                 <div class="form-group">
-                                    <label for="Property-type">نوع العقار <span class="text-danger">*</span></label>
+                                    <label for="Property-type">نوع العقار
+                                        <span class="text-danger">*</span>
+                                    </label>
                                     <select oninvalid="this.setCustomValidity('{{ trans('validation.aqarError')}}')"
                                             oninput="this.setCustomValidity('')" required name="property_type"
                                             id="Property-type" class="myselect">
@@ -113,7 +113,7 @@
 
                                         <div class="col-lg-12">
 
-                                            <div class="gov-dropdown w-100">
+                                            <div class=" create_create gov-dropdown w-100">
                                                 <button type="button" id="governrate_btn"
                                                         class="myselect gov-dropbtn w-100">
                                                     <span

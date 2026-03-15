@@ -10,24 +10,25 @@ class Category extends Model
 
 
     use HasFactory;
+
     protected $table = 'aqar_category';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'category_name'
+        'category_name',
+        'category_name_en',
     ];
 
-    public function aqars(){
+    public function aqars()
+    {
         return $this->hasMany(aqar::Class);
     }
 
 
-
-    public function all_property_type_of_cat(){
+    public function all_property_type_of_cat()
+    {
         return $this->hasMany(TypeOfProp::Class, 'cat_id', 'id');
     }
-
-
 
 
 }

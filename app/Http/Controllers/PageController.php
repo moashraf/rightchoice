@@ -113,7 +113,7 @@ class PageController extends Controller
             }
         }
 
-        $allAqars = aqar::where('user_id', $getUser->id)->paginate(9);
+        $allAqars = aqar::where('user_id', $getUser->id)->latest()->paginate(9);
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }

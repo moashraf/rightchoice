@@ -29,6 +29,7 @@ use Auth;
 use App\Models\wish;
 use App\Models\UserPriceing;
 use App\Models\Complaints;
+use App\Models\property_type;
 use Redirect;
 use Config;
 use App;
@@ -36,6 +37,17 @@ use App;
 class AqarController extends Controller
 {
 
+    /**
+     * AJAX: Fetch property types by category ID (public).
+     */
+    public function fetchPropertyTypesByCat(Request $request)
+    {
+        $types = property_type::select('id', 'property_type')
+            ->where('cat_id', $request->cat_id)
+            ->get();
+
+        return response()->json($types);
+    }
 
     public function submited()
     {
@@ -1292,7 +1304,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
        //   dd($random_ads);
             $aqar_chexk= aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo')  ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel')  ->first();
 
 
            if (empty($aqar_chexk)) {  return redirect()->route('homeBlade', [ 'locale'=>$locale]) ;}
@@ -1302,14 +1314,14 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
              $aqar = aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo') ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel') ->first();
             }
 
       else{
 
             $aqar = aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo')->where('status', 1)  ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel')->where('status', 1)  ->first();
 
       }
 
