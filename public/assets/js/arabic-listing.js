@@ -2,10 +2,6 @@
 $(function () {
 	"use strict";
 
-
-
-
-
 $('.content-2').hide();
 $('.content-3').hide();
 
@@ -501,9 +497,6 @@ $('#Property-type').on('change', function () {
 
 	}
 
-
-
-
 	else{
 		$('#inner-floor input').prop('required',true);
 		$('#inner-floor').show();
@@ -520,21 +513,13 @@ $('#Property-type').on('change', function () {
 		$('#floors-div').hide();
 		$('#floors-div input').prop('required',false);
 
-
-
-
 	}
 });
-
-
-
-
 
   $("#form-3").on("submit", function(){
     $("#pageloader").removeClass('d-none');
     $("#pageloader").addClass('d-flex');
   });//submit
-
 
 
 
