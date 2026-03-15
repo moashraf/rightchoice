@@ -151,7 +151,7 @@
 
                 <div class="row mt-3">
 
-                    <div class="col-lg-3 filter-props">
+                    <div class="all-aqars-all-aqars col-lg-3 filter-props">
 
                         <div class="sticky">
                             <x-purchase-now />
