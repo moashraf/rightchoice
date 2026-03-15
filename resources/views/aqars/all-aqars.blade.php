@@ -211,33 +211,33 @@
 
                                                     <fieldset>
 
-                                                        <select class="myselect mt-3" name="location1" id="location1">
+                                                        {{-- location1: المحافظه autocomplete --}}
+                                                        <div class="autocomplete-wrapper mt-3" id="wrapper-location1">
+                                                            <input type="text" class="myselect" id="location1-text" placeholder="المحافظه"
+                                                                autocomplete="off"
+                                                                value="@foreach($governrates as $gover){{ $governratew == $gover->id ? $gover->governrate : '' }}@endforeach">
+                                                            <input type="hidden" name="location1" id="location1"
+                                                                value="{{ $governratew ?? '' }}">
+                                                            <div class="autocomplete-dropdown" id="dropdown-location1">
+                                                                @foreach ($governrates as $gover)
+                                                                    <div class="autocomplete-item" data-value="{{ $gover->id }}" data-label="{{ $gover->governrate }}">{{ $gover->governrate }}</div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
 
-                                                            <option value="" selected disabled>المحافظه</option>
-                                                            @foreach ($governrates as $gover)
-                                                                <option value="{{ $gover->id }}"
-                                                                    {{ $governratew == $gover->id ? 'selected' : '' }}>
-
-                                                                    {{ $gover->governrate }}</option>
-                                                            @endforeach
-
-
-
-
-                                                        </select>
-
-                                                        <select class="myselect mt-3" name="location2" id="location2">
-
-                                                            <option value="" selected disabled>الحي</option>
-                                                            @foreach ($district as $dis)
-                                                                <option value="{{ $dis->id }}"
-                                                                    {{ $districtw == $dis->id ? 'selected' : '' }}>
-
-                                                                    {{ $dis->district }}</option>
-                                                            @endforeach
-
-
-                                                        </select>
+                                                        {{-- location2: الحي autocomplete --}}
+                                                        <div class="autocomplete-wrapper mt-3" id="wrapper-location2">
+                                                            <input type="text" class="myselect" id="location2-text" placeholder="الحي"
+                                                                autocomplete="off"
+                                                                value="@foreach($district as $dis){{ $districtw == $dis->id ? $dis->district : '' }}@endforeach">
+                                                            <input type="hidden" name="location2" id="location2"
+                                                                value="{{ $districtw ?? '' }}">
+                                                            <div class="autocomplete-dropdown" id="dropdown-location2">
+                                                                @foreach ($district as $dis)
+                                                                    <div class="autocomplete-item" data-value="{{ $dis->id }}" data-label="{{ $dis->district }}">{{ $dis->district }}</div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
 
                                                         <input list="areas" name="area" id="area" class="myselect mt-3"
                                                             value="<?php echo $areaw; ?>" placeholder="المنطقه">
@@ -253,20 +253,18 @@
                                                         </datalist>
 
 
-                                                        <div class="form-group mt-3">
-
-
-                                                            <select id="new" type="text" name="compound" list="li-compound"
-                                                                class="myselect" value="{{ old('compound') }}">
-
-                                                                <option value=""  selected disabled>اسم الكومبوند</option>
+                                                        {{-- compound: الكومبوند autocomplete --}}
+                                                        <div class="autocomplete-wrapper mt-3" id="wrapper-compound">
+                                                            <input type="text" class="myselect" id="compound-text" placeholder="اسم الكومبوند"
+                                                                autocomplete="off"
+                                                                value="@foreach($compounds as $comp){{ (isset($compound_singel) && $compound_singel == $comp->id) ? $comp->compound : '' }}@endforeach">
+                                                            <input type="hidden" name="compound" id="compound-hidden"
+                                                                value="{{ $compound_singel ?? '' }}">
+                                                            <div class="autocomplete-dropdown" id="dropdown-compound">
                                                                 @foreach ($compounds as $comp)
-                                                                    <option value="{{ $comp->id }}"
-                                                                        <?php if(isset($compound_singel)){if ($compound_singel==  $comp->id ){echo"selected";}  }?>>
-                                                                        {{ $comp->compound }}</option>
+                                                                    <div class="autocomplete-item" data-value="{{ $comp->id }}" data-label="{{ $comp->compound }}">{{ $comp->compound }}</div>
                                                                 @endforeach
-                                                            </select>
-
+                                                            </div>
                                                         </div>
 
                                                 </div>
@@ -605,11 +603,7 @@
                                 <input  type="button"   onclick="myFunctionresetBtn()" id="resetBtn" href="" class="btn btn-light"
                                     value="اعد الاختيارات" />
                                 <script>
-                                    var resetBtn = document.getElementById('resetBtn');
-                                    resetBtn.addEventListener("click", function() {
-                                       // alert("fdf");
-                                        // document.getElementById("selectform").reset();
-                                          document.getElementById("selectform").value = document.getElementById("selectform").defaultValue;
+                                    function myFunctionresetBtn() {
                                           document.getElementById("li-finish").value = "";
                                           document.getElementById("sale-type").value = "";
                                           document.getElementById("price").value = "";
@@ -620,10 +614,15 @@
                                           document.getElementById("room2").value = "";
                                           document.getElementById("baths").value = "";
                                           document.getElementById("baths2").value = "";
+                                          // autocomplete fields
+                                          document.getElementById("location1-text").value = "";
                                           document.getElementById("location1").value = "";
+                                          document.getElementById("location2-text").value = "";
                                           document.getElementById("location2").value = "";
+                                          document.getElementById("compound-text").value = "";
+                                          document.getElementById("compound-hidden").value = "";
                                           document.getElementById("area").value = "";
-                                          document.getElementById("new").value = "";
+
                                             var uncheck=document.getElementsByTagName('input');
                                           var number=document.getElementsByTagName('input');
 
@@ -641,48 +640,7 @@
                                                uncheck[i].value="";
                                               }
                                              }
-
-                                    });
-
-
-                                    function myFunctionresetBtn() {
-//   document.getElementById("selectform").reset();
-                                            document.getElementById("selectform").value = document.getElementById("selectform").defaultValue;
-                                             document.getElementById("li-finish").value = "";
-                                          document.getElementById("sale-type").value = "";
-                                            document.getElementById("price").value = "";
-                                             document.getElementById("price2").value = "";
-                                          document.getElementById("Property-type").value = "";
-                                          document.getElementById("li-cat").value = "";
-                                          document.getElementById("room").value = "";
-                                          document.getElementById("room2").value = "";
-                                          document.getElementById("baths").value = "";
-                                          document.getElementById("baths2").value = "";
-                                            document.getElementById("location1").value = "";
-                                          document.getElementById("location2").value = "";
-                                            document.getElementById("area").value = "";
-                                          document.getElementById("new").value = "";
-
-                                            var uncheck=document.getElementsByTagName('input');
-                                                                                      var number=document.getElementsByTagName('input');
-
-                                             for(var i=0;i<uncheck.length;i++)
-                                             {
-                                              if(uncheck[i].type=='checkbox')
-                                              {
-                                               uncheck[i].checked=false;
-                                              }
-                                             }
-                                         for(var i=0;i<number.length;i++)
-                                             {
-                                              if(uncheck[i].type=='number')
-                                              {
-                                               uncheck[i].value="";
-                                              }
-                                             }
                                     }
-
-
                                 </script>
                                 <input value="بحث" type="submit" class="btn our-btn">
 
@@ -1043,33 +1001,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#location1').on('change', function() {
-                var idCountry = this.value;
-                $("#location2").html('');
-                $.ajax({
-                    url: "{{ url('api/fetch-states') }}",
-                    type: "POST",
-                    data: {
-                        country_id: idCountry,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#location2').html(
-                            '<option value="" selected disabled  >الحي</option>');
-                        $.each(result.states, function(key, value) {
-                            $("#location2").append('<option value="' + value
-                                .id + '">' + value.district + '</option>');
-                        });
-                    }
-                });
-            });
-
-        });
-    </script>
-
 <script type="text/javascript">
     function submit_another_form_filter()
     {
@@ -1131,5 +1062,197 @@ element.name== "minBaths" && element.value !== ""  )
 </script>
 
 
+<style>
+.autocomplete-wrapper {
+    position: relative;
+    width: 100%;
+}
+.autocomplete-wrapper input[type="text"] {
+    width: 100%;
+}
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+}
+.autocomplete-dropdown.open {
+    display: block;
+}
+.autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: right;
+    direction: rtl;
+}
+.autocomplete-item:hover,
+.autocomplete-item.highlighted {
+    background-color: #f0f0f0;
+}
+</style>
+
+<script>
+(function () {
+
+    // تطبيع النص العربي للبحث الذكي
+    function normalizeAr(str) {
+        return (str || '').toString()
+            .replace(/[أإآٱ]/g, 'ا')
+            .replace(/ة/g, 'ه')
+            .replace(/ى/g, 'ي')
+            .replace(/ؤ/g, 'و')
+            .replace(/ئ/g, 'ي')
+            .replace(/[َُِّْٰـًٌٍ]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+    }
+
+    /**
+     * initAutocomplete – يعمل على العناصر الحية (live DOM) دائماً
+     * لذا يعمل صح حتى بعد إضافة عناصر جديدة بالـ AJAX
+     */
+    function initAutocomplete(textId, hiddenId, dropdownId, onSelect) {
+        var textInput   = document.getElementById(textId);
+        var hiddenInput = document.getElementById(hiddenId);
+        var dropdown    = document.getElementById(dropdownId);
+        if (!textInput || !hiddenInput || !dropdown) return;
+
+        // --- helpers that always read live items ---
+        function getLiveItems() {
+            return Array.from(dropdown.querySelectorAll('.autocomplete-item'));
+        }
+
+        function showAll() {
+            getLiveItems().forEach(function(item){ item.style.display = ''; });
+            dropdown.classList.add('open');
+        }
+
+        function filterItems(q) {
+            var query = normalizeAr(q);
+            var hasVisible = false;
+            getLiveItems().forEach(function(item){
+                var label = normalizeAr(item.getAttribute('data-label'));
+                var match = query === '' || label.indexOf(query) !== -1;
+                item.style.display = match ? '' : 'none';
+                if (match) hasVisible = true;
+            });
+            // أظهر رسالة "لا توجد نتائج" لو مفيش
+            var noRes = dropdown.querySelector('.ac-no-results');
+            if (!hasVisible && query !== '') {
+                if (!noRes) {
+                    var d = document.createElement('div');
+                    d.className = 'ac-no-results';
+                    d.style.cssText = 'padding:8px 12px;color:#999;font-size:13px;';
+                    d.textContent = 'لا توجد نتائج';
+                    dropdown.appendChild(d);
+                }
+                dropdown.classList.add('open');
+            } else {
+                if (noRes) noRes.remove();
+                if (hasVisible) dropdown.classList.add('open');
+                else dropdown.classList.remove('open');
+            }
+        }
+
+        // --- فتح عند focus ---
+        textInput.addEventListener('focus', function(){
+            showAll();
+        });
+
+        // --- فلترة عند الكتابة ---
+        textInput.addEventListener('input', function(){
+            hiddenInput.value = '';
+            filterItems(this.value);
+        });
+
+        // --- event delegation للـ click (يعمل مع العناصر الجديدة تلقائياً) ---
+        dropdown.addEventListener('click', function(e){
+            var item = e.target.closest('.autocomplete-item');
+            if (!item) return;
+            var val   = item.getAttribute('data-value');
+            var label = item.getAttribute('data-label');
+            textInput.value   = label;
+            hiddenInput.value = val;
+            dropdown.classList.remove('open');
+            if (typeof onSelect === 'function') onSelect(val, label);
+        });
+
+        // --- إغلاق عند الضغط خارج ---
+        document.addEventListener('click', function(e){
+            if (!textInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+    }
+
+    // ============ location1 ============
+    initAutocomplete('location1-text', 'location1', 'dropdown-location1', function(val){
+        var loc2Text    = document.getElementById('location2-text');
+        var loc2Hidden  = document.getElementById('location2');
+        var loc2Dropdown= document.getElementById('dropdown-location2');
+
+        // مسح location2
+        loc2Text.value   = '';
+        loc2Hidden.value = '';
+
+        // أظهر "جاري التحميل"
+        loc2Dropdown.innerHTML = '<div class="ac-loading" style="padding:10px 12px;color:#555;font-size:13px;"><span>&#9696;</span> جاري التحميل...</div>';
+        loc2Dropdown.classList.add('open');
+
+        if (!val) {
+            loc2Dropdown.innerHTML = '';
+            loc2Dropdown.classList.remove('open');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ url('api/fetch-states') }}",
+            type: "POST",
+            data: { country_id: val, _token: '{{ csrf_token() }}' },
+            dataType: 'json',
+            success: function(result) {
+                loc2Dropdown.innerHTML = '';
+                if (result.states && result.states.length > 0) {
+                    result.states.forEach(function(s){
+                        var div = document.createElement('div');
+                        div.className    = 'autocomplete-item';
+                        div.setAttribute('data-value', s.id);
+                        div.setAttribute('data-label', s.district);
+                        div.textContent  = s.district;
+                        loc2Dropdown.appendChild(div);
+                    });
+                    loc2Dropdown.classList.add('open');
+                } else {
+                    loc2Dropdown.innerHTML = '<div style="padding:8px 12px;color:#999;font-size:13px;">لا توجد أحياء</div>';
+                    loc2Dropdown.classList.add('open');
+                }
+            },
+            error: function(){
+                loc2Dropdown.innerHTML = '<div style="padding:8px 12px;color:#c00;font-size:13px;">خطأ في التحميل</div>';
+                loc2Dropdown.classList.add('open');
+            }
+        });
+    });
+
+    // ============ location2 ============
+    initAutocomplete('location2-text', 'location2', 'dropdown-location2', null);
+
+    // ============ compound ============
+    initAutocomplete('compound-text', 'compound-hidden', 'dropdown-compound', null);
+
+
+})();
+</script>
 
 </x-layout>
