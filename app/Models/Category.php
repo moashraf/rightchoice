@@ -15,7 +15,8 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'category_name'
+        'category_name',
+        'category_name_en',
     ];
 
     public function aqars()
