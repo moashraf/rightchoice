@@ -93,18 +93,18 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 
     // ── Blogs ────────────────────────────────────────────────────────────
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
-        ->middleware('permission:blogs.view')->only(['index', 'show']);
-    Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.create')->only(['create', 'store']);
+    Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
+        ->middleware('permission:blogs.view')->only(['index', 'show']);
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.update')->only(['edit', 'update']);
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.delete')->only(['destroy']);
 
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
-        ->middleware('permission:sliders.view')->only(['index', 'show']);
-    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
         ->middleware('permission:sliders.create')->only(['create', 'store']);
+    Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
+        ->middleware('permission:sliders.view')->only(['index', 'show']);
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
         ->middleware('permission:sliders.update')->only(['edit', 'update']);
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
@@ -121,9 +121,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 
     // ── Companies ────────────────────────────────────────────────────────
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
-        ->middleware('permission:companies.view')->only(['index', 'show']);
-    Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
         ->middleware('permission:companies.create')->only(['create', 'store']);
+    Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
+        ->middleware('permission:companies.view')->only(['index', 'show']);
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
         ->middleware('permission:companies.update')->only(['edit', 'update']);
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
@@ -159,26 +159,26 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 
     // ── Notifications ────────────────────────────────────────────────────
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
-        ->middleware('permission:notifications.view')->only(['index', 'show']);
-    Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
         ->middleware('permission:notifications.manage')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
+        ->middleware('permission:notifications.view')->only(['index', 'show']);
 
     // ── Contact Forms ────────────────────────────────────────────────────
+    Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
+        ->middleware('permission:contact_forms.view')->only(['create', 'store', 'edit', 'update']);
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
         ->middleware('permission:contact_forms.view')->only(['index', 'show']);
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
         ->middleware('permission:contact_forms.delete')->only(['destroy']);
-    Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
-        ->middleware('permission:contact_forms.view')->only(['create', 'store', 'edit', 'update']);
 
     Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class)
         ->middleware('permission:settings.manage');
 
     // ── Complaints ───────────────────────────────────────────────────────
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
-        ->middleware('permission:complaints.view')->only(['index', 'show']);
-    Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.update')->only(['edit', 'update']);
+    Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
+        ->middleware('permission:complaints.view')->only(['index', 'show']);
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.delete')->only(['destroy']);
 
@@ -190,9 +190,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::delete('aqars/{id}/force-delete', [App\Http\Controllers\AdminAqarController::class, 'forceDeleteAqar'])->name('aqars.forceDelete')
         ->middleware('permission:aqars.delete');
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
-        ->middleware('permission:aqars.view')->only(['index', 'show']);
-    Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
         ->middleware('permission:aqars.create')->only(['create', 'store']);
+    Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
+        ->middleware('permission:aqars.view')->only(['index', 'show']);
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
         ->middleware('permission:aqars.update')->only(['edit', 'update']);
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
@@ -213,9 +213,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::delete('users/{id}/force-delete', [App\Http\Controllers\AdminUserController::class, 'forceDeleteUser'])->name('users.forceDelete')
         ->middleware('permission:users.delete');
     Route::resource('users', App\Http\Controllers\AdminUserController::class)
-        ->middleware('permission:users.view')->only(['index', 'show']);
-    Route::resource('users', App\Http\Controllers\AdminUserController::class)
         ->middleware('permission:users.create')->only(['create', 'store']);
+    Route::resource('users', App\Http\Controllers\AdminUserController::class)
+        ->middleware('permission:users.view')->only(['index', 'show']);
     Route::resource('users', App\Http\Controllers\AdminUserController::class)
         ->middleware('permission:users.update')->only(['edit', 'update']);
     Route::resource('users', App\Http\Controllers\AdminUserController::class)
