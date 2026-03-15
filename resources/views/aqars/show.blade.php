@@ -34,15 +34,6 @@
                             <div class="card-body">
                                 <h4 class="headingTitle2">{{ $aqar->title }}</h4>
 
-                                @if($aqar->ref_code)
-                                <div class="mb-2 mt-1" style="background:#f8f9fa; border-radius:6px; padding:6px 12px; border:1px dashed #ced4da; display:inline-block;">
-                                    <small class="text-muted" style="font-size:11px; display:block;">رقم مرجعي</small>
-                                    <span style="font-family:monospace; font-weight:700; font-size:14px; color:#495057; letter-spacing:1.5px;">
-                                        {{ $aqar->ref_code }}
-                                    </span>
-                                </div>
-                                @endif
-
                                 <div dir="rtl">
                                     @if ($aqar->offer_type == 1 || $aqar->offer_type == 1 || $aqar->offer_type == 5)
 
@@ -289,20 +280,29 @@
                                                 width="13" alt="" /></div>
                                     </div>
 
+
+
+                                    @if($aqar->ref_code)
+
                                     <div class="listing-card-info-icon">
-                                        رقم الاعلان
-                                        {{ $aqar->id }}
+                                        <small class="text-muted" style="font-size:11px; display:block;">
+                                            &nbsp;    رقم مرجعي &nbsp;
+                                        </small>
+                                        <span >
+                                        {{ $aqar->ref_code }}
+                                        </span>
 
                                         <div class="inc-fleat-icon"><img src="{{asset('images/icons/counter.png')}}"
-                                                width="13" alt="" /></div>
-
+                                                width="13" alt="" />
+                                        </div>
                                     </div>
 
+                                    @endif
 
                                          <div class="listing-card-info-icon">
-عدد المشاهدات
+                                            عدد المشاهدات
 
-{{ $aqar->views }}
+                                            {{ $aqar->views }}
 
                                         <div class="fa fa-eye"> </div>
 
