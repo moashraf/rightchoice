@@ -48,7 +48,6 @@
                                                                          width="13" alt=""/></div>
                                     </div>
 
-
                                     <div class="listing-card-info-icon">
                                         {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
                                         <div class="inc-fleat-icon"><img src="{{asset('images/icons/room.png')}}"
@@ -72,21 +71,18 @@
                                         @endif
 
 
-                                        <div class="inc-fleat-icon"><img src="{{asset('images/icons/location.png')}}"
-                                                                         width="13" alt=""/></div>
+                                        <div class="inc-fleat-icon">
+                                            <img src="{{asset('images/icons/location.png')}}"  width="13" alt=""/>
+                                        </div>
                                     </div>
 
                                 </div>
                                 <hr class="hr-add">
 
-
                                 <div class="text-center">
 
-
                                     @if(Auth::user())
-
                                             <?php if ($show && $aqar->user != null){ ?>
-
                                         <div id="contMop">
                                             @if($show2)
                                                 <a class="btn btn-success"
@@ -370,14 +366,10 @@
                                                             width="13" alt=""/></div>
                                                 </div>
 
-
                                                 <!--<div class="listing-card-info-icon">
                         {{ $aqar->installment_value }} {{ trans('langsite.value_installment')}}
                                                 <div class="inc-fleat-icon"><img src="{{asset('images/icons/installment.png')}}" width="13" alt="" /></div>
-                    </div>-->
-
-
-
+                                              </div>-->
 
                                                 <?php } ?>
                                             </div>
@@ -385,10 +377,8 @@
 
                                                 @if ( $aqar->propertyType)
 
-                                                    <div class="listing-card-info-icon">
-
-                                                        {{ $aqar->propertyType->property_type }}
-
+                                                    <div class="propertyType_propertyType listing-card-info-icon">
+                                                         {{ $aqar->propertyType->property_type }}
 
                                                         <div class="inc-fleat-icon">
                                                             <img src="{{ asset('images/icons/room.png') }}" width="13"
@@ -397,7 +387,6 @@
                                                     </div>
 
                                                 @endif
-
 
                                                 @if ($aqar->number_of_floors)
                                                     <div class="listing-card-info-icon">
