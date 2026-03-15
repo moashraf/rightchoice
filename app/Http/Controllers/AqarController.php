@@ -1304,7 +1304,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
        //   dd($random_ads);
             $aqar_chexk= aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo')  ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel')  ->first();
 
 
            if (empty($aqar_chexk)) {  return redirect()->route('homeBlade', [ 'locale'=>$locale]) ;}
@@ -1314,14 +1314,14 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
              $aqar = aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo') ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel') ->first();
             }
 
       else{
 
             $aqar = aqar::where('slug',$aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
-             ->with('propertyType')->with('offerTypes')->with('floorNo')->where('status', 1)  ->first();
+             ->with('propertyType')->with('offerTypes')->with('floorNo')->with('categoryRel')->where('status', 1)  ->first();
 
       }
 

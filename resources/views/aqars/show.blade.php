@@ -388,6 +388,17 @@
 
                                                 @endif
 
+                                                @if ($aqar->categoryRel)
+                                                    <div class="listing-card-info-icon">
+                                                        {{ app()->getLocale() === 'en' && $aqar->categoryRel->category_name_en
+                                                            ? $aqar->categoryRel->category_name_en
+                                                            : $aqar->categoryRel->category_name }}
+                                                        <div class="inc-fleat-icon">
+                                                            <img src="{{ asset('images/icons/category.png') }}" width="13" alt=""/>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
                                                 @if ($aqar->number_of_floors)
                                                     <div class="listing-card-info-icon">
                                                         {{ $aqar->number_of_floors }} {{ trans('langsite.number_floor')}}
