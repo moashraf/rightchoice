@@ -109,10 +109,9 @@ $('#li-cat').on('change', function () {
 
 	$.ajax({
 		url: '/api/fetch-property-types',
-		type: 'POST',
+		type: 'GET',
 		data: {
-			cat_id: catId,
-			_token: $('meta[name="csrf-token"]').attr('content')
+			cat_id: catId
 		},
 		success: function (data) {
 			var options = '<option selected disabled value="">اختر نوع العقار</option>';
