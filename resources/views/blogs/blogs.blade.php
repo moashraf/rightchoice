@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         xhr.open('POST', form.action, true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '');
         xhr.send(formData);
     });
 });
