@@ -9,34 +9,34 @@ class blogsController extends Controller
 {
     // ...existing code...
 
-    public function uploadFile(Request $request)
-    {
-        if (!$request->hasFile('upload_file') || !$request->file('upload_file')->isValid()) {
-            return response()->json(['success' => false, 'message' => 'يرجى اختيار ملف صالح للرفع.'], 422);
-        }
-
-        $file = $request->file('upload_file');
-
-        // التحقق من الحجم يدوياً (1GB = 1,073,741,824 bytes)
-        if ($file->getSize() > 1073741824) {
-            return response()->json(['success' => false, 'message' => 'حجم الملف يجب ألا يتجاوز 1 جيجابايت.'], 422);
-        }
-
-        $originalName = $file->getClientOriginalName();
-        $fileName = time() . '_' . preg_replace('/\s+/', '_', $originalName);
-        $destination = public_path('uploads/blogs');
-
-        if (!file_exists($destination)) {
-            mkdir($destination, 0755, true);
-        }
-
-        $file->move($destination, $fileName);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'تم رفع الملف "' . $originalName . '" بنجاح!',
-        ]);
-    }
+//    public function uploadFile(Request $request)
+//    {
+//        if (!$request->hasFile('upload_file') || !$request->file('upload_file')->isValid()) {
+//            return response()->json(['success' => false, 'message' => 'يرجى اختيار ملف صالح للرفع.'], 422);
+//        }
+//
+//        $file = $request->file('upload_file');
+//
+//        // التحقق من الحجم يدوياً (1GB = 1,073,741,824 bytes)
+//        if ($file->getSize() > 1073741824) {
+//            return response()->json(['success' => false, 'message' => 'حجم الملف يجب ألا يتجاوز 1 جيجابايت.'], 422);
+//        }
+//
+//        $originalName = $file->getClientOriginalName();
+//        $fileName = time() . '_' . preg_replace('/\s+/', '_', $originalName);
+//        $destination = public_path('uploads/blogs');
+//
+//        if (!file_exists($destination)) {
+//            mkdir($destination, 0755, true);
+//        }
+//
+//        $file->move($destination, $fileName);
+//
+//        return response()->json([
+//            'success' => true,
+//            'message' => 'تم رفع الملف "' . $originalName . '" بنجاح!',
+//        ]);
+//    }
 
     /**
      * Display a listing of the resource.
