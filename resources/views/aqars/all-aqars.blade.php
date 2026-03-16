@@ -775,7 +775,7 @@
                             </div>
 
 
-                            @foreach ($vipAqars->take(2) as $vipCard)
+                            @foreach ($vipAqars->shuffle()->take(2) as $vipCard)
                                 <div class="col-lg-12">
                                     <div class="card mt-3" style="margin: 0 0px; border: 2px solid #f0ad4e;">
                                         <div class="row no-gutters">
