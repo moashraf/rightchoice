@@ -798,7 +798,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="views">
-                                                    <div class="views-1" style="background:#f0ad4e; color:#fff;">⭐ مميز VIP</div>
+                                                    <div class="views-1" style="background:#f0ad4e; color:#fff;">
+                                                        ⭐ مميز
+                                                    </div>
                                                 </div>
                                                 <div class="views-2">
                                                     <i class="fa fa-eye"></i>
