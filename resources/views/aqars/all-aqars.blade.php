@@ -775,6 +775,101 @@
                             </div>
 
 
+                            @foreach ($vipAqars->take(2) as $vipCard)
+                                <div class="col-lg-12">
+                                    <div class="card mt-3" style="margin: 0 0px; border: 2px solid #f0ad4e;">
+                                        <div class="row no-gutters">
+                                            <div class="col-sm-5 col-card-imgs">
+                                                <div class="click">
+                                                    <div>
+                                                        <a target="_blank"
+                                                           href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}">
+                                                            @if ($vipCard->mainImage)
+                                                                <img src="{{ URL::to('/') . '/images/' . $vipCard->mainImage->img_url }}"
+                                                                     class="img-fluid mx-auto" alt="main" loading="lazy">
+                                                            @elseif($vipCard->firstImage)
+                                                                <img src="{{ URL::to('/') . '/images/' . $vipCard->firstImage->img_url }}"
+                                                                     class="img-fluid mx-auto" alt="" loading="lazy"/>
+                                                            @else
+                                                                <img src="https://rightchoice-co.com/images/FBO.png"
+                                                                     class="img-fluid main-img" alt="main" loading="lazy">
+                                                            @endif
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="views">
+                                                    <div class="views-1" style="background:#f0ad4e; color:#fff;">⭐ مميز VIP</div>
+                                                </div>
+                                                <div class="views-2">
+                                                    <i class="fa fa-eye"></i>
+                                                    <span>{{ $vipCard->views }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-7 order-lg-first col-card-details">
+                                                <div class="card-body">
+                                                    <div class="listing-detail-wrapper">
+                                                        <div class="listing-short-detail-wrap">
+                                                            <div class="listing-short-detail">
+                                                                <h4 class="listing-name verified">
+                                                                    <a href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}"
+                                                                       target="_blank">{{ $vipCard->title }}</a>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="listing-short-detail-flex">
+                                                            <h6 class="listing-card-info-price2">
+                                                                @if ($vipCard->offerTypes->id == 1 || $vipCard->offerTypes->id == 2)
+                                                                    {{ $vipCard->total_price }}
+                                                                @endif
+                                                                @if ($vipCard->offerTypes->id == 3 || $vipCard->offerTypes->id == 4)
+                                                                    {{ $vipCard->monthly_rent }}
+                                                                @endif جنيه مصري
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-rap">
+                                                        <div class="list-fx-features2">
+                                                            <div class="listing-card-info-icon">
+                                                                {{ $vipCard->baths }} حمام
+                                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="13" alt="" loading="lazy"/></div>
+                                                            </div>
+                                                            <div class="listing-card-info-icon">
+                                                                {{ $vipCard->rooms }} غرف
+                                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="13" alt="" loading="lazy"/></div>
+                                                            </div>
+                                                            <div class="listing-card-info-icon">
+                                                                {{ $vipCard->total_area }} م²
+                                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="13" alt="" loading="lazy"/></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btnAdds listing-detail-footer">
+                                                        <div class="footer-first">
+                                                            <div class="foot-location">
+                                                                @if ($vipCard->governrateq)
+                                                                    {{ $vipCard->governrateq->governrate }}
+                                                                @endif
+                                                                @if ($vipCard->districte)
+                                                                    , {{ $vipCard->districte->district }}
+                                                                @endif
+                                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy"/>
+                                                            </div>
+                                                        </div>
+                                                        <a class="btn btn-light ml-2 addToCart" data-id="{{ $vipCard['id'] }}"> حفظ
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                                                <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                                            </svg>
+                                                        </a>
+                                                        <a href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}"
+                                                           id="btn1" class="btn" target="_blank">عرض</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
                             @foreach ($allAqars as $aqar)
                                 <div class="col-lg-12">
                                     <div class="card mt-3" style="margin: 0 0px;">
