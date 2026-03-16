@@ -390,6 +390,7 @@ Route::group(['prefix' => '{locale?}'], function () {
 });
 
 
+Route::post('/blogs/upload-file', 'App\Http\Controllers\blogsController@uploadFile')->name('blogs.upload.file');
 Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');
 Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
 Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
