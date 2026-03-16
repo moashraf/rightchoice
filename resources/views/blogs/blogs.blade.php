@@ -186,20 +186,25 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
 
         var fileInput = document.getElementById('upload_file');
-        if (!fileInput.files.length) return;
+        if (!fileInput.files || !fileInput.files.length) {
+            showAlert('danger', 'يرجى اختيار ملف للرفع.');
+            return;
+        }
 
         var file = fileInput.files[0];
         var maxSize = 1024 * 1024 * 1024; // 1 GB
         if (file.size > maxSize) {
-            alert('حجم الملف يتجاوز الحد المسموح به (1 جيجابايت). يرجى اختيار ملف أصغر.');
+            showAlert('danger', 'حجم الملف يتجاوز الحد المسموح به (1 جيجابايت).');
             return;
         }
 
+        var csrfToken = document.querySelector('meta[name="csrf-token"]');
         var formData = new FormData(form);
         var xhr = new XMLHttpRequest();
 
         document.getElementById('uploadProgressWrapper').style.display = 'block';
         document.getElementById('uploadBtn').disabled = true;
+        hideAlerts();
 
         xhr.upload.addEventListener('progress', function (e) {
             if (e.lengthComputable) {
@@ -212,22 +217,53 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         xhr.addEventListener('load', function () {
-            document.open();
-            document.write(xhr.responseText);
-            document.close();
+            document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('uploadProgressWrapper').style.display = 'none';
+
+            try {
+                var res = JSON.parse(xhr.responseText);
+                if (res.success) {
+                    showAlert('success', res.message);
+                    form.reset();
+                    var bar = document.getElementById('uploadProgressBar');
+                    bar.style.width = '0%';
+                    bar.textContent = '0%';
+                } else {
+                    showAlert('danger', res.message || 'حدث خطأ أثناء الرفع.');
+                }
+            } catch (err) {
+                showAlert('danger', 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
+            }
         });
 
         xhr.addEventListener('error', function () {
-            alert('فشل الاتصال بالخادم. يرجى التحقق من الاتصال والمحاولة مرة أخرى.');
             document.getElementById('uploadBtn').disabled = false;
             document.getElementById('uploadProgressWrapper').style.display = 'none';
+            showAlert('danger', 'فشل الاتصال بالخادم. يرجى التحقق من الاتصال والمحاولة مرة أخرى.');
         });
 
         xhr.open('POST', form.action, true);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '');
+        if (csrfToken) {
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken.getAttribute('content'));
+        }
         xhr.send(formData);
     });
+
+    function showAlert(type, message) {
+        hideAlerts();
+        var div = document.createElement('div');
+        div.id = 'uploadAlert';
+        div.className = 'alert alert-' + type + ' alert-dismissible fade show mt-2';
+        div.setAttribute('role', 'alert');
+        div.innerHTML = message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        form.parentNode.insertBefore(div, form);
+    }
+
+    function hideAlerts() {
+        var old = document.getElementById('uploadAlert');
+        if (old) old.remove();
+    }
 });
 </script>
 

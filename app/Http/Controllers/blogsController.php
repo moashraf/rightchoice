@@ -11,15 +11,17 @@ class blogsController extends Controller
 
     public function uploadFile(Request $request)
     {
-        $request->validate([
-            'upload_file' => 'required|file|max:1048576', // 1GB = 1,048,576 KB
-        ], [
-            'upload_file.required' => 'يرجى اختيار ملف للرفع.',
-            'upload_file.file'     => 'الملف الذي تم رفعه غير صالح.',
-            'upload_file.max'      => 'حجم الملف يجب ألا يتجاوز 1 جيجابايت.',
-        ]);
+        if (!$request->hasFile('upload_file') || !$request->file('upload_file')->isValid()) {
+            return response()->json(['success' => false, 'message' => 'يرجى اختيار ملف صالح للرفع.'], 422);
+        }
 
         $file = $request->file('upload_file');
+
+        // التحقق من الحجم يدوياً (1GB = 1,073,741,824 bytes)
+        if ($file->getSize() > 1073741824) {
+            return response()->json(['success' => false, 'message' => 'حجم الملف يجب ألا يتجاوز 1 جيجابايت.'], 422);
+        }
+
         $originalName = $file->getClientOriginalName();
         $fileName = time() . '_' . preg_replace('/\s+/', '_', $originalName);
         $destination = public_path('uploads/blogs');
@@ -30,7 +32,10 @@ class blogsController extends Controller
 
         $file->move($destination, $fileName);
 
-        return back()->with('upload_success', 'تم رفع الملف "' . $originalName . '" بنجاح!');
+        return response()->json([
+            'success' => true,
+            'message' => 'تم رفع الملف "' . $originalName . '" بنجاح!',
+        ]);
     }
 
     /**
