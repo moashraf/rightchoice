@@ -775,23 +775,6 @@
                             </div>
 
 
-                            <?php //  if (!empty($_GET['location1'])) { echo (  $_GET['location1']  ) ;   }
-                            ?>
-                            <br>
-                            <?php //if (!empty($_GET['location2'])) { echo (  $_GET['location2']  ) ;   }
-                            ?>
-                            <br>
-                            <?php // if (!empty($_GET['area'])) { echo (  $_GET['area']  ) ;   }
-                            ?>
-                            <br>
-                            <?php // if (!empty($_GET['saletype'])) { echo (  $_GET['saletype']  ) ;   }
-                            ?>
-                            <br>
-                            <?php // if (!empty($_GET['saletype'])) { echo (  $_GET['saletype']  ) ;   }
-                            ?>
-
-                            <?php //echo $allAqars->count();
-                            ?>
                             @foreach ($allAqars as $aqar)
                                 <div class="col-lg-12">
                                     <div class="card mt-3" style="margin: 0 0px;">
