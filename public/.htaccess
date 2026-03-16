@@ -1,6 +1,22 @@
 RewriteEngine On
  RewriteCond %{HTTP_HOST} !^rightchoice-co\.com$ [NC]
 RewriteRule (.*) https://rightchoice-co.com/$1 [L,R=301,QSA]
+
+# PHP Upload Limits
+<IfModule mod_php.c>
+    php_value upload_max_filesize 1024M
+    php_value post_max_size 1024M
+    php_value max_execution_time 600
+    php_value max_input_time 600
+    php_value memory_limit -1
+</IfModule>
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 1024M
+    php_value post_max_size 1024M
+    php_value max_execution_time 600
+    php_value max_input_time 600
+    php_value memory_limit -1
+</IfModule>
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         #Options -MultiViews
