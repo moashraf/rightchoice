@@ -89,7 +89,7 @@ class AqarController extends Controller
        }
 
 
-        $vipAqars = aqar::where('vip', 1)->take(10)->latest()->get();
+        $vipAqars = aqar::where('vip', 1)->inRandomOrder()->take(10)->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
 			$sort = $request->sort;
@@ -213,7 +213,7 @@ class AqarController extends Controller
       //  $offerTypes = OfferTypes::all()->whereIn('id', [1, 2, 5]);
        $offerTypes = OfferTypes::all() ;
         $vipAqars = aqar::where('status',1)->where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')
-        ->with('offerTypes')->latest()->take(10)->get();
+        ->with('offerTypes')->inRandomOrder()->take(10)->get();
 
 
          $finishes = Finish_type::all();
@@ -765,10 +765,10 @@ class AqarController extends Controller
 
         if( is_array($offerType) == 1 ){
 
-            $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->whereIn('offer_type',$offerType )->latest()->take(4)->get();
+            $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->whereIn('offer_type',$offerType )->inRandomOrder()->take(4)->get();
         }else{
            // dd($offerType);
-           $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->where('offer_type',$offerType )->latest()->take(4)->get();
+           $vipAqars = aqar::where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->where('offer_type',$offerType )->inRandomOrder()->take(4)->get();
 
 
         }
@@ -822,7 +822,7 @@ class AqarController extends Controller
         $allAqars = aqar::where('status',1)->where('finannce_bank', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->paginate(9);
        // dd($allAqars);
         $offerTypes = OfferTypes::all();
-        $vipAqars = aqar::where('status',1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->latest()->take(10)->get();
+        $vipAqars = aqar::where('status',1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->inRandomOrder()->take(10)->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
         $off = 1;
@@ -1817,7 +1817,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
         //dd(   $allAqars);
         $offerTypes = OfferTypes::all();
         $vipAqars = aqar::where('status',1)->whereIn('offer_type', [4, 3]) ->where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')
-        ->with('offerTypes') ->take(10)->get();
+        ->with('offerTypes')->inRandomOrder()->take(10)->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
 
@@ -1876,7 +1876,7 @@ public function replaceLongPhoneNumbersWithStars($text) {
 
 
         $vipAqars = aqar::where('status',1) ->whereIn('offer_type', [1, 2])  ->where('vip',1)->with('governrateq')->with('districte')->with('subAreaa')
-        ->with('offerTypes')->latest()->take(10)->get();
+        ->with('offerTypes')->inRandomOrder()->take(10)->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
 
