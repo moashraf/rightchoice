@@ -850,24 +850,26 @@
                     <div class="report-options-modern">
 
                         <label class="rp-label">
-                            <input type="radio" name="report_reason" value="معلومات خاطئة" class="report-radio">
+                            <input type="radio" name="report_reason" value="  العقار مباع  " class="report-radio">
                             <span class="rp-icon">📋</span>
-                            <span class="rp-text"> العقار مباع
+                            <span class="rp-text">
+                                العقار مباع
                                      </span>
                             <span class="rp-check">✓</span>
                         </label>
 
                         <label class="rp-label">
-                            <input type="radio" name="report_reason" value="معلومات خاطئة" class="report-radio">
+                            <input type="radio" name="report_reason" value="  المالك غير متاح للتواصل  " class="report-radio">
                             <span class="rp-icon">📋</span>
-                            <span class="rp-text"> المالك غير متاح للتواصل
+                            <span class="rp-text">
+                                المالك غير متاح للتواصل
 
                                      </span>
                             <span class="rp-check">✓</span>
                         </label>
 
                         <label class="rp-label">
-                            <input type="radio" name="report_reason" value="معلومات خاطئة" class="report-radio">
+                            <input type="radio" name="report_reason" value="بروكر  " class="report-radio">
                             <span class="rp-icon">📋</span>
                             <span class="rp-text">  بروكر
 
