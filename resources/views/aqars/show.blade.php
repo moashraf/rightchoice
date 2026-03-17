@@ -72,7 +72,7 @@
 
 
                                         <div class="inc-fleat-icon">
-                                            <img src="{{asset('images/icons/location.png')}}"  width="13" alt=""/>
+                                            <img src="{{asset('images/icons/location.png')}}" width="13" alt=""/>
                                         </div>
                                     </div>
 
@@ -378,7 +378,7 @@
                                                 @if ( $aqar->propertyType)
 
                                                     <div class="propertyType_propertyType listing-card-info-icon">
-                                                         {{ $aqar->propertyType->property_type }}
+                                                        {{ $aqar->propertyType->property_type }}
 
                                                         <div class="inc-fleat-icon">
                                                             <img src="{{ asset('images/icons/room.png') }}" width="13"
@@ -394,7 +394,8 @@
                                                             ? $aqar->categoryRel->category_name_en
                                                             : $aqar->categoryRel->category_name }}
                                                         <div class="inc-fleat-icon">
-                                                            <img src="{{ asset('images/icons/category.png') }}" width="13" alt=""/>
+                                                            <img src="{{ asset('images/icons/category.png') }}"
+                                                                 width="13" alt=""/>
                                                         </div>
                                                     </div>
                                                 @endif
@@ -707,7 +708,8 @@
                                         @endif
                                         @if ($aqarSim->offer_type == 3 || $aqarSim->offer_type == 4)
                                             <h6 class="listing-card-info-price">{{ $aqarSim->monthly_rent }}
-                                                {{ trans('langsite.egyptian_pound') }}</h6>
+                                                {{ trans('langsite.egyptian_pound') }}
+                                            </h6>
 
                                         @endif
 
@@ -776,33 +778,278 @@
         </div>
     </section>
 
+    {{-- ===== Report Popup ===== --}}
+    <div id="overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; padding:20px; overflow-y:auto;">
+        <div id="popup" style="
+            background:#fff;
+            border-radius:16px;
+            max-width:480px;
+            width:100%;
+            margin:60px auto 20px;
+            box-shadow:0 20px 60px rgba(0,0,0,0.25);
+            overflow:hidden;
+            direction:rtl;
+                max-height: 900px;
+            font-family: inherit;
+        ">
+            {{-- Header --}}
+            <div style="background:#196aa2; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    <h5 style="color:#fff; margin:0; font-size:17px; font-weight:700;">{{ trans('langsite.report') }}</h5>
+                </div>
+                <button id="close" onclick="document.getElementById('overlay').style.display='none'" style="
+                    background:rgba(255,255,255,0.2);
+                    border:none;
+                    color:#fff;
+                    width:32px; height:32px;
+                    border-radius:50%;
+                    font-size:16px;
+                    cursor:pointer;
+                    line-height:1;
+                    display:flex; align-items:center; justify-content:center;
+                    transition:background 0.2s;
+                ">&times;</button>
+            </div>
 
-    <div id="overlay">
+            {{-- Preloader --}}
+            <div id="report-preloader" style="display:none; padding:50px 24px; text-align:center;">
+                <div class="rp-spinner"></div>
+                <p style="color:#196aa2; font-size:14px; margin-top:16px; font-weight:600;">جاري إرسال البلاغ...</p>
+            </div>
+
+            {{-- Success Message --}}
+            <div id="report-success" style="display:none; padding:50px 24px; text-align:center;">
+                <div style="
+                    width:70px; height:70px;
+                    background:#e8f5e9;
+                    border-radius:50%;
+                    display:flex; align-items:center; justify-content:center;
+                    margin:0 auto 16px;
+                ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#2e7d32" viewBox="0 0 16 16">
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </div>
+                <h5 style="color:#2e7d32; font-size:18px; font-weight:700; margin-bottom:8px;">تم إرسال البلاغ بنجاح!</h5>
+                <p style="color:#666; font-size:13px; margin-bottom:24px;">شكراً لك، سيتم مراجعة البلاغ من قِبل فريقنا في أقرب وقت.</p>
+                <button type="button" onclick="closeReportPopup()" style="
+                    background:#196aa2; color:#fff; border:none;
+                    padding:10px 30px; border-radius:8px;
+                    font-size:14px; cursor:pointer;
+                ">حسناً</button>
+            </div>
+
+            {{-- Body --}}
+            <div id="report-body" style="padding:24px;">
+                <p style="color:#555; font-size:13px; margin-bottom:16px;">اختر سبب الإبلاغ:</p>
+
+                <form class="show_report">
+                    <div class="report-options-modern">
+
+                        <label class="rp-label">
+                            <input type="radio" name="report_reason" value="  العقار مباع  " class="report-radio">
+                            <span class="rp-icon">📋</span>
+                            <span class="rp-text">
+                                العقار مباع
+                                     </span>
+                            <span class="rp-check">✓</span>
+                        </label>
+
+                        <label class="rp-label">
+                            <input type="radio" name="report_reason" value="  المالك غير متاح للتواصل  " class="report-radio">
+                            <span class="rp-icon">📋</span>
+                            <span class="rp-text">
+                                المالك غير متاح للتواصل
+
+                                     </span>
+                            <span class="rp-check">✓</span>
+                        </label>
+
+                        <label class="rp-label">
+                            <input type="radio" name="report_reason" value="بروكر  " class="report-radio">
+                            <span class="rp-icon">📋</span>
+                            <span class="rp-text">  بروكر
+
+                                     </span>
+                            <span class="rp-check">✓</span>
+                        </label>
 
 
-        <div id="popup">
 
+                        <label class="rp-label">
+                            <input type="radio" name="report_reason" value="other" class="report-radio">
+                            <span class="rp-icon">✏️</span>
+                            <span class="rp-text">أخرى</span>
+                            <span class="rp-check">✓</span>
+                        </label>
 
-            <div id="close">X</div>
+                    </div>
 
+                    <div id="report-other-box" style="display:none; margin-top:14px;">
+                        <textarea
+                            name="message"
+                            id="report"
+                            rows="4"
+                            placeholder="اكتب شكواك هنا..."
+                            style="
+                                width:100%;
+                                border:1.5px solid #196aa2;
+                                border-radius:10px;
+                                padding:12px;
+                                font-size:14px;
+                                resize:vertical;
+                                outline:none;
+                                direction:rtl;
+                                font-family:inherit;
+                                transition:border-color 0.2s;
+                            "
+                        ></textarea>
+                    </div>
 
-            <h2>اترك بلاغك بخصوص الاعلان</h2>
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                        <button type="button"
+                            onclick="document.getElementById('overlay').style.display='none'"
+                            style="
+                                background:#f0f0f0;
+                                border:none;
+                                padding:10px 22px;
+                                border-radius:8px;
+                                font-size:14px;
+                                cursor:pointer;
+                                color:#555;
+                                transition:background 0.2s;
+                            ">إلغاء</button>
 
-
-            <form>
-
-                <textarea name="message" id="report" class="myselect2" rows="4" requerid></textarea>
-
-
-                <a href="#" type="button" class="btn our-btn  ml-2 AddComplain" data-id="{{$aqar['id']}}"> ابلغ</a>
-
-            </form>
-
-
+                        <a href="#" type="button"
+                           class="AddComplain"
+                           data-id="{{ $aqar['id'] }}"
+                           style="
+                                background:#196aa2;
+                                color:#fff;
+                                border:none;
+                                padding:10px 28px;
+                                border-radius:8px;
+                                font-size:14px;
+                                cursor:pointer;
+                                text-decoration:none;
+                                display:inline-flex;
+                                align-items:center;
+                                gap:6px;
+                                transition:background 0.2s;
+                            ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                            إرسال البلاغ
+                        </a>
+                    </div>
+                </form>
+            </div>{{-- end report-body --}}
         </div>
-
-
     </div>
+
+    <style>
+        /* ===== Modern Report Popup ===== */
+        .report-options-modern { display:flex; flex-direction:column; gap:8px; }
+
+        .rp-label {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:12px 16px;
+            border:1.5px solid #e0e0e0;
+            border-radius:10px;
+            cursor:pointer;
+            transition:all 0.2s ease;
+            position:relative;
+            background:#fff;
+        }
+        .rp-label:hover { border-color:#196aa2; background:#f0f6fb; }
+        .rp-label input[type="radio"] { display:none; }
+
+        .rp-icon { font-size:18px; flex-shrink:0; }
+        .rp-text { flex:1; font-size:14px; color:#333; font-weight:500; }
+
+        .rp-check {
+            width:22px; height:22px;
+            border:2px solid #ccc;
+            border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:12px; color:transparent;
+            transition:all 0.2s;
+            flex-shrink:0;
+        }
+
+        .rp-label:has(input:checked) {
+            border-color:#196aa2;
+            background:#f0f6fb;
+        }
+        .rp-label:has(input:checked) .rp-check {
+            background:#196aa2;
+            border-color:#196aa2;
+            color:#fff;
+        }
+        .rp-label:has(input:checked) .rp-text { color:#196aa2; font-weight:700; }
+
+        #report:focus { border-color:#0f4d7a !important; box-shadow:0 0 0 3px rgba(25,106,162,0.15); }
+
+        /* Spinner */
+        .rp-spinner {
+            width:52px; height:52px;
+            border:5px solid #e3eef7;
+            border-top:5px solid #196aa2;
+            border-radius:50%;
+            animation:rp-spin 0.8s linear infinite;
+            margin:0 auto;
+        }
+        @keyframes rp-spin { to { transform:rotate(360deg); } }
+
+        @media (max-width:576px) {
+            #popup { margin:20px auto !important; }
+            .rp-label { padding:10px 12px; }
+        }
+    </style>
+
+    <script>
+        function closeReportPopup() {
+            document.getElementById('overlay').style.display = 'none';
+            setTimeout(function() {
+                document.getElementById('report-preloader').style.display = 'none';
+                document.getElementById('report-success').style.display   = 'none';
+                document.getElementById('report-body').style.display      = 'block';
+                document.querySelectorAll('.report-radio').forEach(function(r){ r.checked = false; });
+                document.getElementById('report-other-box').style.display = 'none';
+                document.getElementById('report').value = '';
+            }, 300);
+        }
+
+        document.querySelectorAll('.report-radio').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                var otherBox    = document.getElementById('report-other-box');
+                var reportField = document.getElementById('report');
+                if (this.value === 'other') {
+                    otherBox.style.display = 'block';
+                    reportField.value = '';
+                    reportField.focus();
+                } else {
+                    otherBox.style.display = 'none';
+                    reportField.value = this.value;
+                }
+            });
+        });
+
+        document.getElementById('overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeReportPopup();
+        });
+
+        document.getElementById('close').addEventListener('click', function() {
+            closeReportPopup();
+        });
+    </script>
     @if(Auth::user())
         <div id="myModal" class="modal">
 

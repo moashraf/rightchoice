@@ -1734,124 +1734,65 @@ else{
 
         $('body').on("click", "a.AddComplain", function () {
 
-            var token = "{{ csrf_token() }}"
+            var token    = "{{ csrf_token() }}";
+            var item_id  = $(this).data('id');
+            var message  = $("textarea[name='message']").val();
+            var url      = "{{route('add-user-complain')}}";
 
-            var item_id = $(this).data('id');
-
-            var $input = $('.js-result').val();
-
-            var message = $("textarea[name='message']").val();
-
-
-            var url = "{{route('add-user-complain')}}";
+            if (!message || message.trim() === '') {
+                toastr.error('يجب اختيار سبب البلاغ أو كتابة رسالة', '');
+                return;
+            }
 
             @auth
 
+            // إظهار الـ preloader وإخفاء الـ body
+            $('#report-body').hide();
+            $('#report-success').hide();
+            $('#report-preloader').show();
+
             $.ajax({
 
-
                 type: "POST",
-
                 url: url,
-
                 data: {
-
-                    _token: token,
-
+                    _token:  token,
                     item_id: item_id,
-
                     message: message,
-
                 },
-
 
                 success: function (data) {
 
+                    $('#report-preloader').hide();
 
                     if (data.status == 202) {
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1000);
-
-
-                        toastr.info(data.massage, '', {
-
-                            timeOut: 50000,
-
-                            extendedTimeOut: 50000
-
-
-                        });
-
+                        // إظهار رسالة النجاح داخل البوب اب
+                        $('#report-success').show();
 
                     } else if (data.status == 404) {
-
-
-                        toastr.error(data.massage, '', {
-
-                            timeOut: 50000,
-
-                            extendedTimeOut: 50000
-
-
-                        });
-
-
-                        //  location.reload();
-
+                        $('#report-body').show();
+                        toastr.error(data.massage, '', { timeOut: 5000 });
 
                     } else {
-
-
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1000);
-                        toastr.success(data.massage, '', {
-
-                            timeOut: 50000,
-
-                            extendedTimeOut: 50000
-
-
-                        });
-
-
-                        //  location.reload();
-
-
+                        // إظهار رسالة النجاح داخل البوب اب
+                        $('#report-success').show();
                     }
-
 
                 },
 
                 error: function (data) {
+                    $('#report-preloader').hide();
+                    $('#report-body').show();
                     if (data.status == 400) {
-                        toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', {
-
-                            timeOut: 50000,
-
-                            extendedTimeOut: 50000
-
-
-                        });
+                        toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', { timeOut: 5000 });
                     } else {
-                        toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {
-
-                            timeOut: 50000,
-
-                            extendedTimeOut: 50000
-
-
-                        });
+                        toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', { timeOut: 5000 });
                     }
-
-
                 }
 
             });
 
             @else
-
             toastr.error("you must login!", '');
 
             @endauth
