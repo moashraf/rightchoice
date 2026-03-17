@@ -734,7 +734,13 @@ class AqarController extends Controller
         $district = District::all();
         $areas = SubArea::distinct()->get();
         $mzaya = Mzaya::all();
-        $allAqars = aqar::where('status', 1)->where('finannce_bank', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->paginate(9);
+        $allAqars = aqar::where('status', 1)
+            ->where('vip', '!=', 1)
+            ->where('finannce_bank', 1)
+            ->with('governrateq')
+            ->with('districte')
+            ->with('subAreaa')
+            ->with('offerTypes')->paginate(9);
         // dd($allAqars);
         $offerTypes = OfferTypes::all();
         $vipAqars = aqar::where('status', 1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->inRandomOrder()->take(10)->get();
@@ -1707,7 +1713,10 @@ class AqarController extends Controller
 
         //dd(   $allAqars);
         $offerTypes = OfferTypes::all();
-        $vipAqars = aqar::where('status', 1)->whereIn('offer_type', [4, 3])->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')
+        $vipAqars = aqar::where('status', 1)
+            ->whereIn('offer_type', [4, 3])
+            ->where('vip', 1)->with('governrateq')
+            ->with('districte')->with('subAreaa')
             ->with('offerTypes')->inRandomOrder()->take(10)->get();
         $finishes = Finish_type::all();
         $categories = Category::all();
@@ -1718,7 +1727,10 @@ class AqarController extends Controller
         $offs = "ALL2";
         if ($offs) {
 
-            $allAqars = aqar::where('status', 1)->whereIn('offer_type', [3, 4])->latest()->paginate(9);
+            $allAqars = aqar::where('status', 1)
+                ->where('vip', '!=', 1)
+                ->whereIn('offer_type', [3, 4])
+                ->latest()->paginate(9);
 
         } else {
             $allAqars = [];
@@ -1838,11 +1850,12 @@ class AqarController extends Controller
         $vipAqars = aqar::where('status', 1)->where('vip', 1)->whereIn('offer_type', [$offs])->with('governrateq')->with('districte')->with('subAreaa')
             ->with('offerTypes')->latest()->take(10)->get();
 
-
-        //   dd($offs);
         if ($getOffers) {
 
-            $allAqars = aqar::where('status', 1)->where('offer_type', $offs)->latest()->paginate(9);
+            $allAqars = aqar::where('status', 1)
+                ->where('vip', '!=', 1)
+                ->where('offer_type', $offs)
+                ->latest()->paginate(9);
 
         } else {
             $allAqars = [];
@@ -1850,8 +1863,7 @@ class AqarController extends Controller
 
         $off = $getOffers;
 
-        //  dd($allAqars,$getOffers,$slug);
-        return view('aqars.all-aqars',
+         return view('aqars.all-aqars',
             compact('off', 'allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas', 'compounds', 'cat_id', 'prop_id', 'saletype', 'governratew'
                 , 'districtw', 'areaw', 'finishType', 'minPrice', 'maxPrice', 'minArea', 'maxArea', 'minRooms', 'maxRooms', 'minBaths', 'maxBaths', 'maz', 'offs', 'sort'));
 
