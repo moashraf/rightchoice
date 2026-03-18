@@ -251,6 +251,13 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
 
+    // ── Error Logs ─────────────────────────────────────────────────────
+    Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])
+        ->name('errorLogs.clearAll')
+        ->middleware('role:admin');
+    Route::resource('errorLogs', App\Http\Controllers\AdminErrorLogController::class)
+        ->middleware('role:admin')->only(['index', 'show', 'destroy']);
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')

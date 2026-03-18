@@ -302,6 +302,23 @@
                         </a>
                     </li>
 
+                    {{-- ── Error Logs (admin only) ────────────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.errorLogs.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/errorLogs*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-bug text-danger"></i>
+                            <p>
+                                سجل الأخطاء
+                                @php $errorLogsCount = \App\Models\ErrorLog::count(); @endphp
+                                @if($errorLogsCount > 0)
+                                    <span class="badge badge-danger badge-pill mr-1">{{ $errorLogsCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
                     {{-- ── RBAC Management (admin only) ───────────────────── --}}
                     @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
                     <li class="nav-item">
