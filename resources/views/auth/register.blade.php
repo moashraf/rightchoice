@@ -43,9 +43,9 @@
 
                                 <div class="form-group">
 
-                                    @if($invited_by)
+                                    @if(isset($invited_by) && $invited_by)
                                         <input type="hidden" name="invited_by" value="{{ $invited_by }}">
-                                     @endif
+                                    @endif
 
 
                                     <label for="name">
