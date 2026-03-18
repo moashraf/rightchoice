@@ -1355,13 +1355,27 @@ class AqarController extends Controller
 
         if ($cheackAqar) {
 
-            return response()->json(['massage' => 'This item is already in the favourites', 'status' => 202], 202);
+            return response()->json(['massage' => 'هذا العقار محفوظ بالفعل في المفضلة', 'status' => 202], 202);
         }
 
         Auth::user()->wishlist()->create($request->all());
 
-        return response()->json(['massage' => 'Add Suucess!', 'status' => 200], 200);
+        return response()->json(['massage' => 'تم حفظ العقار في المفضلة بنجاح ✓', 'status' => 200], 200);
 
+    }
+
+    /**
+     * Get saved wish list aqar IDs for the current user.
+     */
+    public function getWishListIds()
+    {
+        if (!Auth::check()) {
+            return response()->json(['ids' => []]);
+        }
+
+        $ids = wish::where('user_id', Auth::user()->id)->pluck('aqars_id')->toArray();
+
+        return response()->json(['ids' => $ids]);
     }
 
 
