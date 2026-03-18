@@ -478,9 +478,7 @@ class CompanyController extends Controller
             ->with('subAreaa')->inRandomOrder()->take(5)->latest()->get();
 
 
-        $company = Company::where('slug', $compan)->with("governrateq")->with("district_ashraf")->with("serv")->with('jobTitles')->where('status', 1)->first();
-        //dd($company->serv->Service);
-        // dd($company);
+        $company = Company::where('slug', $compan)->with("governrateq")->with("district_ashraf")->with("serv")->with('jobTitles')->where('status', 1)->firstOrFail();
 
         return view('companies.single-company', ['company' => $company, 'random_ads' => $random_ads, 'allAqars' => $allAqars]);
 

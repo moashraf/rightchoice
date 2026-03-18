@@ -20,7 +20,7 @@
 
             <h3 class=" single-company headingTitle2 hideTitle2"
                 style="    margin-bottom: 28px;  font-size: 24px!important;">
-                {{ $company->serv->Service }}
+                {{ $company->serv->Service ?? '' }}
 
             </h3>
 
@@ -38,7 +38,7 @@
                                 <div class="fr-grid-deatil-flex details mt-3">
 
                                     <div class="listing-card-info-icon">
-                                        {{ $company->governrateq->governrate}}
+                                        {{ $company->governrateq->governrate ?? '' }}
                                         @if($company->district_ashraf)
                                             , {{ $company->district_ashraf->district}}
                                         @endif
@@ -93,7 +93,7 @@
 
                             <div class="fr-grid-deatil-flex">
                                 <div class="listing-card-info-icon">
-                                    {{ $company->serv->Service }}
+                                    {{ $company->serv->Service ?? '' }}
                                 </div>
                                 <div class="listing-card-info-icon">
                                     {{ $company->Name }}
@@ -102,7 +102,6 @@
                                 <div class="listing-card-info-icon">
                                     رقم الاعلان
                                     {{ $company->id }}
-
 
                                 </div>
                                 <div class="listing-card-info-icon">
@@ -120,7 +119,7 @@
 
                             <div class="fr-grid-deatil-flex">
                                 <div class="listing-card-info-icon">
-                                    {{ $company->governrateq->governrate}}
+                                    {{ $company->governrateq->governrate ?? '' }}
                                     @if($company->district_ashraf)
                                         , {{ $company->district_ashraf->district}}
                                     @endif
