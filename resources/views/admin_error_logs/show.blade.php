@@ -42,6 +42,16 @@
                                 <td><span class="badge badge-info">{{ $errorLog->line }}</span></td>
                             </tr>
                             <tr>
+                                <th>الرابط</th>
+                                <td>
+                                    @if($errorLog->url)
+                                        <a href="{{ $errorLog->url }}" target="_blank">{{ $errorLog->url }}</a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>عدد مرات التكرار</th>
                                 <td><span class="badge badge-danger" style="font-size: 1.1em;">{{ $errorLog->count }}</span></td>
                             </tr>

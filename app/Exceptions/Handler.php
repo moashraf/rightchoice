@@ -69,6 +69,14 @@ class Handler extends ExceptionHandler
             $file    = $e->getFile();
             $line    = $e->getLine();
 
+            // Capture the URL where the error occurred
+            $url = null;
+            try {
+                $url = request()->fullUrl();
+            } catch (\Throwable $urlEx) {
+                // URL may not be available in console context
+            }
+
             $existing = ErrorLog::where('message', $message)
                 ->where('file', $file)
                 ->where('line', $line)
@@ -76,7 +84,10 @@ class Handler extends ExceptionHandler
 
             if ($existing) {
                 $existing->increment('count');
-                $existing->update(['last_occurred_at' => now()]);
+                $existing->update([
+                    'last_occurred_at' => now(),
+                    'url'              => $url ?? $existing->url,
+                ]);
             } else {
                 ErrorLog::create([
                     'type'              => get_class($e),
@@ -84,6 +95,7 @@ class Handler extends ExceptionHandler
                     'file'              => $file,
                     'line'              => $line,
                     'trace'             => $e->getTraceAsString(),
+                    'url'               => $url,
                     'count'             => 1,
                     'first_occurred_at' => now(),
                     'last_occurred_at'  => now(),
