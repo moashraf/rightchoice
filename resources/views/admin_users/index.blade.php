@@ -33,10 +33,11 @@
                     @if($canExport)
                     <a id="export-users-btn" class="btn btn-success float-right mr-2"
                        href="{{ route('sitemanagement.users.exportUsers', array_filter([
-                           'search_key'    => request('search_key'),
-                           'filter_status' => request('filter_status'),
-                           'filter_type'   => request('filter_type'),
-                           'sortBy'        => request('sortBy'),
+                           'search_key'        => request('search_key'),
+                           'filter_status'     => request('filter_status'),
+                           'filter_type'       => request('filter_type'),
+                           'filter_invited_by' => request('filter_invited_by'),
+                           'sortBy'            => request('sortBy'),
                        ])) }}">
                         <i class="fa fa-file-excel ml-1"></i>
                         <span id="export-users-text">تصدير نتائج البحث</span>
@@ -99,6 +100,17 @@
                                 <option value="1" {{ request('sortBy') == '1' ? 'selected' : '' }}>من الأقدم للأحدث</option>
                             </select>
                         </div>
+                        <div class="col-md-2">
+                            <label>مصدر الدعوة</label>
+                            <select class="form-control" name="filter_invited_by">
+                                <option value="">الكل</option>
+                                @foreach($invitedByOptions as $option)
+                                    <option value="{{ $option }}" {{ request('filter_invited_by') == $option ? 'selected' : '' }}>
+                                        {{ $option }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-md-1">
                             <label>اظهار</label>
                             <select name="show" class="form-control">
@@ -133,6 +145,7 @@
                             <th>الباقة</th>
                             <th>التليفون المحمول</th>
                             <th>عدد العقارات</th>
+                            <th>مصدر الدعوة</th>
                             <th>التاريخ</th>
                             <th>حالة</th>
                             <th>حدث</th>
@@ -155,6 +168,13 @@
                                        class="badge badge-info" style="font-size:13px;">
                                         {{ $user->aqars_count }}
                                     </a>
+                                </td>
+                                <td>
+                                    @if($user->invited_by)
+                                        <span class="badge badge-primary">{{ $user->invited_by }}</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div>{{ $user->created_at->format('Y-m-d') }}</div>

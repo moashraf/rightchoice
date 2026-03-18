@@ -62,9 +62,22 @@ class AdminUserController extends Controller
             }
         }
 
+        // فلتر حسب مصدر الدعوة
+        if ($request->filled('filter_invited_by')) {
+            $users->where('invited_by', $request->filter_invited_by);
+        }
+
+        // جلب قيم invited_by المتاحة للفلتر
+        $invitedByOptions = User::whereNotNull('invited_by')
+            ->where('invited_by', '!=', '')
+            ->distinct()
+            ->pluck('invited_by')
+            ->sort()
+            ->values();
+
         $users = $users->paginate($request->show ?? 10);
 
-        return view('admin_users.index', compact('users'));
+        return view('admin_users.index', compact('users', 'invitedByOptions'));
     }
 
     public function create()
