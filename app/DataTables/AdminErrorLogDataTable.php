@@ -20,6 +20,11 @@ class AdminErrorLogDataTable extends DataTable
             ->editColumn('file', function ($row) {
                 return '<span title="' . e($row->file) . '">' . e(basename($row->file)) . '</span>';
             })
+            ->editColumn('url', function ($row) {
+                if (!$row->url) return '-';
+                $short = mb_strlen($row->url) > 60 ? mb_substr($row->url, 0, 60) . '...' : $row->url;
+                return '<a href="' . e($row->url) . '" target="_blank" title="' . e($row->url) . '">' . e($short) . '</a>';
+            })
             ->editColumn('last_occurred_at', function ($row) {
                 return $row->last_occurred_at ? $row->last_occurred_at->diffForHumans() : '-';
             })
@@ -59,6 +64,7 @@ class AdminErrorLogDataTable extends DataTable
             'message' => ['title' => 'الرسالة'],
             'file'  => ['title' => 'الملف'],
             'line'  => ['title' => 'السطر'],
+            'url'   => ['title' => 'الرابط'],
             'count' => ['title' => 'التكرار'],
             'last_occurred_at' => ['title' => 'آخر حدوث'],
         ];

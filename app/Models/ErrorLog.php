@@ -14,6 +14,7 @@ class ErrorLog extends Model
         'file',
         'line',
         'trace',
+        'url',
         'count',
         'first_occurred_at',
         'last_occurred_at',
