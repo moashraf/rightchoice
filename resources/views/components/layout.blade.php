@@ -1228,14 +1228,25 @@ else{
         });
 
 
-        $('body').on("click", "a.addToCart", function () {
-
+        $('body').on("click", "a.addToCart", function (e) {
+            e.preventDefault();
+            var $btn = $(this);
             var token = "{{ csrf_token() }}"
+            var aqars_id = $btn.data('id');
+            var originalHtml = $btn.html();
 
-            var aqars_id = $(this).data('id');
+            // لو العقار محفوظ بالفعل، لا تعمل أي شيء
+            if ($btn.hasClass('saved')) {
+                toastr.info('هذا العقار محفوظ بالفعل في المفضلة', '', {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-center'
+                });
+                return;
+            }
 
-            var $input = $('.js-result').val();
-
+            // إظهار البريلودر على الزر
+            $btn.addClass('disabled').css('pointer-events', 'none');
+            $btn.html('<i class="fa fa-spinner fa-spin ml-1"></i> جاري الحفظ...');
 
             var url = "{{route('add-wish_list')}}";
 
@@ -1243,61 +1254,77 @@ else{
 
             $.ajax({
 
-
                 type: "POST",
-
                 url: url,
-
                 data: {
-
                     _token: token,
-
                     aqars_id: aqars_id
-
                 },
 
                 success: function (data) {
-
-                    // location.reload();
-
+                    $btn.removeClass('disabled').css('pointer-events', '');
                     if (data.status == 202) {
-
+                        // العقار محفوظ بالفعل
+                        $btn.removeClass('btn-light').addClass('btn-success saved text-white');
+                        $btn.html('<i class="fa fa-check ml-1"></i>   محفوظ');
                         toastr.info(data.massage, '', {
-
-                            timeOut: 5000
-
+                            timeOut: 3000,
+                            positionClass: 'toast-top-center'
                         });
-
                     } else {
-
-
+                        // تم الحفظ بنجاح
+                        $btn.removeClass('btn-light').addClass('btn-success saved text-white');
+                        $btn.html('<i class="fa fa-check ml-1"></i> تم الحفظ');
                         toastr.success(data.massage, '', {
-
-                            timeOut: 5000
-
+                            timeOut: 3000,
+                            positionClass: 'toast-top-center'
                         });
-
                     }
-
-
                 },
 
                 error: function (data) {
-
-                    //console.log('Error:', data);
-
-
+                    // إرجاع الزر لحالته الأصلية
+                    $btn.removeClass('disabled').css('pointer-events', '');
+                    $btn.html(originalHtml);
+                    toastr.error('حدث خطأ، حاول مرة أخرى', '', {
+                        timeOut: 3000,
+                        positionClass: 'toast-top-center'
+                    });
                 }
 
             });
 
             @else
 
-            toastr.error("you must login!", '');
+            $btn.removeClass('disabled').css('pointer-events', '');
+            $btn.html(originalHtml);
+            toastr.error("يجب تسجيل الدخول أولاً!", '', {
+                timeOut: 3000,
+                positionClass: 'toast-top-center'
+            });
 
             @endauth
 
         });
+
+        {{-- Mark already-saved aqars on page load --}}
+        @auth
+        (function() {
+            var $buttons = $('a.addToCart');
+            if ($buttons.length === 0) return;
+            $.get("{{ route('get-wish_list_ids') }}", function(data) {
+                if (data.ids && data.ids.length > 0) {
+                    $buttons.each(function() {
+                        var aqarId = Number($(this).data('id'));
+                        if ($.inArray(aqarId, data.ids) !== -1) {
+                            $(this).removeClass('btn-light').addClass('btn-success saved text-white');
+                            $(this).html('<i class="fa fa-check ml-1"></i>   محفوظ');
+                        }
+                    });
+                }
+            });
+        })();
+        @endauth
 
     });
 

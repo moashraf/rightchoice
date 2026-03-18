@@ -423,6 +423,7 @@ Route::post('/aqars', 'App\Http\Controllers\AqarController@store')->name('aqars.
 Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance');
 Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar');
 Route::post('/add-wish_list', 'App\Http\Controllers\AqarController@addwish_list')->name('add-wish_list');
+Route::get('/get-wish_list_ids', 'App\Http\Controllers\AqarController@getWishListIds')->name('get-wish_list_ids');
 Route::post('/remove-wish_list', 'App\Http\Controllers\AqarController@removewish_list')->name('remove-wish_list');
 Route::post('/add-contactaqar', 'App\Http\Controllers\AqarController@addContact')->name('add-contactaqar');
 Route::post('/ajx_main_img_edit_only', 'App\Http\Controllers\AqarController@ajx_main_img_edit_only')->name('ajx_main_img_edit_only');
