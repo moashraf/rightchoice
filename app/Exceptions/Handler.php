@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use App\Models\ErrorLog;
 
 class Handler extends ExceptionHandler
 {
@@ -14,6 +17,16 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         //
+    ];
+
+    /**
+     * Exception types that should NOT be logged to error_logs table.
+     */
+    protected $dontLogToDb = [
+        ValidationException::class,
+        NotFoundHttpException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException::class,
     ];
 
     /**
@@ -35,16 +48,56 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            $this->logErrorToDatabase($e);
         });
-        
-        
     }
-    
-    
-    
-    
-    
-    
-    
+
+    /**
+     * Log exception to the error_logs database table.
+     */
+    protected function logErrorToDatabase(Throwable $e): void
+    {
+        // Don't log certain exception types
+        foreach ($this->dontLogToDb as $type) {
+            if ($e instanceof $type) {
+                return;
+            }
+        }
+
+        try {
+            $message = mb_substr($e->getMessage(), 0, 65535);
+            $file    = $e->getFile();
+            $line    = $e->getLine();
+
+            $existing = ErrorLog::where('message', $message)
+                ->where('file', $file)
+                ->where('line', $line)
+                ->first();
+
+            if ($existing) {
+                $existing->increment('count');
+                $existing->update(['last_occurred_at' => now()]);
+            } else {
+                ErrorLog::create([
+                    'type'              => get_class($e),
+                    'message'           => $message,
+                    'file'              => $file,
+                    'line'              => $line,
+                    'trace'             => $e->getTraceAsString(),
+                    'count'             => 1,
+                    'first_occurred_at' => now(),
+                    'last_occurred_at'  => now(),
+                ]);
+            }
+        } catch (\Throwable $ex) {
+            // Silently fail to avoid infinite loop
+        }
+    }
+
+
+
+
+
+
+
 }

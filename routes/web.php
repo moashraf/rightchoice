@@ -251,6 +251,13 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
 
+    // ── Error Logs ─────────────────────────────────────────────────────
+    Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])
+        ->name('errorLogs.clearAll')
+        ->middleware('role:admin');
+    Route::resource('errorLogs', App\Http\Controllers\AdminErrorLogController::class)
+        ->middleware('role:admin')->only(['index', 'show', 'destroy']);
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')
@@ -395,13 +402,7 @@ Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')
 Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
 Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
 Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
-
-//Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register');
-
 Route::group(['middleware' => 'auth:sanctum'], function () {
-//Route::get('/add_company', 'App\Http\Controllers\CompanyController@create');
-    /*Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');*/
-
 
     Route::post('/updated-aqar/{aqar}', 'App\Http\Controllers\AqarController@updatedAqar');
 
