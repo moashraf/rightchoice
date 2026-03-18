@@ -402,13 +402,7 @@ Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')
 Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
 Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
 Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
-
-//Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register');
-
 Route::group(['middleware' => 'auth:sanctum'], function () {
-//Route::get('/add_company', 'App\Http\Controllers\CompanyController@create');
-    /*Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');*/
-
 
     Route::post('/updated-aqar/{aqar}', 'App\Http\Controllers\AqarController@updatedAqar');
 

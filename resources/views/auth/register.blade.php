@@ -71,7 +71,7 @@
 
                                     <label for="email">
                                         البريد الالكتروني
-                                        {{--                                    <span class="text-danger">*</span>--}}
+                                        {{--     <span class="text-danger">*</span>--}}
 
                                     </label>
 
@@ -93,10 +93,9 @@
 
 
                         <div class="row">
+                            @if(isset($getUserType) && $getUserType)
 
-                            <div class="col-lg-6">
-
-
+                            <div class="getUserType_getUserType col-lg-6">
                                 <div class="form-group">
 
 
@@ -125,9 +124,8 @@
 
 
                                 </div>
-
-
                             </div>
+                            @endif
 
 
                             <div class="col-lg-6">

@@ -67,7 +67,10 @@
 
 							<button type="submit" class="btn btn-primary">الدخول</button>
 
-							<P style="text-align: center;"><a href="{{ route('register', Config::get('app.locale')) }} ">ليس لديك حساب؟مستخدم جديد</a></P>
+							<P style="text-align: center;">
+                                <a href="{{ route('user.register', Config::get('app.locale')) }} ">
+                                    ليس لديك حساب؟مستخدم جديد</a>
+                            </P>
 						  </form>
 					   </div>
 					   <x-jet-validation-errors class="mb-4 error-box"  />
