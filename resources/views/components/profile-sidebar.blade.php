@@ -38,28 +38,27 @@
                     <hr class="hr-add">
 
                     {{-- Quick Links --}}
-                    <a data-toggle="tooltip" title="التنبيهات !"
-                       href="{{ URL::to(Config::get('app.locale').'/notification') }}"
-                       style="{{ $countNotifi > 0 ? 'color:gold;' : '' }}">
-                        <i class="fa fa-bell"></i>
-                    </a>
+                    <div class="d-flex flex-wrap justify-content-center gap-2" style="gap: 8px;">
+                        <a href="{{ URL::to(Config::get('app.locale').'/notification') }}"
+                           class="btn btn-sm btn-outline-warning {{ $countNotifi > 0 ? 'btn-warning text-white' : '' }}">
+                            <i class="fa fa-bell"></i> التنبيهات
+                        </a>
 
-                    <a data-toggle="tooltip" title="اعلاناتي !"
-                       href="{{ URL::to(Config::get('app.locale').'/user_ads') }}"
-                       style="margin:0 10px">
-                        <i class="fa fa-building"></i>
-                    </a>
+                        <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="fa fa-building"></i> اعلاناتي
+                        </a>
 
-                    <a data-toggle="tooltip" title="المفضله !"
-                       href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}">
-                        <i class="fa fa-heart"></i>
-                    </a>
+                        <a href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}"
+                           class="btn btn-sm btn-outline-danger">
+                            <i class="fa fa-heart"></i> المفضلة
+                        </a>
 
-                    <a data-toggle="tooltip" title="شكاواي !"
-                       href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}"
-                       style="margin:0 10px">
-                        <i class="fa fa-exclamation-circle"></i>
-                    </a>
+                        <a href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}"
+                           class="btn btn-sm btn-outline-secondary">
+                            <i class="fa fa-exclamation-circle"></i> شكاواي
+                        </a>
+                    </div>
 
                     {{-- Delete Account Request --}}
                     <div class="mt-3">
