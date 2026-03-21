@@ -1635,17 +1635,22 @@ class AqarController extends Controller
     public function destroyImages(Request $request, Images $img)
     {
         try {
+            if (!$img || !$img->id) {
+                session()->flash('error', 'الصورة غير موجودة');
+                return Redirect::back();
+            }
 
-            if (file_exists(public_path() . '/' . $img->img_url)) {
+            if ($img->img_url && file_exists(public_path() . '/' . $img->img_url)) {
                 $image_path = public_path() . '/' . $img->img_url;
                 unlink($image_path);
             }
 
-            $cheack = Images::find($img->id);
-            // dd($cheack);
-            if ($cheack->main_img == 1) {
-                $updateCount = Images::where('main_img', 0)->where('aqar_id', $cheack->aqar_id)->first();
-                $updateCount->update(['main_img' => 1]);
+            // If this is the main image, assign another image as main
+            if ($img->main_img == 1) {
+                $nextImage = Images::where('main_img', 0)->where('aqar_id', $img->aqar_id)->where('id', '!=', $img->id)->first();
+                if ($nextImage) {
+                    $nextImage->update(['main_img' => 1]);
+                }
             }
 
 
