@@ -49,7 +49,7 @@ class AdminAdsController extends AppBaseController
         // Upload image
         if ($request->hasFile('img_file') && $request->file('img_file')->isValid()) {
             $file = $request->file('img_file');
-            $namerand = '-' . rand(1, 900) . '-';
+            $namerand = '-' . rand(1, 900) . 'ads-';
             $filename = $namerand . '.' . $file->getClientOriginalExtension();
 
             $fullDir = public_path('images/ads');
@@ -58,7 +58,7 @@ class AdminAdsController extends AppBaseController
             }
 
             $file->move($fullDir, $filename);
-            $input['img'] = 'ads' . $filename;
+            $input['img'] = 'ads/' . $filename;
         }
 
         unset($input['img_file']);
