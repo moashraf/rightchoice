@@ -63,6 +63,48 @@ class aqar extends Model
         'slug_en'
     ];
 
+
+
+    /**
+     * Set installment_time: convert empty string to null.
+     */
+    public function setInstallmentTimeAttribute($value)
+    {
+        $this->attributes['installment_time'] = $value !== '' ? $value : null;
+    }
+
+    /**
+     * Set downpayment: convert empty string to null.
+     */
+    public function setDownpaymentAttribute($value)
+    {
+        $this->attributes['downpayment'] = $value !== '' ? $value : null;
+    }
+
+    /**
+     * Set monthly_rent: convert empty string to null.
+     */
+    public function setMonthlyRentAttribute($value)
+    {
+        $this->attributes['monthly_rent'] = $value !== '' ? $value : null;
+    }
+
+    /**
+     * Set total_price: convert empty string to null.
+     */
+    public function setTotalPriceAttribute($value)
+    {
+        $this->attributes['total_price'] = $value !== '' ? $value : null;
+    }
+
+    /**
+     * Set reciving: convert empty string to null.
+     */
+    public function setRecivingAttribute($value)
+    {
+        $this->attributes['reciving'] = $value !== '' ? $value : null;
+    }
+
     /**
      * Generate a unique reference code like RC-A3F9X2
      */
