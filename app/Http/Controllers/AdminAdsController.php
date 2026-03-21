@@ -6,6 +6,7 @@ use App\DataTables\AdminAdsDataTable;
 use App\Repositories\AdsRepository;
 use Illuminate\Http\Request;
 use Flash;
+use Response;
 
 class AdminAdsController extends AppBaseController
 {
@@ -120,7 +121,7 @@ class AdminAdsController extends AppBaseController
         // Upload image if new one provided
         if ($request->hasFile('img_file') && $request->file('img_file')->isValid()) {
             $file = $request->file('img_file');
-            $namerand = '-' . rand(1, 900) . '-';
+            $namerand = '-ads' . rand(1, 9000) . '-';
             $filename = $namerand . '.' . $file->getClientOriginalExtension();
 
             $fullDir = public_path('images/ads');
@@ -129,7 +130,7 @@ class AdminAdsController extends AppBaseController
             }
 
             $file->move($fullDir, $filename);
-            $input['img'] = 'ads' . $filename;
+            $input['img'] = 'ads/' . $filename;
         } else {
             $input['img'] = $ad->img;
         }

@@ -11,7 +11,7 @@
 <div class="form-group col-sm-12">
     <label>الصورة الحالية:</label><br>
     <a href="{{ url('images/' . $ad->img) }}" data-toggle="lightbox">
-        <img src="{{ url('images/' . $ad->img) }}" height="100" class="img-thumbnail" alt="ad">
+        <img src="{{ url('images/' . $ad->img) }}" height="100"  width="150" class="img-thumbnail" alt="ad">
     </a>
 </div>
 @endif
