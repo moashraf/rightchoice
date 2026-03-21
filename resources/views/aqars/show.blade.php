@@ -5,7 +5,7 @@
     @endsection
     <section id="inner-listing">
         <div class="container">
-            <x-ads :randomAds="$random_ads ?? null" />
+            <x-ads :randomAds="$random_ads ?? null"/>
             <h3 class="show_show headingTitle2 hideTitle2" style=" margin-bottom: 28px;  font-size: 24px!important;">
                 {{ $aqar->title }}
             </h3>
@@ -327,48 +327,50 @@
                                                 <div class="listing-card-info-icon">
                                                     {{ $aqar->offerTypes->type_offer }}
                                                     <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/cash.png')}}"
-                                                            width="13" alt=""/></div>
+                                                            src="{{asset('images/icons/cash.png')}}" width="13" alt=""/>
+                                                    </div>
                                                 </div>
                                                 <?php if ($aqar->offer_type == 2){ ?>
 
                                                 <div class="listing-card-info-icon">
                                                     {{ trans('langsite.offered')}} {{ $aqar->downpayment }}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/downpayment.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/downpayment.png')}}"
+                                                             width="13" alt=""/></div>
                                                 </div>
-                                                <div class="listing-card-info-icon">
 
+                                                <div class="listing-card-info-icon">
                                                     مده التقسيط
                                                     {{ $aqar->installment_time }} {{ trans('langsite.month')}}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/cash.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/cash.png')}}"
+                                                             width="13" alt=""/></div>
                                                 </div>
 
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ trans('langsite.Receipt_time')}} {{ $aqar->rec_time }}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/clock.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <?php if ($aqar->rec_time){ ?>
+                                                <div class="rec_timerec_time listing-card-info-icon">
+                                                    {{ trans('langsite.Receipt_time')}}
+                                                    {{ $aqar->rec_time }}
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/clock.png')}}" width="13"
+                                                             alt=""/>
+                                                    </div>
                                                 </div>
+                                                <?php } ?>
 
-                                                <!--<div class="listing-card-info-icon">
+                                                    <!--<div class="listing-card-info-icon">
                         {{ $aqar->installment_value }} {{ trans('langsite.value_installment')}}
                                                 <div class="inc-fleat-icon"><img src="{{asset('images/icons/installment.png')}}" width="13" alt="" /></div>
                                               </div>-->
 
                                                 <?php } ?>
+
+
                                             </div>
-                                            <div class="fr-grid-deatil-flex">
-
+                                            <div class="propertyTypepropertyType fr-grid-deatil-flex">
                                                 @if ( $aqar->propertyType)
-
                                                     <div class="propertyType_propertyType listing-card-info-icon">
                                                         {{ $aqar->propertyType->property_type }}
-
                                                         <div class="inc-fleat-icon">
                                                             <img src="{{ asset('images/icons/room.png') }}" width="13"
                                                                  alt=""/>
@@ -432,12 +434,8 @@
 
                                                 @endif
                                                 @if ( $aqar->finishType)
-
-                                                    <div class="listing-card-info-icon">
-
+                                                    <div class="finishTypefinishType listing-card-info-icon">
                                                         {{ $aqar->finishType->finish_type }}
-
-
                                                         <div class="inc-fleat-icon"><img
                                                                 src="{{asset('images/icons/finish.png')}}"
                                                                 width="13" alt=""/></div>
@@ -447,9 +445,6 @@
                                             </div>
 
                                         </div>
-
-
-
 
                                         <div class="fr-grid-deatil-flex">
                                             <?php if ($aqar->finannce_bank == 1){ ?>
@@ -478,19 +473,6 @@
 
                                             <?php } ?>
                                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                                         <br/>
                                         <br/>
 
