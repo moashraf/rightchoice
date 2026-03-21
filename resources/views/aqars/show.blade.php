@@ -584,9 +584,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-10 text-center">
                     <div class="sec-heading center mb-4">
-                        <h2 class="headingTitle"> العقارات المشابهة </h2>
+                        <h2 class="headingTitle"> {{ trans('langsite.similar_properties') }} </h2>
                         <p>
-                            يمكنك مشاهدة أكثر العقارات مناسبة لطلباتك من حيث المساحة أو الموقع أو السعر
+                            {{ trans('langsite.similar_properties_desc') }}
                         </p>
                     </div>
                 </div>

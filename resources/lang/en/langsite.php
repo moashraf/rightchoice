@@ -179,4 +179,6 @@ return [
     'optional'=> '(optional)',
     'verfication_msg'=>'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn"t receive the email, we will gladly send you another.',
     'verfication_button'=>'Resend email',
+    'similar_properties'=>'Similar Properties',
+    'similar_properties_desc'=>'You can view the most suitable properties for your needs in terms of area, location, or price',
 ];
