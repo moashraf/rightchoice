@@ -325,6 +325,23 @@
                     </li>
                     @endif
 
+                    {{-- ── Activity Logs (admin only) ─────────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.activityLogs.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/activityLogs*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-history text-primary"></i>
+                            <p>
+                                سجل النشاطات
+                                @php $activityLogsCount = \App\Models\ActivityLog::count(); @endphp
+                                @if($activityLogsCount > 0)
+                                    <span class="badge badge-info badge-pill mr-1">{{ $activityLogsCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
                     {{-- ── RBAC Management (admin only) ───────────────────── --}}
                     @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
                     <li class="nav-item">
