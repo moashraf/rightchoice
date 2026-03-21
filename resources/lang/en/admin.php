@@ -8,6 +8,7 @@ return [
     // Sidebar Menu Items
     'blogs'              => 'Blogs',
     'sliders'            => 'Sliders',
+    'external_ads'       => 'External Ads',
     'site_settings'      => 'Site Settings',
     'photo_sessions'     => 'Photo Sessions',
     'price_vip'          => 'Price VIP',

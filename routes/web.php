@@ -110,6 +110,16 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
         ->middleware('permission:sliders.delete')->only(['destroy']);
 
+    // ── Ads (اعلانات خارجية) ─────────────────────────────────────────
+    Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
+        ->middleware('permission:ads.create')->only(['create', 'store']);
+    Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
+        ->middleware('permission:ads.view')->only(['index', 'show']);
+    Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
+        ->middleware('permission:ads.update')->only(['edit', 'update']);
+    Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
+        ->middleware('permission:ads.delete')->only(['destroy']);
+
     // ── Settings ─────────────────────────────────────────────────────────
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
         ->middleware('permission:settings.manage');

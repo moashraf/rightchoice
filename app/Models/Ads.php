@@ -11,11 +11,12 @@ class Ads extends Model
 
     protected $table = 'ads';
     protected $primaryKey = 'id';
+    public $timestamps = false;
 
 
     protected $fillable = [
         'name',
-        'img', 
+        'img',
     ];
 
 }

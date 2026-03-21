@@ -158,6 +158,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.ads.index') }}" class="nav-link {{ request()->is('sitemanagement/ads*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>{{ __('admin.external_ads') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('sitemanagement.settingSites.index') }}" class="nav-link {{ request()->is('sitemanagement/settingSites*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>{{ __('admin.site_settings') }}</p>
