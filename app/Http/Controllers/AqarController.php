@@ -1284,8 +1284,9 @@ class AqarController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit($locale, $aqar)
     {
-        //
-
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
         $offerTypes = OfferTypes::all();
         $categories = Category::all();
@@ -1294,7 +1295,6 @@ class AqarController extends Controller
         $floors = Floor::all();
         $compounds = Compound::all();
         $governrate = Governrate::all();
-
         $district = District::all();
         $areas = SubArea::distinct()->get();
         $calls = CallTime::all();
@@ -1303,14 +1303,22 @@ class AqarController extends Controller
 
 
         $aqarSingle = aqar::where('slug', $aqar)->where('user_id', Auth::user()->id)->with('mzaya')->with('compounds')
-            ->with('governrateq')->with('districte')->with('subAreaa')
-            ->with('images')->with('finishType')->with('callTimes')
-            ->with('propertyType')->with('offerTypes')->with('floorNo')->first();
-        // dd($aqarSingle->offer_type);
+            ->with('governrateq')
+            ->with('districte')
+            ->with('subAreaa')
+            ->with('images')
+            ->with('finishType')
+            ->with('callTimes')
+            ->with('propertyType')
+            ->with('offerTypes')
+            ->with('floorNo')->first();
+
+        if (!$aqarSingle) {
+            abort(404, 'العقار غير موجود أو لا يمكنك تعديله');
+        }
 
         $type = $aqarSingle->offer_type;
         $prop = $aqarSingle->property_type;
-        //dd($type);
 
         return view('aqars.edit', ['aqar' => $aqarSingle], compact('prop', 'type', 'compounds', 'floors', 'offerTypes', 'categories', 'properties', 'governrate', 'district', 'areas', 'calls', 'finishes', 'lic_types', 'mzaya'));
     }
@@ -1538,6 +1546,12 @@ class AqarController extends Controller
                     }
 
                     $updatedata = aqar::WHERE('id', $aqar->id)->where('user_id', Auth::user()->id)->first();
+
+                    if (!$updatedata) {
+                        session()->flash('error', 'العقار غير موجود أو لا يمكنك تعديله');
+                        return Redirect::back();
+                    }
+
                     $result_description = $this->replaceLongPhoneNumbersWithStars(request('description'));
                     $request->merge(['description' => $result_description]);
 
@@ -1621,17 +1635,22 @@ class AqarController extends Controller
     public function destroyImages(Request $request, Images $img)
     {
         try {
+            if (!$img || !$img->id) {
+                session()->flash('error', 'الصورة غير موجودة');
+                return Redirect::back();
+            }
 
-            if (file_exists(public_path() . '/' . $img->img_url)) {
+            if ($img->img_url && file_exists(public_path() . '/' . $img->img_url)) {
                 $image_path = public_path() . '/' . $img->img_url;
                 unlink($image_path);
             }
 
-            $cheack = Images::find($img->id);
-            // dd($cheack);
-            if ($cheack->main_img == 1) {
-                $updateCount = Images::where('main_img', 0)->where('aqar_id', $cheack->aqar_id)->first();
-                $updateCount->update(['main_img' => 1]);
+            // If this is the main image, assign another image as main
+            if ($img->main_img == 1) {
+                $nextImage = Images::where('main_img', 0)->where('aqar_id', $img->aqar_id)->where('id', '!=', $img->id)->first();
+                if ($nextImage) {
+                    $nextImage->update(['main_img' => 1]);
+                }
             }
 
 
