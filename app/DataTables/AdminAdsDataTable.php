@@ -30,6 +30,12 @@ class AdminAdsDataTable extends DataTable
                 }
                 return '-';
             })
+            ->editColumn('created_at', function ($ad) {
+                return $ad->created_at ? $ad->created_at->format('Y-m-d H:i') : '-';
+            })
+            ->editColumn('updated_at', function ($ad) {
+                return $ad->updated_at ? $ad->updated_at->format('Y-m-d H:i') : '-';
+            })
             ->escapeColumns([]);
     }
 
@@ -65,8 +71,10 @@ class AdminAdsDataTable extends DataTable
     {
         return [
             'id',
-            'name' => ['title' => 'الرابط'],
-            'img'  => ['title' => 'الصورة'],
+            'name'       => ['title' => 'الرابط'],
+            'img'        => ['title' => 'الصورة'],
+            'created_at' => ['title' => 'تاريخ الإنشاء'],
+            'updated_at' => ['title' => 'تاريخ التعديل'],
         ];
     }
 
