@@ -1284,8 +1284,6 @@ class AqarController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit($locale, $aqar)
     {
-        //
-
 
         $offerTypes = OfferTypes::all();
         $categories = Category::all();
@@ -1294,7 +1292,6 @@ class AqarController extends Controller
         $floors = Floor::all();
         $compounds = Compound::all();
         $governrate = Governrate::all();
-
         $district = District::all();
         $areas = SubArea::distinct()->get();
         $calls = CallTime::all();
@@ -1303,14 +1300,18 @@ class AqarController extends Controller
 
 
         $aqarSingle = aqar::where('slug', $aqar)->where('user_id', Auth::user()->id)->with('mzaya')->with('compounds')
-            ->with('governrateq')->with('districte')->with('subAreaa')
-            ->with('images')->with('finishType')->with('callTimes')
-            ->with('propertyType')->with('offerTypes')->with('floorNo')->first();
-        // dd($aqarSingle->offer_type);
+            ->with('governrateq')
+            ->with('districte')
+            ->with('subAreaa')
+            ->with('images')
+            ->with('finishType')
+            ->with('callTimes')
+            ->with('propertyType')
+            ->with('offerTypes')
+            ->with('floorNo')->first();
 
         $type = $aqarSingle->offer_type;
         $prop = $aqarSingle->property_type;
-        //dd($type);
 
         return view('aqars.edit', ['aqar' => $aqarSingle], compact('prop', 'type', 'compounds', 'floors', 'offerTypes', 'categories', 'properties', 'governrate', 'district', 'areas', 'calls', 'finishes', 'lic_types', 'mzaya'));
     }
