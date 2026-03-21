@@ -26,3 +26,15 @@
 </div>
 @endif
 
+<!-- Created At Field -->
+<div class="col-sm-12">
+    {!! Form::label('created_at', 'تاريخ الإنشاء:') !!}
+    <p>{{ $ad->created_at ? $ad->created_at->toDayDateTimeString() : '-' }}</p>
+</div>
+
+<!-- Updated At Field -->
+<div class="col-sm-12">
+    {!! Form::label('updated_at', 'تاريخ التحديث:') !!}
+    <p>{{ $ad->updated_at ? $ad->updated_at->toDayDateTimeString() : '-' }}</p>
+</div>
+
