@@ -4,19 +4,8 @@
         {{ $aqar->title }}
     @endsection
     <section id="inner-listing">
-
         <div class="container">
-
-            <div class="adv">
-                <?php //dd($random_ads); ?>
-                <a target="_blank" href="{{  $random_ads->name  }}">
-
-                    <img src="{{ URL::to('/').'/images/'.$random_ads->img}}" class="image-fluid w-100 mx-auto mb-5"
-                         alt="">
-
-                </a>
-            </div>
-
+            <x-ads :randomAds="$random_ads ?? null"/>
             <h3 class="show_show headingTitle2 hideTitle2" style=" margin-bottom: 28px;  font-size: 24px!important;">
                 {{ $aqar->title }}
             </h3>
@@ -338,48 +327,50 @@
                                                 <div class="listing-card-info-icon">
                                                     {{ $aqar->offerTypes->type_offer }}
                                                     <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/cash.png')}}"
-                                                            width="13" alt=""/></div>
+                                                            src="{{asset('images/icons/cash.png')}}" width="13" alt=""/>
+                                                    </div>
                                                 </div>
                                                 <?php if ($aqar->offer_type == 2){ ?>
 
                                                 <div class="listing-card-info-icon">
                                                     {{ trans('langsite.offered')}} {{ $aqar->downpayment }}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/downpayment.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/downpayment.png')}}"
+                                                             width="13" alt=""/></div>
                                                 </div>
-                                                <div class="listing-card-info-icon">
 
+                                                <div class="listing-card-info-icon">
                                                     مده التقسيط
                                                     {{ $aqar->installment_time }} {{ trans('langsite.month')}}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/cash.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/cash.png')}}"
+                                                             width="13" alt=""/></div>
                                                 </div>
 
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ trans('langsite.Receipt_time')}} {{ $aqar->rec_time }}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/clock.png')}}"
-                                                            width="13" alt=""/></div>
+                                                    <?php if ($aqar->rec_time){ ?>
+                                                <div class="rec_timerec_time listing-card-info-icon">
+                                                    {{ trans('langsite.Receipt_time')}}
+                                                    {{ $aqar->rec_time }}
+                                                    <div class="inc-fleat-icon">
+                                                        <img src="{{asset('images/icons/clock.png')}}" width="13"
+                                                             alt=""/>
+                                                    </div>
                                                 </div>
+                                                <?php } ?>
 
-                                                <!--<div class="listing-card-info-icon">
+                                                    <!--<div class="listing-card-info-icon">
                         {{ $aqar->installment_value }} {{ trans('langsite.value_installment')}}
                                                 <div class="inc-fleat-icon"><img src="{{asset('images/icons/installment.png')}}" width="13" alt="" /></div>
                                               </div>-->
 
                                                 <?php } ?>
+
+
                                             </div>
-                                            <div class="fr-grid-deatil-flex">
-
+                                            <div class="propertyTypepropertyType fr-grid-deatil-flex">
                                                 @if ( $aqar->propertyType)
-
                                                     <div class="propertyType_propertyType listing-card-info-icon">
                                                         {{ $aqar->propertyType->property_type }}
-
                                                         <div class="inc-fleat-icon">
                                                             <img src="{{ asset('images/icons/room.png') }}" width="13"
                                                                  alt=""/>
@@ -443,12 +434,8 @@
 
                                                 @endif
                                                 @if ( $aqar->finishType)
-
-                                                    <div class="listing-card-info-icon">
-
+                                                    <div class="finishTypefinishType listing-card-info-icon">
                                                         {{ $aqar->finishType->finish_type }}
-
-
                                                         <div class="inc-fleat-icon"><img
                                                                 src="{{asset('images/icons/finish.png')}}"
                                                                 width="13" alt=""/></div>
@@ -458,9 +445,6 @@
                                             </div>
 
                                         </div>
-
-
-
 
                                         <div class="fr-grid-deatil-flex">
                                             <?php if ($aqar->finannce_bank == 1){ ?>
@@ -489,19 +473,6 @@
 
                                             <?php } ?>
                                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                                         <br/>
                                         <br/>
 
@@ -552,16 +523,11 @@
 
                             $eastern_arabic = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
                             $western_arabic = array('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩');
-
                             $str = str_replace($western_arabic, $eastern_arabic, $aqar->description) ?? '';
-
                             $data_final = preg_replace('/[^\w\s]+/u', ' ', $str);
-
-//echo $data_final ;
 
                             echo \Illuminate\Support\Str::limit($data_final, 500, '');
                             ?>
-                            {{--  \Illuminate\Support\Str::limit(preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********01', $aqar->description), 100, '') --}}
 
                         </div>
                         @if (\Illuminate\Support\Str::length($aqar->description) > 500)
@@ -618,10 +584,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-10 text-center">
                     <div class="sec-heading center mb-4">
-                        <h2 class="headingTitle"> العقارات المشابهة </h2>
+                        <h2 class="headingTitle"> {{ trans('langsite.similar_properties') }} </h2>
                         <p>
-
-                            يمكنك مشاهدة أكثر العقارات مناسبة لطلباتك من حيث المساحة أو الموقع أو السعر
+                            {{ trans('langsite.similar_properties_desc') }}
                         </p>
                     </div>
                 </div>
@@ -641,12 +606,9 @@
                                         <div class="list-img-slide">
                                             <div class="click">
 
-
                                                 <div>
                                                     <a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarSim->slug) }}"
                                                        target="_blank">
-
-
                                                         @if($aqarSim->mainImage)
                                                             <img
                                                                 src="{{ URL::to('/').'/images/'.$aqarSim->mainImage->img_url}}"
@@ -693,7 +655,10 @@
                                                         class=""
                                                         target="_blank">{{ \Illuminate\Support\Str::limit($aqarSim->title, $limit = 29, $end = '...') }}</a>
                                                 </h4>
-                                                <!-- <h4 class="listing-name verified"><a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
+                                                <!-- <h4 class="listing-name verified">
+                                                <a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a>
+                                                </h4>
+                                                 -->
                                             </div>
 
                                         </div>
@@ -702,7 +667,8 @@
                                     <div class="listing-short-detail-flex">
                                         @if ($aqarSim->offer_type == 1 || $aqarSim->offer_type == 2)
 
-                                            <h6 class="listing-card-info-price">{{ $aqarSim->total_price }}
+                                            <h6 class="listing-card-info-price">
+                                                {{ $aqarSim->total_price }}
                                                 {{ trans('langsite.egyptian_pound') }}</h6>
 
                                         @endif
@@ -716,8 +682,6 @@
                                     </div>
                                     <div class="price-features-wrapper">
                                         <div class="list-fx-features">
-
-
                                             <div class="listing-card-info-icon">
                                                 {{ $aqarSim->baths }} حمام
                                                 <div class="inc-fleat-icon"><img
@@ -737,7 +701,6 @@
                                                         src="{{ asset('images/icons/area.png') }}"
                                                         width="12" alt=""/></div>
                                             </div>
-
 
                                         </div>
                                     </div>
@@ -779,7 +742,8 @@
     </section>
 
     {{-- ===== Report Popup ===== --}}
-    <div id="overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; padding:20px; overflow-y:auto;">
+    <div id="overlay"
+         style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; padding:20px; overflow-y:auto;">
         <div id="popup" style="
             background:#fff;
             border-radius:16px;
@@ -793,10 +757,12 @@
             font-family: inherit;
         ">
             {{-- Header --}}
-            <div style="background:#196aa2; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+            <div
+                style="background:#196aa2; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 16 16">
-                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        <path
+                            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                     </svg>
                     <h5 style="color:#fff; margin:0; font-size:17px; font-weight:700;">{{ trans('langsite.report') }}</h5>
                 </div>
@@ -811,7 +777,8 @@
                     line-height:1;
                     display:flex; align-items:center; justify-content:center;
                     transition:background 0.2s;
-                ">&times;</button>
+                ">&times;
+                </button>
             </div>
 
             {{-- Preloader --}}
@@ -830,16 +797,20 @@
                     margin:0 auto 16px;
                 ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#2e7d32" viewBox="0 0 16 16">
-                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        <path
+                            d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                     </svg>
                 </div>
-                <h5 style="color:#2e7d32; font-size:18px; font-weight:700; margin-bottom:8px;">تم إرسال البلاغ بنجاح!</h5>
-                <p style="color:#666; font-size:13px; margin-bottom:24px;">شكراً لك، سيتم مراجعة البلاغ من قِبل فريقنا في أقرب وقت.</p>
+                <h5 style="color:#2e7d32; font-size:18px; font-weight:700; margin-bottom:8px;">تم إرسال البلاغ
+                    بنجاح!</h5>
+                <p style="color:#666; font-size:13px; margin-bottom:24px;">شكراً لك، سيتم مراجعة البلاغ من قِبل فريقنا
+                    في أقرب وقت.</p>
                 <button type="button" onclick="closeReportPopup()" style="
                     background:#196aa2; color:#fff; border:none;
                     padding:10px 30px; border-radius:8px;
                     font-size:14px; cursor:pointer;
-                ">حسناً</button>
+                ">حسناً
+                </button>
             </div>
 
             {{-- Body --}}
@@ -859,7 +830,8 @@
                         </label>
 
                         <label class="rp-label">
-                            <input type="radio" name="report_reason" value="  المالك غير متاح للتواصل  " class="report-radio">
+                            <input type="radio" name="report_reason" value="  المالك غير متاح للتواصل  "
+                                   class="report-radio">
                             <span class="rp-icon">📋</span>
                             <span class="rp-text">
                                 المالك غير متاح للتواصل
@@ -876,7 +848,6 @@
                                      </span>
                             <span class="rp-check">✓</span>
                         </label>
-
 
 
                         <label class="rp-label">
@@ -911,8 +882,8 @@
 
                     <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
                         <button type="button"
-                            onclick="document.getElementById('overlay').style.display='none'"
-                            style="
+                                onclick="document.getElementById('overlay').style.display='none'"
+                                style="
                                 background:#f0f0f0;
                                 border:none;
                                 padding:10px 22px;
@@ -921,7 +892,8 @@
                                 cursor:pointer;
                                 color:#555;
                                 transition:background 0.2s;
-                            ">إلغاء</button>
+                            ">إلغاء
+                        </button>
 
                         <a href="#" type="button"
                            class="AddComplain"
@@ -940,9 +912,12 @@
                                 gap:6px;
                                 transition:background 0.2s;
                             ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-                                <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                                 viewBox="0 0 16 16">
+                                <path
+                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                                <path
+                                    d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
                             </svg>
                             إرسال البلاغ
                         </a>
@@ -954,82 +929,127 @@
 
     <style>
         /* ===== Modern Report Popup ===== */
-        .report-options-modern { display:flex; flex-direction:column; gap:8px; }
+        .report-options-modern {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
         .rp-label {
-            display:flex;
-            align-items:center;
-            gap:12px;
-            padding:12px 16px;
-            border:1.5px solid #e0e0e0;
-            border-radius:10px;
-            cursor:pointer;
-            transition:all 0.2s ease;
-            position:relative;
-            background:#fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #fff;
         }
-        .rp-label:hover { border-color:#196aa2; background:#f0f6fb; }
-        .rp-label input[type="radio"] { display:none; }
 
-        .rp-icon { font-size:18px; flex-shrink:0; }
-        .rp-text { flex:1; font-size:14px; color:#333; font-weight:500; }
+        .rp-label:hover {
+            border-color: #196aa2;
+            background: #f0f6fb;
+        }
+
+        .rp-label input[type="radio"] {
+            display: none;
+        }
+
+        .rp-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .rp-text {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
 
         .rp-check {
-            width:22px; height:22px;
-            border:2px solid #ccc;
-            border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            font-size:12px; color:transparent;
-            transition:all 0.2s;
-            flex-shrink:0;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .rp-label:has(input:checked) {
-            border-color:#196aa2;
-            background:#f0f6fb;
+            border-color: #196aa2;
+            background: #f0f6fb;
         }
-        .rp-label:has(input:checked) .rp-check {
-            background:#196aa2;
-            border-color:#196aa2;
-            color:#fff;
-        }
-        .rp-label:has(input:checked) .rp-text { color:#196aa2; font-weight:700; }
 
-        #report:focus { border-color:#0f4d7a !important; box-shadow:0 0 0 3px rgba(25,106,162,0.15); }
+        .rp-label:has(input:checked) .rp-check {
+            background: #196aa2;
+            border-color: #196aa2;
+            color: #fff;
+        }
+
+        .rp-label:has(input:checked) .rp-text {
+            color: #196aa2;
+            font-weight: 700;
+        }
+
+        #report:focus {
+            border-color: #0f4d7a !important;
+            box-shadow: 0 0 0 3px rgba(25, 106, 162, 0.15);
+        }
 
         /* Spinner */
         .rp-spinner {
-            width:52px; height:52px;
-            border:5px solid #e3eef7;
-            border-top:5px solid #196aa2;
-            border-radius:50%;
-            animation:rp-spin 0.8s linear infinite;
-            margin:0 auto;
+            width: 52px;
+            height: 52px;
+            border: 5px solid #e3eef7;
+            border-top: 5px solid #196aa2;
+            border-radius: 50%;
+            animation: rp-spin 0.8s linear infinite;
+            margin: 0 auto;
         }
-        @keyframes rp-spin { to { transform:rotate(360deg); } }
 
-        @media (max-width:576px) {
-            #popup { margin:20px auto !important; }
-            .rp-label { padding:10px 12px; }
+        @keyframes rp-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #popup {
+                margin: 20px auto !important;
+            }
+
+            .rp-label {
+                padding: 10px 12px;
+            }
         }
     </style>
 
     <script>
         function closeReportPopup() {
             document.getElementById('overlay').style.display = 'none';
-            setTimeout(function() {
+            setTimeout(function () {
                 document.getElementById('report-preloader').style.display = 'none';
-                document.getElementById('report-success').style.display   = 'none';
-                document.getElementById('report-body').style.display      = 'block';
-                document.querySelectorAll('.report-radio').forEach(function(r){ r.checked = false; });
+                document.getElementById('report-success').style.display = 'none';
+                document.getElementById('report-body').style.display = 'block';
+                document.querySelectorAll('.report-radio').forEach(function (r) {
+                    r.checked = false;
+                });
                 document.getElementById('report-other-box').style.display = 'none';
                 document.getElementById('report').value = '';
             }, 300);
         }
 
-        document.querySelectorAll('.report-radio').forEach(function(radio) {
-            radio.addEventListener('change', function() {
-                var otherBox    = document.getElementById('report-other-box');
+        document.querySelectorAll('.report-radio').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                var otherBox = document.getElementById('report-other-box');
                 var reportField = document.getElementById('report');
                 if (this.value === 'other') {
                     otherBox.style.display = 'block';
@@ -1042,11 +1062,11 @@
             });
         });
 
-        document.getElementById('overlay').addEventListener('click', function(e) {
+        document.getElementById('overlay').addEventListener('click', function (e) {
             if (e.target === this) closeReportPopup();
         });
 
-        document.getElementById('close').addEventListener('click', function() {
+        document.getElementById('close').addEventListener('click', function () {
             closeReportPopup();
         });
     </script>

@@ -973,8 +973,7 @@ class AqarController extends Controller
             'licensed' => 'required_if:offer_type,1,2|nullable|integer',
             'installment_time' => 'required_if:offer_type,2|nullable|integer',
             //'installment_value' => 'required_if:offer_type,2|nullable|integer',
-            // 'installment_time' => 'required_if,reciving,0|integer',
-            'rec_time' => 'required_if:reciving,0|max:255|nullable',
+             'rec_time' => 'required_if:reciving,0|max:255|nullable',
             'reciving' => 'required_if:offer_type,2|nullable|integer',
             'downpayment' => 'required_if:offer_type,2|nullable|integer',
             //'mtr_price' => 'required_if:offer_type,2|nullable|integer',
@@ -1008,13 +1007,13 @@ class AqarController extends Controller
             $aqar->rooms = request('rooms');
             $aqar->baths = request('baths');
             $aqar->floor = request('floor');
-            $aqar->downpayment = request('downpayment');
-            $aqar->installment_time = request('installment_time');
+            $aqar->downpayment = request('downpayment') ?: null;
+            $aqar->installment_time = request('installment_time') ?: null;
             //$aqar->installment_value = request('installment_value');
             //$aqar->mtr_price = request('mtr_price');
-            $aqar->reciving = request('reciving');
-            $aqar->rec_time = request('rec_time');
-            $aqar->monthly_rent = request('monthly_rent');
+            $aqar->reciving = request('reciving') ?: null;
+            $aqar->rec_time = request('rec_time') ?: null;
+            $aqar->monthly_rent = request('monthly_rent') ?: null;
             $aqar->call_id = request('call_id');
             $aqar->offer_type = request('offer_type');
             $aqar->property_type = request('property_type');
@@ -1168,7 +1167,6 @@ class AqarController extends Controller
             $archive->org_aqar_id = $aqar->id;
 
 
-//        dd(request('photos_id'));
 
             $archive->save();
 
@@ -1211,8 +1209,7 @@ class AqarController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function show($locale, $aqar)
     {
-        // dd(phpinfo());
-        $random_ads = Ads::inRandomOrder()->first();
+         $random_ads = Ads::inRandomOrder()->first();
         //   dd($random_ads);
         $aqar_chexk = aqar::where('slug', $aqar)->with('mzaya')->with('compounds')->with('governrateq')
             ->with('districte')->with('subAreaa')->with('images')->with('finishType')->with('callTimes')
@@ -1896,7 +1893,7 @@ class AqarController extends Controller
 
         $off = $getOffers;
 
-         return view('aqars.all-aqars',
+        return view('aqars.all-aqars',
             compact('off', 'allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas', 'compounds', 'cat_id', 'prop_id', 'saletype', 'governratew'
                 , 'districtw', 'areaw', 'finishType', 'minPrice', 'maxPrice', 'minArea', 'maxArea', 'minRooms', 'maxRooms', 'minBaths', 'maxBaths', 'maz', 'offs', 'sort'));
 

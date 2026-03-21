@@ -268,13 +268,20 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('errorLogs', App\Http\Controllers\AdminErrorLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
 
-
     // ── Activity Logs ──────────────────────────────────────────────────
     Route::post('activityLogs/clear', [App\Http\Controllers\AdminActivityLogController::class, 'clearAll'])
         ->name('activityLogs.clearAll')
         ->middleware('role:admin');
     Route::resource('activityLogs', App\Http\Controllers\AdminActivityLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
+
+    // ── Online Users ───────────────────────────────────────────────────
+    Route::get('onlineUsers', [App\Http\Controllers\AdminOnlineUsersController::class, 'index'])
+        ->name('onlineUsers.index')
+        ->middleware('role:admin');
+    Route::get('onlineUsers/{userId}', [App\Http\Controllers\AdminOnlineUsersController::class, 'show'])
+        ->name('onlineUsers.show')
+        ->middleware('role:admin');
 
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])

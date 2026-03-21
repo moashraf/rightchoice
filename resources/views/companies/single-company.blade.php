@@ -9,14 +9,7 @@
     <section id="inner-listing">
 
         <div class="container">
-
-            <div class="adv">
-
-                <img src="<?php if (isset($random_ads)){echo URL::to('/').'/images/'.$random_ads->img  ;} ?>"
-                     class="image-fluid w-100 mx-auto mb-5" alt="">
-
-
-            </div>
+            <x-ads :randomAds="$random_ads ?? null" />
 
             <h3 class=" single-company headingTitle2 hideTitle2"
                 style="    margin-bottom: 28px;  font-size: 24px!important;">
