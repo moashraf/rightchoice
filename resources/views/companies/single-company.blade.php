@@ -10,7 +10,7 @@
 
         <div class="container">
 
-            <div class="adv">
+            <div class="adssingle-company">
 
                 <img src="<?php if (isset($random_ads)){echo URL::to('/').'/images/'.$random_ads->img  ;} ?>"
                      class="image-fluid w-100 mx-auto mb-5" alt="">

@@ -4,16 +4,10 @@
         {{ $aqar->title }}
     @endsection
     <section id="inner-listing">
-
         <div class="container">
-
-            <div class="adv">
-                <?php //dd($random_ads); ?>
-                <a target="_blank" href="{{  $random_ads->name  }}">
-
-                    <img src="{{ URL::to('/').'/images/'.$random_ads->img}}" class="image-fluid w-100 mx-auto mb-5"
-                         alt="">
-
+            <div class="adsshow">
+                 <a target="_blank" href="{{  $random_ads->name  }}">
+                    <img src="{{ URL::to('/').'/images/'.$random_ads->img}}" class="image-fluid w-100 mx-auto mb-5"   alt="">
                 </a>
             </div>
 
