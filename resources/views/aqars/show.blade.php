@@ -523,16 +523,11 @@
 
                             $eastern_arabic = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
                             $western_arabic = array('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩');
-
                             $str = str_replace($western_arabic, $eastern_arabic, $aqar->description) ?? '';
-
                             $data_final = preg_replace('/[^\w\s]+/u', ' ', $str);
-
-//echo $data_final ;
 
                             echo \Illuminate\Support\Str::limit($data_final, 500, '');
                             ?>
-                            {{--  \Illuminate\Support\Str::limit(preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********01', $aqar->description), 100, '') --}}
 
                         </div>
                         @if (\Illuminate\Support\Str::length($aqar->description) > 500)
