@@ -1284,6 +1284,9 @@ class AqarController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function edit($locale, $aqar)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
         $offerTypes = OfferTypes::all();
         $categories = Category::all();
@@ -1309,6 +1312,10 @@ class AqarController extends Controller
             ->with('propertyType')
             ->with('offerTypes')
             ->with('floorNo')->first();
+
+        if (!$aqarSingle) {
+            abort(404, 'العقار غير موجود أو لا يمكنك تعديله');
+        }
 
         $type = $aqarSingle->offer_type;
         $prop = $aqarSingle->property_type;
@@ -1539,6 +1546,12 @@ class AqarController extends Controller
                     }
 
                     $updatedata = aqar::WHERE('id', $aqar->id)->where('user_id', Auth::user()->id)->first();
+
+                    if (!$updatedata) {
+                        session()->flash('error', 'العقار غير موجود أو لا يمكنك تعديله');
+                        return Redirect::back();
+                    }
+
                     $result_description = $this->replaceLongPhoneNumbersWithStars(request('description'));
                     $request->merge(['description' => $result_description]);
 

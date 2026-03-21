@@ -14,6 +14,9 @@ class AdminErrorLogDataTable extends DataTable
 
         return $dataTable
             ->addColumn('action', 'admin_error_logs.datatables_actions')
+            ->editColumn('type', function ($row) {
+                return '<div style="max-width:200px; word-break:break-all; white-space:normal;" title="' . e($row->type) . '">' . e($row->type) . '</div>';
+            })
             ->editColumn('message', function ($row) {
                 return '<span title="' . e($row->message) . '">' . e(mb_substr($row->message, 0, 80)) . (mb_strlen($row->message) > 80 ? '...' : '') . '</span>';
             })
@@ -23,7 +26,7 @@ class AdminErrorLogDataTable extends DataTable
             ->editColumn('url', function ($row) {
                 if (!$row->url) return '-';
                 $short = mb_strlen($row->url) > 60 ? mb_substr($row->url, 0, 60) . '...' : $row->url;
-                return '<a href="' . e($row->url) . '" target="_blank" title="' . e($row->url) . '">' . e($short) . '</a>';
+                return '<div style="max-width:200px; word-break:break-all; white-space:normal;"><a href="' . e($row->url) . '" target="_blank" title="' . e($row->url) . '">' . e($short) . '</a></div>';
             })
             ->editColumn('last_occurred_at', function ($row) {
                 return $row->last_occurred_at ? $row->last_occurred_at->diffForHumans() : '-';
@@ -50,6 +53,7 @@ class AdminErrorLogDataTable extends DataTable
                 'stateSave' => true,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [],
+                'autoWidth' => false,
                 'language'  => [
                     'url' => '//cdn.datatables.net/plug-ins/1.13.1/i18n/ar.json',
                 ],
@@ -60,11 +64,11 @@ class AdminErrorLogDataTable extends DataTable
     {
         return [
             'id',
-            'type'  => ['title' => 'نوع الخطأ'],
+            'type'  => ['title' => 'نوع الخطأ', 'className' => 'text-wrap', 'width' => '200px'],
             'message' => ['title' => 'الرسالة'],
             'file'  => ['title' => 'الملف'],
             'line'  => ['title' => 'السطر'],
-            'url'   => ['title' => 'الرابط'],
+            'url'   => ['title' => 'الرابط', 'className' => 'text-wrap', 'width' => '200px'],
             'count' => ['title' => 'التكرار'],
             'last_occurred_at' => ['title' => 'آخر حدوث'],
         ];
