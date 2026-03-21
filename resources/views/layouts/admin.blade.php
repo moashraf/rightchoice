@@ -342,6 +342,29 @@
                     </li>
                     @endif
 
+                    {{-- ── Online Users (admin only) ──────────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.onlineUsers.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/onlineUsers*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-wifi text-success"></i>
+                            <p>
+                                المتصلون الآن
+                                @php
+                                    $onlineCount = \Illuminate\Support\Facades\DB::table('sessions')
+                                        ->where('last_activity', '>=', now()->subMinutes(config('session.lifetime', 120))->timestamp)
+                                        ->whereNotNull('user_id')
+                                        ->distinct('user_id')
+                                        ->count('user_id');
+                                @endphp
+                                @if($onlineCount > 0)
+                                    <span class="badge badge-success badge-pill mr-1">{{ $onlineCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
                     {{-- ── RBAC Management (admin only) ───────────────────── --}}
                     @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
                     <li class="nav-item">
