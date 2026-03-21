@@ -8,6 +8,7 @@ return [
     // Sidebar Menu Items
     'blogs'              => 'المقالات',
     'sliders'            => 'السلايدر',
+    'external_ads'       => 'اعلانات خارجية',
     'site_settings'      => 'إعدادات الموقع',
     'photo_sessions'     => 'جلسات التصوير',
     'price_vip'          => 'أسعار VIP',

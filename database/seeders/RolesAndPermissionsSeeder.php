@@ -97,6 +97,10 @@ class RolesAndPermissionsSeeder extends Seeder
             // Compounds & Locations
             ['name' => 'locations.view',       'label' => 'View Location Data',       'module' => 'locations'],
             ['name' => 'locations.manage',     'label' => 'Manage Location Data',     'module' => 'locations'],
+
+            // Activity Logs
+            ['name' => 'activity_logs.view',   'label' => 'View Activity Logs',       'module' => 'activity_logs'],
+            ['name' => 'activity_logs.delete', 'label' => 'Delete Activity Logs',     'module' => 'activity_logs'],
         ];
 
         // Upsert all permissions (idempotent)

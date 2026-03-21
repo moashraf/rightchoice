@@ -158,6 +158,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.ads.index') }}" class="nav-link {{ request()->is('sitemanagement/ads*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-ad"></i>
+                            <p>{{ __('admin.external_ads') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('sitemanagement.settingSites.index') }}" class="nav-link {{ request()->is('sitemanagement/settingSites*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>{{ __('admin.site_settings') }}</p>
@@ -313,6 +319,23 @@
                                 @php $errorLogsCount = \App\Models\ErrorLog::count(); @endphp
                                 @if($errorLogsCount > 0)
                                     <span class="badge badge-danger badge-pill mr-1">{{ $errorLogsCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
+                    {{-- ── Activity Logs (admin only) ─────────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.activityLogs.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/activityLogs*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-history text-primary"></i>
+                            <p>
+                                سجل النشاطات
+                                @php $activityLogsCount = \App\Models\ActivityLog::count(); @endphp
+                                @if($activityLogsCount > 0)
+                                    <span class="badge badge-info badge-pill mr-1">{{ $activityLogsCount }}</span>
                                 @endif
                             </p>
                         </a>
