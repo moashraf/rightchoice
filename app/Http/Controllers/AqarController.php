@@ -559,9 +559,7 @@ class AqarController extends Controller
             'categories', 'offerTypes', 'governrates', 'district', 'areas', 'compounds', 'compound_singel',
             'cat_id', 'prop_id', 'saletype', 'governratew', 'keyWords'
 
-            , 'districtw', 'areaw', 'finishType', 'minPrice', 'maxPrice',
-            'minArea', 'maxArea', 'minRooms', 'maxRooms', 'minBaths',
-            'maxBaths', 'maz', 'offs', 'sort'));
+            , 'districtw', 'areaw', 'finishType', 'minPrice', 'maxPrice', 'minArea', 'maxArea', 'minRooms', 'maxRooms', 'minBaths', 'maxBaths', 'maz', 'offs', 'sort'));
 
     }
 
@@ -1884,6 +1882,7 @@ class AqarController extends Controller
         $categories = Category::all();
 
         $getOffers = OfferTypes::where('slug', $slug)->first();
+        abort_if(!$getOffers, 404);
 
         $offs = $getOffers->id;
 
@@ -1894,16 +1893,11 @@ class AqarController extends Controller
             ->with('subAreaa')
             ->with('offerTypes')->latest()->take(10)->get();
 
-        if ($getOffers) {
+        $allAqars = aqar::where('status', 1)
+            ->where('vip', '!=', 1)
+            ->where('offer_type', $offs)
+            ->latest()->paginate(9);
 
-            $allAqars = aqar::where('status', 1)
-                ->where('vip', '!=', 1)
-                ->where('offer_type', $offs)
-                ->latest()->paginate(9);
-
-        } else {
-            $allAqars = [];
-        }
 
         $off = $getOffers;
 
