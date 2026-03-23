@@ -35,7 +35,16 @@ use App\Services\SmsService;
 class CompanyController extends Controller
 
 {
+    protected function findServiceBySlug(string $slug): ?Service
+    {
+        $service = Service::where('slug', $slug)
+            ->orWhere('slug_en', $slug)
+            ->first();
 
+        abort_if(!$service, 404);
+
+        return $service;
+    }
 
     /**
      * Display a listing of the resource.
@@ -70,19 +79,21 @@ class CompanyController extends Controller
 
         $governratew = $request->governrate;
 
-        $getService = Service::where('slug', $slug)->first();
+        $getService = $this->findServiceBySlug($slug);
 
-
-        if ($getService) {
-
-            if ($districtw) {
-                $companies = Company::where('status', 1)->where('serv_id', $getService->id)->where('governrate_id', $governratew)->Where('district_id', $districtw)->paginate(8);
-            } else {
-                $companies = Company::where('status', 1)->where('serv_id', $getService->id)->where('governrate_id', $governratew)->orWhere('district_id', $districtw)->paginate(8);
-            }
-
+        if ($districtw) {
+            $companies = Company::where('status', 1)
+                ->where('serv_id', $getService->id)
+                ->where('governrate_id', $governratew)
+                ->where('district_id', $districtw)
+                ->paginate(8);
         } else {
-            $companies = [];
+            $companies = Company::where('status', 1)
+                ->where('serv_id', $getService->id)
+                ->when($governratew, function ($query) use ($governratew) {
+                    $query->where('governrate_id', $governratew);
+                })
+                ->paginate(8);
         }
 
         return view('companies.companies', compact('companies', 'getService', 'governrates', 'governratew', 'allAqars', 'district', 'districtw'));
@@ -102,19 +113,12 @@ class CompanyController extends Controller
 
         $governrates = Governrate::all();
         // dd($locale);
-        $getService = Service::where('slug', $slug)->first();
+        $getService = $this->findServiceBySlug($slug);
 
 
         //  dd($getService);
 
-        if ($getService) {
-
-            $companies = Company::where('status', 1)->where('serv_id', $getService->id)->paginate(6);
-
-        } else {
-            dd("f");
-            $companies = [];
-        }
+        $companies = Company::where('status', 1)->where('serv_id', $getService->id)->paginate(6);
 
         return view('companies.companies', compact('companies', 'getService', 'governrates', 'governratew', 'allAqars', 'district', 'districtw'));
 

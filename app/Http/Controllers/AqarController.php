@@ -680,8 +680,7 @@ class AqarController extends Controller
             ->with('images')->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->latest()->paginate(9);
         $compounds = Compound::all();
 
-        //dd(   $allAqars);
-        $offerTypes = OfferTypes::all();
+         $offerTypes = OfferTypes::all();
 
         if (is_array($offerType) == 1) {
 
@@ -1756,8 +1755,7 @@ class AqarController extends Controller
 
         $compounds = Compound::all();
 
-        //dd(   $allAqars);
-        $offerTypes = OfferTypes::all();
+         $offerTypes = OfferTypes::all();
         $vipAqars = aqar::where('status', 1)
             ->whereIn('offer_type', [4, 3])
             ->where('vip', 1)->with('governrateq')
@@ -1820,8 +1818,7 @@ class AqarController extends Controller
 
         $compounds = Compound::all();
 
-        //dd(   $allAqars);
-        $offerTypes = OfferTypes::all();
+         $offerTypes = OfferTypes::all();
 
 
         $vipAqars = aqar::where('status', 1)->whereIn('offer_type', [1, 2])->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')
@@ -1882,17 +1879,19 @@ class AqarController extends Controller
 
         $compounds = Compound::all();
 
-        //dd(   $allAqars);
-        $offerTypes = OfferTypes::all();
+         $offerTypes = OfferTypes::all();
         $finishes = Finish_type::all();
         $categories = Category::all();
 
         $getOffers = OfferTypes::where('slug', $slug)->first();
 
-
         $offs = $getOffers->id;
 
-        $vipAqars = aqar::where('status', 1)->where('vip', 1)->whereIn('offer_type', [$offs])->with('governrateq')->with('districte')->with('subAreaa')
+        $vipAqars = aqar::where('status', 1)->where('vip', 1)
+            ->whereIn('offer_type', [$offs])
+            ->with('governrateq')
+            ->with('districte')
+            ->with('subAreaa')
             ->with('offerTypes')->latest()->take(10)->get();
 
         if ($getOffers) {
