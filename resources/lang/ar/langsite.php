@@ -194,4 +194,20 @@ return [
     'similar_properties'=>'العقارات المشابهة',
     'similar_properties_desc'=>'يمكنك مشاهدة أكثر العقارات مناسبة لطلباتك من حيث المساحة أو الموقع أو السعر',
 
+    // Map page
+    'map_page_title'=>'خريطة العقارات',
+    'map_filters'=>'تصفية البحث',
+    'map_search'=>'بحث',
+    'map_reset'=>'مسح',
+    'map_all_governorates'=>'كل المحافظات',
+    'map_all_types'=>'كل الأنواع',
+    'map_governorate'=>'المحافظة',
+    'map_property_type'=>'نوع العقار',
+    'map_search_placeholder'=>'عنوان العقار أو الموقع...',
+    'map_loading'=>'جاري تحميل العقارات...',
+    'map_no_properties'=>'لا توجد عقارات',
+    'map_no_properties_desc'=>'حاول تعديل الفلاتر لعرض نتائج أكثر.',
+    'map_details'=>'التفاصيل',
+    'map_nav_label'=>'الخريطة',
+
 ];

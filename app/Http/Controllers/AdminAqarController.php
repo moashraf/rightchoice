@@ -102,6 +102,19 @@ class AdminAqarController extends AppBaseController
         $input = $request->all();
         $aqar = $this->aqarRepository->create($input);
 
+        // Save map coordinates if provided
+        if ($request->filled('location_lat') && $request->filled('location_lon')) {
+            $lat = (float) $request->location_lat;
+            $lon = (float) $request->location_lon;
+            if (\App\Models\AqarLocation::isValidCoordinate($lat, $lon)) {
+                \App\Models\AqarLocation::create([
+                    'id_aqar' => $aqar->id,
+                    'lat'     => $lat,
+                    'lon'     => $lon,
+                ]);
+            }
+        }
+
         Flash::success('تم حفظ العقار بنجاح.');
         return redirect(route('sitemanagement.aqars.index'));
     }
@@ -150,6 +163,9 @@ class AdminAqarController extends AppBaseController
             Flash::error('العقار غير موجود');
             return redirect(route('sitemanagement.aqars.index'));
         }
+
+        // Eager-load map coordinates for the location fields
+        $aqar->load('aqarLocation');
 
         $governrate    = Governrate::pluck('governrate', 'id');
         $district      = District::get();
@@ -204,6 +220,21 @@ class AdminAqarController extends AppBaseController
                 $request->merge(['aqar_id' => $id]);
                 aqar_mzaya::create($request->all());
             }
+        }
+
+        // Save map coordinates if provided
+        if ($request->filled('location_lat') && $request->filled('location_lon')) {
+            $lat = (float) $request->location_lat;
+            $lon = (float) $request->location_lon;
+            if (\App\Models\AqarLocation::isValidCoordinate($lat, $lon)) {
+                \App\Models\AqarLocation::updateOrCreate(
+                    ['id_aqar' => $id],
+                    ['lat' => $lat, 'lon' => $lon]
+                );
+            }
+        } elseif (!$request->filled('location_lat') && !$request->filled('location_lon')) {
+            // If both fields are cleared, remove the location record
+            \App\Models\AqarLocation::where('id_aqar', $id)->delete();
         }
 
         // Send notification based on status

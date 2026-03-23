@@ -328,6 +328,10 @@ Route::get('/dashboard', function () {
 
 
 Route::group(['prefix' => '{locale?}'], function () {
+
+    // ── Real Estate Map Page (public, no auth required) ──────────────
+    Route::get('/map', [App\Http\Controllers\MapController::class, 'index'])->middleware('setLocale')->name('map.index');
+
     Route::group(['middleware' => 'CheackUser'], function () {
         Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
@@ -463,6 +467,11 @@ Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricControll
 //Route::get('dashboard', 'App\Http\Controllers\UserController@profile')->middleware('auth');
 Route::post('api/fetch-states', [App\Http\Controllers\DropdownController::class, 'fetchState']);
 Route::get('api/fetch-property-types', 'App\Http\Controllers\AqarController@fetchPropertyTypesByCat')->name('api.fetchPropertyTypes');
+
+// ── Map API Endpoints ────────────────────────────────────────────────
+Route::get('/api/map/aqars', [App\Http\Controllers\MapController::class, 'getAqars'])->name('api.map.aqars');
+Route::post('/api/map/location', [App\Http\Controllers\MapController::class, 'storeLocation'])->name('api.map.storeLocation');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbPage')->name('verficationApply');

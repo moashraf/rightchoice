@@ -1,0 +1,562 @@
+/* ==========================================================================
+   Real Estate Map Page – Styles
+   ========================================================================== */
+
+/* ── Page wrapper ───────────────────────────────────────────────────── */
+.map-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+    background: #f4f6fa;
+}
+
+.map-container-row {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+/* ── Filter Sidebar ─────────────────────────────────────────────────── */
+.map-filter-sidebar {
+    width: 340px;
+    min-width: 340px;
+    background: #ffffff;
+    border-left: 1px solid #e8ecf1;
+    padding: 24px 20px;
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.04);
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+html[lang="ar"] .map-filter-sidebar {
+    border-left: none;
+    border-right: 1px solid #e8ecf1;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.04);
+}
+
+.map-filter-sidebar .filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.map-filter-sidebar .filter-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a2b4a;
+    margin: 0;
+}
+
+.map-filter-sidebar .filter-header .filter-count {
+    background: #196aa2;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+}
+
+.map-filter-group {
+    margin-bottom: 18px;
+}
+
+.map-filter-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.map-filter-group select,
+.map-filter-group input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    background: #f8fafc;
+    transition: all 0.2s ease;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.map-filter-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23718096'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 14px center;
+    padding-left: 36px;
+}
+
+html[lang="ar"] .map-filter-group select {
+    background-position: right 14px center;
+    padding-left: 14px;
+    padding-right: 36px;
+}
+
+.map-filter-group select:focus,
+.map-filter-group input[type="text"]:focus {
+    border-color: #196aa2;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(25, 106, 162, 0.1);
+}
+
+.map-filter-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+.btn-map-search {
+    flex: 1;
+    padding: 11px 16px;
+    background: linear-gradient(135deg, #196aa2, #0d4a73);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-map-search:hover {
+    background: linear-gradient(135deg, #1a7bc0, #196aa2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(25, 106, 162, 0.3);
+}
+
+.btn-map-reset {
+    padding: 11px 16px;
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-map-reset:hover {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+/* ── Map Area ───────────────────────────────────────────────────────── */
+.map-area {
+    flex: 1;
+    position: relative;
+    min-height: 500px;
+}
+
+#propertyMap {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border-radius: 0;
+}
+
+/* ── Loading Overlay ────────────────────────────────────────────────── */
+.map-loading-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+}
+
+.map-loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.map-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #196aa2;
+    border-radius: 50%;
+    animation: mapSpin 0.8s linear infinite;
+}
+
+@keyframes mapSpin {
+    to { transform: rotate(360deg); }
+}
+
+.map-loading-text {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ── Empty State ────────────────────────────────────────────────────── */
+.map-empty-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 15;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 32px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.map-empty-state.visible {
+    display: block;
+}
+
+.map-empty-state svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.map-empty-state h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a2b4a;
+    margin-bottom: 6px;
+}
+
+.map-empty-state p {
+    font-size: 0.88rem;
+    color: #718096;
+    margin: 0;
+}
+
+/* ── InfoWindow / Marker Popup Card ─────────────────────────────────── */
+.gm-style .gm-style-iw-c {
+    padding: 0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+    max-width: 320px !important;
+}
+
+.gm-style .gm-style-iw-d {
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+.gm-style .gm-style-iw-tc::after {
+    background: #fff !important;
+}
+
+.map-info-card {
+    width: 300px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
+}
+
+html[lang="en"] .map-info-card {
+    direction: ltr;
+}
+
+.map-info-card .info-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 14px 14px 0 0;
+    display: block;
+}
+
+.map-info-card .info-body {
+    padding: 14px 16px;
+}
+
+.map-info-card .info-type-badge {
+    display: inline-block;
+    background: #eef4fa;
+    color: #196aa2;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.map-info-card .info-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a2b4a;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.map-info-card .info-location {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.map-info-card .info-location svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.map-info-card .info-description {
+    font-size: 0.8rem;
+    color: #8896a8;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.map-info-card .info-meta {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.map-info-card .info-meta-item {
+    font-size: 0.78rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.map-info-card .info-meta-item svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+}
+
+.map-info-card .info-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #f0f3f7;
+}
+
+.map-info-card .info-price {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #196aa2;
+}
+
+.map-info-card .info-price span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #a0aec0;
+}
+
+.map-info-card .info-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 14px;
+    background: linear-gradient(135deg, #196aa2, #0d4a73);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.map-info-card .info-link:hover {
+    background: linear-gradient(135deg, #1a7bc0, #196aa2);
+    transform: translateY(-1px);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ── Mobile Toggle Button ───────────────────────────────────────────── */
+.map-filter-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #196aa2, #0d4a73);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(25, 106, 162, 0.4);
+    transition: all 0.3s ease;
+}
+
+.map-filter-toggle svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+html[lang="ar"] .map-filter-toggle svg {
+    margin-left: 0;
+    margin-right: 6px;
+}
+
+.map-filter-toggle:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(25, 106, 162, 0.5);
+}
+
+/* ── Mobile Overlay ─────────────────────────────────────────────────── */
+.map-filter-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 40;
+}
+
+.map-filter-overlay.active {
+    display: block;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+    .map-container-row {
+        flex-direction: column;
+    }
+
+    .map-filter-sidebar {
+        position: fixed;
+        top: 0;
+        right: -360px;
+        width: 340px;
+        min-width: auto;
+        height: 100vh;
+        z-index: 50;
+        border-left: none;
+        box-shadow: -6px 0 30px rgba(0, 0, 0, 0.15);
+        transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html[lang="en"] .map-filter-sidebar {
+        right: auto;
+        left: -360px;
+        transition: left 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .map-filter-sidebar.open {
+        right: 0;
+    }
+
+    html[lang="en"] .map-filter-sidebar.open {
+        left: 0;
+        right: auto;
+    }
+
+    .map-filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .map-area {
+        min-height: calc(100vh - 80px);
+    }
+
+    #propertyMap {
+        min-height: calc(100vh - 80px);
+    }
+
+    .map-filter-sidebar .filter-close-btn {
+        display: inline-flex;
+    }
+}
+
+@media (min-width: 992px) {
+    .map-filter-sidebar .filter-close-btn {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-filter-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+
+    html[lang="en"] .map-filter-sidebar {
+        left: -100%;
+    }
+
+    .map-info-card {
+        width: 260px;
+    }
+
+    .map-info-card .info-image {
+        height: 130px;
+    }
+}
+
+/* ── Close button inside sidebar (mobile) ───────────────────────────── */
+.filter-close-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.filter-close-btn:hover {
+    background: #e2e8f0;
+}
+
+.filter-close-btn svg {
+    width: 18px;
+    height: 18px;
+    color: #64748b;
+}
+
+/* ── Cluster styles ─────────────────────────────────────────────────── */
+.map-cluster {
+    background: rgba(25, 106, 162, 0.85);
+    border: 3px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(25, 106, 162, 0.3);
+    font-size: 14px;
+}

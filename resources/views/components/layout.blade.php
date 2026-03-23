@@ -387,6 +387,14 @@
                             </li>
 
                         @endif
+
+                        {{-- Map Page Link --}}
+                        <li class="{{ Request::is('*/map') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
+                                <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
+                            </a>
+                        </li>
                     </ul>
 
 

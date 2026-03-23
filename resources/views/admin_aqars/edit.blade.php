@@ -255,4 +255,70 @@
         });
     });
 </script>
+
+{{-- Admin Mini Map for picking property coordinates --}}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key', '') }}&callback=Function.prototype"></script>
+<script>
+$(document).ready(function() {
+    var mapEl = document.getElementById('adminPropertyMap');
+    if (!mapEl) return;
+
+    var initLat = parseFloat($('#location_lat').val()) || 30.0444;
+    var initLon = parseFloat($('#location_lon').val()) || 31.2357;
+    var hasCoords = $('#location_lat').val() && $('#location_lon').val();
+    var initZoom = hasCoords ? 15 : 7;
+
+    var map = new google.maps.Map(mapEl, {
+        center: { lat: initLat, lng: initLon },
+        zoom: initZoom,
+        mapTypeControl: true,
+        streetViewControl: false
+    });
+
+    var marker = null;
+
+    function placeMarker(lat, lng) {
+        if (marker) marker.setMap(null);
+        marker = new google.maps.Marker({
+            position: { lat: lat, lng: lng },
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP
+        });
+        marker.addListener('dragend', function(e) {
+            $('#location_lat').val(e.latLng.lat().toFixed(8));
+            $('#location_lon').val(e.latLng.lng().toFixed(8));
+        });
+    }
+
+    if (hasCoords) {
+        placeMarker(initLat, initLon);
+    }
+
+    map.addListener('click', function(e) {
+        var lat = e.latLng.lat().toFixed(8);
+        var lng = e.latLng.lng().toFixed(8);
+        $('#location_lat').val(lat);
+        $('#location_lon').val(lng);
+        placeMarker(parseFloat(lat), parseFloat(lng));
+    });
+
+    $('#clearCoords').on('click', function() {
+        $('#location_lat').val('');
+        $('#location_lon').val('');
+        if (marker) { marker.setMap(null); marker = null; }
+    });
+
+    // Update marker when lat/lon inputs change manually
+    $('#location_lat, #location_lon').on('change', function() {
+        var lat = parseFloat($('#location_lat').val());
+        var lon = parseFloat($('#location_lon').val());
+        if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+            placeMarker(lat, lon);
+            map.setCenter({ lat: lat, lng: lon });
+            map.setZoom(15);
+        }
+    });
+});
+</script>
 @endsection
