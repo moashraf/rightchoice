@@ -181,4 +181,20 @@ return [
     'verfication_button'=>'Resend email',
     'similar_properties'=>'Similar Properties',
     'similar_properties_desc'=>'You can view the most suitable properties for your needs in terms of area, location, or price',
+
+    // Map page
+    'map_page_title'=>'Property Map',
+    'map_filters'=>'Filters',
+    'map_search'=>'Search',
+    'map_reset'=>'Reset',
+    'map_all_governorates'=>'All Governorates',
+    'map_all_types'=>'All Types',
+    'map_governorate'=>'Governorate',
+    'map_property_type'=>'Property Type',
+    'map_search_placeholder'=>'Property title or location...',
+    'map_loading'=>'Loading properties...',
+    'map_no_properties'=>'No properties found',
+    'map_no_properties_desc'=>'Try adjusting your filters to see more results.',
+    'map_details'=>'Details',
+    'map_nav_label'=>'Map',
 ];

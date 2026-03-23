@@ -65,6 +65,40 @@
     {!! Form::select('area_id', $subarea, null, ['placeholder' => 'Please select ...', 'class' => 'form-control custom-select']) !!}
 </div>
 
+{{-- ── Map Coordinates Section ────────────────────────────────────── --}}
+<div class="card-header mb-3 mt-3 col-12">
+    <h4 class="mb-0" style="color: gray;">
+        <i class="fas fa-map-marker-alt text-danger"></i> Map Location (خريطة الموقع)
+    </h4>
+    <small class="text-muted">Click on the map or enter coordinates manually to set the property location.</small>
+</div>
+
+<div class="form-group col-sm-4">
+    {!! Form::label('location_lat', 'Latitude (خط العرض):') !!}
+    <input type="number" step="any" name="location_lat" id="location_lat" class="form-control"
+           value="{{ old('location_lat', optional(optional($aqar ?? null)->aqarLocation)->lat) }}"
+           placeholder="e.g. 30.0444" min="-90" max="90">
+</div>
+
+<div class="form-group col-sm-4">
+    {!! Form::label('location_lon', 'Longitude (خط الطول):') !!}
+    <input type="number" step="any" name="location_lon" id="location_lon" class="form-control"
+           value="{{ old('location_lon', optional(optional($aqar ?? null)->aqarLocation)->lon) }}"
+           placeholder="e.g. 31.2357" min="-180" max="180">
+</div>
+
+<div class="form-group col-sm-4 d-flex align-items-end">
+    <button type="button" class="btn btn-outline-info btn-sm" id="clearCoords">
+        <i class="fas fa-times"></i> Clear Coordinates
+    </button>
+</div>
+
+<div class="col-sm-12 mb-3">
+    <div id="adminPropertyMap" style="width:100%; height:350px; border-radius:10px; border:2px solid #dee2e6;"></div>
+    <small class="text-muted mt-1 d-block">Click on the map to set the property location pin.</small>
+</div>
+{{-- ── End Map Coordinates Section ────────────────────────────────── --}}
+
 <div class="card-header mb-3 mt-3 col-12">
     <h4 class="mb-0" style="color: gray;"> Ad details</h4>
 </div>

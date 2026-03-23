@@ -254,5 +254,11 @@ class aqar extends Model
         return $this->hasMany(wish::class);
     }
 
+    /**
+     * The map location (coordinates) for this property.
+     */
+    public function aqarLocation(){
+        return $this->hasOne(AqarLocation::class, 'id_aqar');
+    }
 
 }

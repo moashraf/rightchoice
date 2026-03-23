@@ -1075,6 +1075,13 @@ class AqarController extends Controller
                 }
             }
 
+            // Save map location (with governorate fallback if no coords provided)
+            \App\Http\Controllers\MapController::saveLocationWithFallback(
+                $aqar->id,
+                $request->location_lat,
+                $request->location_lon,
+                $aqar->governrate_id
+            );
 
             if ($request->photos_id) {
                 $counter = 0;
@@ -1308,7 +1315,8 @@ class AqarController extends Controller
             ->with('callTimes')
             ->with('propertyType')
             ->with('offerTypes')
-            ->with('floorNo')->first();
+            ->with('floorNo')
+            ->with('aqarLocation')->first();
 
         if (!$aqarSingle) {
             abort(404, 'العقار غير موجود أو لا يمكنك تعديله');
@@ -1565,6 +1573,13 @@ class AqarController extends Controller
                         }
                     }
 
+                    // Save map location (with governorate fallback)
+                    MapController::saveLocationWithFallback(
+                        $updatedata->id,
+                        $request->location_lat,
+                        $request->location_lon,
+                        $updatedata->governrate_id
+                    );
 
                     $old_uploded_img_count = Images::WHERE('aqar_id', $aqar->id)->get();
                     if ($old_uploded_img_count->count() < 8) {

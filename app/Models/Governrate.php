@@ -13,12 +13,14 @@ class Governrate extends Model
 
     protected $fillable = [
         'governrate',
-        'governrate_en'
+        'governrate_en',
+        'lat',
+        'lon',
     ];
     public function aqars(){
         return $this->hasMany(aqar::Class);
     }
-    
+
     public function districts(){
         return $this->hasMany(District::Class, 'govern_id');
     }
