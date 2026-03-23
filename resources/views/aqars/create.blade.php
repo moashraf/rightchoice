@@ -1078,5 +1078,128 @@
 
     </style>
 
+{{-- Google Maps for property location --}}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key', '') }}&callback=Function.prototype" async defer></script>
+<script>
+(function waitForLibs() {
+    if (typeof window.jQuery === 'undefined' || typeof google === 'undefined' || typeof google.maps === 'undefined') {
+        return setTimeout(waitForLibs, 150);
+    }
+
+    jQuery(function($) {
+        var mapEl = document.getElementById('frontPropertyMap');
+        if (!mapEl) return;
+
+        var GOV_COORDS_URL = "{{ route('api.map.govCoords') }}";
+        var defaultLat = 30.0444, defaultLng = 31.2357;
+
+        var map = new google.maps.Map(mapEl, {
+            center: { lat: defaultLat, lng: defaultLng },
+            zoom: 7,
+            mapTypeControl: true,
+            streetViewControl: false,
+            fullscreenControl: true
+        });
+
+        var marker = null;
+
+        function placeMarker(lat, lng, animate) {
+            if (marker) marker.setMap(null);
+            marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                draggable: true,
+                animation: animate ? google.maps.Animation.DROP : null
+            });
+            marker.addListener('dragend', function(e) {
+                $('#location_lat').val(e.latLng.lat().toFixed(8));
+                $('#location_lon').val(e.latLng.lng().toFixed(8));
+            });
+        }
+
+        // Click on map to set location
+        map.addListener('click', function(e) {
+            var lat = e.latLng.lat().toFixed(8);
+            var lng = e.latLng.lng().toFixed(8);
+            $('#location_lat').val(lat);
+            $('#location_lon').val(lng);
+            placeMarker(parseFloat(lat), parseFloat(lng), true);
+        });
+
+        // Clear button
+        $('#clearCoordsBtn').on('click', function() {
+            $('#location_lat').val('');
+            $('#location_lon').val('');
+            if (marker) { marker.setMap(null); marker = null; }
+        });
+
+        // Manual input change
+        $('#location_lat, #location_lon').on('change', function() {
+            var lat = parseFloat($('#location_lat').val());
+            var lon = parseFloat($('#location_lon').val());
+            if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+                placeMarker(lat, lon, true);
+                map.setCenter({ lat: lat, lng: lon });
+                map.setZoom(15);
+            }
+        });
+
+        // When governorate changes → auto-center map to governorate location
+        $(document).on('change', 'input[name="governrate_id"]', function() {
+            var govId = $(this).val();
+            if (!govId) return;
+
+            // Only auto-center if user hasn't manually set coords
+            if ($('#location_lat').val() && $('#location_lon').val()) return;
+
+            $.get(GOV_COORDS_URL, { governrate_id: govId }, function(res) {
+                if (res.success && res.data) {
+                    var lat = res.data.lat;
+                    var lon = res.data.lon;
+                    map.setCenter({ lat: lat, lng: lon });
+                    map.setZoom(12);
+                    placeMarker(lat, lon, true);
+                    $('#location_lat').val(lat);
+                    $('#location_lon').val(lon);
+                }
+            });
+        });
+
+        // Also listen for the hidden input that stores governrate_id
+        // (the custom governorate picker uses a hidden input)
+        var govObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                if (m.type === 'attributes' && m.attributeName === 'value') {
+                    var govId = m.target.value;
+                    if (!govId || ($('#location_lat').val() && $('#location_lon').val())) return;
+                    $.get(GOV_COORDS_URL, { governrate_id: govId }, function(res) {
+                        if (res.success && res.data) {
+                            map.setCenter({ lat: res.data.lat, lng: res.data.lon });
+                            map.setZoom(12);
+                            placeMarker(res.data.lat, res.data.lon, true);
+                            $('#location_lat').val(res.data.lat);
+                            $('#location_lon').val(res.data.lon);
+                        }
+                    });
+                }
+            });
+        });
+        var govInput = document.querySelector('input[name="governrate_id"]');
+        if (govInput) {
+            govObserver.observe(govInput, { attributes: true });
+        }
+
+        // If old values exist (validation redirect)
+        var oldLat = parseFloat($('#location_lat').val());
+        var oldLon = parseFloat($('#location_lon').val());
+        if (!isNaN(oldLat) && !isNaN(oldLon) && oldLat !== 0 && oldLon !== 0) {
+            placeMarker(oldLat, oldLon, false);
+            map.setCenter({ lat: oldLat, lng: oldLon });
+            map.setZoom(15);
+        }
+    });
+})();
+</script>
+
 
 </x-layout>

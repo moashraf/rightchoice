@@ -165,4 +165,89 @@ class MapController extends Controller
             'data'    => $location,
         ]);
     }
+
+    /**
+     * Default coordinates for governorates, loaded dynamically from DB.
+     * Returns: [governrate_id => ['lat' => float, 'lon' => float]]
+     */
+    public static function getGovernorateCoords(): array
+    {
+        return Governrate::query()
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get(['id', 'lat', 'lon'])
+            ->filter(function ($gov) {
+                return is_numeric($gov->lat) && is_numeric($gov->lon);
+            })
+            ->mapWithKeys(function ($gov) {
+                return [
+                    (int) $gov->id => [
+                        'lat' => (float) $gov->lat,
+                        'lon' => (float) $gov->lon,
+                    ],
+                ];
+            })
+            ->toArray();
+    }
+
+    /**
+     * API: Return default coordinates for a governorate.
+     */
+    public function getGovernorateDefaultCoords(Request $request)
+    {
+        $govId = (int) $request->governrate_id;
+        $coords = self::getGovernorateCoords();
+
+        if (isset($coords[$govId])) {
+            return response()->json([
+                'success' => true,
+                'data' => $coords[$govId],
+            ]);
+        }
+
+        // Final fallback: Cairo center
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'lat' => 30.04439900,
+                'lon' => 31.23571400,
+            ],
+        ]);
+    }
+
+    /**
+     * Save location for a property with governorate fallback.
+     */
+    public static function saveLocationWithFallback(int $aqarId, $lat, $lon, $governrateId = null): void
+    {
+        if ($lat && $lon && AqarLocation::isValidCoordinate((float) $lat, (float) $lon)) {
+            AqarLocation::updateOrCreate(
+                ['id_aqar' => $aqarId],
+                ['lat' => (float) $lat, 'lon' => (float) $lon]
+            );
+            return;
+        }
+
+        $coords = self::getGovernorateCoords();
+
+        if (  isset($coords[(int) $governrateId])) {
+            AqarLocation::updateOrCreate(
+                ['id_aqar' => $aqarId],
+                [
+                    'lat' => $coords[(int) $governrateId]['lat'],
+                    'lon' => $coords[(int) $governrateId]['lon'],
+                ]
+            );
+            return;
+        }
+
+        // Final fallback: Cairo center
+        AqarLocation::updateOrCreate(
+            ['id_aqar' => $aqarId],
+            [
+                'lat' => 30.04439900,
+                'lon' => 31.23571400,
+            ]
+        );
+    }
 }

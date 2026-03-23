@@ -102,18 +102,13 @@ class AdminAqarController extends AppBaseController
         $input = $request->all();
         $aqar = $this->aqarRepository->create($input);
 
-        // Save map coordinates if provided
-        if ($request->filled('location_lat') && $request->filled('location_lon')) {
-            $lat = (float) $request->location_lat;
-            $lon = (float) $request->location_lon;
-            if (\App\Models\AqarLocation::isValidCoordinate($lat, $lon)) {
-                \App\Models\AqarLocation::create([
-                    'id_aqar' => $aqar->id,
-                    'lat'     => $lat,
-                    'lon'     => $lon,
-                ]);
-            }
-        }
+        // Save map location (with governorate fallback if no coords provided)
+        MapController::saveLocationWithFallback(
+            $aqar->id,
+            $request->location_lat,
+            $request->location_lon,
+            $aqar->governrate_id ?? $request->governrate_id
+        );
 
         Flash::success('تم حفظ العقار بنجاح.');
         return redirect(route('sitemanagement.aqars.index'));
@@ -222,20 +217,13 @@ class AdminAqarController extends AppBaseController
             }
         }
 
-        // Save map coordinates if provided
-        if ($request->filled('location_lat') && $request->filled('location_lon')) {
-            $lat = (float) $request->location_lat;
-            $lon = (float) $request->location_lon;
-            if (\App\Models\AqarLocation::isValidCoordinate($lat, $lon)) {
-                \App\Models\AqarLocation::updateOrCreate(
-                    ['id_aqar' => $id],
-                    ['lat' => $lat, 'lon' => $lon]
-                );
-            }
-        } elseif (!$request->filled('location_lat') && !$request->filled('location_lon')) {
-            // If both fields are cleared, remove the location record
-            \App\Models\AqarLocation::where('id_aqar', $id)->delete();
-        }
+        // Save map location (with governorate fallback if no coords provided)
+        MapController::saveLocationWithFallback(
+            $id,
+            $request->location_lat,
+            $request->location_lon,
+            $aqar->governrate_id ?? $request->governrate_id
+        );
 
         // Send notification based on status
         if ($user) {

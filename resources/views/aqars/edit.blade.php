@@ -1,6 +1,6 @@
 <x-layout>
-  
-    
+
+
     @section('title')
     تعديل الاعلان | {{ $aqar->title }}
     @endsection
@@ -14,8 +14,8 @@
 
             <section>
                 <h3>تعديل تصنيف العقار و الموقع</h3>
-    
-   
+
+
                 <div class="row mt-3" style="align-content: start;
                 justify-content: start;">
                     <div class="col-lg-2">
@@ -24,14 +24,14 @@
                             <select     name="category" id="li-cat" class="myselect">
                                 @foreach ($categories as $cat)
                                     <option value="{{ $cat->id }}" {{ $aqar->category == $cat->id ? 'selected' : '' }}>{{ $cat->category_name }}</option>
-    
+
                                 @endforeach
                             </select>
-    
+
                             @error('category')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                             @enderror
-    
+
                         </div>
                     </div>
                        <div class="col-lg-3">
@@ -40,7 +40,7 @@
                                     <select disabled  name="property_type" id="Property-type" class="myselect">
                                          @foreach ($properties as $pop)
                                              <option value="{{ $pop->id }}" {{ $aqar->property_type == $pop->id ? 'selected' : '' }}>{{ $pop->property_type }}</option>
-    
+
                                            @endforeach
                                     </select>
 
@@ -50,41 +50,41 @@
 
                                 </div>
                             </div>
-                            
-                                  
+
+
                                <div class="col-lg-3">
                                 <div class="form-group">
                                     <label for="li-compound">الكومبوند (اختياري)</label>
                                        <?php
-                                    
+
                                        if (!isset($aqar->compound)) {     ?>
-                                       
+
                         <input         value=""  type="text" list="li-compound" name="compound" class="myselect"  />
                                                         <?php  }  ?>
-                                     
+
                                         @foreach ($compounds as $com)
                                        <?php
-                                    
-                                       if (isset($aqar->compound)) { if( $aqar->compound ==   $com->id ){      ?>	
-                                       
+
+                                       if (isset($aqar->compound)) { if( $aqar->compound ==   $com->id ){      ?>
+
                                            <input         value="{{ $com->compound }}"  type="text" list="li-compound" name="compound" class="myselect"  />
-                                           
+
                                            <?php }}  ?>
-                                    
-                                    
-                                  
+
+
+
                                         </option>
                                         @endforeach
-                                        
-                                        
-                                
+
+
+
                                     <datalist id="li-compound">
                                         @foreach ($compounds as $com)
-                                        <option      <?php if (isset($aqar->compound)) { if( $aqar->compound ==   $com->id ){    echo'selected = selected' ;} }?>	
-                                        value="{{ $com->compound }}"  > 
-                                        
+                                        <option      <?php if (isset($aqar->compound)) { if( $aqar->compound ==   $com->id ){    echo'selected = selected' ;} }?>
+                                        value="{{ $com->compound }}"  >
+
                                         {{ $com->compound }}
-                                  
+
                                         </option>
                                         @endforeach
                                     </datalist>
@@ -93,10 +93,10 @@
                                     @enderror
                                 </div>
                             </div>
-                            
-                            
-                            
-                  
+
+
+
+
                     <div class="form-group">
                         <label for="">الموقع</label>
                         <div class="row" style="align-content: start;
@@ -105,15 +105,15 @@
                                 <select    name="governrate_id" id="country" class="myselect">
                                     @foreach ($governrate as $loc)
                                         <option value="{{ $loc->id }}" {{ $aqar->governrate_id == $loc->id ? 'selected' : '' }}>{{ $loc->governrate }}</option>
-    
+
                                     @endforeach
                                 </select>
-    
+
                                 @error('governrate_id')
                                     <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
                             </div>
-    
+
                             <div class="col-lg-4">
                                 <select    name="district_id" id="area_input" class="myselect">
                                <option  >اختر    </option>
@@ -128,52 +128,52 @@
                                     <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
                             </div>
-    
-    
-       
+
+
+
                                <div class="col-lg-3">
                                 <div class="form-group">
                                          @foreach ($areas as $areas_val)
                                        <?php
-                                       
-                                       
+
+
                                  //    dd($areas_val->area  );
-                                       
-                                       
-                                       if (isset($aqar->area_id)) { if( $aqar->area_id ==   $areas_val->id ){      ?>	
-                                       
+
+
+                                       if (isset($aqar->area_id)) { if( $aqar->area_id ==   $areas_val->id ){      ?>
+
                                            <input       id="area"    value="{{ $areas_val->area }}"  type="text" list="li-area" name="area_id" class="myselect"  />
-                                           
+
                                            <?php }}  ?>
-                                    
-                                    
-                                  
+
+
+
                                         </option>
                                         @endforeach
-                                        
-                                        
-                                
+
+
+
                                     <datalist id="li-area">
                                         @foreach ($areas as $areas_val)
-                                        <option      <?php if (isset($aqar->area_id)) { if( $aqar->area_id ==   $areas_val->id ){    echo'selected = selected' ;} }?>	
-                                        value="{{ $areas_val->area }}"  > 
-                                        
+                                        <option      <?php if (isset($aqar->area_id)) { if( $aqar->area_id ==   $areas_val->id ){    echo'selected = selected' ;} }?>
+                                        value="{{ $areas_val->area }}"  >
+
                                         {{ $areas_val->area }}
-                                  
+
                                         </option>
                                         @endforeach
                                     </datalist>
-                                  
+
                                 </div>
                             </div>
-                            
-                            
-                            
+
+
+
                             <div class="col-lg-4">
-    
-    
-                               
-    
+
+
+
+
                             </div>
                         </div>
                     </div>
@@ -196,13 +196,43 @@
                         @enderror
                     </div>
 
+                    {{-- ── Map Location Section ──────────────────────── --}}
+                    <div class="form-group" style="width:100%;">
+                        <label style="font-weight:700; font-size:15px; margin-bottom:10px;">
+                            <i class="fas fa-map-marker-alt text-danger"></i>
+                            موقع العقار على الخريطة
+                        </label>
+                        <small class="d-block text-muted mb-2">اضغط على الخريطة لتحديد الموقع أو سيتم استخدام موقع المحافظة تلقائياً</small>
+
+                        <div class="row mb-2">
+                            <div class="col-md-5">
+                                <input type="number" step="any" name="location_lat" id="location_lat"
+                                       class="myselect" placeholder="خط العرض (Latitude)"
+                                       value="{{ old('location_lat', optional($aqar->aqarLocation)->lat) }}" min="-90" max="90">
+                            </div>
+                            <div class="col-md-5">
+                                <input type="number" step="any" name="location_lon" id="location_lon"
+                                       class="myselect" placeholder="خط الطول (Longitude)"
+                                       value="{{ old('location_lon', optional($aqar->aqarLocation)->lon) }}" min="-180" max="180">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <button type="button" id="clearCoordsBtn" class="btn btn-outline-secondary btn-sm" style="border-radius:8px;">
+                                    <i class="fas fa-times"></i> مسح
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="frontPropertyMap" style="width:100%; height:350px; border-radius:12px; border:2px solid #e0e0e0;"></div>
+                    </div>
+                    {{-- ── End Map Location Section ──────────────────── --}}
+
                      <!-- offer type -->
                             <div class="col-lg-4" >
                                 <div class="form-group">
                                     <label for="offer-type">نوع العرض</label>
                                     <select    class="myselect" name="offer_type" id="offer-type">
                                         <option value="">اختر نوع العرض</option>
-              
+
                                         @foreach ($offerTypes as $item)
                                             @if ($item->id != 5)
                                             <?php  if($aqar->offer_type == $item->id) {  ?>
@@ -218,23 +248,23 @@
                                     @enderror
                                 </div>
                             </div>
-    
+
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label for="call-times">الاوقات المتاحه للاتصال</label>
                             <Select  class="myselect" name="call_id">
-    
+
                                 @foreach ($calls as $call)
                                     <option value="{{ $call->id }}" {{ $aqar->call_id == $call->id ? 'selected' : '' }}>{{ $call->call_time }}</option>
                                 @endforeach
-    
-    
+
+
                             </Select>
                             @error('call_id')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                             @enderror
-    
-    
+
+
                         </div>
                     </div>
                         <!-- total area -->
@@ -267,7 +297,7 @@
 
 
                             @if ($prop == 9)
-                                
+
                             <div class="col-lg-3" id="license-type-div">
                                 <div class="form-group">
                                     <label for="license-type">نوع الترخيص</label>
@@ -358,7 +388,7 @@
                              <!-- boolean row -->
                              <div id="boolean-row" class="row" style="align-content: start;
                              justify-content: start;">
-                               
+
                                  <!-- bank-finance -->
                                  <div class="col-lg-4">
                                      <div class="form-group">
@@ -373,7 +403,7 @@
                                          @enderror
                                      </div>
                                  </div>
- 
+
                                    <!-- trade -->
                                  <div class="col-lg-4">
                                      <div class="form-group">
@@ -500,16 +530,16 @@
                             <h3>المزايا</h3>
                             <br>
                             <div class="row" style="align-items:start; text-align:right; justify-content:right;">
-                                @foreach ($mzaya as $maz) 
+                                @foreach ($mzaya as $maz)
 
-                                
 
-                                    
+
+
                                 <div class="col-lg-2">
                                       <input @foreach ($aqar->mzayaAqar as $item)  @if ($item->mzaya_id ==  $maz->id ) checked @endif @endforeach type="checkbox" name="mzaya[]" value="{{$maz->id}}">
                                       <label for="mzaya[]">{{ $maz->mzaya_type }}</label><br>
-                                </div> 
-                                
+                                </div>
+
                                 @endforeach
 
                             <h3>الصور</h3>
@@ -522,32 +552,32 @@
                             <ul style="padding:10px !important;"  >
 
                                 <li>
-            
-                                <div  id="main_contener<?php echo$images_url->id; ?>" style="<?php if($images_url->main_img){ echo'border: solid #dc3545 4px;'; } else { echo'border:solid black 2px;'; }  ?>" 
+
+                                <div  id="main_contener<?php echo$images_url->id; ?>" style="<?php if($images_url->main_img){ echo'border: solid #dc3545 4px;'; } else { echo'border:solid black 2px;'; }  ?>"
                                 class="image_container d-flex justify-content-center position-relative">
-            
-            
-            
+
+
+
                                     <img  src="{{ URL::to('/').'/images/'.$images_url->img_url}}" class="img-thumbnail">
-            
-            
-            
-            
-                                       
-            
-                                 </div> 
-                                 
+
+
+
+
+
+
+                                 </div>
+
                                  </li>
                                  <a href="{{ URL::to('/').'/remove-image/'.$images_url->id}}">
                                 <li><button class="btn btn-danger" type="button" onclick="">   مسح الصوره</button></li></a>
-                                <li><button class="btn btn-primary" type="button" 
+                                <li><button class="btn btn-primary" type="button"
                                 onclick="ajx_main_img_edit_only( <?php  echo $images_url->aqar_id; ?> , <?php  echo $images_url->id; ?> )"> جعلها رئيسيه  </button></li></a>
-            
-                         
-            
+
+
+
                             </ul>
 
-                      
+
                            @endforeach
 
                             @endif
@@ -557,27 +587,27 @@
  <hr class="mt-5">
 <div id="result3" style="display:none;">
     <input name="main_img" id="mainImg" /></div>
-    
-    <?php  
-    
+
+    <?php
+
      if($aqar->images->count()<8)  { ?>
                         <div class="form-group">
                             <div class="mt-3 w-100">
-                              
+
                                 <div class="w-100 ">
                                     <div class="d-flex justify-content-between">
-                                      
-                                      
+
+
                                       <div class="d-flex w-100 justify-content-between">
-                                          
+
 <h4>اضف الصور بحد اقصى 8  صور</h4>
 <button id="needsclickBtn" type="button" class="btn btn-primary" onclick="document.getElementById('image').click();">اختر الصور</button>
-                                      
+
                                       </div>
                                         <br>
                                         <input accept="image/*" type="file" name="photos_id[]" id="image" multiple class="d-none"
                                             onchange="image_select(this.files)">
-                                    
+
                                     </div>
                                     <div class="dropzone mt-3 dz-message needsclick d-flex flex-wrap justify-content-center text-center containerimgs"
                                         id="container-imgs">
@@ -585,8 +615,8 @@
                                         <div  class="dz-message needsclick">
                                             <br>
                                           <button type="button" class="upBtn" onclick="document.getElementById('image').click()">  <i  class="fa fa-upload fa-7x"></i></button>
-                                      
-                                          
+
+
                                           <p class="mt-3">upload images here</p>
                                         </div>
                                     </div>
@@ -596,26 +626,26 @@
 
                         </div>
     <?php }
-        
+
         ?>
 
-                      
+
 
                         <!--    <input type="submit" class="btn btn-primary"  value="submit"/> -->
 
                         <div>
                             <input type="submit" value="انشر الاعلان" class="btn btn-primary">
                         </div>
-                   
+
 
             </div>
             </section>
-    
-        
-        
+
+
+
         </form>
     </div>
-    
+
 
 
 
@@ -661,7 +691,7 @@ $.ajax({
 _token: '{{ csrf_token() }}',
 aqar_id: aqar_id,
 img_id: img_id
-     
+
  },
  success: function(data){
      document.getElementById("main_contener"+img_id).style = "border: solid #dc3545 4px;";
@@ -675,7 +705,84 @@ img_id: img_id
 });
 
 }
-        
+
     </script>
+
+{{-- Google Maps for property location --}}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key', '') }}&callback=Function.prototype" async defer></script>
+<script>
+(function waitForLibs() {
+    if (typeof window.jQuery === 'undefined' || typeof google === 'undefined' || typeof google.maps === 'undefined') {
+        return setTimeout(waitForLibs, 150);
+    }
+
+    jQuery(function($) {
+        var mapEl = document.getElementById('frontPropertyMap');
+        if (!mapEl) return;
+
+        var GOV_COORDS_URL = "{{ route('api.map.govCoords') }}";
+
+        var initLat = parseFloat($('#location_lat').val()) || 30.0444;
+        var initLon = parseFloat($('#location_lon').val()) || 31.2357;
+        var hasCoords = $('#location_lat').val() && $('#location_lon').val();
+
+        var map = new google.maps.Map(mapEl, {
+            center: { lat: initLat, lng: initLon },
+            zoom: hasCoords ? 15 : 7,
+            mapTypeControl: true,
+            streetViewControl: false,
+            fullscreenControl: true
+        });
+
+        var marker = null;
+
+        function placeMarker(lat, lng, animate) {
+            if (marker) marker.setMap(null);
+            marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                draggable: true,
+                animation: animate ? google.maps.Animation.DROP : null
+            });
+            marker.addListener('dragend', function(e) {
+                $('#location_lat').val(e.latLng.lat().toFixed(8));
+                $('#location_lon').val(e.latLng.lng().toFixed(8));
+            });
+        }
+
+        // Place existing marker
+        if (hasCoords) {
+            placeMarker(initLat, initLon, false);
+        }
+
+        // Click on map to set location
+        map.addListener('click', function(e) {
+            var lat = e.latLng.lat().toFixed(8);
+            var lng = e.latLng.lng().toFixed(8);
+            $('#location_lat').val(lat);
+            $('#location_lon').val(lng);
+            placeMarker(parseFloat(lat), parseFloat(lng), true);
+        });
+
+        // Clear button
+        $('#clearCoordsBtn').on('click', function() {
+            $('#location_lat').val('');
+            $('#location_lon').val('');
+            if (marker) { marker.setMap(null); marker = null; }
+        });
+
+        // Manual input change
+        $('#location_lat, #location_lon').on('change', function() {
+            var lat = parseFloat($('#location_lat').val());
+            var lon = parseFloat($('#location_lon').val());
+            if (!isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+                placeMarker(lat, lon, true);
+                map.setCenter({ lat: lat, lng: lon });
+                map.setZoom(15);
+            }
+        });
+    });
+})();
+</script>
 
 </x-layout>

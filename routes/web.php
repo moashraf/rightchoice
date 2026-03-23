@@ -471,6 +471,7 @@ Route::get('api/fetch-property-types', 'App\Http\Controllers\AqarController@fetc
 // ── Map API Endpoints ────────────────────────────────────────────────
 Route::get('/api/map/aqars', [App\Http\Controllers\MapController::class, 'getAqars'])->name('api.map.aqars');
 Route::post('/api/map/location', [App\Http\Controllers\MapController::class, 'storeLocation'])->name('api.map.storeLocation');
+Route::get('/api/map/governorate-coords', [App\Http\Controllers\MapController::class, 'getGovernorateDefaultCoords'])->name('api.map.govCoords');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
