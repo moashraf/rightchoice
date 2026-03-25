@@ -1,8 +1,10 @@
-	<?php
+<?php
 
 return [
 
     'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا ',
+    'otb_page_title' => 'تأكيد البريد الإلكتروني',
+    'resend_code' => 'إعادة إرسال الكود',
     'Packages' => 'الباقات',
     'Premium_Packages' => 'باقات التمييز',
     'Subscription_packages' => 'باقات االشتراك',

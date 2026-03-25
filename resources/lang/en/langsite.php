@@ -1,8 +1,9 @@
 <?php
 
 return [
-
     'verficationverfication' => ' A verfication code has been sent to your mobile from Rightchoice please type it below',
+    'otb_page_title' => 'Email verification',
+    'resend_code' => 'Resend code',
     'choose' => 'Choose',
     'Packages' => 'Packages',
     'Premium_Packages' => 'Premium Packages',
