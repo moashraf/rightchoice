@@ -25,6 +25,7 @@ use Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Models\RequestPhotoSession;
 use App\Services\SmsService;
+use InvalidArgumentException;
 
 class PageController extends Controller
 
@@ -397,12 +398,28 @@ class PageController extends Controller
         $random_mass_num = random_int(111, 10000);
 
         $user = User::where('id', $request->userID)->first();
-        $user->update(['phone_sms_otp' => $random_mass_num]);
 
-        $MOP = $request['MOP'];
-        SmsService::sendOtp($MOP, $random_mass_num);
+        if (!$user) {
+            return Redirect::back()->withErrors([
+                'otp' => 'المستخدم غير موجود.',
+            ]);
+        }
 
-        return \Redirect::back()->withInput($request->all());
+        try {
+            $mop =   $user->MOP;
+            $user->update([
+                'phone_sms_otp' => $random_mass_num,
+                'MOP' => $mop,
+            ]);
+
+            SmsService::sendOtp($mop, $random_mass_num);
+        } catch (InvalidArgumentException $exception) {
+            return Redirect::back()->withErrors([
+                'otp' => 'رقم الهاتف غير صالح لإرسال رمز التحقق.',
+            ]);
+        }
+
+        return Redirect::back()->withInput($request->except('MOP'));
     }
 
     public function redirectBack()

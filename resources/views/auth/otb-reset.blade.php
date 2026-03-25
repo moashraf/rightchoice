@@ -13,7 +13,7 @@
 <?php //dd($user) ?>
                 <form method="POST" action="{{ route('verficationReset') }}">
                 @csrf
-                
+
                 <input type="hidden" name="userID" value="{{ $user->id }}" />
                     <div>
                         <x-jet-input type="text" name="otb"/>
@@ -27,11 +27,10 @@
             </form>
 
         <div class="mt-4 flex items-center justify-between">
-            
+
                 <form method="POST" action="{{ route('resendOTB') }}">
                 @csrf
                 <input type="hidden" value="{{ $user->id }}" name="userID" />
-                <input type="hidden" value="{{ $user->MOP }}" name="MOP" />
                 <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
                 Resend OTB
                 </button>
@@ -50,6 +49,6 @@
     .min-h-screen{
         text-align:center !important;
     }
-    
+
 </style>
 </x-guest-layout>
