@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use InvalidArgumentException;
+
 class SmsService
 {
     /**
@@ -13,6 +15,8 @@ class SmsService
      */
     public static function sendOtp(string $phoneNumber, int $otpCode)
     {
+        $phoneNumber = $phoneNumber;
+
         $url = "https://e3len.vodafone.com.eg/web2sms/sms/submit/";
 
         $accountId  = '200002798';
@@ -52,5 +56,31 @@ class SmsService
         curl_close($curl);
 
         return $response;
+    }
+
+    /**
+     * Normalize and validate the recipient phone number for OTP SMS.
+     *
+     * @param string $phoneNumber  The recipient phone number
+     * @return string              The normalized phone number
+     * @throws InvalidArgumentException  If the phone number is invalid
+     */
+    public static function normalizeRecipient(string $phoneNumber): string
+    {
+        $normalized = preg_replace('/\D+/', '', trim($phoneNumber));
+
+        if (strpos($normalized, '002') === 0) {
+            $normalized = substr($normalized, 2);
+        }
+
+        if (strpos($normalized, '20') === 0) {
+            $normalized = '0' . substr($normalized, 2);
+        }
+
+        if (!preg_match('/^01[0-2,5][0-9]{8}$/', $normalized)) {
+            throw new InvalidArgumentException('Invalid OTP recipient phone number.');
+        }
+
+        return $normalized;
     }
 }

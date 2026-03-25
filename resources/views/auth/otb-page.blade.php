@@ -37,7 +37,6 @@
             <form method="POST" action="{{ route('resendOTB') }}">
                 @csrf
                 <input type="hidden" name="userID" value="{{ $user->id }}"/>
-                <input type="hidden" name="MOP" value="{{ $user->MOP }}"/>
                 <button type="submit" class=" resendOTB_resendOTB underline text-sm text-gray-600 hover:text-gray-900">
                     {{ trans('langsite.resend_code') }}
                 </button>
