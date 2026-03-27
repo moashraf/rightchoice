@@ -404,6 +404,14 @@
                             </a>
                         </li>
 
+                        {{-- Property Hunter Game --}}
+                        <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/game') }}">
+                                <i class="fas fa-gamepad" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Game' : 'اللعبة' }}
+                            </a>
+                        </li>
+
                         {{-- Community Link --}}
                         @auth
                         <li class="{{ Request::is('*/community') ? 'active' : '' }}">

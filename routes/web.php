@@ -478,6 +478,9 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
 
+    // ── Property Hunter Game ─────────────────────────────────────────
+    Route::get('/game', function () { return view('game.index'); })->name('game.index')->middleware('setLocale');
+
     // ── Smart Search (AI Chat Assistant) ─────────────────────────────
     Route::get('/smart-search', [App\Http\Controllers\SmartSearchController::class, 'index'])->name('smart-search.index')->middleware('setLocale');
     Route::post('/smart-search/search', [App\Http\Controllers\SmartSearchController::class, 'search'])->name('smart-search.search')->middleware('setLocale');
