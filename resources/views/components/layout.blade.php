@@ -404,6 +404,14 @@
                             </a>
                         </li>
 
+                        {{-- Apartment Designer --}}
+                        <li class="{{ Request::is('*/designer*') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/designer') }}">
+                                <i class="fas fa-drafting-compass" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Designer' : 'صمم شقتك' }}
+                            </a>
+                        </li>
+
                         {{-- Property Hunter Game --}}
                         <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
                             <a href="{{ URL::to(Config::get('app.locale').'/game') }}">

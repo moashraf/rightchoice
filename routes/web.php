@@ -478,6 +478,9 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
 
+    // ── Apartment Designer (صمم شقتك بنفسك) ────────────────────────
+    Route::get('/designer', function () { return view('designer.index'); })->name('designer.index')->middleware('setLocale');
+
     // ── Property Hunter Game ─────────────────────────────────────────
     Route::get('/game', function () { return view('game.index'); })->name('game.index')->middleware('setLocale');
 
