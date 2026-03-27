@@ -2083,6 +2083,236 @@ else{
 
 </style>
 
+{{-- ==================== Property Comparison Manager ==================== --}}
+<div id="compare-floating-bar" style="display:none;">
+    <div class="compare-bar-inner">
+        <div class="compare-bar-info">
+            <i class="fas fa-balance-scale"></i>
+            <span id="compare-bar-count">0</span> عقار للمقارنة
+        </div>
+        <div class="compare-bar-actions">
+            <a href="#" id="compare-bar-view" class="btn btn-sm btn-success compare-bar-btn">
+                <i class="fas fa-columns"></i> مقارنة الآن
+            </a>
+            <button type="button" id="compare-bar-clear" class="btn btn-sm btn-outline-light compare-bar-btn">
+                <i class="fas fa-trash-alt"></i> مسح
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    #compare-floating-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #294c5f 0%, #1a3a4a 100%);
+        color: #fff;
+        z-index: 9999;
+        padding: 12px 20px;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+        animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    .compare-bar-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+    .compare-bar-info {
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .compare-bar-info i { font-size: 20px; color: #4fc3f7; }
+    #compare-bar-count {
+        background: #ff5722;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+    }
+    .compare-bar-actions { display: flex; gap: 8px; }
+    .compare-bar-btn { border-radius: 20px; font-size: 13px; padding: 6px 16px; }
+
+    .btn-compare-toggle {
+        background: transparent;
+        border: 1.5px solid #294c5f;
+        color: #294c5f;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .btn-compare-toggle:hover {
+        background: #294c5f;
+        color: #fff;
+    }
+    .btn-compare-toggle.active {
+        background: #ff5722;
+        border-color: #ff5722;
+        color: #fff;
+    }
+    .btn-compare-toggle.active:hover {
+        background: #e64a19;
+        border-color: #e64a19;
+    }
+
+    @media (max-width: 768px) {
+        #compare-floating-bar { padding: 10px 12px; }
+        .compare-bar-info { font-size: 13px; }
+        .compare-bar-btn { font-size: 12px; padding: 5px 12px; }
+    }
+</style>
+
+<script>
+var CompareManager = (function() {
+    var STORAGE_KEY = 'rc_compare_ids';
+    var MAX_ITEMS = 3;
+    var locale = '{{ Config::get("app.locale") }}';
+
+    function getIds() {
+        try {
+            var ids = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            return Array.isArray(ids) ? ids : [];
+        } catch(e) { return []; }
+    }
+
+    function saveIds(ids) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+    }
+
+    function add(id) {
+        id = parseInt(id);
+        var ids = getIds();
+        if (ids.indexOf(id) !== -1) return false;
+        if (ids.length >= MAX_ITEMS) {
+            toastr.warning('يمكنك مقارنة ' + MAX_ITEMS + ' عقارات كحد أقصى', '', { timeOut: 3000, positionClass: 'toast-top-center' });
+            return false;
+        }
+        ids.push(id);
+        saveIds(ids);
+        updateUI();
+        toastr.success('تمت الإضافة للمقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
+        return true;
+    }
+
+    function remove(id) {
+        id = parseInt(id);
+        var ids = getIds();
+        var idx = ids.indexOf(id);
+        if (idx > -1) {
+            ids.splice(idx, 1);
+            saveIds(ids);
+            updateUI();
+        }
+    }
+
+    function has(id) {
+        return getIds().indexOf(parseInt(id)) !== -1;
+    }
+
+    function clearAll() {
+        localStorage.removeItem(STORAGE_KEY);
+        updateUI();
+    }
+
+    function getCount() {
+        return getIds().length;
+    }
+
+    function updateUI() {
+        var ids = getIds();
+        var count = ids.length;
+        var bar = document.getElementById('compare-floating-bar');
+        var countEl = document.getElementById('compare-bar-count');
+        var viewBtn = document.getElementById('compare-bar-view');
+
+        if (bar) {
+            bar.style.display = count > 0 ? 'block' : 'none';
+        }
+        if (countEl) {
+            countEl.textContent = count;
+        }
+        if (viewBtn) {
+            viewBtn.href = '/' + locale + '/compare?ids=' + ids.join(',');
+            if (count < 2) {
+                viewBtn.classList.add('disabled');
+                viewBtn.setAttribute('title', 'أضف عقارين على الأقل');
+            } else {
+                viewBtn.classList.remove('disabled');
+                viewBtn.removeAttribute('title');
+            }
+        }
+
+        // Update all toggle buttons on page
+        var buttons = document.querySelectorAll('.btn-compare-toggle');
+        buttons.forEach(function(btn) {
+            var btnId = parseInt(btn.getAttribute('data-compare-id'));
+            if (ids.indexOf(btnId) !== -1) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fas fa-balance-scale"></i> قارن';
+            }
+        });
+    }
+
+    function toggle(id) {
+        if (has(id)) {
+            remove(id);
+            toastr.info('تمت الإزالة من المقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
+        } else {
+            add(id);
+        }
+    }
+
+    // Init on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        updateUI();
+
+        var clearBtn = document.getElementById('compare-bar-clear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                clearAll();
+                toastr.info('تم مسح قائمة المقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
+            });
+        }
+
+        // Delegate click on compare toggle buttons
+        document.addEventListener('click', function(e) {
+            var btn = e.target.closest('.btn-compare-toggle');
+            if (btn) {
+                e.preventDefault();
+                var id = btn.getAttribute('data-compare-id');
+                if (id) toggle(id);
+            }
+        });
+    });
+
+    return { add: add, remove: remove, has: has, toggle: toggle, clearAll: clearAll, getIds: getIds, getCount: getCount, updateUI: updateUI };
+})();
+</script>
+{{-- ==================== End Property Comparison Manager ==================== --}}
+
 </body>
 
 <x-cookies/>

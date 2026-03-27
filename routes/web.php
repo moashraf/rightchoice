@@ -420,6 +420,7 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/aqars/update/{aqar}', 'App\Http\Controllers\AqarController@edit')->middleware('setLocale');
 
     Route::get('/aqars/{aqar}', 'App\Http\Controllers\AqarController@show')->middleware('setLocale');
+    Route::get('/compare', 'App\Http\Controllers\AqarController@compare')->name('compare')->middleware('setLocale');
 
 
     // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
