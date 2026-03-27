@@ -278,4 +278,11 @@ return [
     'confirm_delete_post' => 'هل أنت متأكد من حذف هذا المنشور؟',
     'error_occurred' => 'حدث خطأ، حاول مرة أخرى',
 
+    // Smart Search
+    'smart_search' => 'البحث الذكي',
+    'smart_search_title' => 'إيه الشقة اللي بتدور عليها؟',
+    'smart_search_subtitle' => 'قولنا بالظبط عايز إيه وإحنا هنلاقيلك',
+    'smart_search_placeholder' => 'اوصفلي العقار اللي بتدور عليه...',
+    'smart_search_invalid_input' => 'من فضلك اكتب وصف صحيح',
+
 ];

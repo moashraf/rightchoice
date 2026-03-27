@@ -396,6 +396,14 @@
                             </a>
                         </li>
 
+                        {{-- Smart Search Link --}}
+                        <li class="{{ Request::is('*/smart-search*') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/smart-search') }}">
+                                <i class="fas fa-robot" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Smart Search' : 'البحث الذكي' }}
+                            </a>
+                        </li>
+
                         {{-- Community Link --}}
                         @auth
                         <li class="{{ Request::is('*/community') ? 'active' : '' }}">

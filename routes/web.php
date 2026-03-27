@@ -478,6 +478,11 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
 
+    // ── Smart Search (AI Chat Assistant) ─────────────────────────────
+    Route::get('/smart-search', [App\Http\Controllers\SmartSearchController::class, 'index'])->name('smart-search.index')->middleware('setLocale');
+    Route::post('/smart-search/search', [App\Http\Controllers\SmartSearchController::class, 'search'])->name('smart-search.search')->middleware('setLocale');
+    Route::get('/smart-search/suggestions', [App\Http\Controllers\SmartSearchController::class, 'suggestions'])->name('smart-search.suggestions')->middleware('setLocale');
+
     Route::get('/terms-conditions', 'App\Http\Controllers\PagesController@index')->middleware('setLocale');
     Route::get('/contact-us', 'App\Http\Controllers\PagesController@contact')->middleware('setLocale');
     Route::get('/about-us', 'App\Http\Controllers\PagesController@about')->middleware('setLocale');

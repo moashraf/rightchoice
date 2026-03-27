@@ -265,4 +265,11 @@ return [
     'confirm_delete_post' => 'Are you sure you want to delete this post?',
     'error_occurred' => 'An error occurred, please try again',
 
+    // Smart Search
+    'smart_search' => 'Smart Search',
+    'smart_search_title' => 'What property are you looking for?',
+    'smart_search_subtitle' => 'Describe what you need in your own words',
+    'smart_search_placeholder' => 'Describe the property you want...',
+    'smart_search_invalid_input' => 'Please enter a valid description',
+
 ];
