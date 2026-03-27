@@ -277,6 +277,33 @@
                             <p>{{ __('admin.notifications') }}</p>
                         </a>
                     </li>
+
+                    {{-- ── SMS Messaging ──────────────────────────────── --}}
+                    <li class="nav-item {{ request()->is('sitemanagement/sms*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/sms*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-sms text-info"></i>
+                            <p>
+                                الرسائل النصية SMS
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.sms.create') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/sms/create') ? 'active' : '' }}">
+                                    <i class="far fa-paper-plane nav-icon"></i>
+                                    <p>إرسال رسائل</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.sms.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/sms') && !request()->is('sitemanagement/sms/create') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>تقارير الرسائل</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-envelope"></i>

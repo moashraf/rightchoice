@@ -283,6 +283,30 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('onlineUsers.show')
         ->middleware('role:admin');
 
+    // ── SMS Messaging ────────────────────────────────────────────────────
+    Route::get('sms', [App\Http\Controllers\AdminSmsController::class, 'index'])
+        ->name('sms.index')
+        ->middleware('permission:sms.view');
+    Route::get('sms/create', [App\Http\Controllers\AdminSmsController::class, 'create'])
+        ->name('sms.create')
+        ->middleware('permission:sms.send');
+    Route::post('sms', [App\Http\Controllers\AdminSmsController::class, 'store'])
+        ->name('sms.store')
+        ->middleware('permission:sms.send');
+    Route::get('sms/{id}', [App\Http\Controllers\AdminSmsController::class, 'show'])
+        ->name('sms.show')
+        ->middleware('permission:sms.view');
+    Route::post('sms/{id}/retry', [App\Http\Controllers\AdminSmsController::class, 'retryFailed'])
+        ->name('sms.retry')
+        ->middleware('permission:sms.send');
+    // AJAX endpoints for SMS user selection
+    Route::get('sms-search-users', [App\Http\Controllers\AdminSmsController::class, 'searchUsers'])
+        ->name('sms.searchUsers')
+        ->middleware('permission:sms.send');
+    Route::post('sms-preview-recipients', [App\Http\Controllers\AdminSmsController::class, 'previewRecipients'])
+        ->name('sms.previewRecipients')
+        ->middleware('permission:sms.send');
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')
