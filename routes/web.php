@@ -331,6 +331,20 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::delete('rbac/permissions/{permission}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyPermission'])
         ->name('rbac.permissions.destroy')
         ->middleware('role:admin');
+
+    // ── Chat Reports Management ──────────────────────────────────────────
+    Route::get('chatReports', [App\Http\Controllers\AdminChatReportController::class, 'index'])
+        ->name('chatReports.index')
+        ->middleware('permission:reports.view');
+    Route::get('chatReports/{id}', [App\Http\Controllers\AdminChatReportController::class, 'show'])
+        ->name('chatReports.show')
+        ->middleware('permission:reports.view');
+    Route::post('chatReports/{id}/review', [App\Http\Controllers\AdminChatReportController::class, 'review'])
+        ->name('chatReports.review')
+        ->middleware('permission:reports.view');
+    Route::post('chatReports/{id}/block-user', [App\Http\Controllers\AdminChatReportController::class, 'blockUser'])
+        ->name('chatReports.blockUser')
+        ->middleware('permission:users.block');
 });
 
 
@@ -389,6 +403,39 @@ Route::group(['prefix' => '{locale?}'], function () {
         //  Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session')->middleware('setLocale');
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
+
+        // ── Chat & Social Routes ─────────────────────────────────────────
+        Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index')->middleware('setLocale');
+        Route::post('/chat/start', [App\Http\Controllers\ChatController::class, 'startConversation'])->name('chat.start')->middleware('setLocale');
+        Route::post('/chat/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send')->middleware('setLocale');
+        Route::get('/chat/{conversationId}/messages', [App\Http\Controllers\ChatController::class, 'getMessages'])->name('chat.messages')->middleware('setLocale');
+        Route::delete('/chat/message/{messageId}', [App\Http\Controllers\ChatController::class, 'deleteMessage'])->name('chat.deleteMessage')->middleware('setLocale');
+        Route::get('/chat/unread-count', [App\Http\Controllers\ChatController::class, 'unreadCount'])->name('chat.unreadCount')->middleware('setLocale');
+
+        // ── Friends ──────────────────────────────────────────────────────
+        Route::get('/friends', [App\Http\Controllers\FriendController::class, 'index'])->name('friends.index')->middleware('setLocale');
+        Route::post('/friends/request', [App\Http\Controllers\FriendController::class, 'sendRequest'])->name('friends.request')->middleware('setLocale');
+        Route::post('/friends/{friendshipId}/accept', [App\Http\Controllers\FriendController::class, 'acceptRequest'])->name('friends.accept')->middleware('setLocale');
+        Route::post('/friends/{friendshipId}/decline', [App\Http\Controllers\FriendController::class, 'declineRequest'])->name('friends.decline')->middleware('setLocale');
+        Route::post('/friends/remove', [App\Http\Controllers\FriendController::class, 'removeFriend'])->name('friends.remove')->middleware('setLocale');
+        Route::get('/friends/search', [App\Http\Controllers\FriendController::class, 'searchUsers'])->name('friends.search')->middleware('setLocale');
+
+        // ── Block ────────────────────────────────────────────────────────
+        Route::get('/blocked', [App\Http\Controllers\BlockController::class, 'index'])->name('blocked.index')->middleware('setLocale');
+        Route::post('/block', [App\Http\Controllers\BlockController::class, 'block'])->name('block.store')->middleware('setLocale');
+        Route::post('/unblock', [App\Http\Controllers\BlockController::class, 'unblock'])->name('block.destroy')->middleware('setLocale');
+
+        // ── Report ───────────────────────────────────────────────────────
+        Route::post('/report', [App\Http\Controllers\ReportController::class, 'store'])->name('report.store')->middleware('setLocale');
+
+        // ── Community / Posts ────────────────────────────────────────────
+        Route::get('/community', [App\Http\Controllers\PostController::class, 'index'])->name('community.index')->middleware('setLocale');
+        Route::post('/community/posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store')->middleware('setLocale');
+        Route::post('/community/posts/{postId}/like', [App\Http\Controllers\PostController::class, 'toggleLike'])->name('posts.like')->middleware('setLocale');
+        Route::post('/community/posts/{postId}/comment', [App\Http\Controllers\PostController::class, 'addComment'])->name('posts.comment')->middleware('setLocale');
+        Route::get('/community/posts/{postId}/comments', [App\Http\Controllers\PostController::class, 'getComments'])->name('posts.comments')->middleware('setLocale');
+        Route::delete('/community/posts/{postId}', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy')->middleware('setLocale');
+        Route::delete('/community/comments/{commentId}', [App\Http\Controllers\PostController::class, 'deleteComment'])->name('comments.destroy')->middleware('setLocale');
     });
 
     Route::get('/login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'create'])

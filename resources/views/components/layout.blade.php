@@ -395,6 +395,28 @@
                                 {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
                             </a>
                         </li>
+
+                        {{-- Community Link --}}
+                        @auth
+                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">
+                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">
+                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">
+                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">
+                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>
+                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}
+                            </a>
+                        </li>
+                        @endauth
                     </ul>
 
 

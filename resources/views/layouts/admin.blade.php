@@ -304,6 +304,13 @@
                             </li>
                         </ul>
                     </li>
+                    {{-- Chat Reports --}}
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.chatReports.index') }}" class="nav-link {{ request()->is('sitemanagement/chatReports*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-flag"></i>
+                            <p>تبليغات المحادثات</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-envelope"></i>

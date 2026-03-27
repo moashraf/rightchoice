@@ -217,4 +217,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasRole(RoleEnum::ADMIN);
     }
 
+    /**
+     * Get profile image URL.
+     */
+    public function getProfileImageUrlAttribute(): string
+    {
+        if ($this->profile_image) {
+            return url('/images/' . $this->profile_image);
+        }
+        return url('/images/default-avatar.png');
+    }
+
+    /**
+     * Check if the user was active recently (within last 5 minutes).
+     */
+    public function isOnline(): bool
+    {
+        if (!$this->last_seen_at) {
+            return false;
+        }
+        return \Carbon\Carbon::parse($this->last_seen_at)->diffInMinutes(now()) <= 5;
+    }
+
 }
