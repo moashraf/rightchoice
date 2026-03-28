@@ -1914,4 +1914,31 @@ class AqarController extends Controller
         $governorates = Governrate::where('governrate', 'like', $query . '%')->select('id', 'governrate')->get();
         return response()->json($governorates);
     }
+
+    public function compare(Request $request, $locale)
+    {
+        $ids = $request->query('ids');
+        if (empty($ids)) {
+            return redirect()->route('homeBlade', ['locale' => $locale]);
+        }
+
+        $idArray = array_unique(array_map('intval', explode(',', $ids)));
+        $idArray = array_slice(array_filter($idArray, fn($id) => $id > 0), 0, 3);
+
+        if (count($idArray) < 2) {
+            return redirect()->back()->with('error', 'يجب اختيار عقارين على الأقل للمقارنة');
+        }
+
+        $aqars = aqar::whereIn('id', $idArray)
+            ->where('status', 1)
+            ->with(['governrateq', 'districte', 'subAreaa', 'images', 'mainImage', 'firstImage',
+                     'finishType', 'propertyType', 'offerTypes', 'floorNo', 'categoryRel', 'mzaya', 'compounds'])
+            ->get();
+
+        if ($aqars->count() < 2) {
+            return redirect()->back()->with('error', 'لم يتم العثور على عقارات كافية للمقارنة');
+        }
+
+        return view('aqars.compare', compact('aqars'));
+    }
 }

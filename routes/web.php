@@ -283,6 +283,89 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('onlineUsers.show')
         ->middleware('role:admin');
 
+    // ── SMS Messaging ────────────────────────────────────────────────────
+    Route::get('sms', [App\Http\Controllers\AdminSmsController::class, 'index'])
+        ->name('sms.index')
+        ->middleware('permission:sms.view');
+    Route::get('sms/create', [App\Http\Controllers\AdminSmsController::class, 'create'])
+        ->name('sms.create')
+        ->middleware('permission:sms.send');
+    Route::post('sms', [App\Http\Controllers\AdminSmsController::class, 'store'])
+        ->name('sms.store')
+        ->middleware('permission:sms.send');
+    Route::get('sms/{id}', [App\Http\Controllers\AdminSmsController::class, 'show'])
+        ->name('sms.show')
+        ->middleware('permission:sms.view');
+    Route::post('sms/{id}/retry', [App\Http\Controllers\AdminSmsController::class, 'retryFailed'])
+        ->name('sms.retry')
+        ->middleware('permission:sms.send');
+    // AJAX endpoints for SMS user selection
+    Route::get('sms-search-users', [App\Http\Controllers\AdminSmsController::class, 'searchUsers'])
+        ->name('sms.searchUsers')
+        ->middleware('permission:sms.send');
+    Route::post('sms-preview-recipients', [App\Http\Controllers\AdminSmsController::class, 'previewRecipients'])
+        ->name('sms.previewRecipients')
+        ->middleware('permission:sms.send');
+
+    // ── WhatsApp Messaging ───────────────────────────────────────────────
+    Route::get('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'index'])
+        ->name('whatsapp.index')
+        ->middleware('permission:whatsapp.view');
+    Route::get('whatsapp/create', [App\Http\Controllers\AdminWhatsappController::class, 'create'])
+        ->name('whatsapp.create')
+        ->middleware('permission:whatsapp.send');
+    Route::post('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'store'])
+        ->name('whatsapp.store')
+        ->middleware('permission:whatsapp.send');
+    Route::get('whatsapp/{id}', [App\Http\Controllers\AdminWhatsappController::class, 'show'])
+        ->name('whatsapp.show')
+        ->middleware('permission:whatsapp.view');
+    Route::post('whatsapp/{id}/retry', [App\Http\Controllers\AdminWhatsappController::class, 'retryFailed'])
+        ->name('whatsapp.retry')
+        ->middleware('permission:whatsapp.send');
+    // AJAX endpoints for WhatsApp user selection
+    Route::get('whatsapp-search-users', [App\Http\Controllers\AdminWhatsappController::class, 'searchUsers'])
+        ->name('whatsapp.searchUsers')
+        ->middleware('permission:whatsapp.send');
+    Route::post('whatsapp-preview-recipients', [App\Http\Controllers\AdminWhatsappController::class, 'previewRecipients'])
+        ->name('whatsapp.previewRecipients')
+        ->middleware('permission:whatsapp.send');
+
+    // ── Payment Management ────────────────────────────────────────────────
+    Route::get('payments', [App\Http\Controllers\AdminPaymentController::class, 'index'])
+        ->name('payments.index')
+        ->middleware('permission:payments.view');
+    Route::get('payments/reports', [App\Http\Controllers\AdminPaymentController::class, 'reports'])
+        ->name('payments.reports')
+        ->middleware('permission:payments.reports');
+    Route::get('payments/refunds', [App\Http\Controllers\AdminPaymentController::class, 'refunds'])
+        ->name('payments.refunds')
+        ->middleware('permission:payments.refunds');
+    Route::get('payments/user/{userId}', [App\Http\Controllers\AdminPaymentController::class, 'userPayments'])
+        ->name('payments.userPayments')
+        ->middleware('permission:payments.view');
+    Route::get('payments/{id}', [App\Http\Controllers\AdminPaymentController::class, 'show'])
+        ->name('payments.show')
+        ->middleware('permission:payments.view');
+    Route::post('payments/{id}/status', [App\Http\Controllers\AdminPaymentController::class, 'updateStatus'])
+        ->name('payments.updateStatus')
+        ->middleware('permission:payments.manage');
+    Route::post('payments/{id}/note', [App\Http\Controllers\AdminPaymentController::class, 'addNote'])
+        ->name('payments.addNote')
+        ->middleware('permission:payments.manage');
+    Route::post('payments/{id}/refund', [App\Http\Controllers\AdminPaymentController::class, 'initiateRefund'])
+        ->name('payments.initiateRefund')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/approve', [App\Http\Controllers\AdminPaymentController::class, 'approveRefund'])
+        ->name('refunds.approve')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/reject', [App\Http\Controllers\AdminPaymentController::class, 'rejectRefund'])
+        ->name('refunds.reject')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/mark-refunded', [App\Http\Controllers\AdminPaymentController::class, 'markRefunded'])
+        ->name('refunds.markRefunded')
+        ->middleware('permission:payments.refunds');
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')
@@ -307,6 +390,20 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::delete('rbac/permissions/{permission}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyPermission'])
         ->name('rbac.permissions.destroy')
         ->middleware('role:admin');
+
+    // ── Chat Reports Management ──────────────────────────────────────────
+    Route::get('chatReports', [App\Http\Controllers\AdminChatReportController::class, 'index'])
+        ->name('chatReports.index')
+        ->middleware('permission:reports.view');
+    Route::get('chatReports/{id}', [App\Http\Controllers\AdminChatReportController::class, 'show'])
+        ->name('chatReports.show')
+        ->middleware('permission:reports.view');
+    Route::post('chatReports/{id}/review', [App\Http\Controllers\AdminChatReportController::class, 'review'])
+        ->name('chatReports.review')
+        ->middleware('permission:reports.view');
+    Route::post('chatReports/{id}/block-user', [App\Http\Controllers\AdminChatReportController::class, 'blockUser'])
+        ->name('chatReports.blockUser')
+        ->middleware('permission:users.block');
 });
 
 
@@ -365,6 +462,44 @@ Route::group(['prefix' => '{locale?}'], function () {
         //  Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session')->middleware('setLocale');
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
+
+        // ── User Payment History ──────────────────────────────────────────
+        Route::get('/my-payments', [App\Http\Controllers\UserPaymentController::class, 'index'])->name('user.payments.index')->middleware('setLocale');
+        Route::get('/my-payments/{id}', [App\Http\Controllers\UserPaymentController::class, 'show'])->name('user.payments.show')->middleware('setLocale');
+        Route::post('/my-payments/{id}/refund', [App\Http\Controllers\UserPaymentController::class, 'requestRefund'])->name('user.payments.refund')->middleware('setLocale');
+
+        // ── Chat & Social Routes ─────────────────────────────────────────
+        Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index')->middleware('setLocale');
+        Route::post('/chat/start', [App\Http\Controllers\ChatController::class, 'startConversation'])->name('chat.start')->middleware('setLocale');
+        Route::post('/chat/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send')->middleware('setLocale');
+        Route::get('/chat/{conversationId}/messages', [App\Http\Controllers\ChatController::class, 'getMessages'])->name('chat.messages')->middleware('setLocale');
+        Route::delete('/chat/message/{messageId}', [App\Http\Controllers\ChatController::class, 'deleteMessage'])->name('chat.deleteMessage')->middleware('setLocale');
+        Route::get('/chat/unread-count', [App\Http\Controllers\ChatController::class, 'unreadCount'])->name('chat.unreadCount')->middleware('setLocale');
+
+        // ── Friends ──────────────────────────────────────────────────────
+        Route::get('/friends', [App\Http\Controllers\FriendController::class, 'index'])->name('friends.index')->middleware('setLocale');
+        Route::post('/friends/request', [App\Http\Controllers\FriendController::class, 'sendRequest'])->name('friends.request')->middleware('setLocale');
+        Route::post('/friends/{friendshipId}/accept', [App\Http\Controllers\FriendController::class, 'acceptRequest'])->name('friends.accept')->middleware('setLocale');
+        Route::post('/friends/{friendshipId}/decline', [App\Http\Controllers\FriendController::class, 'declineRequest'])->name('friends.decline')->middleware('setLocale');
+        Route::post('/friends/remove', [App\Http\Controllers\FriendController::class, 'removeFriend'])->name('friends.remove')->middleware('setLocale');
+        Route::get('/friends/search', [App\Http\Controllers\FriendController::class, 'searchUsers'])->name('friends.search')->middleware('setLocale');
+
+        // ── Block ────────────────────────────────────────────────────────
+        Route::get('/blocked', [App\Http\Controllers\BlockController::class, 'index'])->name('blocked.index')->middleware('setLocale');
+        Route::post('/block', [App\Http\Controllers\BlockController::class, 'block'])->name('block.store')->middleware('setLocale');
+        Route::post('/unblock', [App\Http\Controllers\BlockController::class, 'unblock'])->name('block.destroy')->middleware('setLocale');
+
+        // ── Report ───────────────────────────────────────────────────────
+        Route::post('/report', [App\Http\Controllers\ReportController::class, 'store'])->name('report.store')->middleware('setLocale');
+
+        // ── Community / Posts ────────────────────────────────────────────
+        Route::get('/community', [App\Http\Controllers\PostController::class, 'index'])->name('community.index')->middleware('setLocale');
+        Route::post('/community/posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store')->middleware('setLocale');
+        Route::post('/community/posts/{postId}/like', [App\Http\Controllers\PostController::class, 'toggleLike'])->name('posts.like')->middleware('setLocale');
+        Route::post('/community/posts/{postId}/comment', [App\Http\Controllers\PostController::class, 'addComment'])->name('posts.comment')->middleware('setLocale');
+        Route::get('/community/posts/{postId}/comments', [App\Http\Controllers\PostController::class, 'getComments'])->name('posts.comments')->middleware('setLocale');
+        Route::delete('/community/posts/{postId}', [App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy')->middleware('setLocale');
+        Route::delete('/community/comments/{commentId}', [App\Http\Controllers\PostController::class, 'deleteComment'])->name('comments.destroy')->middleware('setLocale');
     });
 
     Route::get('/login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'create'])
@@ -396,6 +531,7 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/aqars/update/{aqar}', 'App\Http\Controllers\AqarController@edit')->middleware('setLocale');
 
     Route::get('/aqars/{aqar}', 'App\Http\Controllers\AqarController@show')->middleware('setLocale');
+    Route::get('/compare', 'App\Http\Controllers\AqarController@compare')->name('compare')->middleware('setLocale');
 
 
     // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
@@ -405,6 +541,17 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/filter', 'App\Http\Controllers\AqarController@filter')->name('filter')->middleware('setLocale');
     Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
+
+    // ── Apartment Designer (صمم شقتك بنفسك) ────────────────────────
+    Route::get('/designer', function () { return view('designer.index'); })->name('designer.index')->middleware('setLocale');
+
+    // ── Property Hunter Game ─────────────────────────────────────────
+    Route::get('/game', function () { return view('game.index'); })->name('game.index')->middleware('setLocale');
+
+    // ── Smart Search (AI Chat Assistant) ─────────────────────────────
+    Route::get('/smart-search', [App\Http\Controllers\SmartSearchController::class, 'index'])->name('smart-search.index')->middleware('setLocale');
+    Route::post('/smart-search/search', [App\Http\Controllers\SmartSearchController::class, 'search'])->name('smart-search.search')->middleware('setLocale');
+    Route::get('/smart-search/suggestions', [App\Http\Controllers\SmartSearchController::class, 'suggestions'])->name('smart-search.suggestions')->middleware('setLocale');
 
     Route::get('/terms-conditions', 'App\Http\Controllers\PagesController@index')->middleware('setLocale');
     Route::get('/contact-us', 'App\Http\Controllers\PagesController@contact')->middleware('setLocale');

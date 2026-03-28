@@ -117,6 +117,10 @@
                                     <a style="width:30%" class="btn our-btn {{--<?php if(@show){ echo 'mt-3'; } ?>--}}"
                                        id="trigger-2">{{ trans('langsite.sharing')}}</a>
 
+                                    <button type="button" class="btn btn-compare-toggle mt-2" data-compare-id="{{ $aqar->id }}" style="width:30%;">
+                                        <i class="fas fa-balance-scale"></i> قارن
+                                    </button>
+
                                 </div>
                                 <!--  <img src="https://al-kafigroup.com/images/vhjfhgc.jpeg" class="img-thumbnail">-->
 

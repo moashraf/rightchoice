@@ -277,6 +277,116 @@
                             <p>{{ __('admin.notifications') }}</p>
                         </a>
                     </li>
+
+                    {{-- ── SMS Messaging ──────────────────────────────── --}}
+                    <li class="nav-item {{ request()->is('sitemanagement/sms*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/sms*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-sms text-info"></i>
+                            <p>
+                                الرسائل النصية SMS
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.sms.create') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/sms/create') ? 'active' : '' }}">
+                                    <i class="far fa-paper-plane nav-icon"></i>
+                                    <p>إرسال رسائل</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.sms.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/sms') && !request()->is('sitemanagement/sms/create') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>تقارير الرسائل</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- ── WhatsApp Messaging ─────────────────────────── --}}
+                    <li class="nav-item {{ request()->is('sitemanagement/whatsapp*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/whatsapp*') ? 'active' : '' }}">
+                            <i class="nav-icon fab fa-whatsapp text-success"></i>
+                            <p>
+                                رسائل واتساب
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.whatsapp.create') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/whatsapp/create') ? 'active' : '' }}">
+                                    <i class="far fa-paper-plane nav-icon"></i>
+                                    <p>إرسال رسائل واتساب</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.whatsapp.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/whatsapp') && !request()->is('sitemanagement/whatsapp/create') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>تقارير رسائل واتساب</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- ── Payments Management ──────────────────────── --}}
+                    @php
+                        $__pau = \Illuminate\Support\Facades\Auth::guard('admin')->user();
+                        $__canPayView    = $__pau && $__pau->hasPermission('payments.view');
+                        $__canPayRefunds = $__pau && $__pau->hasPermission('payments.refunds');
+                        $__canPayReports = $__pau && $__pau->hasPermission('payments.reports');
+                        $__showPayMenu   = $__canPayView || $__canPayRefunds || $__canPayReports;
+                    @endphp
+                    @if($__showPayMenu)
+                    <li class="nav-item {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-money-bill-wave text-success"></i>
+                            <p>
+                                إدارة المدفوعات
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if($__canPayView)
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>المدفوعات</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if($__canPayRefunds)
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.refunds') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments/refunds') ? 'active' : '' }}">
+                                    <i class="fas fa-undo nav-icon"></i>
+                                    <p>المستردات</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if($__canPayReports)
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.reports') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments/reports') ? 'active' : '' }}">
+                                    <i class="fas fa-chart-bar nav-icon"></i>
+                                    <p>التقارير</p>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+
+                    {{-- Chat Reports --}}
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.chatReports.index') }}" class="nav-link {{ request()->is('sitemanagement/chatReports*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-flag"></i>
+                            <p>تبليغات المحادثات</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-envelope"></i>
