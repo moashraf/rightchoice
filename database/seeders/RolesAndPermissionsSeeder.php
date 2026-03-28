@@ -101,6 +101,12 @@ class RolesAndPermissionsSeeder extends Seeder
             // Activity Logs
             ['name' => 'activity_logs.view',   'label' => 'View Activity Logs',       'module' => 'activity_logs'],
             ['name' => 'activity_logs.delete', 'label' => 'Delete Activity Logs',     'module' => 'activity_logs'],
+
+            // Payments
+            ['name' => 'payments.view',        'label' => 'View Payments',            'module' => 'payments'],
+            ['name' => 'payments.manage',      'label' => 'Manage Payments',          'module' => 'payments'],
+            ['name' => 'payments.refunds',     'label' => 'Manage Refunds',           'module' => 'payments'],
+            ['name' => 'payments.reports',     'label' => 'View Payment Reports',     'module' => 'payments'],
         ];
 
         // Upsert all permissions (idempotent)

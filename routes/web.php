@@ -331,6 +331,41 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('whatsapp.previewRecipients')
         ->middleware('permission:whatsapp.send');
 
+    // ── Payment Management ────────────────────────────────────────────────
+    Route::get('payments', [App\Http\Controllers\AdminPaymentController::class, 'index'])
+        ->name('payments.index')
+        ->middleware('permission:payments.view');
+    Route::get('payments/reports', [App\Http\Controllers\AdminPaymentController::class, 'reports'])
+        ->name('payments.reports')
+        ->middleware('permission:payments.view');
+    Route::get('payments/refunds', [App\Http\Controllers\AdminPaymentController::class, 'refunds'])
+        ->name('payments.refunds')
+        ->middleware('permission:payments.refunds');
+    Route::get('payments/user/{userId}', [App\Http\Controllers\AdminPaymentController::class, 'userPayments'])
+        ->name('payments.userPayments')
+        ->middleware('permission:payments.view');
+    Route::get('payments/{id}', [App\Http\Controllers\AdminPaymentController::class, 'show'])
+        ->name('payments.show')
+        ->middleware('permission:payments.view');
+    Route::post('payments/{id}/status', [App\Http\Controllers\AdminPaymentController::class, 'updateStatus'])
+        ->name('payments.updateStatus')
+        ->middleware('permission:payments.manage');
+    Route::post('payments/{id}/note', [App\Http\Controllers\AdminPaymentController::class, 'addNote'])
+        ->name('payments.addNote')
+        ->middleware('permission:payments.manage');
+    Route::post('payments/{id}/refund', [App\Http\Controllers\AdminPaymentController::class, 'initiateRefund'])
+        ->name('payments.initiateRefund')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/approve', [App\Http\Controllers\AdminPaymentController::class, 'approveRefund'])
+        ->name('refunds.approve')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/reject', [App\Http\Controllers\AdminPaymentController::class, 'rejectRefund'])
+        ->name('refunds.reject')
+        ->middleware('permission:payments.refunds');
+    Route::post('refunds/{refundId}/mark-refunded', [App\Http\Controllers\AdminPaymentController::class, 'markRefunded'])
+        ->name('refunds.markRefunded')
+        ->middleware('permission:payments.refunds');
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')
@@ -427,6 +462,11 @@ Route::group(['prefix' => '{locale?}'], function () {
         //  Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session')->middleware('setLocale');
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
+
+        // ── User Payment History ──────────────────────────────────────────
+        Route::get('/my-payments', [App\Http\Controllers\UserPaymentController::class, 'index'])->name('user.payments.index')->middleware('setLocale');
+        Route::get('/my-payments/{id}', [App\Http\Controllers\UserPaymentController::class, 'show'])->name('user.payments.show')->middleware('setLocale');
+        Route::post('/my-payments/{id}/refund', [App\Http\Controllers\UserPaymentController::class, 'requestRefund'])->name('user.payments.refund')->middleware('setLocale');
 
         // ── Chat & Social Routes ─────────────────────────────────────────
         Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index')->middleware('setLocale');

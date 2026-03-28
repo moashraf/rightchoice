@@ -58,6 +58,11 @@
                            class="btn btn-sm btn-outline-secondary">
                             <i class="fa fa-exclamation-circle"></i> شكاواي
                         </a>
+
+                        <a href="{{ URL::to(Config::get('app.locale').'/user/payments') }}"
+                           class="btn btn-sm btn-outline-success">
+                            <i class="fa fa-credit-card"></i> مدفوعاتي
+                        </a>
                     </div>
 
                     {{-- Delete Account Request --}}

@@ -331,6 +331,40 @@
                             </li>
                         </ul>
                     </li>
+                    {{-- ── Payments Management ──────────────────────── --}}
+                    <li class="nav-item {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-money-bill-wave text-success"></i>
+                            <p>
+                                إدارة المدفوعات
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>المدفوعات</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.refunds') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments/refunds') ? 'active' : '' }}">
+                                    <i class="fas fa-undo nav-icon"></i>
+                                    <p>المستردات</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.reports') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments/reports') ? 'active' : '' }}">
+                                    <i class="fas fa-chart-bar nav-icon"></i>
+                                    <p>التقارير</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     {{-- Chat Reports --}}
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.chatReports.index') }}" class="nav-link {{ request()->is('sitemanagement/chatReports*') ? 'active' : '' }}">
