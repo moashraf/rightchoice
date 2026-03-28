@@ -14,6 +14,11 @@ class AdminPaymentDataTable extends DataTable
 
         return $dataTable
             ->addColumn('action', function ($payment) {
+                $user = \Illuminate\Support\Facades\Auth::guard('admin')->user();
+                $canView = $user && $user->hasPermission('payments.view');
+
+                if (!$canView) return '';
+
                 $viewUrl = route('sitemanagement.payments.show', $payment->id);
                 return '<a href="' . $viewUrl . '" class="btn btn-sm btn-info" title="عرض التفاصيل"><i class="fas fa-eye"></i></a>';
             })

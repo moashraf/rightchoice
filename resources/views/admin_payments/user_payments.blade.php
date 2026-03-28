@@ -2,6 +2,15 @@
 
 @section('title', 'مدفوعات المستخدم: ' . $user->name)
 
+@php
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canView    = $__au && $__au->hasPermission('payments.view');
+    $canManage  = $__au && $__au->hasPermission('payments.manage');
+@endphp
+
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -114,9 +123,11 @@
                         <td>{{ $payment->paid_at ? $payment->paid_at->format('Y-m-d H:i') : '-' }}</td>
                         <td>{{ $payment->created_at?->format('Y-m-d H:i') }}</td>
                         <td>
+                            @if($canView)
                             <a href="{{ route('sitemanagement.payments.show', $payment->id) }}" class="btn btn-sm btn-info">
                                 <i class="fas fa-eye"></i>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 @empty

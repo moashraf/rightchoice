@@ -2,6 +2,14 @@
 
 @section('title', 'إدارة المستردات')
 
+@php
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canRefunds = $__au && $__au->hasPermission('payments.refunds');
+@endphp
+
 @section('third_party_stylesheets')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
@@ -141,6 +149,7 @@
 </div>
 
 {{-- Refund Action Modal --}}
+@if($canRefunds)
 <div class="modal fade" id="refundActionModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -165,6 +174,7 @@
         </div>
     </div>
 </div>
+@endif
 @endsection
 
 @section('third_party_scripts')

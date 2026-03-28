@@ -17,12 +17,17 @@ class AdminRefundDataTable extends DataTable
                 $showUrl = route('sitemanagement.payments.show', $refund->payment_id);
                 $btns = '<a href="' . $showUrl . '" class="btn btn-sm btn-info mr-1" title="عرض الدفعة"><i class="fas fa-eye"></i></a>';
 
-                if ($refund->refund_status === 'requested' || $refund->refund_status === 'under_review') {
-                    $btns .= '<button class="btn btn-sm btn-success mr-1 btn-approve-refund" data-id="' . $refund->id . '" title="موافقة"><i class="fas fa-check"></i></button>';
-                    $btns .= '<button class="btn btn-sm btn-danger btn-reject-refund" data-id="' . $refund->id . '" title="رفض"><i class="fas fa-times"></i></button>';
-                }
-                if ($refund->refund_status === 'approved') {
-                    $btns .= '<button class="btn btn-sm btn-primary btn-mark-refunded" data-id="' . $refund->id . '" title="تنفيذ الاسترداد"><i class="fas fa-undo"></i></button>';
+                $user = \Illuminate\Support\Facades\Auth::guard('admin')->user();
+                $canRefunds = $user && $user->hasPermission('payments.refunds');
+
+                if ($canRefunds) {
+                    if ($refund->refund_status === 'requested' || $refund->refund_status === 'under_review') {
+                        $btns .= '<button class="btn btn-sm btn-success mr-1 btn-approve-refund" data-id="' . $refund->id . '" title="موافقة"><i class="fas fa-check"></i></button>';
+                        $btns .= '<button class="btn btn-sm btn-danger btn-reject-refund" data-id="' . $refund->id . '" title="رفض"><i class="fas fa-times"></i></button>';
+                    }
+                    if ($refund->refund_status === 'approved') {
+                        $btns .= '<button class="btn btn-sm btn-primary btn-mark-refunded" data-id="' . $refund->id . '" title="تنفيذ الاسترداد"><i class="fas fa-undo"></i></button>';
+                    }
                 }
 
                 return $btns;

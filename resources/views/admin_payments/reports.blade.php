@@ -2,6 +2,15 @@
 
 @section('title', 'تقارير المدفوعات')
 
+@php
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canReports = $__au && $__au->hasPermission('payments.reports');
+    $canView    = $__au && $__au->hasPermission('payments.view');
+@endphp
+
 @section('third_party_stylesheets')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
 @endsection

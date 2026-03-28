@@ -337,7 +337,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:payments.view');
     Route::get('payments/reports', [App\Http\Controllers\AdminPaymentController::class, 'reports'])
         ->name('payments.reports')
-        ->middleware('permission:payments.view');
+        ->middleware('permission:payments.reports');
     Route::get('payments/refunds', [App\Http\Controllers\AdminPaymentController::class, 'refunds'])
         ->name('payments.refunds')
         ->middleware('permission:payments.refunds');

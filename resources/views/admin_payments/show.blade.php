@@ -2,6 +2,16 @@
 
 @section('title', 'تفاصيل الدفعة #' . $payment->id)
 
+@php
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canView    = $__au && $__au->hasPermission('payments.view');
+    $canManage  = $__au && $__au->hasPermission('payments.manage');
+    $canRefunds = $__au && $__au->hasPermission('payments.refunds');
+@endphp
+
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -148,6 +158,7 @@
         {{-- Sidebar Actions --}}
         <div class="col-md-4">
             {{-- Update Status --}}
+            @if($canManage)
             <div class="card card-outline card-success">
                 <div class="card-header"><h3 class="card-title"><i class="fas fa-edit"></i> تحديث الحالة</h3></div>
                 <div class="card-body">
@@ -171,9 +182,10 @@
                     </form>
                 </div>
             </div>
+            @endif
 
             {{-- Initiate Refund --}}
-            @if($payment->canRefund())
+            @if($canRefunds && $payment->canRefund())
             <div class="card card-outline card-warning">
                 <div class="card-header"><h3 class="card-title"><i class="fas fa-undo"></i> طلب استرداد</h3></div>
                 <div class="card-body">
@@ -196,6 +208,7 @@
             @endif
 
             {{-- Add Note --}}
+            @if($canManage)
             <div class="card card-outline card-info">
                 <div class="card-header"><h3 class="card-title"><i class="fas fa-sticky-note"></i> إضافة ملاحظة</h3></div>
                 <div class="card-body">
@@ -220,6 +233,22 @@
                     @endif
                 </div>
             </div>
+            @else
+            {{-- Show notes read-only for viewers --}}
+            @if($payment->notes->count() > 0)
+            <div class="card card-outline card-info">
+                <div class="card-header"><h3 class="card-title"><i class="fas fa-sticky-note"></i> الملاحظات</h3></div>
+                <div class="card-body">
+                    @foreach($payment->notes->sortByDesc('created_at') as $note)
+                        <div class="callout callout-info py-2 px-3">
+                            <small class="text-muted">{{ $note->admin?->name ?? 'مشرف' }} - {{ $note->created_at?->format('Y-m-d H:i') }}</small>
+                            <p class="mb-0">{{ $note->note }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            @endif
 
             {{-- Quick Links --}}
             <div class="card">

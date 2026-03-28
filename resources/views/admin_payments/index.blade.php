@@ -2,6 +2,17 @@
 
 @section('title', 'إدارة المدفوعات')
 
+@php
+    $__au = \Illuminate\Support\Facades\Auth::guard('admin')->check()
+        ? \Illuminate\Support\Facades\Auth::guard('admin')->user()
+        : \Illuminate\Support\Facades\Auth::user();
+
+    $canView    = $__au && $__au->hasPermission('payments.view');
+    $canManage  = $__au && $__au->hasPermission('payments.manage');
+    $canRefunds = $__au && $__au->hasPermission('payments.refunds');
+    $canReports = $__au && $__au->hasPermission('payments.reports');
+@endphp
+
 @section('third_party_stylesheets')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
@@ -167,12 +178,16 @@
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-list"></i> قائمة المدفوعات</h3>
             <div class="card-tools">
+                @if($canReports)
                 <a href="{{ route('sitemanagement.payments.reports') }}" class="btn btn-sm btn-outline-info">
                     <i class="fas fa-chart-bar"></i> التقارير
                 </a>
+                @endif
+                @if($canRefunds)
                 <a href="{{ route('sitemanagement.payments.refunds') }}" class="btn btn-sm btn-outline-warning">
                     <i class="fas fa-undo"></i> المستردات
                 </a>
+                @endif
             </div>
         </div>
         <div class="card-body">

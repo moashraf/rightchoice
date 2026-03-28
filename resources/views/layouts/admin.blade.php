@@ -332,6 +332,14 @@
                         </ul>
                     </li>
                     {{-- ── Payments Management ──────────────────────── --}}
+                    @php
+                        $__pau = \Illuminate\Support\Facades\Auth::guard('admin')->user();
+                        $__canPayView    = $__pau && $__pau->hasPermission('payments.view');
+                        $__canPayRefunds = $__pau && $__pau->hasPermission('payments.refunds');
+                        $__canPayReports = $__pau && $__pau->hasPermission('payments.reports');
+                        $__showPayMenu   = $__canPayView || $__canPayRefunds || $__canPayReports;
+                    @endphp
+                    @if($__showPayMenu)
                     <li class="nav-item {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/payments*') || request()->is('sitemanagement/refunds*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-money-bill-wave text-success"></i>
@@ -341,6 +349,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if($__canPayView)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.index') }}"
                                    class="nav-link {{ request()->is('sitemanagement/payments') ? 'active' : '' }}">
@@ -348,6 +357,8 @@
                                     <p>المدفوعات</p>
                                 </a>
                             </li>
+                            @endif
+                            @if($__canPayRefunds)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.refunds') }}"
                                    class="nav-link {{ request()->is('sitemanagement/payments/refunds') ? 'active' : '' }}">
@@ -355,6 +366,8 @@
                                     <p>المستردات</p>
                                 </a>
                             </li>
+                            @endif
+                            @if($__canPayReports)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.reports') }}"
                                    class="nav-link {{ request()->is('sitemanagement/payments/reports') ? 'active' : '' }}">
@@ -362,8 +375,10 @@
                                     <p>التقارير</p>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
+                    @endif
 
                     {{-- Chat Reports --}}
                     <li class="nav-item">
