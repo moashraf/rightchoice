@@ -307,6 +307,30 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('sms.previewRecipients')
         ->middleware('permission:sms.send');
 
+    // ── WhatsApp Messaging ───────────────────────────────────────────────
+    Route::get('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'index'])
+        ->name('whatsapp.index')
+        ->middleware('permission:whatsapp.view');
+    Route::get('whatsapp/create', [App\Http\Controllers\AdminWhatsappController::class, 'create'])
+        ->name('whatsapp.create')
+        ->middleware('permission:whatsapp.send');
+    Route::post('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'store'])
+        ->name('whatsapp.store')
+        ->middleware('permission:whatsapp.send');
+    Route::get('whatsapp/{id}', [App\Http\Controllers\AdminWhatsappController::class, 'show'])
+        ->name('whatsapp.show')
+        ->middleware('permission:whatsapp.view');
+    Route::post('whatsapp/{id}/retry', [App\Http\Controllers\AdminWhatsappController::class, 'retryFailed'])
+        ->name('whatsapp.retry')
+        ->middleware('permission:whatsapp.send');
+    // AJAX endpoints for WhatsApp user selection
+    Route::get('whatsapp-search-users', [App\Http\Controllers\AdminWhatsappController::class, 'searchUsers'])
+        ->name('whatsapp.searchUsers')
+        ->middleware('permission:whatsapp.send');
+    Route::post('whatsapp-preview-recipients', [App\Http\Controllers\AdminWhatsappController::class, 'previewRecipients'])
+        ->name('whatsapp.previewRecipients')
+        ->middleware('permission:whatsapp.send');
+
     // ── RBAC Management Panel (admin-only) ───────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')

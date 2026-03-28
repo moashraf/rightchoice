@@ -304,6 +304,33 @@
                             </li>
                         </ul>
                     </li>
+
+                    {{-- ── WhatsApp Messaging ─────────────────────────── --}}
+                    <li class="nav-item {{ request()->is('sitemanagement/whatsapp*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/whatsapp*') ? 'active' : '' }}">
+                            <i class="nav-icon fab fa-whatsapp text-success"></i>
+                            <p>
+                                رسائل واتساب
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.whatsapp.create') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/whatsapp/create') ? 'active' : '' }}">
+                                    <i class="far fa-paper-plane nav-icon"></i>
+                                    <p>إرسال رسائل واتساب</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.whatsapp.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/whatsapp') && !request()->is('sitemanagement/whatsapp/create') ? 'active' : '' }}">
+                                    <i class="far fa-list-alt nav-icon"></i>
+                                    <p>تقارير رسائل واتساب</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     {{-- Chat Reports --}}
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.chatReports.index') }}" class="nav-link {{ request()->is('sitemanagement/chatReports*') ? 'active' : '' }}">
