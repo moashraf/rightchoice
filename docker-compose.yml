@@ -34,9 +34,15 @@ services:
       REDIS_PORT: 6379
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
+      MONGO_DB_HOST: mongodb
+      MONGO_DB_PORT: 27017
+      MONGO_DB_DATABASE: rightchoice_chat
+      MONGO_DB_USERNAME: ""
+      MONGO_DB_PASSWORD: ""
     depends_on:
       - db
       - redis
+      - mongodb
     networks:
       - laravel-network
 
@@ -57,6 +63,19 @@ services:
       MYSQL_DATABASE: rightchoiceco_rightchoiceco
     volumes:
       - dbdata:/var/lib/mysql
+    networks:
+      - laravel-network
+
+  # MongoDB (Chat Database)
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: rightchoice_chat
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
     networks:
       - laravel-network
 
@@ -82,3 +101,4 @@ networks:
 
 volumes:
   dbdata:
+  mongodata:
