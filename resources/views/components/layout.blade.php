@@ -363,7 +363,9 @@
 
                                 class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
 
-                                <a href=""><span class="submenu-indicator"></span>{{ trans('langsite.services')}}</a>
+                                <a href=""><span class="submenu-indicator"></span>
+                                    {{ trans('langsite.services')}}
+                                </a>
 
 
                                 <ul class="nav-dropdown nav-submenu">
@@ -388,59 +390,78 @@
 
                         @endif
 
-                        {{-- Map Page Link --}}
-                        <li class="{{ Request::is('*/map') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
-                                <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
-                            </a>
-                        </li>
 
-                        {{-- Smart Search Link --}}
-                        <li class="{{ Request::is('*/smart-search*') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/smart-search') }}">
-                                <i class="fas fa-robot" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Smart Search' : 'البحث الذكي' }}
-                            </a>
-                        </li>
 
-                        {{-- Apartment Designer --}}
-                        <li class="{{ Request::is('*/designer*') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/designer') }}">
-                                <i class="fas fa-drafting-compass" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Designer' : 'صمم شقتك' }}
-                            </a>
-                        </li>
+                            <li
 
-                        {{-- Property Hunter Game --}}
-                        <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/game') }}">
-                                <i class="fas fa-gamepad" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Game' : 'اللعبة' }}
-                            </a>
-                        </li>
+                                class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
 
-                        {{-- Community Link --}}
-                        @auth
-                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">
-                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}
-                            </a>
-                        </li>
-                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">
-                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}
-                            </a>
-                        </li>
-                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">
-                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">
-                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>
-                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}
-                            </a>
-                        </li>
-                        @endauth
+                                <a href=""><span class="submenu-indicator"></span>
+                                    مميزات
+                                </a>
+
+
+                                <ul class="nav-dropdown nav-submenu">
+
+
+                                    {{-- Map Page Link --}}
+                                    <li class="{{ Request::is('*/map') ? 'active' : '' }}">
+                                        <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
+                                            <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>
+                                            {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
+                                        </a>
+                                    </li>
+
+                                    {{-- Smart Search Link --}}
+                                    <li class="{{ Request::is('*/smart-search*') ? 'active' : '' }}">
+                                        <a href="{{ URL::to(Config::get('app.locale').'/smart-search') }}">
+                                            <i class="fas fa-robot" style="margin-left:4px; margin-right:4px;"></i>
+                                            {{ App::isLocale('en') ? 'Smart Search' : 'البحث الذكي' }}
+                                        </a>
+                                    </li>
+
+                                    {{-- Apartment Designer --}}
+                                    <li class="{{ Request::is('*/designer*') ? 'active' : '' }}">
+                                        <a href="{{ URL::to(Config::get('app.locale').'/designer') }}">
+                                            <i class="fas fa-drafting-compass" style="margin-left:4px; margin-right:4px;"></i>
+                                            {{ App::isLocale('en') ? 'Designer' : 'صمم شقتك' }}
+                                        </a>
+                                    </li>
+
+                                    {{-- Property Hunter Game --}}
+                                    <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
+                                        <a href="{{ URL::to(Config::get('app.locale').'/game') }}">
+                                            <i class="fas fa-gamepad" style="margin-left:4px; margin-right:4px;"></i>
+                                            {{ App::isLocale('en') ? 'Game' : 'اللعبة' }}
+                                        </a>
+                                    </li>
+
+                                    {{-- Community Link --}}
+                                    @auth
+                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">
+                                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">
+                                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>
+                                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}
+                                            </a>
+                                        </li>
+                                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">
+                                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">
+                                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>
+                                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}
+                                            </a>
+                                        </li>
+                                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">
+                                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">
+                                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>
+                                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}
+                                            </a>
+                                        </li>
+                                    @endauth
+
+                                </ul>
+
+                            </li>
+
                     </ul>
 
 
