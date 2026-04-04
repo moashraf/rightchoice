@@ -328,6 +328,16 @@ $('#offer-type').on('change', function () {
                                     </div>
                                 </div>
 
+                                <!-- daily-rent -->
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="daily-rent">الايجار اليومي (اختياري)</label>
+                                        <input type="number" name="daily_rent" id="daily-rent" class="myselect"
+                                            placeholder="" min="0" >
+
+                                    </div>
+                                </div>
+
                             </div>
 
 		`);

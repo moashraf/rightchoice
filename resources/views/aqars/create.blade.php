@@ -206,6 +206,37 @@
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- ── Map Location Section ──────────────────── --}}
+{{--                            <div class="form-group" style="width:100%;">--}}
+{{--                                <label style="font-weight:700; font-size:15px; margin-bottom:10px;">--}}
+{{--                                    <i class="fas fa-map-marker-alt text-danger"></i>--}}
+{{--                                    موقع العقار على الخريطة--}}
+{{--                                </label>--}}
+{{--                                <small class="d-block text-muted mb-2">اضغط على الخريطة لتحديد الموقع أو سيتم استخدام موقع المحافظة تلقائياً</small>--}}
+
+{{--                                <div class="row mb-2">--}}
+{{--                                    <div class="col-md-5">--}}
+{{--                                        <input type="number" step="any" name="location_lat" id="location_lat"--}}
+{{--                                               class="myselect" placeholder="خط العرض (Latitude)"--}}
+{{--                                               value="{{ old('location_lat') }}" min="-90" max="90">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-md-5">--}}
+{{--                                        <input type="number" step="any" name="location_lon" id="location_lon"--}}
+{{--                                               class="myselect" placeholder="خط الطول (Longitude)"--}}
+{{--                                               value="{{ old('location_lon') }}" min="-180" max="180">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-md-2 d-flex align-items-center">--}}
+{{--                                        <button type="button" id="clearCoordsBtn" class="btn btn-outline-secondary btn-sm" style="border-radius:8px;">--}}
+{{--                                            <i class="fas fa-times"></i> مسح--}}
+{{--                                        </button>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+
+{{--                                <div id="frontPropertyMap" style="width:100%; height:350px; border-radius:12px; border:2px solid #e0e0e0;"></div>--}}
+{{--                            </div>--}}
+                            {{-- ── End Map Location Section ──────────────────── --}}
+
                             <hr>
                             <h3>التفاصيل</h3>
                             <div class="form-group">
@@ -976,7 +1007,7 @@
         $(function () {
 
             // ✅ FIX: أرقام فقط (بدون حروف)
-            $("#total-area,#rooms,#baths,#total-price,#installment-time,#installment-value,#installment-date,#rent-value").keypress(function (event) {
+            $("#total-area,#rooms,#baths,#total-price,#installment-time,#installment-value,#installment-date,#rent-value,#daily-rent").keypress(function (event) {
                 var ew = event.which;
 
                 // backspace / delete / arrows

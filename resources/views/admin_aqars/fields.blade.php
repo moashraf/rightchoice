@@ -244,6 +244,13 @@
     <small class="text-danger">{{ $errors->first('monthly_rent') }}</small>
 </div>
 
+<!-- Daily Rent Field -->
+<div id="daily_rent" class="form-group col-sm-6">
+    {!! Form::label('daily_rent', 'Daily Rent:') !!}
+    {!! Form::number('daily_rent', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('daily_rent') }}</small>
+</div>
+
 <!-- Total Price Field -->
 <div id="total_price" class="form-group col-sm-6">
     {!! Form::label('total_price', 'Total Price:') !!}

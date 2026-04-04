@@ -450,6 +450,18 @@
                                     </div>
                                 </div>
 
+                                <!-- daily-rent -->
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="daily-rent">الايجار اليومي (اختياري)</label>
+                                        <input type="number" name="daily_rent" id="daily-rent" class="myselect"
+                                            placeholder="الايجار اليومي" min="0" value="{{ $aqar->daily_rent }}">
+                                        @error('daily_rent')
+                                            <p class="text-danger text-sm mt-1"> {{ $message }} </p>
+                                        @enderror
+                                    </div>
+                                </div>
+
                             </div>
                             @endif
                             @if ($type == 2)
