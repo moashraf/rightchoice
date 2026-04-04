@@ -23,7 +23,7 @@
                      src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif"
                      alt="processing..." loading="lazy"/>
                 <h6 class="fw-bolder text-dark mt-5">
-                    بعض الصور حجمها كبير قد يتسغرق رفعها 20 ثانيه (جاري التحميل)
+                    بعض الصور حجمها كبير قد يتسغرق رفعها 15 ثانيه (جاري التحميل)
                 </h6>
 
             </div>
