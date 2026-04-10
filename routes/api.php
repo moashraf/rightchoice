@@ -22,6 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login',  [App\Http\Controllers\API\AuthAPIController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\API\AuthAPIController::class, 'logout']);
 
+// Registration routes
+Route::post('register',   [App\Http\Controllers\API\RegisterAPIController::class, 'register']);
+Route::post('verify-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'verifyOtp']);
+Route::post('resend-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'resendOtp']);
+
 // Resource routes
 Route::apiResource('blogs',                    App\Http\Controllers\API\blogAPIController::class);
 Route::apiResource('offer_types',              App\Http\Controllers\API\offer_typeAPIController::class);
