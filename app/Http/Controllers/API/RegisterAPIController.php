@@ -121,7 +121,7 @@ class RegisterAPIController extends AppBaseController
         ]);
 
         // Create Sanctum token for authenticated requests
-        $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
         $result = [
             'user' => [
