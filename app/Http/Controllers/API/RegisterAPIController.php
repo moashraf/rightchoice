@@ -95,6 +95,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function verifyOtp(Request $request): JsonResponse
     {
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'otp'     => 'required',
@@ -120,7 +121,7 @@ class RegisterAPIController extends AppBaseController
         ]);
 
         // Create Sanctum token for authenticated requests
-        $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
         $result = [
             'user' => [

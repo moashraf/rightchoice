@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -38,8 +39,8 @@ class AuthAPIController extends AppBaseController
         if ($user->status != 1) {
             return $this->sendError('Your account is inactive', 403);
         }
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        $token = base64_encode(random_bytes(32));
 
         $result = [
             'user' => [
@@ -63,6 +64,11 @@ class AuthAPIController extends AppBaseController
      */
     public function logout(Request $request)
     {
+        // Revoke Sanctum token if authenticated
+        if ($request->user() && Schema::hasTable('personal_access_tokens')) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
         return $this->sendSuccess('User logged out successfully');
     }
 }
