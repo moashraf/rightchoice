@@ -678,7 +678,7 @@
         <div class="col-12 mb-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body p-0">
-                    @if($invitedByStats->count() > 0)
+                    @if($invitedByStats->count() > 0 || (isset($notInvitedCount) && $notInvitedCount > 0))
                     <div class="table-responsive">
                         <table class="table table-hover table-striped mb-0">
                             <thead class="thead-dark">
@@ -732,16 +732,25 @@
 
                                 {{-- ===== المستخدمون غير المدعوين ===== --}}
                                 @if(isset($notInvitedCount) && $notInvitedCount > 0)
+                                @php
+                                    $notInvitedDetailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
+                                        'invited_by' => $notInvitedFilterValue ?? '__not_invited__',
+                                        'from_date'  => $fromDate ?? null,
+                                        'to_date'    => $toDate ?? null,
+                                    ]));
+                                @endphp
                                 <tr class="table-warning">
                                     <td><i class="fas fa-minus-circle text-warning"></i></td>
                                     <td>
-                                        <a href="{{ route('sitemanagement.users.index', array_filter(['filter_isAdmin' => 0])) }}" class="text-decoration-none">
+                                        <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
                                             <i class="fas fa-user-slash text-warning ml-1"></i>
                                             <strong>بدون داعي (غير مدعوين)</strong>
                                         </a>
                                     </td>
                                     <td>
-                                        <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvitedCount) }}</span>
+                                        <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
+                                            <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvitedCount) }}</span>
+                                        </a>
                                     </td>
                                     <td>
                                         @php
@@ -756,7 +765,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-warning">
+                                        <a href="{{ $notInvitedDetailsUrl }}" class="btn btn-sm btn-outline-warning">
                                             <i class="fas fa-eye ml-1"></i> عرض
                                         </a>
                                     </td>

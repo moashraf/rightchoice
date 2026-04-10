@@ -16,6 +16,7 @@
         <li class="list-group-item">{!! Form::label('land_area', 'Land Area:') !!} {{ $aqar->land_area }}</li>
         <li class="list-group-item">{!! Form::label('downpayment', 'Downpayment:') !!} {{ $aqar->downpayment }}</li>
         <li class="list-group-item">{!! Form::label('monthly_rent', 'Monthly Rent:') !!} {{ $aqar->monthly_rent }}</li>
+        <li class="list-group-item">{!! Form::label('daily_rent', 'Daily Rent:') !!} {{ $aqar->daily_rent }}</li>
     </ul>
 
     <ul class="list-group col-md-6">

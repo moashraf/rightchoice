@@ -33,6 +33,7 @@ class archive extends Model
         'installment_time',
         'installment_value',
         'monthly_rent',
+        'daily_rent',
         'rent_long_time',
         'offer_type',
         'property_type',
@@ -66,7 +67,7 @@ class archive extends Model
 
         return $points;
     }
-    
+
     public static function pointCalculateRent($price){
 
         $points = number_format((float)($price/250), 2, '.', '');
@@ -88,7 +89,7 @@ class archive extends Model
 
     public function mzaya()
     {
-        return $this->belongsToMany(Mzaya::Class, 'aqar_mzaya', 
+        return $this->belongsToMany(Mzaya::Class, 'aqar_mzaya',
           'aqar_id', 'mzaya_id');
     }
 
@@ -96,7 +97,7 @@ class archive extends Model
     {
         return $this->hasMany(MzayaAqar::Class);
     }
-    
+
     public function floorNo()
     {
         return $this->belongsTo(Floor::class,  'floor');
@@ -109,7 +110,7 @@ class archive extends Model
     public function offerTypes(){
         return $this->belongsTo(OfferTypes::class, 'offer_type');
     }
-    
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
@@ -141,7 +142,7 @@ class archive extends Model
         return $this->belongsTo(SubArea::class, 'area_id');
     }
 
-    
+
     public function compounds(){
         return $this->belongsTo(Compound::class, 'compound');
     }
@@ -149,19 +150,19 @@ class archive extends Model
     public function propertyType() {
         return $this->belongsTo(TypeOfProp::class, 'property_type');
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     public function images(){
         return $this->hasMany(Images::class);
     }
-    
+
      public function mainImage(){
         return $this->belongsTo(Images::class,'org_aqar_id','aqar_id')->where('main_img', 1);
     }
-    
+
     public function firstImage(){
         return $this->belongsTo(Images::class,'org_aqar_id','aqar_id')->where('main_img', 0);
     }
@@ -170,5 +171,5 @@ class archive extends Model
         return $this->hasMany(wish::class);
     }
 
-    
+
 }

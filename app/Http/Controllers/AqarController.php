@@ -975,6 +975,7 @@ class AqarController extends Controller
             'downpayment' => 'required_if:offer_type,2|nullable|integer',
             //'mtr_price' => 'required_if:offer_type,2|nullable|integer',
             'monthly_rent' => 'required_if:offer_type,3,4|nullable|integer',
+            'daily_rent' => 'nullable|integer',
             'total_price' => 'required_if:offer_type,1,2|nullable|integer',
             'license_type' => 'required_if:property_type,9|nullable|integer',
             //'mzaya' => 'required|array|min:1',
@@ -1011,6 +1012,7 @@ class AqarController extends Controller
             $aqar->reciving = request('reciving') ?: null;
             $aqar->rec_time = request('rec_time') ?: null;
             $aqar->monthly_rent = request('monthly_rent') ?: null;
+            $aqar->daily_rent = request('daily_rent') ?: null;
             $aqar->call_id = request('call_id');
             $aqar->offer_type = request('offer_type');
             $aqar->property_type = request('property_type');
@@ -1151,6 +1153,7 @@ class AqarController extends Controller
             $archive->reciving = $aqar->reciving;
             $archive->rec_time = $aqar->rec_time;
             $archive->monthly_rent = $aqar->monthly_rent;
+            $archive->daily_rent = $aqar->daily_rent;
             $archive->call_id = $aqar->call_id;
             $archive->offer_type = $aqar->offer_type;
             $archive->property_type = $aqar->property_type;

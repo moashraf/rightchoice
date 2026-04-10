@@ -3,12 +3,17 @@
 
 @section('content')
 <div class="container-fluid">
+    @php
+        $notInvitedLabel = 'بدون داعي (غير مدعوين)';
+        $isNotInvitedFilter = ($invitedBy ?? null) === ($notInvitedFilterValue ?? '__not_invited__');
+    @endphp
+
     <div class="row mb-2">
         <div class="col-12">
             <h4 class="mt-3 mb-3" style="font-weight:700; color:#343a40;">
                 <i class="fas fa-user-plus ml-2"></i> تفاصيل المدعوين
                 @if($invitedBy)
-                    <span class="badge badge-info ml-2" style="font-size:14px;">{{ $invitedBy }}</span>
+                    <span class="badge badge-info ml-2" style="font-size:14px;">{{ $isNotInvitedFilter ? $notInvitedLabel : $invitedBy }}</span>
                 @endif
             </h4>
         </div>
@@ -29,6 +34,9 @@
                                 {{ $stat->invited_by }} ({{ number_format($stat->total) }})
                             </option>
                         @endforeach
+                        <option value="{{ $notInvitedFilterValue ?? '__not_invited__' }}" {{ $isNotInvitedFilter ? 'selected' : '' }}>
+                            {{ $notInvitedLabel }} ({{ number_format($notInvitedCount ?? 0) }})
+                        </option>
                     </select>
                 </div>
                 <div class="form-group ml-3 mb-2">
@@ -67,7 +75,7 @@
                 <i class="fas fa-users ml-1"></i>
                 قائمة المدعوين
                 @if($invitedBy)
-                    بواسطة <strong class="text-primary">{{ $invitedBy }}</strong>
+                    بواسطة <strong class="text-primary">{{ $isNotInvitedFilter ? $notInvitedLabel : $invitedBy }}</strong>
                 @endif
                 <span class="badge badge-success ml-2">{{ number_format($users->total()) }} مستخدم</span>
             </h6>
@@ -105,7 +113,7 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge badge-info">{{ $user->invited_by ?? '-' }}</span>
+                                <span class="badge badge-info">{{ filled($user->invited_by) ? $user->invited_by : 'غير مدعو' }}</span>
                             </td>
                             <td>{{ $user->created_at ? \Carbon\Carbon::parse($user->created_at)->format('d/m/Y') : '-' }}</td>
                             <td>

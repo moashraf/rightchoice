@@ -38,6 +38,7 @@ class aqar extends Model
         'installment_time',
         'installment_value',
         'monthly_rent',
+        'daily_rent',
         'rent_long_time',
         'offer_type',
         'property_type',
@@ -87,6 +88,14 @@ class aqar extends Model
     public function setMonthlyRentAttribute($value)
     {
         $this->attributes['monthly_rent'] = $value !== '' ? $value : null;
+    }
+
+    /**
+     * Set daily_rent: convert empty string to null.
+     */
+    public function setDailyRentAttribute($value)
+    {
+        $this->attributes['daily_rent'] = $value !== '' ? $value : null;
     }
 
     /**

@@ -20,6 +20,8 @@ use App\Models\Viewer;
 
 class AdminReportController extends Controller
 {
+    private const NOT_INVITED_FILTER = '__not_invited__';
+
     public function index(Request $request)
     {
         $fromDate = $request->input('from_date');
@@ -68,7 +70,7 @@ class AdminReportController extends Controller
         $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
             ->whereNull('deleted_at')
             ->whereNotNull('invited_by')
-            ->where('invited_by', '!=', '')
+            ->whereRaw("TRIM(invited_by) != ''")
             ->when($fromDate || $toDate, $filter)
             ->groupBy('invited_by')
             ->orderByDesc('total')
@@ -78,7 +80,7 @@ class AdminReportController extends Controller
         $notInvitedCount = User::whereNull('deleted_at')
             ->where(function ($q) {
                 $q->whereNull('invited_by')
-                  ->orWhere('invited_by', '');
+                  ->orWhereRaw("TRIM(COALESCE(invited_by, '')) = ''");
             })
             ->when($fromDate || $toDate, $filter)
             ->count();
@@ -154,7 +156,7 @@ class AdminReportController extends Controller
             'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount',
             'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars',
             'usersWithAqars', 'usersWithoutAqars'
-        ));
+        ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
     }
 
     public function invitedByDetails(Request $request)
@@ -162,10 +164,17 @@ class AdminReportController extends Controller
         $invitedBy = $request->input('invited_by');
         $fromDate  = $request->input('from_date');
         $toDate    = $request->input('to_date');
+        $isNotInvitedFilter = $invitedBy === self::NOT_INVITED_FILTER;
 
         $users = User::query()
             ->whereNull('deleted_at')
-            ->when($invitedBy, function ($q) use ($invitedBy) {
+            ->when($isNotInvitedFilter, function ($q) {
+                $q->where(function ($sub) {
+                    $sub->whereNull('invited_by')
+                        ->orWhereRaw("TRIM(COALESCE(invited_by, '')) = ''");
+                });
+            })
+            ->when(!$isNotInvitedFilter && filled($invitedBy), function ($q) use ($invitedBy) {
                 $q->where('invited_by', $invitedBy);
             })
             ->when($fromDate, function ($q) use ($fromDate) {
@@ -182,13 +191,32 @@ class AdminReportController extends Controller
         $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
             ->whereNull('deleted_at')
             ->whereNotNull('invited_by')
-            ->where('invited_by', '!=', '')
+            ->whereRaw("TRIM(invited_by) != ''")
+            ->when($fromDate, function ($q) use ($fromDate) {
+                $q->whereDate('created_at', '>=', $fromDate);
+            })
+            ->when($toDate, function ($q) use ($toDate) {
+                $q->whereDate('created_at', '<=', $toDate);
+            })
             ->groupBy('invited_by')
             ->orderByDesc('total')
             ->get();
 
+        $notInvitedCount = User::whereNull('deleted_at')
+            ->where(function ($q) {
+                $q->whereNull('invited_by')
+                    ->orWhereRaw("TRIM(COALESCE(invited_by, '')) = ''");
+            })
+            ->when($fromDate, function ($q) use ($fromDate) {
+                $q->whereDate('created_at', '>=', $fromDate);
+            })
+            ->when($toDate, function ($q) use ($toDate) {
+                $q->whereDate('created_at', '<=', $toDate);
+            })
+            ->count();
+
         return view('admin_reports.invited_by_details', compact(
-            'users', 'invitedBy', 'fromDate', 'toDate', 'invitedByStats'
-        ));
+            'users', 'invitedBy', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount'
+        ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
     }
 }

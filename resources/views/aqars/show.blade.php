@@ -26,6 +26,9 @@
                                     @if ($aqar->offer_type == 3 || $aqar->offer_type == 4 )
 
                                         <h5> {{ $aqar->monthly_rent }} {{ trans('langsite.egyptian_pound') }}</h5>
+                                        @if ($aqar->daily_rent)
+                                            <h6 class="text-muted"> الايجار اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound') }}</h6>
+                                        @endif
                                     @endif
                                 </div>
 
@@ -320,6 +323,14 @@
                                                     @if ($aqar->monthly_rent)
                                                         <div class="listing-card-info-icon">
                                                             {{ $aqar->monthly_rent }} {{ trans('langsite.egyptian_pound')}}
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('images/icons/cash.png')}}"
+                                                                    width="13" alt=""/></div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($aqar->daily_rent)
+                                                        <div class="listing-card-info-icon">
+                                                            الايجار اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound')}}
                                                             <div class="inc-fleat-icon"><img
                                                                     src="{{asset('images/icons/cash.png')}}"
                                                                     width="13" alt=""/></div>

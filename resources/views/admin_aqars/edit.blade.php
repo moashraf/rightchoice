@@ -162,30 +162,30 @@
         $("select[name='offer_type']").change(function() {
             if($(this).val() == 2) {
                 $("#installment_downpayment").show(2000); $("#installment_time").show(2000); $("#installment_reciving").show(2000);
-                $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000);
+                $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000);
             } else if($(this).val() == 1) {
                 $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
-                $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000);
+                $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000);
             } else if($(this).val() == 3 || $(this).val() == 4) {
-                $("#monthly_rent").show(2000); $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
+                $("#monthly_rent").show(2000); $("#daily_rent").show(2000); $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
                 $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#total_price").hide(2000);
             } else {
                 $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
-                $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#monthly_rent").hide(2000); $("#total_price").show(2000);
+                $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000); $("#total_price").show(2000);
             }
         });
         if(cheackus == 2) {
             $("#installment_downpayment").show(2000); $("#installment_time").show(2000); $("#installment_reciving").show(2000);
-            $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000);
+            $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000);
         } else if(cheackus == 1) {
             $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
-            $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000);
+            $("#finannce_bank").show(2000); $("#licensed").show(2000); $("#trade").show(2000); $("#total_price").show(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000);
         } else if(cheackus == 3 || cheackus == 4) {
-            $("#monthly_rent").show(2000); $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
+            $("#monthly_rent").show(2000); $("#daily_rent").show(2000); $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
             $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#total_price").hide(2000);
         } else {
             $("#installment_downpayment").hide(2000); $("#installment_time").hide(2000); $("#installment_reciving").hide(2000);
-            $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#monthly_rent").hide(2000); $("#total_price").show(2000);
+            $("#finannce_bank").hide(2000); $("#licensed").hide(2000); $("#trade").hide(2000); $("#monthly_rent").hide(2000); $("#daily_rent").hide(2000); $("#total_price").show(2000);
         }
     });
 </script>
