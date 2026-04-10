@@ -95,6 +95,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function verifyOtp(Request $request): JsonResponse
     {
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'otp'     => 'required',
