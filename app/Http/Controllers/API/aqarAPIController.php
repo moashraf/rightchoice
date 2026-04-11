@@ -130,7 +130,14 @@ class aqarAPIController extends AppBaseController
 
     public function show($id)
     {
-        $aqar = $this->aqarRepository->find($id);
+        $aqar = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+        ])->find($id);
+
         if (empty($aqar)) {
             return $this->sendError('Aqar not found');
         }
