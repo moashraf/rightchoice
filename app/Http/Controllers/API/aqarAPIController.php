@@ -56,6 +56,9 @@ class aqarAPIController extends AppBaseController
             'districte',
             'subAreaa',
             'callTimes',              // وقت الاتصال
+            'offerTypes',             // نوع العرض
+            'categoryRel',            // التصنيف
+            'finishType',             // نوع التشطيب
             'mzaya',                  // المزايا
             'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at', // بيانات المالك
             'user.companiess',        // شركات المالك
@@ -141,6 +144,9 @@ class aqarAPIController extends AppBaseController
             'districte',
             'subAreaa',
             'callTimes',              // وقت الاتصال
+            'offerTypes',             // نوع العرض
+            'categoryRel',            // التصنيف
+            'finishType',             // نوع التشطيب
             'mzaya',                  // المزايا
             'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at', // بيانات المالك
             'user.companiess',        // شركات المالك
