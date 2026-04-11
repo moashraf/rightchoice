@@ -49,7 +49,13 @@ class aqarAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = aqar::query();
+        $query = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+        ]);
 
         // ── Exact-match filters ──────────────────────────────────────────
         $exactFields = [
