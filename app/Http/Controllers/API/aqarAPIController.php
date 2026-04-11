@@ -49,7 +49,7 @@ class aqarAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = aqar::query();
+        $query = aqar::with('images');
 
         // ── Exact-match filters ──────────────────────────────────────────
         $exactFields = [
