@@ -87,7 +87,7 @@ class PasswordResetAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'phone'    => 'required|string|min:10|max:11',
             'otp'      => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:6',
         ]);
 
         if ($validator->fails()) {

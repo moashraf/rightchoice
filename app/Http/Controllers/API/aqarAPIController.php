@@ -55,6 +55,10 @@ class aqarAPIController extends AppBaseController
             'governrateq',
             'districte',
             'subAreaa',
+            'callTimes',              // وقت الاتصال
+            'mzaya',                  // المزايا
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at', // بيانات المالك
+            'user.companiess',        // شركات المالك
         ]);
 
         // ── Exact-match filters ──────────────────────────────────────────
@@ -136,6 +140,10 @@ class aqarAPIController extends AppBaseController
             'governrateq',
             'districte',
             'subAreaa',
+            'callTimes',              // وقت الاتصال
+            'mzaya',                  // المزايا
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at', // بيانات المالك
+            'user.companiess',        // شركات المالك
         ])->find($id);
 
         if (empty($aqar)) {
