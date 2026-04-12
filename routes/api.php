@@ -42,6 +42,7 @@ Route::post('password/reset',       [App\Http\Controllers\API\PasswordResetAPICo
 |--------------------------------------------------------------------------
 */
 Route::apiResource('blogs',                    App\Http\Controllers\API\blogAPIController::class);
+Route::post('offer_types/find-many',           [App\Http\Controllers\API\offer_typeAPIController::class, 'findMany']);
 Route::apiResource('offer_types',              App\Http\Controllers\API\offer_typeAPIController::class);
 Route::apiResource('property_types',           App\Http\Controllers\API\property_typeAPIController::class);
 Route::apiResource('aqar_categories',          App\Http\Controllers\API\aqar_categoryAPIController::class);

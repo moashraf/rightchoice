@@ -26,6 +26,38 @@ class offer_typeAPIController extends AppBaseController
     }
 
     /**
+     * Find multiple offer_types by IDs.
+     * POST /offer_types/find-many
+     * POST /offer_types/find-many
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function findMany(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'ids'   => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $offerTypes = offer_type::whereIn('id', $request->ids)->get();
+
+        if ($offerTypes->isEmpty()) {
+            return $this->sendError('No Offer Types found for the given IDs');
+        }
+
+        return $this->sendResponse($offerTypes->toArray(), 'Offer Types retrieved successfully');
+    }
+
+    /**
      * Display a listing of the offer_type.
      * GET|HEAD /offerTypes
      *
