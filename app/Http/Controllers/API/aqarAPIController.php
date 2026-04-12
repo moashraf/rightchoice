@@ -131,7 +131,25 @@ class aqarAPIController extends AppBaseController
 
     public function store(CreateaqarAPIRequest $request)
     {
+
         $aqar = $this->aqarRepository->create($request->all());
+
+        // إعادة تحميل العقار مع كل العلاقات
+        $aqar = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+            'callTimes',
+            'offerTypes',
+            'categoryRel',
+            'finishType',
+            'mzaya',
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'user.companiess',
+        ])->find($aqar->id);
+
         return $this->sendResponse($aqar->toArray(), 'Aqar saved successfully');
     }
 
@@ -164,7 +182,24 @@ class aqarAPIController extends AppBaseController
         if (empty($aqar)) {
             return $this->sendError('Aqar not found');
         }
-        $aqar = $this->aqarRepository->update($request->all(), $id);
+        $this->aqarRepository->update($request->all(), $id);
+
+        // إعادة تحميل العقار مع كل العلاقات
+        $aqar = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+            'callTimes',
+            'offerTypes',
+            'categoryRel',
+            'finishType',
+            'mzaya',
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'user.companiess',
+        ])->find($id);
+
         return $this->sendResponse($aqar->toArray(), 'Aqar updated successfully');
     }
 

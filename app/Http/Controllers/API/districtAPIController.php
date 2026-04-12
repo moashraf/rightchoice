@@ -44,6 +44,24 @@ class districtAPIController extends AppBaseController
     }
 
     /**
+     * Display districts filtered by govern_id.
+     * GET /districts/by-governorate/{govern_id}
+     *
+     * @param int $governId
+     * @return Response
+     */
+    public function getByGovernorate($governId)
+    {
+        $districts = District::where('govern_id', $governId)->get();
+
+        if ($districts->isEmpty()) {
+            return $this->sendError('No districts found for the given governorate');
+        }
+
+        return $this->sendResponse($districts->toArray(), 'Districts retrieved successfully');
+    }
+
+    /**
      * Store a newly created district in storage.
      * POST /districts
      *

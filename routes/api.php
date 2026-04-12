@@ -48,6 +48,7 @@ Route::apiResource('aqar_categories',          App\Http\Controllers\API\aqar_cat
 Route::apiResource('call_times',               App\Http\Controllers\API\call_timeAPIController::class);
 Route::apiResource('compounds',                App\Http\Controllers\API\compoundAPIController::class);
 Route::apiResource('governrates',              App\Http\Controllers\API\governrateAPIController::class);
+Route::get('districts/by-governorate/{govern_id}', [App\Http\Controllers\API\districtAPIController::class, 'getByGovernorate']);
 Route::apiResource('districts',                App\Http\Controllers\API\districtAPIController::class);
 Route::apiResource('district_tests',           App\Http\Controllers\API\district_testAPIController::class);
 Route::apiResource('finish_types',             App\Http\Controllers\API\finish_typeAPIController::class);
