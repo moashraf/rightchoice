@@ -42,12 +42,14 @@ Route::post('password/reset',       [App\Http\Controllers\API\PasswordResetAPICo
 |--------------------------------------------------------------------------
 */
 Route::apiResource('blogs',                    App\Http\Controllers\API\blogAPIController::class);
+Route::post('offer_types/find-many',           [App\Http\Controllers\API\offer_typeAPIController::class, 'findMany']);
 Route::apiResource('offer_types',              App\Http\Controllers\API\offer_typeAPIController::class);
 Route::apiResource('property_types',           App\Http\Controllers\API\property_typeAPIController::class);
 Route::apiResource('aqar_categories',          App\Http\Controllers\API\aqar_categoryAPIController::class);
 Route::apiResource('call_times',               App\Http\Controllers\API\call_timeAPIController::class);
 Route::apiResource('compounds',                App\Http\Controllers\API\compoundAPIController::class);
 Route::apiResource('governrates',              App\Http\Controllers\API\governrateAPIController::class);
+Route::get('districts/by-governorate/{govern_id}', [App\Http\Controllers\API\districtAPIController::class, 'getByGovernorate']);
 Route::apiResource('districts',                App\Http\Controllers\API\districtAPIController::class);
 Route::apiResource('district_tests',           App\Http\Controllers\API\district_testAPIController::class);
 Route::apiResource('finish_types',             App\Http\Controllers\API\finish_typeAPIController::class);

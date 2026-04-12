@@ -64,6 +64,56 @@ class aqar extends Model
         'slug_en'
     ];
 
+    public static $rules = [
+        // ── الحقول الأساسية ─────────────────────────────────────
+        'title'            => 'required|string|max:255',
+        'description'      => 'required|string',
+        'offer_type'       => 'required|exists:offer_type,id',
+        'category'         => 'required|exists:aqar_category,id',
+        'property_type'    => 'required|exists:property_type,id',
+        'user_id'          => 'required|exists:users,id',
+
+        // ── الموقع ──────────────────────────────────────────────
+        'governrate_id'    => 'required|exists:governrate,id',
+        'district_id'      => 'required|exists:district,id',
+        'area_id'          => 'nullable|exists:subarea,id',
+        'compound'         => 'nullable|exists:compound,id',
+
+        // ── بيانات التواصل ──────────────────────────────────────
+        'call_id'          => 'required|exists:call_time,id',
+
+        // ── تفاصيل العقار ───────────────────────────────────────
+        'finishtype'       => 'nullable|exists:finish_type,id',
+        'license_type'     => 'nullable|exists:license_type,id',
+        'total_area'       => 'required|numeric|min:1',
+        'rooms'            => 'nullable|integer|min:0',
+        'baths'            => 'nullable|integer|min:0',
+        'floor'            => 'nullable|integer|min:0',
+        'number_of_floors' => 'nullable|integer|min:0',
+        'ground_area'      => 'nullable|numeric|min:0',
+        'land_area'        => 'nullable|numeric|min:0',
+
+        // ── الأسعار والتمويل ────────────────────────────────────
+        'total_price'      => 'nullable|numeric|min:0',
+        'mtr_price'        => 'nullable|numeric|min:0',
+        'downpayment'      => 'nullable|numeric|min:0',
+        'installment_time' => 'nullable|integer|min:0',
+        'installment_value'=> 'nullable|numeric|min:0',
+        'monthly_rent'     => 'nullable|numeric|min:0',
+        'daily_rent'       => 'nullable|numeric|min:0',
+        'rent_long_time'   => 'nullable|string',
+
+        // ── خيارات إضافية ───────────────────────────────────────
+        'finannce_bank'    => 'nullable|integer|in:0,1',
+        'licensed'         => 'nullable|integer|in:0,1',
+        'trade'            => 'nullable|integer|in:0,1',
+        'endorsement'      => 'nullable|integer',
+        'reciving'         => 'nullable|numeric|min:0',
+        'rec_time'         => 'nullable|string',
+        'vip'              => 'nullable|integer|in:0,1',
+        'status'           => 'nullable|integer|in:0,1,2',
+    ];
+
 
 
     /**

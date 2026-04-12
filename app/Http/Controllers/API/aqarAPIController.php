@@ -25,9 +25,12 @@ class aqarAPIController extends AppBaseController
      *   status, slug, title, description, vip, finannce_bank, licensed, trade,
      *   number_of_floors, total_area, rooms, baths, floor, ground_area, land_area,
      *   downpayment, installment_time, installment_value, monthly_rent, rent_long_time,
-     *   offer_type, property_type, license_type, mtr_price, reciving, rec_time,
+     *   property_type, license_type, mtr_price, reciving, rec_time,
      *   user_id, category, location, call_id, endorsement, total_price, finishtype,
      *   governrate_id, district_id, area_id, compound, points_avail, views
+     *
+     * Multi-value filters (comma-separated → whereIn):
+     *   offer_type  → e.g. offer_type=1,2,3
      *
      * Range filters (min / max):
      *   total_price_min, total_price_max, total_area_min, total_area_max,
@@ -64,13 +67,27 @@ class aqarAPIController extends AppBaseController
             'user.companiess',        // شركات المالك
         ]);
 
+        // ── Multi-value filters (comma-separated → whereIn) ────────────
+        $multiValueFields = ['offer_type'];
+
+        foreach ($multiValueFields as $field) {
+            if ($request->filled($field)) {
+                $values = array_filter(explode(',', $request->input($field)), 'is_numeric');
+                if (count($values) > 1) {
+                    $query->whereIn($field, $values);
+                } elseif (count($values) === 1) {
+                    $query->where($field, $values[0]);
+                }
+            }
+        }
+
         // ── Exact-match filters ──────────────────────────────────────────
         $exactFields = [
             'status', 'slug', 'title', 'description', 'vip', 'finannce_bank',
             'licensed', 'trade', 'number_of_floors', 'total_area', 'rooms',
             'baths', 'floor', 'ground_area', 'land_area', 'downpayment',
             'installment_time', 'installment_value', 'monthly_rent',
-            'rent_long_time', 'offer_type', 'property_type', 'license_type',
+            'rent_long_time', 'property_type', 'license_type',
             'mtr_price', 'reciving', 'rec_time', 'user_id', 'category',
             'location', 'call_id', 'endorsement', 'total_price', 'finishtype',
             'governrate_id', 'district_id', 'area_id', 'compound',
@@ -131,7 +148,25 @@ class aqarAPIController extends AppBaseController
 
     public function store(CreateaqarAPIRequest $request)
     {
+
         $aqar = $this->aqarRepository->create($request->all());
+
+        // إعادة تحميل العقار مع كل العلاقات
+        $aqar = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+            'callTimes',
+            'offerTypes',
+            'categoryRel',
+            'finishType',
+            'mzaya',
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'user.companiess',
+        ])->find($aqar->id);
+
         return $this->sendResponse($aqar->toArray(), 'Aqar saved successfully');
     }
 
@@ -164,7 +199,24 @@ class aqarAPIController extends AppBaseController
         if (empty($aqar)) {
             return $this->sendError('Aqar not found');
         }
-        $aqar = $this->aqarRepository->update($request->all(), $id);
+        $this->aqarRepository->update($request->all(), $id);
+
+        // إعادة تحميل العقار مع كل العلاقات
+        $aqar = aqar::with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+            'callTimes',
+            'offerTypes',
+            'categoryRel',
+            'finishType',
+            'mzaya',
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'user.companiess',
+        ])->find($id);
+
         return $this->sendResponse($aqar->toArray(), 'Aqar updated successfully');
     }
 
