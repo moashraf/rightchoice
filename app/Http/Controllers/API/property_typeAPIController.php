@@ -45,6 +45,36 @@ class property_typeAPIController extends AppBaseController
         return $this->sendResponse($propertyTypes->toArray(), 'Property Types retrieved successfully');
     }
 
+
+    /**
+ * Display property types filtered by category ID.
+ * GET /propertyTypes/by-category/{cat_id}
+ *
+ * @param int $cat_id
+ * @return JsonResponse
+ */
+public function getByCategory($cat_id): JsonResponse
+{
+    if (!is_numeric($cat_id) || (int) $cat_id <= 0) {
+        return $this->sendError('The category ID must be a valid positive integer.');
+    }
+
+    $category = aqar_category::find($cat_id);
+    if (empty($category)) {
+        return $this->sendError('Aqar Category not found.');
+    }
+
+    $propertyTypes = property_type::where('cat_id', $cat_id)->get();
+
+    return $this->sendResponse(
+        $propertyTypes->toArray(),
+        'Property Types retrieved successfully by category ID.'
+    );
+}
+
+
+    
+
     /**
      * Store a newly created property_type in storage.
      * POST /propertyTypes
