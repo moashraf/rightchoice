@@ -7,6 +7,8 @@ use App\Http\Requests\API\Updateproperty_typeAPIRequest;
 use App\Models\property_type;
 use App\Repositories\property_typeRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Models\aqar_category;
 use App\Http\Controllers\AppBaseController;
 use Response;
 
