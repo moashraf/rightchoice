@@ -5,10 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\Createproperty_typeAPIRequest;
 use App\Http\Requests\API\Updateproperty_typeAPIRequest;
 use App\Models\property_type;
+ use Illuminate\Support\Facades\Validator;
+
 use App\Repositories\property_typeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\JsonResponse;
+use App\Models\aqar_category;
 use Response;
+
 
 /**
  * Class property_typeController
@@ -42,6 +47,44 @@ class property_typeAPIController extends AppBaseController
 
         return $this->sendResponse($propertyTypes->toArray(), 'Property Types retrieved successfully');
     }
+
+
+/**
+ * Display property types filtered by category ID.
+ * GET /propertyTypes/by-category/{cat_id}
+ *
+ * @param int $cat_id
+ * @return JsonResponse
+ */
+
+public function getByCategory(Request $request): JsonResponse
+{
+    $validator = Validator::make($request->all(), [
+        'cat_id' => 'required|integer|min:1',
+    ]);
+
+    if ($validator->fails()) {
+        return $this->sendError(
+            'Validation failed. Please check your input.',
+            422,
+            $validator->errors()
+        );
+    }
+
+    $catId = (int) $request->cat_id;
+
+    $category = aqar_category::find($catId);
+    if (empty($category)) {
+        return $this->sendError('Aqar category not found.', 404);
+    }
+
+    $propertyTypes = property_type::where('cat_id', $catId)->get();
+
+    return $this->sendResponse(
+        $propertyTypes->toArray(),
+        'Property types retrieved successfully by category ID.'
+    );
+}
 
     /**
      * Store a newly created property_type in storage.

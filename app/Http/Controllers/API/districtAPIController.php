@@ -9,7 +9,7 @@ use App\Repositories\districtRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use Response;
-
+ use Illuminate\Support\Facades\Validator;
 /**
  * Class districtController
  * @package App\Http\Controllers\API
@@ -50,16 +50,33 @@ class districtAPIController extends AppBaseController
      * @param int $governId
      * @return Response
      */
-    public function getByGovernorate($governId)
-    {
-        $districts = District::where('govern_id', $governId)->get();
 
-        if ($districts->isEmpty()) {
-            return $this->sendError('No districts found for the given governorate');
-        }
 
-        return $this->sendResponse($districts->toArray(), 'Districts retrieved successfully');
+public function getByGovernorate(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'govern_id' => 'required|integer|min:1',
+    ]);
+
+    if ($validator->fails()) {
+        return $this->sendError(
+            'Validation failed. Please check your input.',
+            422,
+            $validator->errors()
+        );
     }
+
+    $districts = District::where('govern_id', $request->govern_id)->get();
+
+    if ($districts->isEmpty()) {
+        return $this->sendError('No districts found for the given governorate.', 404);
+    }
+
+    return $this->sendResponse(
+        $districts->toArray(),
+        'Districts retrieved successfully.'
+    );
+}
 
     /**
      * Store a newly created district in storage.

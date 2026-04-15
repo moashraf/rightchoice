@@ -49,7 +49,8 @@ Route::apiResource('aqar_categories',          App\Http\Controllers\API\aqar_cat
 Route::apiResource('call_times',               App\Http\Controllers\API\call_timeAPIController::class);
 Route::apiResource('compounds',                App\Http\Controllers\API\compoundAPIController::class);
 Route::apiResource('governrates',              App\Http\Controllers\API\governrateAPIController::class);
-Route::get('districts/by-governorate/{govern_id}', [App\Http\Controllers\API\districtAPIController::class, 'getByGovernorate']);
+Route::post('districts/by-governorate', [App\Http\Controllers\API\districtAPIController::class, 'getByGovernorate']);
+
 Route::apiResource('districts',                App\Http\Controllers\API\districtAPIController::class);
 Route::apiResource('district_tests',           App\Http\Controllers\API\district_testAPIController::class);
 Route::apiResource('finish_types',             App\Http\Controllers\API\finish_typeAPIController::class);
@@ -75,7 +76,10 @@ Route::apiResource('contact_forms',            App\Http\Controllers\API\ContactF
 Route::apiResource('notifications',            App\Http\Controllers\API\NotificationAPIController::class);
 Route::apiResource('setting_sites',            App\Http\Controllers\API\SettingSiteAPIController::class);
 
-/*
+Route::post('propertyTypes/by-category', [\App\Http\Controllers\API\property_typeAPIController::class, 'getByCategory']);
+
+Route::post('/wishlist/add-by-user', [App\Http\Controllers\API\UserDashboardAPIController::class, 'addToWishlistByUserId']);
+ /*
 |--------------------------------------------------------------------------
 | Search & Filter (Public)
 |--------------------------------------------------------------------------
@@ -107,6 +111,18 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 | Authenticated User Routes (require Sanctum token)
 |--------------------------------------------------------------------------
 */
+
+Route::get('/usersAds/{user_id}', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserAdsByUserId']);
+Route::get('/users_wishlist/{user_id}/', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
+   Route::get('my-ads',                  [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAds']);
+    Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
+
+    // ── Wishlist ─────────────────────────────────────────────────────
+    Route::get('my-wishlist',             [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlist']);
+    Route::get('my-wishlist-ids',         [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlistIds']);
+    Route::post('wishlist/add',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'addToWishlist']);
+    Route::post('wishlist/remove',        [App\Http\Controllers\API\UserDashboardAPIController::class, 'removeFromWishlist']);
+    
 Route::middleware('auth:sanctum')->group(function () {
 
     // ── Profile ──────────────────────────────────────────────────────
@@ -115,14 +131,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('profile/change-password',[App\Http\Controllers\API\ProfileAPIController::class, 'changePassword']);
 
     // ── My Ads ───────────────────────────────────────────────────────
-    Route::get('my-ads',                  [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAds']);
-    Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
-
-    // ── Wishlist ─────────────────────────────────────────────────────
-    Route::get('my-wishlist',             [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlist']);
-    Route::get('my-wishlist-ids',         [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlistIds']);
-    Route::post('wishlist/add',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'addToWishlist']);
-    Route::post('wishlist/remove',        [App\Http\Controllers\API\UserDashboardAPIController::class, 'removeFromWishlist']);
+ 
 
     // ── Complaints ───────────────────────────────────────────────────
     Route::get('my-complaints',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'myComplaints']);

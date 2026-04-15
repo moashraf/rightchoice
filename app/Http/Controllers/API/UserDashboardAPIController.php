@@ -12,6 +12,7 @@ use App\Models\Complaints;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * User Dashboard API — my ads, wishlist, complaints, notifications, points.
@@ -21,11 +22,99 @@ class UserDashboardAPIController extends AppBaseController
     /**
      * GET /api/my-ads
      */
+     
+     
+     protected function resolveUserId(Request $request): ?int
+{
+    return $request->get('user_id')
+        ?? $request->route('user_id')
+        ?? auth()->id();
+}
+
+
+/**
+ * GET /api/user-ads
+ * Required query param: user_id
+ */
+ 
+ 
+ /**
+ * GET /api/users/{user_id}/ads
+ */
+public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
+{
+    $validator = Validator::make(
+        [
+            'user_id'  => $user_id,
+            'per_page' => $request->get('per_page'),
+        ],
+        [
+            'user_id'  => 'required|integer|exists:users,id',
+            'per_page' => 'nullable|integer|min:1|max:100',
+        ]
+    );
+
+    if ($validator->fails()) {
+        return $this->sendError(
+            'Validation failed. Please check your input.',
+            422,
+            $validator->errors()
+        );
+    }
+
+    $aqars = aqar::where('user_id', $user_id)
+        ->with(['images', 'governrateq', 'districte', 'offerTypes'])
+        ->latest()
+        ->paginate($request->get('per_page', 15));
+
+    return $this->sendResponse(
+        $aqars->toArray(),
+        'User ads retrieved successfully.'
+    );
+}
+
+ 
+ /**
+ * GET /api/users/{user_id}/wishlist
+ */
+public function getUserWishlistByUserId(Request $request, int $user_id): JsonResponse
+{
+    $validator = Validator::make(
+        [
+            'user_id'  => $user_id,
+            'per_page' => $request->get('per_page'),
+        ],
+        [
+            'user_id'  => 'required|integer|exists:users,id',
+            'per_page' => 'nullable|integer|min:1|max:100',
+        ]
+    );
+
+    if ($validator->fails()) {
+        return $this->sendError(
+            'Validation failed. Please check your input.',
+            422,
+            $validator->errors()
+        );
+    }
+
+    $wishlist = wish::where('user_id', $user_id)
+        ->with('aqarInfo')
+        ->paginate($request->get('per_page', 15));
+
+    return $this->sendResponse(
+        $wishlist->toArray(),
+        'Wishlist retrieved successfully.'
+    );
+}
+
+
     public function myAds(Request $request): JsonResponse
     {
         $user = $request->user();
+        $userId = $this->resolveUserId($request);
 
-        $aqars = aqar::where('user_id', $user->id)
+         $aqars = aqar::where('user_id', $userId)
             ->with(['images', 'governrateq', 'districte', 'offerTypes'])
             ->latest()
             ->paginate($request->get('per_page', 15));
@@ -41,12 +130,12 @@ class UserDashboardAPIController extends AppBaseController
         $aqar = aqar::where('id', $id)->where('user_id', auth()->id())->first();
 
         if (!$aqar) {
-            return $this->sendError('Ad not found or not yours', 404);
+            return $this->sendError('Ad not found or does not belong to you.', 404);
         }
 
         $aqar->delete();
 
-        return $this->sendSuccess('Ad deleted successfully');
+        return $this->sendSuccess('Ad deleted successfully.');
     }
 
     /**
@@ -54,23 +143,61 @@ class UserDashboardAPIController extends AppBaseController
      */
     public function myWishlist(Request $request): JsonResponse
     {
-        $user = $request->user();
+         $user = $request->user();
 
         $wishlist = wish::where('user_id', $user->id)
             ->with('aqarInfo')
             ->paginate($request->get('per_page', 15));
 
-        return $this->sendResponse($wishlist->toArray(), 'Wishlist retrieved successfully');
+        return $this->sendResponse($wishlist->toArray(), 'Wishlist retrieved successfully.');
     }
 
+/**
+ * POST /api/wishlist/add-by-user
+ */
+public function addToWishlistByUserId(Request $request): JsonResponse
+{
+    $validator = Validator::make($request->all(), [
+        'user_id'  => 'required|integer|exists:users,id',
+        'aqars_id' => 'required|integer|exists:aqar,id',
+    ]);
+
+    if ($validator->fails()) {
+        return $this->sendError(
+            'Validation failed. Please check your input.',
+            422,
+            $validator->errors()
+        );
+    }
+
+    $exists = wish::where('user_id', $request->user_id)
+        ->where('aqars_id', $request->aqars_id)
+        ->first();
+
+    if ($exists) {
+        return $this->sendError('This item is already in the wishlist.', 400);
+    }
+
+    $wishlist = wish::create([
+        'user_id'  => $request->user_id,
+        'aqars_id' => $request->aqars_id,
+    ]);
+
+    return $this->sendResponse(
+        $wishlist->toArray(),
+        'Item added to wishlist successfully.'
+    );
+}
     /**
      * GET /api/my-wishlist-ids
      */
     public function myWishlistIds(Request $request): JsonResponse
     {
-        $ids = wish::where('user_id', $request->user()->id)->pluck('aqars_id')->toArray();
+        $ids = wish::where('user_id', $request->user()->id)
+            ->pluck('aqars_id')
+            ->toArray();
 
-        return $this->sendResponse(['ids' => $ids], 'Wishlist IDs retrieved successfully');
+        return $this->sendResponse(['ids' => $ids], 'Wishlist IDs retrieved successfully.');
     }
 
     /**
@@ -79,18 +206,23 @@ class UserDashboardAPIController extends AppBaseController
     public function addToWishlist(Request $request): JsonResponse
     {
         $user = $request->user();
-
-        $exists = wish::where('user_id', $user->id)
+        $user_id=null;
+if ($user && $user->id){
+ $user_id= $user->id;
+}else{
+     $user_id= $request->get('user_id') ?? $request->route('user_id') ;
+}
+        $exists = wish::where('user_id', $user_id)
             ->where('aqars_id', $request->aqars_id)
             ->first();
 
         if ($exists) {
-            return $this->sendError('Already in wishlist', 400);
+            return $this->sendError('This item is already in your wishlist.', 400);
         }
 
         $user->wishlist()->create(['aqars_id' => $request->aqars_id]);
 
-        return $this->sendSuccess('Added to wishlist successfully');
+        return $this->sendSuccess('Item added to wishlist successfully.');
     }
 
     /**
@@ -103,10 +235,10 @@ class UserDashboardAPIController extends AppBaseController
             ->delete();
 
         if (!$deleted) {
-            return $this->sendError('Item not found in wishlist', 404);
+            return $this->sendError('Item not found in your wishlist.', 404);
         }
 
-        return $this->sendSuccess('Removed from wishlist successfully');
+        return $this->sendSuccess('Item removed from wishlist successfully.');
     }
 
     /**
@@ -119,7 +251,7 @@ class UserDashboardAPIController extends AppBaseController
             ->orderBy('id', 'desc')
             ->paginate($request->get('per_page', 15));
 
-        return $this->sendResponse($complaints->toArray(), 'Complaints retrieved successfully');
+        return $this->sendResponse($complaints->toArray(), 'Complaints retrieved successfully.');
     }
 
     /**
@@ -127,17 +259,13 @@ class UserDashboardAPIController extends AppBaseController
      */
     public function submitComplaint(Request $request): JsonResponse
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'message' => 'required|string',
             'item_id' => 'required|integer|exists:aqar,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('Validation failed. Please check your input.', 422, $validator->errors());
         }
 
         Complaints::create([
@@ -146,7 +274,7 @@ class UserDashboardAPIController extends AppBaseController
             'message'  => $request->message,
         ]);
 
-        return $this->sendSuccess('Complaint submitted successfully');
+        return $this->sendSuccess('Complaint submitted successfully.');
     }
 
     /**
@@ -159,12 +287,12 @@ class UserDashboardAPIController extends AppBaseController
             ->first();
 
         if (!$complaint) {
-            return $this->sendError('Complaint not found', 404);
+            return $this->sendError('Complaint not found or does not belong to you.', 404);
         }
 
         $complaint->delete();
 
-        return $this->sendSuccess('Complaint deleted successfully');
+        return $this->sendSuccess('Complaint deleted successfully.');
     }
 
     /**
@@ -176,7 +304,7 @@ class UserDashboardAPIController extends AppBaseController
             ->orderBy('created_at', 'desc')
             ->paginate($request->get('per_page', 15));
 
-        return $this->sendResponse($notifications->toArray(), 'Notifications retrieved successfully');
+        return $this->sendResponse($notifications->toArray(), 'Notifications retrieved successfully.');
     }
 
     /**
@@ -189,12 +317,12 @@ class UserDashboardAPIController extends AppBaseController
             ->first();
 
         if (!$notification) {
-            return $this->sendError('Notification not found', 404);
+            return $this->sendError('Notification not found or does not belong to you.', 404);
         }
 
         $notification->update(['status' => 1]);
 
-        return $this->sendSuccess('Notification marked as read');
+        return $this->sendSuccess('Notification marked as read.');
     }
 
     /**
@@ -222,7 +350,7 @@ class UserDashboardAPIController extends AppBaseController
             'current_points'  => $points,
             'points_history'  => $history->toArray(),
             'contact_history' => $contactHistory->toArray(),
-        ], 'Points retrieved successfully');
+        ], 'Points retrieved successfully.');
     }
 
     /**
@@ -230,16 +358,12 @@ class UserDashboardAPIController extends AppBaseController
      */
     public function contactAqar(Request $request): JsonResponse
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'aqars_id' => 'required|integer|exists:aqar,id',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('Validation failed. Please check your input.', 422, $validator->errors());
         }
 
         $user = $request->user();
@@ -271,7 +395,6 @@ class UserDashboardAPIController extends AppBaseController
 
         return $this->sendResponse([
             'phone' => $aqar->user->MOP ?? null,
-        ], 'Contact retrieved successfully');
+        ], 'Contact retrieved successfully.');
     }
 }
-
