@@ -62,8 +62,8 @@ class UserDashboardAPIController extends AppBaseController
     /**
      * GET /api/my-ads
      */
-     
-     
+
+
      protected function resolveUserId(Request $request): ?int
 {
     return $request->get('user_id')
@@ -76,11 +76,7 @@ class UserDashboardAPIController extends AppBaseController
  * GET /api/user-ads
  * Required query param: user_id
  */
- 
- 
- /**
- * GET /api/users/{user_id}/ads
- */
+
 public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
 {
     $validator = Validator::make(
@@ -113,7 +109,7 @@ public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
     );
 }
 
- 
+
  /**
  * GET /api/users/{user_id}/wishlist
  */
