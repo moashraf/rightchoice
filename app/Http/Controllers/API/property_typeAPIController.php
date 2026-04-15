@@ -9,6 +9,8 @@ use App\Models\property_type;
 
 use App\Repositories\property_typeRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Models\aqar_category;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\JsonResponse;
 use App\Models\aqar_category;
@@ -49,13 +51,18 @@ class property_typeAPIController extends AppBaseController
     }
 
 
+<<<<<<< HEAD
 /**
+=======
+    /**
+>>>>>>> 9373ad599c978c2124013942fb19ad3054d6b262
  * Display property types filtered by category ID.
  * GET /propertyTypes/by-category/{cat_id}
  *
  * @param int $cat_id
  * @return JsonResponse
  */
+<<<<<<< HEAD
 
 public function getByCategory(Request $request): JsonResponse
 {
@@ -86,6 +93,30 @@ public function getByCategory(Request $request): JsonResponse
     );
 }
 
+=======
+public function getByCategory($cat_id): JsonResponse
+{
+    if (!is_numeric($cat_id) || (int) $cat_id <= 0) {
+        return $this->sendError('The category ID must be a valid positive integer.');
+    }
+
+    $category = aqar_category::find($cat_id);
+    if (empty($category)) {
+        return $this->sendError('Aqar Category not found.');
+    }
+
+    $propertyTypes = property_type::where('cat_id', $cat_id)->get();
+
+    return $this->sendResponse(
+        $propertyTypes->toArray(),
+        'Property Types retrieved successfully by category ID.'
+    );
+}
+
+
+    
+
+>>>>>>> 9373ad599c978c2124013942fb19ad3054d6b262
     /**
      * Store a newly created property_type in storage.
      * POST /propertyTypes

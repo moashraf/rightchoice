@@ -9,6 +9,7 @@ use App\Models\UserPriceing;
 use App\Models\UserContactAqar;
 use App\Models\FawryPayment;
 use App\Models\Complaints;
+use App\Services\Chat\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
@@ -19,6 +20,45 @@ use Illuminate\Support\Facades\Validator;
  */
 class UserDashboardAPIController extends AppBaseController
 {
+
+
+    /**
+     * GET /api/my-posts
+     * Returns all posts (community posts) created by the authenticated user.
+     */
+    public function myPosts(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $perPage = (int) $request->get('per_page', 15);
+
+        $posts = $this->postService->getUserPosts($user->id, $perPage);
+
+        $data = $posts->getCollection()->map(function ($post) use ($user) {
+            $author = $post->getUser();
+            return [
+                'id'             => (string) $post->_id,
+                'content'        => $post->content,
+                'images'         => $post->images ?? [],
+                'user_id'        => $post->user_id,
+                'user_name'      => $author ? $author->name : 'Deleted User',
+                'user_image'     => $author ? $author->profile_image_url : null,
+                'likes_count'    => $post->likes_count ?? 0,
+                'comments_count' => $post->comments_count ?? 0,
+                'is_liked'       => $post->isLikedBy($user->id),
+                'created_at'     => $post->created_at->toDateTimeString(),
+            ];
+        });
+
+        return $this->sendResponse([
+            'posts'      => $data,
+            'pagination' => [
+                'current_page' => $posts->currentPage(),
+                'last_page'    => $posts->lastPage(),
+                'total'        => $posts->total(),
+            ],
+        ], 'My posts retrieved successfully');
+    }
+
     /**
      * GET /api/my-ads
      */
@@ -120,6 +160,46 @@ public function getUserWishlistByUserId(Request $request, int $user_id): JsonRes
             ->paginate($request->get('per_page', 15));
 
         return $this->sendResponse($aqars->toArray(), 'User ads retrieved successfully');
+    }
+
+    /**
+     * POST /api/my-aqar-posts
+     * Returns all aqar (property) listings created by a given user
+     * that are regular posts (vip = 0), not VIP/featured.
+     */
+    public function myAqarPosts(Request $request): JsonResponse
+    {
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $aqars = aqar::where('user_id', $request->user_id)
+            ->where('vip', 0)
+            ->with([
+                'images',
+                'aqarLocation',
+                'governrateq',
+                'districte',
+                'subAreaa',
+                'callTimes',
+                'offerTypes',
+                'categoryRel',
+                'finishType',
+                'mzaya',
+                'propertyType',
+            ])
+            ->latest()
+            ->paginate($request->get('per_page', 15));
+
+        return $this->sendResponse($aqars->toArray(), 'User aqar posts retrieved successfully');
     }
 
     /**
