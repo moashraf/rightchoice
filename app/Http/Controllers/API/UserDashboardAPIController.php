@@ -111,20 +111,15 @@ public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
 
 
  /**
- * GET /api/users/{user_id}/wishlist
+ * POST /api/users_wishlist
+ * Required body param: user_id
  */
-public function getUserWishlistByUserId(Request $request, int $user_id): JsonResponse
+public function getUserWishlistByUserId(Request $request): JsonResponse
 {
-    $validator = Validator::make(
-        [
-            'user_id'  => $user_id,
-            'per_page' => $request->get('per_page'),
-        ],
-        [
-            'user_id'  => 'required|integer|exists:users,id',
-            'per_page' => 'nullable|integer|min:1|max:100',
-        ]
-    );
+    $validator = Validator::make($request->all(), [
+        'user_id'  => 'required|integer|exists:users,id',
+        'per_page' => 'nullable|integer|min:1|max:100',
+    ]);
 
     if ($validator->fails()) {
         return $this->sendError(
@@ -134,7 +129,7 @@ public function getUserWishlistByUserId(Request $request, int $user_id): JsonRes
         );
     }
 
-    $wishlist = wish::where('user_id', $user_id)
+    $wishlist = wish::where('user_id', $request->user_id)
         ->with('aqarInfo')
         ->paginate($request->get('per_page', 15));
 
