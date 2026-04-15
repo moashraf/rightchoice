@@ -107,6 +107,8 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 | Authenticated User Routes (require Sanctum token)
 |--------------------------------------------------------------------------
 */
+Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     // ── Profile ──────────────────────────────────────────────────────
@@ -119,7 +121,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
 
     // ── My Aqar Posts (non-VIP property listings) ────────────────────
-    Route::get('my-aqar-posts',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
 
     // ── My Posts ─────────────────────────────────────────────────────
     Route::get('my-posts',                [App\Http\Controllers\API\UserDashboardAPIController::class, 'myPosts']);
