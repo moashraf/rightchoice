@@ -131,7 +131,7 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
 
     $wishlist = wish::where('user_id', $request->user_id)
         ->with('aqarInfo')
-        ->paginate($request->get('per_page', 15));
+        ->get();
 
     return $this->sendResponse(
         $wishlist->toArray(),
@@ -188,7 +188,7 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
                 'propertyType',
             ])
             ->latest()
-            ->paginate($request->get('per_page', 15));
+            ->get();
 
         return $this->sendResponse($aqars->toArray(), 'User aqar posts retrieved successfully');
     }
