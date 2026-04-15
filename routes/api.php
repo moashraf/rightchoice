@@ -112,8 +112,7 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 |--------------------------------------------------------------------------
 */
 
-Route::get('/usersAds/{user_id}', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserAdsByUserId']);
-Route::get('/users_wishlist/{user_id}/', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
+Route::post('/users_wishlist', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
 
 Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
 
