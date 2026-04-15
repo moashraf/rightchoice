@@ -7,8 +7,8 @@ use App\Http\Requests\API\UpdateCompanyAPIRequest;
 use App\Models\Company;
 use App\Repositories\CompanyRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
-use Response;
 
 /**
  * Class CompanyController
@@ -51,13 +51,19 @@ class CompanyAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateCompanyAPIRequest $request)
+    public function store(CreateCompanyAPIRequest $request): JsonResponse
     {
-        $input = $request->all();
+        try {
+            $input = $request->all();
+            $company = $this->companyRepository->create($input);
 
-        $company = $this->companyRepository->create($input);
-
-        return $this->sendResponse($company->toArray(), 'Company saved successfully');
+            return $this->sendResponse(
+                $company->load(['serv', 'governrateq', 'district_ashraf', 'subArea'])->toArray(),
+                'Company saved successfully'
+            );
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to create company: ' . $e->getMessage(), 500);
+        }
     }
 
     /**

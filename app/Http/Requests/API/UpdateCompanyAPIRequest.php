@@ -3,9 +3,11 @@
 namespace App\Http\Requests\API;
 
 use App\Models\Company;
-use InfyOm\Generator\Request\APIRequest;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateCompanyAPIRequest extends APIRequest
+class UpdateCompanyAPIRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +26,20 @@ class UpdateCompanyAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = Company::$rules;
-        
-        return $rules;
+        return Company::$rules;
+    }
+
+    /**
+     * Return validation errors as JSON for API.
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'message' => 'Validation failed. Please check your input.',
+                'errors'  => $validator->errors(),
+            ], 422)
+        );
     }
 }
