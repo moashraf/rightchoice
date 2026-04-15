@@ -118,6 +118,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('my-ads',                  [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAds']);
     Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
 
+    // ── My Aqar Posts (non-VIP property listings) ────────────────────
+    Route::get('my-aqar-posts',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
+
+    // ── My Posts ─────────────────────────────────────────────────────
+    Route::get('my-posts',                [App\Http\Controllers\API\UserDashboardAPIController::class, 'myPosts']);
+
     // ── Wishlist ─────────────────────────────────────────────────────
     Route::get('my-wishlist',             [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlist']);
     Route::get('my-wishlist-ids',         [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlistIds']);
