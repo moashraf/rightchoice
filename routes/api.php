@@ -111,21 +111,12 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 | Authenticated User Routes (require Sanctum token)
 |--------------------------------------------------------------------------
 */
- 
-Route::get('/usersAds/{user_id}', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserAdsByUserId']);
-Route::get('/users_wishlist/{user_id}/', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
-   Route::get('my-ads',                  [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAds']);
-    Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
 
-    // ── Wishlist ─────────────────────────────────────────────────────
-    Route::get('my-wishlist',             [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlist']);
-    Route::get('my-wishlist-ids',         [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlistIds']);
-    Route::post('wishlist/add',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'addToWishlist']);
-    Route::post('wishlist/remove',        [App\Http\Controllers\API\UserDashboardAPIController::class, 'removeFromWishlist']);
-    
- Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
+Route::post('/users_wishlist', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
 
- Route::middleware('auth:sanctum')->group(function () {
+Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
+
+Route::middleware('auth:sanctum')->group(function () {
 
     // ── Profile ──────────────────────────────────────────────────────
     Route::get('profile',                 [App\Http\Controllers\API\ProfileAPIController::class, 'show']);
@@ -133,7 +124,7 @@ Route::get('/users_wishlist/{user_id}/', [App\Http\Controllers\API\UserDashboard
     Route::post('profile/change-password',[App\Http\Controllers\API\ProfileAPIController::class, 'changePassword']);
 
     // ── My Ads ───────────────────────────────────────────────────────
-  
+
      Route::get('my-ads',                  [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAds']);
     Route::delete('my-ads/{id}',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'deleteMyAd']);
 
@@ -147,7 +138,7 @@ Route::get('/users_wishlist/{user_id}/', [App\Http\Controllers\API\UserDashboard
     Route::get('my-wishlist-ids',         [App\Http\Controllers\API\UserDashboardAPIController::class, 'myWishlistIds']);
     Route::post('wishlist/add',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'addToWishlist']);
     Route::post('wishlist/remove',        [App\Http\Controllers\API\UserDashboardAPIController::class, 'removeFromWishlist']);
- 
+
     // ── Complaints ───────────────────────────────────────────────────
     Route::get('my-complaints',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'myComplaints']);
     Route::post('complaints/submit',      [App\Http\Controllers\API\UserDashboardAPIController::class, 'submitComplaint']);
