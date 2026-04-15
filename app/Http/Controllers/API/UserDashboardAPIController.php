@@ -9,7 +9,8 @@ use App\Models\UserPriceing;
 use App\Models\UserContactAqar;
 use App\Models\FawryPayment;
 use App\Models\Complaints;
- use Illuminate\Http\Request;
+use App\Services\Chat\PostService;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
 
@@ -73,15 +74,25 @@ class UserDashboardAPIController extends AppBaseController
     }
 
     /**
-     * GET /api/my-aqar-posts
-     * Returns all aqar (property) listings created by the authenticated user
+     * POST /api/my-aqar-posts
+     * Returns all aqar (property) listings created by a given user
      * that are regular posts (vip = 0), not VIP/featured.
      */
     public function myAqarPosts(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+        ]);
 
-        $aqars = aqar::where('user_id', $user->id)
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $aqars = aqar::where('user_id', $request->user_id)
             ->where('vip', 0)
             ->with([
                 'images',
