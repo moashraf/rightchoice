@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Repositories\CompanyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\AppBaseController;
 
 /**
@@ -39,6 +40,38 @@ class CompanyAPIController extends AppBaseController
             $request->get('skip'),
             $request->get('limit')
         );
+
+        return $this->sendResponse($companies->toArray(), 'Companies retrieved successfully');
+    }
+
+    /**
+     * Get companies by service ID with pagination.
+     * POST /companies/by-service/{serviceId}?per_page=10&page=1
+     */
+    public function getByService(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'service_id' => 'required|integer|exists:services,id',
+            'per_page'   => 'nullable|integer|min:1|max:100',
+        ], [
+            'service_id.required' => 'حقل service_id مطلوب',
+            'service_id.integer'  => 'service_id يجب أن يكون رقماً صحيحاً',
+            'service_id.exists'   => 'الخدمة المطلوبة غير موجودة',
+            'per_page.integer'    => 'per_page يجب أن يكون رقماً صحيحاً',
+            'per_page.min'        => 'per_page يجب أن يكون على الأقل 1',
+            'per_page.max'        => 'per_page يجب ألا يتجاوز 100',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة', 422, $validator->errors()->toArray());
+        }
+
+        $serviceId = $request->input('service_id');
+        $perPage   = $request->input('per_page', 15);
+
+        $companies = Company::where('Serv_id', $serviceId)
+            ->with(['serv', 'governrateq', 'subArea'])
+            ->paginate($perPage);
 
         return $this->sendResponse($companies->toArray(), 'Companies retrieved successfully');
     }

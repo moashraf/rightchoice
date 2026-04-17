@@ -19,12 +19,18 @@ class AppBaseController extends Controller
         ], 200);
     }
 
-    public function sendError($error, $code = 404): JsonResponse
+    public function sendError($error, $code = 404, $errors = []): JsonResponse
     {
-        return response()->json([
+        $response = [
             'success' => false,
             'message' => $error,
-        ], $code);
+        ];
+
+        if (!empty($errors)) {
+            $response['errors'] = $errors;
+        }
+
+        return response()->json($response, $code);
     }
 
     public function sendSuccess($message): JsonResponse

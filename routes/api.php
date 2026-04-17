@@ -64,6 +64,7 @@ Route::apiResource('pages',                    App\Http\Controllers\API\PagesAPI
 Route::apiResource('aqars',                    App\Http\Controllers\API\aqarAPIController::class);
 Route::apiResource('images',                   App\Http\Controllers\API\ImagesAPIController::class);
 Route::apiResource('aqar_mzayas',              App\Http\Controllers\API\aqar_mzayaAPIController::class);
+Route::post('companies-by-service',  [App\Http\Controllers\API\CompanyAPIController::class, 'getByService']);
 Route::apiResource('companies',                App\Http\Controllers\API\CompanyAPIController::class);
 Route::apiResource('price_vips',               App\Http\Controllers\API\PriceVipAPIController::class);
 Route::apiResource('request_photo_sessions',   App\Http\Controllers\API\RequestPhotoSessionAPIController::class);
