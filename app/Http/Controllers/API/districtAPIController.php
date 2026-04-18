@@ -34,48 +34,37 @@ class districtAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $districts = $this->districtRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
-
+        $perPage = (int) $request->get('per_page', 0); // 0 = return all (reference data)
+        if ($perPage > 0) {
+            $districts = District::paginate($perPage);
+        } else {
+            $districts = District::all();
+        }
         return $this->sendResponse($districts->toArray(), 'Districts retrieved successfully');
     }
-
-    /**
-     * Display districts filtered by govern_id.
-     * GET /districts/by-governorate/{govern_id}
-     *
-     * @param int $governId
-     * @return Response
-     */
-
 
 public function getByGovernorate(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'govern_id' => 'required|integer|min:1',
+        'govern_id' => 'required|integer|min:1|exists:governrate,id',
+    ], [
+        'govern_id.required' => 'حقل معرف المحافظة مطلوب.',
+        'govern_id.integer'  => 'معرف المحافظة يجب أن يكون رقمًا صحيحًا.',
+        'govern_id.min'      => 'معرف المحافظة يجب أن يكون أكبر من صفر.',
+        'govern_id.exists'   => 'المحافظة المطلوبة غير موجودة في النظام.',
     ]);
 
     if ($validator->fails()) {
-        return $this->sendError(
-            'Validation failed. Please check your input.',
-            422,
-            $validator->errors()
-        );
+        return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
     }
 
     $districts = District::where('govern_id', $request->govern_id)->get();
 
     if ($districts->isEmpty()) {
-        return $this->sendError('No districts found for the given governorate.', 404);
+        return $this->sendError('لا توجد أحياء لهذه المحافظة.', 404);
     }
 
-    return $this->sendResponse(
-        $districts->toArray(),
-        'Districts retrieved successfully.'
-    );
+    return $this->sendResponse($districts->toArray(), 'تم جلب الأحياء بنجاح.');
 }
 
     /**

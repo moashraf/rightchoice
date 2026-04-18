@@ -80,10 +80,17 @@ class UserPaymentAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'refund_amount' => 'required|numeric|min:1',
             'refund_reason' => 'required|string|max:1000',
+        ], [
+            'refund_amount.required' => 'حقل مبلغ الاسترداد مطلوب.',
+            'refund_amount.numeric'  => 'مبلغ الاسترداد يجب أن يكون رقمًا.',
+            'refund_amount.min'      => 'مبلغ الاسترداد يجب أن يكون أكبر من صفر.',
+            'refund_reason.required' => 'حقل سبب الاسترداد مطلوب.',
+            'refund_reason.string'   => 'سبب الاسترداد يجب أن يكون نصاً.',
+            'refund_reason.max'      => 'سبب الاسترداد يجب ألا يتجاوز 1000 حرف.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $payment = FawryPayment::where('user_id', $request->user()->id)->find($id);

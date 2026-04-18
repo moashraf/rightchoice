@@ -61,13 +61,22 @@ class PostAPIController extends AppBaseController
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'content' => 'required|string|max:5000',
-            'images'  => 'nullable|array|max:5',
+            'content'  => 'required|string|max:5000',
+            'images'   => 'nullable|array|max:5',
             'images.*' => 'image|mimes:jpeg,jpg,png,gif|max:5120',
+        ], [
+            'content.required' => 'حقل المحتوى مطلوب.',
+            'content.string'   => 'المحتوى يجب أن يكون نصاً.',
+            'content.max'      => 'المحتوى يجب ألا يتجاوز 5000 حرف.',
+            'images.array'     => 'الصور يجب أن تكون مصفوفة.',
+            'images.max'       => 'لا يمكن رفع أكثر من 5 صور.',
+            'images.*.image'   => 'كل ملف يجب أن يكون صورة.',
+            'images.*.mimes'   => 'الصور يجب أن تكون من نوع: jpeg, jpg, png, gif.',
+            'images.*.max'     => 'حجم كل صورة يجب ألا يتجاوز 5 ميجابايت.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();
@@ -98,10 +107,14 @@ class PostAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'content' => 'required|string|max:2000',
+        ], [
+            'content.required' => 'حقل التعليق مطلوب.',
+            'content.string'   => 'التعليق يجب أن يكون نصاً.',
+            'content.max'      => 'التعليق يجب ألا يتجاوز 2000 حرف.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         try {

@@ -139,14 +139,29 @@ class ProfileAPIController extends AppBaseController
             'Tax_card'            => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'Commercial_Register' => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'img'                 => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120',
+        ], [
+            'name.required'                => 'حقل الاسم مطلوب.',
+            'name.max'                     => 'الاسم يجب ألا يتجاوز 255 حرفًا.',
+            'email.required'               => 'حقل البريد الإلكتروني مطلوب.',
+            'email.email'                  => 'صيغة البريد الإلكتروني غير صحيحة.',
+            'email.unique'                 => 'البريد الإلكتروني مستخدم مسبقًا.',
+            'MOP.required'                 => 'حقل رقم الهاتف مطلوب.',
+            'MOP.min'                      => 'رقم الهاتف يجب أن يكون 11 رقمًا على الأقل.',
+            'MOP.numeric'                  => 'رقم الهاتف يجب أن يحتوي على أرقام فقط.',
+            'MOP.unique'                   => 'رقم الهاتف مستخدم مسبقًا.',
+            'AGE.integer'                  => 'العمر يجب أن يكون رقمًا صحيحًا.',
+            'TYPE.integer'                 => 'نوع المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'Employee_Name.required'       => 'حقل اسم الموظف مطلوب.',
+            'Job_title.required'           => 'حقل المسمى الوظيفي مطلوب.',
+            'Tax_card.required'            => 'حقل البطاقة الضريبية مطلوب.',
+            'Commercial_Register.required' => 'حقل السجل التجاري مطلوب.',
+            'img.image'                    => 'الملف يجب أن يكون صورة.',
+            'img.mimes'                    => 'الصورة يجب أن تكون من نوع: jpeg, jpg, png, gif.',
+            'img.max'                      => 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $data = $request->only(['name', 'email', 'MOP', 'AGE', 'TYPE', 'Employee_Name', 'Job_title', 'Tax_card', 'Commercial_Register']);
@@ -171,20 +186,22 @@ class ProfileAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|min:6',
             'password'     => 'required|confirmed|min:6',
+        ], [
+            'old_password.required' => 'حقل كلمة المرور الحالية مطلوب.',
+            'old_password.min'      => 'كلمة المرور الحالية يجب أن تكون 6 أحرف على الأقل.',
+            'password.required'     => 'حقل كلمة المرور الجديدة مطلوب.',
+            'password.confirmed'    => 'تأكيد كلمة المرور الجديدة غير متطابق.',
+            'password.min'          => 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();
 
         if (!Hash::check($request->old_password, $user->password)) {
-            return $this->sendError('Old password is incorrect', 400);
+            return $this->sendError('كلمة المرور الحالية غير صحيحة.', 400);
         }
 
         $user->update(['password' => Hash::make($request->password)]);

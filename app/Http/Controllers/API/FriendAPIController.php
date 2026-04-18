@@ -44,10 +44,14 @@ class FriendAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         try {
@@ -91,10 +95,14 @@ class FriendAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $result = $this->friendshipService->removeFriend($request->user()->id, (int) $request->user_id);
@@ -111,10 +119,14 @@ class FriendAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'q' => 'required|string|min:2',
+        ], [
+            'q.required' => 'حقل كلمة البحث مطلوب.',
+            'q.string'   => 'كلمة البحث يجب أن تكون نصاً.',
+            'q.min'      => 'كلمة البحث يجب أن تكون حرفين على الأقل.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();

@@ -23,20 +23,21 @@ class PasswordResetAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|min:10|max:11',
+        ], [
+            'phone.required' => 'حقل رقم الهاتف مطلوب.',
+            'phone.string'   => 'رقم الهاتف يجب أن يكون نصاً.',
+            'phone.min'      => 'رقم الهاتف يجب أن يكون 10 أرقام على الأقل.',
+            'phone.max'      => 'رقم الهاتف يجب ألا يتجاوز 11 رقمًا.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::where('MOP', $request->phone)->first();
 
         if (!$user) {
-            return $this->sendError('User not found with this phone number', 404);
+            return $this->sendError('لا يوجد مستخدم بهذا الرقم.', 404);
         }
 
         $otpCode = random_int(1000, 9999);
@@ -57,25 +58,26 @@ class PasswordResetAPIController extends AppBaseController
     public function verifyResetOtp(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'otp'     => 'required',
+            'user_id' => 'required|integer|exists:users,id',
+            'otp'     => 'required|string',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
+            'otp.required'     => 'حقل رمز التحقق OTP مطلوب.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::find($request->user_id);
 
         if ($user->phone_sms_otp != $request->otp) {
-            return $this->sendError('Invalid OTP code', 400);
+            return $this->sendError('رمز التحقق غير صحيح.', 400);
         }
 
-        return $this->sendSuccess('OTP verified successfully');
+        return $this->sendSuccess('تم التحقق من الرمز بنجاح.');
     }
 
     /**
@@ -86,31 +88,34 @@ class PasswordResetAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'phone'    => 'required|string|min:10|max:11',
-            'otp'      => 'required',
+            'otp'      => 'required|string',
             'password' => 'required|min:6',
+        ], [
+            'phone.required'    => 'حقل رقم الهاتف مطلوب.',
+            'phone.min'         => 'رقم الهاتف يجب أن يكون 10 أرقام على الأقل.',
+            'phone.max'         => 'رقم الهاتف يجب ألا يتجاوز 11 رقمًا.',
+            'otp.required'      => 'حقل رمز التحقق مطلوب.',
+            'password.required' => 'حقل كلمة المرور مطلوب.',
+            'password.min'      => 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::where('MOP', $request->phone)->first();
 
         if (!$user) {
-            return $this->sendError('User not found', 404);
+            return $this->sendError('لا يوجد مستخدم بهذا الرقم.', 404);
         }
 
         if ($user->phone_sms_otp != $request->otp) {
-            return $this->sendError('Invalid OTP code', 400);
+            return $this->sendError('رمز التحقق غير صحيح.', 400);
         }
 
         $user->update(['password' => Hash::make($request->password)]);
 
-        return $this->sendSuccess('Password reset successfully');
+        return $this->sendSuccess('تم تغيير كلمة المرور بنجاح.');
     }
 }
 
