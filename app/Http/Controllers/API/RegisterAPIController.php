@@ -42,14 +42,24 @@ class RegisterAPIController extends AppBaseController
             'email'    => 'required|email|max:90|unique:users',
             'MOP'      => 'required|min:10|max:11|unique:users',
             'password' => 'required|confirmed|min:6|max:255',
+        ], [
+            'name.required'      => 'حقل الاسم مطلوب.',
+            'name.min'           => 'الاسم يجب أن يكون 3 أحرف على الأقل.',
+            'name.max'           => 'الاسم يجب ألا يتجاوز 90 حرفًا.',
+            'email.required'     => 'حقل البريد الإلكتروني مطلوب.',
+            'email.email'        => 'صيغة البريد الإلكتروني غير صحيحة.',
+            'email.unique'       => 'البريد الإلكتروني مستخدم مسبقًا.',
+            'MOP.required'       => 'حقل رقم الهاتف مطلوب.',
+            'MOP.min'            => 'رقم الهاتف يجب أن يكون 10 أرقام على الأقل.',
+            'MOP.max'            => 'رقم الهاتف يجب ألا يتجاوز 11 رقمًا.',
+            'MOP.unique'         => 'رقم الهاتف مستخدم مسبقًا.',
+            'password.required'  => 'حقل كلمة المرور مطلوب.',
+            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+            'password.min'       => 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $otpCode = random_int(1000, 9999);
@@ -97,22 +107,23 @@ class RegisterAPIController extends AppBaseController
     {
 
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'otp'     => 'required',
+            'user_id' => 'required|integer|exists:users,id',
+            'otp'     => 'required|string',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
+            'otp.required'     => 'حقل رمز التحقق OTP مطلوب.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::find($request->user_id);
 
         if ($user->phone_sms_otp != $request->otp) {
-            return $this->sendError('Invalid OTP code', 400);
+            return $this->sendError('رمز التحقق غير صحيح.', 400);
         }
 
         $user->update([
@@ -147,21 +158,21 @@ class RegisterAPIController extends AppBaseController
     public function resendOtp(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::find($request->user_id);
 
         if ($user->phone_verfied_sms_status == 1) {
-            return $this->sendError('Phone is already verified', 400);
+            return $this->sendError('رقم الهاتف مفعّل مسبقًا.', 400);
         }
 
         $otpCode = random_int(1000, 9999);

@@ -24,10 +24,16 @@ class AuthAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required|string|min:6',
+        ], [
+            'email.required'    => 'حقل البريد الإلكتروني مطلوب.',
+            'email.email'       => 'صيغة البريد الإلكتروني غير صحيحة.',
+            'password.required' => 'حقل كلمة المرور مطلوب.',
+            'password.string'   => 'كلمة المرور يجب أن تكون نصاً.',
+            'password.min'      => 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.',
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error', 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = User::where('email', $request->email)->first();

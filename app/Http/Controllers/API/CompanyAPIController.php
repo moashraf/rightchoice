@@ -35,11 +35,24 @@ class CompanyAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $companies = $this->companyRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
+        $validator = Validator::make($request->all(), [
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'page'     => 'nullable|integer|min:1',
+        ], [
+            'per_page.integer' => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'per_page.min'     => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
+            'per_page.max'     => 'عدد العناصر في الصفحة لا يتجاوز 100.',
+            'page.integer'     => 'رقم الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'page.min'         => 'رقم الصفحة يجب أن يكون 1 على الأقل.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors()->toArray());
+        }
+
+        $companies = Company::with(['serv', 'governrateq'])
+            ->latest()
+            ->paginate((int) $request->get('per_page', 15));
 
         return $this->sendResponse($companies->toArray(), 'Companies retrieved successfully');
     }

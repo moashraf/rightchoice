@@ -83,19 +83,27 @@ public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
         [
             'user_id'  => $user_id,
             'per_page' => $request->get('per_page'),
+            'page'     => $request->get('page'),
         ],
         [
             'user_id'  => 'required|integer|exists:users,id',
             'per_page' => 'nullable|integer|min:1|max:100',
+            'page'     => 'nullable|integer|min:1',
+        ],
+        [
+            'user_id.required'  => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'   => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'    => 'المستخدم غير موجود في النظام.',
+            'per_page.integer'  => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'per_page.min'      => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
+            'per_page.max'      => 'عدد العناصر في الصفحة لا يتجاوز 100.',
+            'page.integer'      => 'رقم الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'page.min'          => 'رقم الصفحة يجب أن يكون 1 على الأقل.',
         ]
     );
 
     if ($validator->fails()) {
-        return $this->sendError(
-            'Validation failed. Please check your input.',
-            422,
-            $validator->errors()
-        );
+        return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
     }
 
     $aqars = aqar::where('user_id', $user_id)
@@ -132,14 +140,20 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
     $validator = Validator::make($request->all(), [
         'user_id'  => 'required|integer|exists:users,id',
         'per_page' => 'nullable|integer|min:1|max:100',
+        'page'     => 'nullable|integer|min:1',
+    ], [
+        'user_id.required'  => 'حقل معرف المستخدم مطلوب.',
+        'user_id.integer'   => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+        'user_id.exists'    => 'المستخدم غير موجود في النظام.',
+        'per_page.integer'  => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
+        'per_page.min'      => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
+        'per_page.max'      => 'عدد العناصر في الصفحة لا يتجاوز 100.',
+        'page.integer'      => 'رقم الصفحة يجب أن يكون رقمًا صحيحًا.',
+        'page.min'          => 'رقم الصفحة يجب أن يكون 1 على الأقل.',
     ]);
 
     if ($validator->fails()) {
-        return $this->sendError(
-            'Validation failed. Please check your input.',
-            422,
-            $validator->errors()
-        );
+        return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
     }
 
     $wishlist = wish::where('user_id', $request->user_id)
@@ -199,20 +213,40 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
      */
     public function myAqarPosts(Request $request): JsonResponse
     {
-        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'user_id' => 'required|integer|exists:users,id',
+        $validator = Validator::make($request->all(), [
+            'user_id'  => 'required|integer|exists:users,id',
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'page'     => 'nullable|integer|min:1',
+            'status'   => 'nullable|integer|in:0,1',
+            'vip'      => 'nullable|integer|in:0,1',
+        ], [
+            'user_id.required'  => 'حقل المستخدم مطلوب.',
+            'user_id.integer'   => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'    => 'المستخدم غير موجود في النظام.',
+            'per_page.integer'  => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'per_page.min'      => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
+            'per_page.max'      => 'عدد العناصر في الصفحة لا يتجاوز 100.',
+            'page.integer'      => 'رقم الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'page.min'          => 'رقم الصفحة يجب أن يكون 1 على الأقل.',
+            'status.integer'    => 'حالة الإعلان يجب أن تكون رقمًا صحيحًا.',
+            'status.in'         => 'حالة الإعلان يجب أن تكون 0 (غير نشط) أو 1 (نشط).',
+            'vip.integer'       => 'نوع VIP يجب أن يكون رقمًا صحيحًا.',
+            'vip.in'            => 'نوع VIP يجب أن يكون 0 (عادي) أو 1 (مميز).',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'errors'  => $validator->errors(),
-            ], 422);
+            return $this->sendError(
+                'خطأ في البيانات المدخلة. يرجى مراجعة الحقول التالية.',
+                422,
+                $validator->errors()
+            );
         }
 
-        $aqars = aqar::where('user_id', $request->user_id)
-            ->where('vip', 0)
+        $perPage = (int) $request->get('per_page', 15);
+        $vip     = $request->has('vip') ? (int) $request->vip : 0;
+
+        $query = aqar::where('user_id', $request->user_id)
+            ->where('vip', $vip)
             ->with([
                 'images',
                 'aqarLocation',
@@ -228,10 +262,15 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
                 'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
                 'user.companiess',
             ])
-            ->latest()
-            ->get();
+            ->latest();
 
-        return $this->sendResponse($aqars->toArray(), 'User aqar posts retrieved successfully');
+        if ($request->has('status')) {
+            $query->where('status', (int) $request->status);
+        }
+
+        $aqars = $query->paginate($perPage);
+
+        return $this->sendResponse($aqars->toArray(), 'تم جلب إعلانات المستخدم بنجاح.');
     }
 
     /**
@@ -285,14 +324,17 @@ public function addToWishlistByUserId(Request $request): JsonResponse
     $validator = Validator::make($request->all(), [
         'user_id'  => 'required|integer|exists:users,id',
         'aqars_id' => 'required|integer|exists:aqar,id',
+    ], [
+        'user_id.required'  => 'حقل معرف المستخدم مطلوب.',
+        'user_id.integer'   => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+        'user_id.exists'    => 'المستخدم غير موجود في النظام.',
+        'aqars_id.required' => 'حقل معرف العقار مطلوب.',
+        'aqars_id.integer'  => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+        'aqars_id.exists'   => 'العقار غير موجود في النظام.',
     ]);
 
     if ($validator->fails()) {
-        return $this->sendError(
-            'Validation failed. Please check your input.',
-            422,
-            $validator->errors()
-        );
+        return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
     }
 
     $exists = wish::where('user_id', $request->user_id)
@@ -300,7 +342,7 @@ public function addToWishlistByUserId(Request $request): JsonResponse
         ->first();
 
     if ($exists) {
-        return $this->sendError('This item is already in the wishlist.', 400);
+        return $this->sendError('هذا العقار موجود مسبقًا في قائمة المفضلة.', 400);
     }
 
     $wishlist = wish::create([
@@ -330,24 +372,36 @@ public function addToWishlistByUserId(Request $request): JsonResponse
      */
     public function addToWishlist(Request $request): JsonResponse
     {
+        $validator = Validator::make($request->all(), [
+            'aqars_id' => 'required|integer|exists:aqar,id',
+        ], [
+            'aqars_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqars_id.integer'  => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+            'aqars_id.exists'   => 'العقار غير موجود في النظام.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
         $user = $request->user();
-        $user_id=null;
-if ($user && $user->id){
- $user_id= $user->id;
-}else{
-     $user_id= $request->get('user_id') ?? $request->route('user_id') ;
-}
+        $user_id = null;
+        if ($user && $user->id) {
+            $user_id = $user->id;
+        } else {
+            $user_id = $request->get('user_id') ?? $request->route('user_id');
+        }
         $exists = wish::where('user_id', $user_id)
             ->where('aqars_id', $request->aqars_id)
             ->first();
 
         if ($exists) {
-            return $this->sendError('This item is already in your wishlist.', 400);
+            return $this->sendError('هذا العقار موجود مسبقًا في قائمة المفضلة.', 400);
         }
 
         $user->wishlist()->create(['aqars_id' => $request->aqars_id]);
 
-        return $this->sendSuccess('Item added to wishlist successfully.');
+        return $this->sendSuccess('تم إضافة العقار إلى المفضلة بنجاح.');
     }
 
     /**
@@ -355,15 +409,27 @@ if ($user && $user->id){
      */
     public function removeFromWishlist(Request $request): JsonResponse
     {
+        $validator = Validator::make($request->all(), [
+            'aqars_id' => 'required|integer|exists:aqar,id',
+        ], [
+            'aqars_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqars_id.integer'  => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+            'aqars_id.exists'   => 'العقار غير موجود في النظام.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
         $deleted = wish::where('user_id', $request->user()->id)
             ->where('aqars_id', $request->aqars_id)
             ->delete();
 
         if (!$deleted) {
-            return $this->sendError('Item not found in your wishlist.', 404);
+            return $this->sendError('العقار غير موجود في قائمة المفضلة.', 404);
         }
 
-        return $this->sendSuccess('Item removed from wishlist successfully.');
+        return $this->sendSuccess('تم حذف العقار من المفضلة بنجاح.');
     }
 
     /**
@@ -385,12 +451,20 @@ if ($user && $user->id){
     public function submitComplaint(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'message' => 'required|string',
+            'message' => 'required|string|min:5|max:2000',
             'item_id' => 'required|integer|exists:aqar,id',
+        ], [
+            'message.required' => 'حقل نص الشكوى مطلوب.',
+            'message.string'   => 'نص الشكوى يجب أن يكون نصاً.',
+            'message.min'      => 'نص الشكوى يجب أن يكون 5 أحرف على الأقل.',
+            'message.max'      => 'نص الشكوى يجب ألا يتجاوز 2000 حرف.',
+            'item_id.required' => 'حقل معرف العقار مطلوب.',
+            'item_id.integer'  => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+            'item_id.exists'   => 'العقار غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation failed. Please check your input.', 422, $validator->errors());
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         Complaints::create([
@@ -485,10 +559,14 @@ if ($user && $user->id){
     {
         $validator = Validator::make($request->all(), [
             'aqars_id' => 'required|integer|exists:aqar,id',
+        ], [
+            'aqars_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqars_id.integer'  => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+            'aqars_id.exists'   => 'العقار غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation failed. Please check your input.', 422, $validator->errors());
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();

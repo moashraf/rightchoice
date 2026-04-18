@@ -38,10 +38,16 @@ class BlockAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id',
             'reason'  => 'nullable|string|max:500',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
+            'reason.string'    => 'سبب الحجب يجب أن يكون نصاً.',
+            'reason.max'       => 'سبب الحجب يجب ألا يتجاوز 500 حرف.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         try {
@@ -59,10 +65,14 @@ class BlockAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $result = $this->blockService->unblockUser($request->user()->id, (int) $request->user_id);

@@ -9,6 +9,7 @@ use App\Repositories\blogRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Validator;
 
 class blogAPIController extends AppBaseController
 {
@@ -22,11 +23,23 @@ class blogAPIController extends AppBaseController
     /** GET /api/blogs */
     public function index(Request $request): JsonResponse
     {
-        $blogs = $this->blogRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
+        $validator = Validator::make($request->all(), [
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'page'     => 'nullable|integer|min:1',
+        ], [
+            'per_page.integer' => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'per_page.min'     => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
+            'per_page.max'     => 'عدد العناصر في الصفحة لا يتجاوز 100.',
+            'page.integer'     => 'رقم الصفحة يجب أن يكون رقمًا صحيحًا.',
+            'page.min'         => 'رقم الصفحة يجب أن يكون 1 على الأقل.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
+        $perPage = (int) $request->get('per_page', 15);
+        $blogs = Blog::latest()->paginate($perPage);
         return $this->sendResponse($blogs->toArray(), 'Blogs retrieved successfully');
     }
 

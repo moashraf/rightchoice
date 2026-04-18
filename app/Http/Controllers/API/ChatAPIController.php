@@ -63,10 +63,14 @@ class ChatAPIController extends AppBaseController
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.integer'  => 'معرف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();
@@ -91,10 +95,17 @@ class ChatAPIController extends AppBaseController
         $validator = Validator::make($request->all(), [
             'receiver_id' => 'required|integer|exists:users,id',
             'body'        => 'required|string|max:2000',
+        ], [
+            'receiver_id.required' => 'حقل معرف المستلم مطلوب.',
+            'receiver_id.integer'  => 'معرف المستلم يجب أن يكون رقمًا صحيحًا.',
+            'receiver_id.exists'   => 'المستلم غير موجود في النظام.',
+            'body.required'        => 'حقل نص الرسالة مطلوب.',
+            'body.string'          => 'نص الرسالة يجب أن يكون نصاً.',
+            'body.max'             => 'نص الرسالة يجب ألا يتجاوز 2000 حرف.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $user = $request->user();

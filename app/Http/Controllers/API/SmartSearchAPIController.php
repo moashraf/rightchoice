@@ -35,10 +35,17 @@ class SmartSearchAPIController extends AppBaseController
             'message' => 'required|string|max:500',
             'context' => 'nullable|array',
             'locale'  => 'nullable|string|in:ar,en',
+        ], [
+            'message.required' => 'حقل رسالة البحث مطلوب.',
+            'message.string'   => 'رسالة البحث يجب أن تكون نصاً.',
+            'message.max'      => 'رسالة البحث يجب ألا تتجاوز 500 حرف.',
+            'context.array'    => 'حقل السياق يجب أن يكون مصفوفة.',
+            'locale.string'    => 'حقل اللغة يجب أن يكون نصاً.',
+            'locale.in'        => 'اللغة يجب أن تكون ar أو en.',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => 'Validation Error', 'errors' => $validator->errors()], 422);
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
         $locale = $request->get('locale', 'ar');
