@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Models\aqar;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
@@ -15,6 +16,88 @@ use Illuminate\Support\Facades\Validator;
  */
 class ProfileAPIController extends AppBaseController
 {
+    // ...existing code...
+
+    /**
+     * POST /api/profile/full
+     * عرض البيانات الشخصية الكاملة للمستخدم المسجّل مع pagination
+     */
+    public function fullProfile(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'per_page'        => 'nullable|integer|min:1|max:100',
+            'ads_per_page'    => 'nullable|integer|min:1|max:100',
+        ], [
+            'per_page.integer'     => 'per_page يجب أن يكون رقماً صحيحاً',
+            'per_page.min'         => 'per_page يجب أن يكون على الأقل 1',
+            'per_page.max'         => 'per_page يجب ألا يتجاوز 100',
+            'ads_per_page.integer' => 'ads_per_page يجب أن يكون رقماً صحيحاً',
+            'ads_per_page.min'     => 'ads_per_page يجب أن يكون على الأقل 1',
+            'ads_per_page.max'     => 'ads_per_page يجب ألا يتجاوز 100',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة', 422, $validator->errors()->toArray());
+        }
+
+        $user       = $request->user();
+        $perPage    = $request->input('per_page', 15);
+        $adsPerPage = $request->input('ads_per_page', 15);
+
+        // البيانات الشخصية الكاملة
+        $user->load([
+            'companiess',
+            'userpricing.pricing',
+            'userpricin',
+            'wishlist.aqarInfo',
+            'notification',
+        ]);
+
+        // إعلانات المستخدم مع كل التفاصيل
+        $ads = aqar::where('user_id', $user->id)
+            ->with([
+                'images',
+                'aqarLocation',
+                'governrateq',
+                'districte',
+                'subAreaa',
+                'callTimes',
+                'offerTypes',
+                'categoryRel',
+                'finishType',
+                'mzaya',
+                'propertyType',
+            ])
+            ->latest()
+            ->paginate($adsPerPage);
+
+        return $this->sendResponse([
+            'personal_info' => [
+                'id'                  => $user->id,
+                'name'                => $user->name,
+                'email'               => $user->email,
+                'phone'               => $user->MOP,
+                'age'                 => $user->AGE,
+                'type'                => $user->TYPE,
+                'type_label'          => $user->getUserType(),
+                'status'              => $user->status,
+                'status_label'        => $user->getStatus(),
+                'job_title'           => $user->Job_title,
+                'employee_name'       => $user->Employee_Name,
+                'tax_card'            => $user->Tax_card,
+                'commercial_register' => $user->Commercial_Register,
+                'profile_image'       => $user->profile_image_url,
+                'is_online'           => $user->isOnline(),
+                'created_at'          => $user->created_at,
+            ],
+            'companies'             => $user->companiess,
+            'current_package'       => $user->userpricin,
+            'pricing_history'       => $user->userpricing,
+            'notifications_count'   => $user->notification->count(),
+            'ads'                   => $ads->toArray(),
+        ], 'تم جلب البيانات الشخصية الكاملة بنجاح');
+    }
+
     /**
      * GET /api/profile
      */
