@@ -582,8 +582,9 @@
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">النقاط</a>
                                             </li>
                                             <li>
-                                                <a href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">
-                                                    <i class="fa fa-exclamation-circle ml-1"></i> شكاواي
+                                                <a class="user_complaints_user_complaints" href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">
+                                                    <i class="fa fa-exclamation-circle ml-1"></i>
+                                                    شكاواي
                                                 </a>
                                             </li>
                                         @endif
