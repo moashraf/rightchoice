@@ -120,6 +120,12 @@
                                             {{ $company->description_en }}
                                         @endif </p>
 
+                                    <div class="company-meta" style="display:flex; gap:16px; align-items:center; margin-top:8px; font-size:13px; color:#666;">
+                                        @if($company->governrateq)
+                                            <span><i class="fa fa-map-marker" style="margin-left:4px; color:#e74c3c;"></i>{{ $company->governrateq->governrate }}</span>
+                                        @endif
+                                        <span><i class="fa fa-calendar" style="margin-left:4px; color:#3498db;"></i>{{ $company->created_at ? $company->created_at->format('Y/m/d') : '' }}</span>
+                                    </div>
 
                                 </div>
 

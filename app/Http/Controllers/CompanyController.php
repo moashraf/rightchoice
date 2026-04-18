@@ -118,7 +118,7 @@ class CompanyController extends Controller
 
         //  dd($getService);
 
-        $companies = Company::where('status', 1)->where('serv_id', $getService->id)->paginate(6);
+        $companies = Company::where('status', 1)->where('serv_id', $getService->id)->with('governrateq')->latest()->paginate(6);
 
         return view('companies.companies', compact('companies', 'getService', 'governrates', 'governratew', 'allAqars', 'district', 'districtw'));
 
