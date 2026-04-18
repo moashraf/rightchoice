@@ -99,7 +99,20 @@ public function getUserAdsByUserId(Request $request, int $user_id): JsonResponse
     }
 
     $aqars = aqar::where('user_id', $user_id)
-        ->with(['images', 'governrateq', 'districte', 'offerTypes'])
+        ->with([
+            'images',
+            'aqarLocation',
+            'governrateq',
+            'districte',
+            'subAreaa',
+            'callTimes',
+            'offerTypes',
+            'categoryRel',
+            'finishType',
+            'mzaya',
+            'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'user.companiess',
+        ])
         ->latest()
         ->paginate($request->get('per_page', 15));
 
@@ -130,8 +143,21 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
     }
 
     $wishlist = wish::where('user_id', $request->user_id)
-        ->with('aqarInfo')
-        ->get();
+        ->with([
+            'aqarInfo.images',
+            'aqarInfo.aqarLocation',
+            'aqarInfo.governrateq',
+            'aqarInfo.districte',
+            'aqarInfo.subAreaa',
+            'aqarInfo.callTimes',
+            'aqarInfo.offerTypes',
+            'aqarInfo.categoryRel',
+            'aqarInfo.finishType',
+            'aqarInfo.mzaya',
+            'aqarInfo.user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+            'aqarInfo.user.companiess',
+        ])
+        ->paginate($request->input('per_page', 15));
 
     return $this->sendResponse(
         $wishlist->toArray(),
@@ -145,8 +171,21 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
         $user = $request->user();
         $userId = $this->resolveUserId($request);
 
-         $aqars = aqar::where('user_id', $userId)
-            ->with(['images', 'governrateq', 'districte', 'offerTypes'])
+        $aqars = aqar::where('user_id', $userId)
+            ->with([
+                'images',
+                'aqarLocation',
+                'governrateq',
+                'districte',
+                'subAreaa',
+                'callTimes',
+                'offerTypes',
+                'categoryRel',
+                'finishType',
+                'mzaya',
+                'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+                'user.companiess',
+            ])
             ->latest()
             ->paginate($request->get('per_page', 15));
 
@@ -186,6 +225,8 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
                 'finishType',
                 'mzaya',
                 'propertyType',
+                'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+                'user.companiess',
             ])
             ->latest()
             ->get();
@@ -217,7 +258,20 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
          $user = $request->user();
 
         $wishlist = wish::where('user_id', $user->id)
-            ->with('aqarInfo')
+            ->with([
+                'aqarInfo.images',
+                'aqarInfo.aqarLocation',
+                'aqarInfo.governrateq',
+                'aqarInfo.districte',
+                'aqarInfo.subAreaa',
+                'aqarInfo.callTimes',
+                'aqarInfo.offerTypes',
+                'aqarInfo.categoryRel',
+                'aqarInfo.finishType',
+                'aqarInfo.mzaya',
+                'aqarInfo.user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+                'aqarInfo.user.companiess',
+            ])
             ->paginate($request->get('per_page', 15));
 
         return $this->sendResponse($wishlist->toArray(), 'Wishlist retrieved successfully.');

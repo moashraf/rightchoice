@@ -120,9 +120,10 @@ Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIC
 Route::middleware('auth:sanctum')->group(function () {
 
     // ── Profile ──────────────────────────────────────────────────────
-    Route::get('profile',                 [App\Http\Controllers\API\ProfileAPIController::class, 'show']);
-    Route::post('profile/update',         [App\Http\Controllers\API\ProfileAPIController::class, 'update']);
-    Route::post('profile/change-password',[App\Http\Controllers\API\ProfileAPIController::class, 'changePassword']);
+    Route::get('profile',                  [App\Http\Controllers\API\ProfileAPIController::class, 'show']);
+    Route::post('profile/update',          [App\Http\Controllers\API\ProfileAPIController::class, 'update']);
+    Route::post('profile/change-password', [App\Http\Controllers\API\ProfileAPIController::class, 'changePassword']);
+    Route::post('profile/full',            [App\Http\Controllers\API\ProfileAPIController::class, 'fullProfile']);
 
     // ── My Ads ───────────────────────────────────────────────────────
 
