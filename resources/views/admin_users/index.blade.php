@@ -230,6 +230,23 @@
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     @endif
+
+                                    @if($canUpdate)
+                                        @php
+                                            $userPoints = $user->UserPriceing->last();
+                                            $currentPts = $userPoints ? $userPoints->current_points : 0;
+                                        @endphp
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-warning ml-2 btn-add-points"
+                                                data-toggle="tooltip" title="إضافة نقاط"
+                                                data-user-id="{{ $user->id }}"
+                                                data-user-name="{{ $user->name }}"
+                                                data-current-points="{{ $currentPts }}"
+                                                data-action="{{ route('sitemanagement.users.addPoints', $user->id) }}"
+                                                data-points-url="{{ route('sitemanagement.users.getPoints', $user->id) }}">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -244,26 +261,11 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal: إضافة نقاط --}}
+    @include('admin_users.partials.add_points_modal')
 @endsection
 
 @section('third_party_scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var exportBtn     = document.getElementById('export-users-btn');
-            var exportText    = document.getElementById('export-users-text');
-            var exportSpinner = document.getElementById('export-users-spinner');
-            if (exportBtn) {
-                exportBtn.addEventListener('click', function () {
-                    exportBtn.classList.add('disabled');
-                    exportText.style.display    = 'none';
-                    exportSpinner.style.display = '';
-                    setTimeout(function () {
-                        exportBtn.classList.remove('disabled');
-                        exportText.style.display    = '';
-                        exportSpinner.style.display = 'none';
-                    }, 5000);
-                });
-            }
-        });
-    </script>
+    @include('admin_users.partials.add_points_scripts')
 @endsection

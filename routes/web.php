@@ -244,6 +244,10 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:users.view');
     Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers')
         ->middleware('permission:users.export');
+    Route::post('users/{user}/add-points', [App\Http\Controllers\AdminUserPointsController::class, 'addPoints'])->name('users.addPoints')
+        ->middleware('permission:users.update');
+    Route::get('users/{user}/get-points', [App\Http\Controllers\AdminUserPointsController::class, 'getPoints'])->name('users.getPoints')
+        ->middleware('permission:users.update');
 
     // ── Reports ──────────────────────────────────────────────────────────
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index')
