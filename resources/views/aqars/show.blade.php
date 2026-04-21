@@ -98,6 +98,9 @@
 
                                         @php
                                             $whatsappPhone = preg_replace('/[^0-9]/', '', $aqar->user->MOP ?? '');
+                                            if (!str_starts_with($whatsappPhone, '20')) {
+                                                $whatsappPhone = '20' . ltrim($whatsappPhone, '0');
+                                            }
                                             $whatsappMsg = urlencode(
                                                 "السلام عليكم، أنا مهتم بالعقار التالي:\n" .
                                                 "العنوان: " . ($aqar->title ?? '') . "\n" .
