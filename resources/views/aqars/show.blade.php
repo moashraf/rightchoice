@@ -96,6 +96,24 @@
                                                 src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20"
                                                 height="20"/>اتصال</a>
 
+                                        @php
+                                            $whatsappPhone = preg_replace('/[^0-9]/', '', $aqar->user->MOP ?? '');
+                                            $whatsappMsg = urlencode(
+                                                "السلام عليكم، أنا مهتم بالعقار التالي:\n" .
+                                                "العنوان: " . ($aqar->title ?? '') . "\n" .
+                                                "المساحة: " . ($aqar->total_area ?? '') . " م²\n" .
+                                                "الغرف: " . ($aqar->rooms ?? '') . "\n" .
+                                                "السعر: " . ($aqar->total_price ?? $aqar->monthly_rent ?? '') . " جنيه\n" .
+                                                "رابط العقار: " . url()->current()
+                                            );
+                                        @endphp
+                                        <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
+                                           target="_blank"
+                                           class="btn btn-success mt-3" style="background-color:#25D366; border-color:#25D366;">
+                                            <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" width="20" height="20"/>
+                                            واتساب
+                                        </a>
+
 
                                         <?php } ?>
 
