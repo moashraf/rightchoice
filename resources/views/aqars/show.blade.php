@@ -3,6 +3,32 @@
     @section('title')
         {{ $aqar->title }}
     @endsection
+
+    @php
+        $aqarImg = null;
+        if (!empty($aqar->mainImage->img_url)) {
+            $aqarImg = URL::to('/') . '/images/' . $aqar->mainImage->img_url;
+        } elseif (!empty($aqar->firstImage->img_url)) {
+            $aqarImg = URL::to('/') . '/images/' . $aqar->firstImage->img_url;
+        }
+        $aqarDesc = strip_tags($aqar->description ?? '');
+        $aqarDesc = \Illuminate\Support\Str::limit($aqarDesc, 200);
+        if (!$aqarDesc) {
+            $parts = [];
+            if ($aqar->governrateq) $parts[] = $aqar->governrateq->governrate;
+            if ($aqar->districte)   $parts[] = $aqar->districte->district;
+            if ($aqar->total_area)  $parts[] = $aqar->total_area . ' م²';
+            $aqarDesc = implode(' - ', $parts);
+        }
+    @endphp
+
+    @if($aqarImg)
+        @section('og_image', $aqarImg)
+    @endif
+
+    @if($aqarDesc)
+        @section('og_description', $aqarDesc)
+    @endif
     <section id="inner-listing">
         <div class="container">
             <x-ads :randomAds="$random_ads ?? null"/>

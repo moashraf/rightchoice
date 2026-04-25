@@ -8,17 +8,41 @@
 
     <meta charset="utf-8">
 
-    <meta name=description>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
 
     @include('components.google-tag-manager', ['section' => 'head'])
 
+    @php
+        $og_title       = trim(strip_tags(\Illuminate\Support\Str::limit(\View::yieldContent('title'), 120)));
+        $og_title       = $og_title ? 'RightChoice | ' . $og_title : 'RightChoice | رايت تشويز للعقارات';
+        $og_description = trim(strip_tags(\View::yieldContent('og_description')));
+        $og_description = $og_description ?: 'اول موقع متميز في مصر من البائع للمشتري مباشر بدون عمولات – عقارات للبيع والإيجار في مصر';
+        $og_image       = trim(\View::yieldContent('og_image'));
+        $og_image       = $og_image ?: asset('assets/img/rclogo.png');
+        $og_url         = url()->current();
+    @endphp
 
-    <title>RightChoice @if (!\Request::is('/'))
-            |
-        @endif @yield('title')</title>
+    {{-- ── Open Graph (Facebook / WhatsApp / LinkedIn share) ── --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="RightChoice">
+    <meta property="og:locale"      content="{{ app()->getLocale() == 'ar' ? 'ar_EG' : 'en_US' }}">
+    <meta property="og:url"         content="{{ $og_url }}">
+    <meta property="og:title"       content="{{ $og_title }}">
+    <meta property="og:description" content="{{ $og_description }}">
+    <meta property="og:image"       content="{{ $og_image }}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+
+    {{-- ── Twitter / X Card ── --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="{{ $og_title }}">
+    <meta name="twitter:description" content="{{ $og_description }}">
+    <meta name="twitter:image"       content="{{ $og_image }}">
+
+    {{-- ── Standard description ── --}}
+    <meta name="description" content="{{ $og_description }}">
+
+    <title>RightChoice @if (!\Request::is('/')) | @endif @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
 
 
