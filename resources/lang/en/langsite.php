@@ -1,6 +1,22 @@
 <?php
 
 return [
+
+    'developers'             => 'Real Estate Developers',
+    'developers_intro'       => 'Browse all real estate developers and their properties',
+    'developer_profile'      => 'Developer Profile',
+    'developer_badge'        => 'Real Estate Developer',
+    'developer_properties'   => 'Developer Properties',
+    'search_developers'      => 'Search developers…',
+    'search_in_properties'   => 'Search in this developer\'s properties…',
+    'no_developers_found'    => 'No matching developers found',
+    'no_properties_found'    => 'No properties for this developer',
+    'properties_count'       => 'Properties',
+    'view_profile'           => 'View Profile',
+    'back_to_developers'     => 'All Developers',
+    'employee_name'          => 'Contact Person',
+    'commercial_register'    => 'Commercial Register',
+
     'verficationverfication' => ' A verfication code has been sent to your mobile from Rightchoice please type it below',
     'otb_page_title' => 'Email verification',
     'resend_code' => 'Resend code',

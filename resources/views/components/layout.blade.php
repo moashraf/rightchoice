@@ -358,6 +358,7 @@
                         </li>
 
 
+
                         @if(count($serviceInHeader) > 0)
                             <li
 
@@ -404,6 +405,11 @@
                                 <ul class="nav-dropdown nav-submenu">
 
 
+                                    <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">
+                                        <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">
+                                            {{ trans('langsite.developers') }}
+                                        </a>
+                                    </li>
                                     {{-- Map Page Link --}}
                                     <li class="{{ Request::is('*/map') ? 'active' : '' }}">
                                         <a href="{{ URL::to(Config::get('app.locale').'/map') }}">

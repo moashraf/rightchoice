@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'developers'             => 'المطورون العقاريون',
+    'developers_intro'       => 'تصفح كل المطورين العقاريين والعقارات الخاصة بهم',
+    'developer_profile'      => 'صفحة المطور العقاري',
+    'developer_badge'        => 'مطور عقاري',
+    'developer_properties'   => 'عقارات المطور',
+    'search_developers'      => 'ابحث عن مطور عقاري…',
+    'search_in_properties'   => 'ابحث في عقارات هذا المطور…',
+    'no_developers_found'    => 'لا يوجد مطورون عقاريون مطابقون',
+    'no_properties_found'    => 'لا توجد عقارات لهذا المطور',
+    'properties_count'       => 'عدد العقارات',
+    'view_profile'           => 'عرض الملف',
+    'back_to_developers'     => 'كل المطورين',
+    'employee_name'          => 'اسم المسؤول',
+    'commercial_register'    => 'السجل التجاري',
 
     'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا ',
     'otb_page_title' => 'تأكيد البريد الإلكتروني',
