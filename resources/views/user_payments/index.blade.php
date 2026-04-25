@@ -1,8 +1,9 @@
 <x-layout>
 
 @section('title')
-    مدفوعاتي
-@endsection
+        {{ trans('langsite.my_payments')}}
+
+    @endsection
 
 <section id="profile-info" class="bg-light" style="min-height: 80vh;">
     <div class="container">
@@ -15,7 +16,8 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h3 class="mb-0">
                             <i class="fa fa-credit-card ml-2 text-primary"></i>
-                            مدفوعاتي
+                            {{ trans('langsite.my_payments')}}
+
                         </h3>
                         <a href="{{ URL::to(Config::get('app.locale').'/dashboard') }}"
                            class="btn btn-secondary btn-sm">
@@ -72,7 +74,7 @@
                                 <label class="ml-2">الحالة:</label>
                                 <select name="status" class="form-control form-control-sm ml-2" onchange="this.form.submit()">
                                     <option value="">الكل</option>
-                                    @foreach(\App\Enums\PaymentStatusEnum::all() as $key => $val)
+                                    @foreach(\App\Enums\PaymentStatusEnum::labels() as $key => $val)
                                         <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>{{ $val }}</option>
                                     @endforeach
                                 </select>

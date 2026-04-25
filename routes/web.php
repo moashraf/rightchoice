@@ -433,6 +433,13 @@ Route::group(['prefix' => '{locale?}'], function () {
     // ── Real Estate Map Page (public, no auth required) ──────────────
     Route::get('/map', [App\Http\Controllers\MapController::class, 'index'])->middleware('setLocale')->name('map.index');
 
+    // ── Real Estate Developers (public) ──────────────────────────────
+    Route::get('/developers', [App\Http\Controllers\DeveloperController::class, 'index'])
+        ->middleware('setLocale')->name('developers.index');
+    Route::get('/developers/{id}', [App\Http\Controllers\DeveloperController::class, 'show'])
+        ->where('id', '[0-9]+')
+        ->middleware('setLocale')->name('developers.show');
+
     Route::group(['middleware' => 'CheackUser'], function () {
         Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
