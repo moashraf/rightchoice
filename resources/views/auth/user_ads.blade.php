@@ -184,6 +184,15 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
                                                         <a   target="_blank"  href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}"  class="btn btn-outline-primary ml-2">عرض</a>
 
+                                                        {{-- زر إظهار المستخدمين المهتمين --}}
+                                                        <button type="button"
+                                                                class="btn btn-outline-info ml-2 toggle-interested"
+                                                                data-target="#interested-{{ $aqar->id }}">
+                                                            <i class="fas fa-users"></i>
+                                                            المهتمون
+                                                            <span class="badge badge-light">{{ $aqar->interested_contacts_count ?? 0 }}</span>
+                                                        </button>
+
                                                         <!-- <a class="btn btn-light  ml-2 addToCart" data-id="{{$aqar['id']}}"> أضف <svg-->
                                                         <!--    xmlns="http://www.w3.org/2000/svg" width="16"-->
                                                         <!--    height="16" fill="currentColor" class="bi bi-heart"-->
@@ -192,6 +201,70 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         <!--        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />-->
                                                         <!--</svg></a>-->
 
+                                                    </div>
+
+                                                    {{-- ── لوحة المستخدمين المهتمين (مخفية افتراضياً) ── --}}
+                                                    <div id="interested-{{ $aqar->id }}"
+                                                         class="interested-panel mt-3"
+                                                         style="display:none; background:#f8f9fa; border:1px solid #e3e6f0; border-radius:8px; padding:12px;">
+                                                        <h6 class="mb-3" style="border-bottom:1px solid #e3e6f0; padding-bottom:8px;">
+                                                            <i class="fas fa-user-friends text-info"></i>
+                                                            المستخدمون المهتمون بهذا العقار
+                                                        </h6>
+
+                                                        @php
+                                                            $contacts = $aqar->interestedContacts->unique('user_id')->filter(fn($c) => $c->user);
+                                                        @endphp
+
+                                                        @if($contacts->isEmpty())
+                                                            <div class="text-muted text-center p-2">
+                                                                <i class="fas fa-info-circle"></i>
+                                                                لا يوجد مستخدمون مهتمون حتى الآن.
+                                                            </div>
+                                                        @else
+                                                            <div class="row">
+                                                                @foreach($contacts as $contact)
+                                                                    @php $u = $contact->user; @endphp
+                                                                    <div class="col-md-6 mb-2">
+                                                                        <div style="display:flex; align-items:center; gap:10px; background:#fff; padding:10px; border-radius:8px; border:1px solid #eee;">
+                                                                            @if($u->profile_image)
+                                                                                <img src="{{ URL::to('/').'/images/'.$u->profile_image }}"
+                                                                                     alt="{{ $u->name }}"
+                                                                                     style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #f1f1f1;"
+                                                                                     loading="lazy"
+                                                                                     >
+                                                                            @else
+                                                                                <img src="{{ asset('images/FBO.png') }}"
+                                                                                     alt="{{ $u->name }}"
+                                                                                     style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #f1f1f1;"
+                                                                                     loading="lazy"
+                                                                                     >
+                                                                            @endif
+                                                                            <div style="flex:1; min-width:0;">
+                                                                                <div style="font-weight:bold; font-size:14px;">
+                                                                                    {{ $u->name ?? '—' }}
+                                                                                </div>
+                                                                                @if($u->email)
+                                                                                    <div style="font-size:12px; color:#666; word-break:break-all;">
+                                                                                        <i class="fas fa-envelope"></i>
+                                                                                        <a href="mailto:{{ $u->email }}">{{ $u->email }}</a>
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($u->MOP)
+                                                                                    <div style="font-size:12px; color:#666;">
+                                                                                        <i class="fas fa-phone"></i>
+                                                                                        <a href="tel:{{ $u->MOP }}">{{ $u->MOP }}</a>
+                                                                                    </div>
+                                                                                @endif
+                                                                                <div style="font-size:11px; color:#999;">
+                                                                                    {{ $contact->created_at ? $contact->created_at->format('Y-m-d H:i') : '' }}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
                                                     </div>
 
 
@@ -297,5 +370,19 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 		<!-- ============================ Call To Action ================================== -->
 								<x-call-to-action />
 		<!-- ============================ Call To Action End ================================== -->
+
+<script>
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.toggle-interested');
+        if (!btn) return;
+        e.preventDefault();
+        var sel = btn.getAttribute('data-target');
+        var box = document.querySelector(sel);
+        if (!box) return;
+        var isOpen = box.style.display !== 'none' && box.style.display !== '';
+        box.style.display = isOpen ? 'none' : 'block';
+        btn.classList.toggle('active', !isOpen);
+    });
+</script>
 
 </x-layout>

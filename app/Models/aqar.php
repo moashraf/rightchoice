@@ -243,6 +243,13 @@ class aqar extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * المستخدمون الذين أبدوا اهتماماً بهذا العقار (سجلات usercontactaqar).
+     */
+    public function interestedContacts(){
+        return $this->hasMany(UserContactAqar::class, 'aqars_id', 'id');
+    }
+
     public function offerTypes(){
         return $this->belongsTo(OfferTypes::class, 'offer_type');
     }
