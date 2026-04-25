@@ -1,6 +1,6 @@
 <x-layout>
  @section('title')
-    اعلاناتي
+        {{ trans('langsite.my_ads')}}
     @endsection
 <?PHP
 $user = auth()->user();

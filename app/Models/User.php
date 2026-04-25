@@ -80,6 +80,29 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    /**
+     * منح كل مستخدم جديد 250 نقطة مجانية تلقائياً عند التسجيل.
+     */
+    protected static function booted()
+    {
+        static::created(function (User $user) {
+            // تجنّب الإنشاء المكرر إذا تم منحه باقة من مكان آخر فى نفس الطلب
+            $exists = UserPriceing::where('user_id', $user->id)->exists();
+            if ($exists) {
+                return;
+            }
+
+            UserPriceing::create([
+                'user_id'        => $user->id,
+                'pricing_id'     => 2,   // الباقة الافتراضية المستخدمة فى باقى أنحاء النظام
+                'start_points'   => 250,
+                'current_points' => 250,
+                'sub_points'     => 0,
+                'statues'        => 1,
+            ]);
+        });
+    }
+
 
 
 

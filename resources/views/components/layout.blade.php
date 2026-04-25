@@ -443,26 +443,26 @@
                                     </li>
 
                                     {{-- Community Link --}}
-                                    @auth
-                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">
-                                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">
-                                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>
-                                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}
-                                            </a>
-                                        </li>
-                                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">
-                                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">
-                                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>
-                                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}
-                                            </a>
-                                        </li>
-                                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">
-                                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">
-                                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>
-                                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}
-                                            </a>
-                                        </li>
-                                    @endauth
+{{--                                    @auth--}}
+{{--                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">--}}
+{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">--}}
+{{--                                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>--}}
+{{--                                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">--}}
+{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">--}}
+{{--                                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>--}}
+{{--                                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">--}}
+{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">--}}
+{{--                                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>--}}
+{{--                                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                    @endauth--}}
 
                                 </ul>
 
@@ -579,13 +579,32 @@
                                         @if(Auth()->user()->TYPE != 4)
 
                                             <li>
-                                                <a href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}">{{ trans('langsite.fav')}}</a>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}">
+                                                    {{ trans('langsite.fav')}}
+                                                </a>
                                             </li>
                                             <li>
-                                                <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">اعلاناتي</a>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">
+
+                                                    {{ trans('langsite.my_payments')}}
+
+
+                                                </a>
                                             </li>
+
+                                                <li>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">
+
+                                                    {{ trans('langsite.my_ads')}}
+                                                </a>
+                                            </li>
+
+
                                             <li>
-                                                <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">النقاط</a>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">
+
+                                                    النقاط
+                                                </a>
                                             </li>
                                             <li>
                                                 <a class="user_complaints_user_complaints" href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">

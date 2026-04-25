@@ -2,6 +2,8 @@
 
 return [
 
+    'my_payments'             => ' My payments',
+    'my_ads'             => 'my ads',
     'developers'             => 'Real Estate Developers',
     'developers_intro'       => 'Browse all real estate developers and their properties',
     'developer_profile'      => 'Developer Profile',

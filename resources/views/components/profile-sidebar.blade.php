@@ -46,7 +46,8 @@
 
                         <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}"
                            class="btn btn-sm btn-outline-primary">
-                            <i class="fa fa-building"></i> اعلاناتي
+                            <i class="fa fa-building"></i>
+                            {{ trans('langsite.my_ads')}}
                         </a>
 
                         <a href="{{ URL::to(Config::get('app.locale').'/user_wishs') }}"
@@ -61,7 +62,9 @@
 
                         <a href="{{ URL::to(Config::get('app.locale').'/user/payments') }}"
                            class="btn btn-sm btn-outline-success">
-                            <i class="fa fa-credit-card"></i> مدفوعاتي
+                            <i class="fa fa-credit-card"></i>
+
+                            {{ trans('langsite.my_payments')}}
                         </a>
                     </div>
 

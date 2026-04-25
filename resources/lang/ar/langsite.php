@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'my_payments'             => '  مدفوعاتي  ',
+
+    'my_ads'             => 'اعلاناتي  ',
     'developers'             => 'المطورون العقاريون',
     'developers_intro'       => 'تصفح كل المطورين العقاريين والعقارات الخاصة بهم',
     'developer_profile'      => 'صفحة المطور العقاري',
