@@ -74,7 +74,7 @@
                                 <label class="ml-2">الحالة:</label>
                                 <select name="status" class="form-control form-control-sm ml-2" onchange="this.form.submit()">
                                     <option value="">الكل</option>
-                                    @foreach(\App\Enums\PaymentStatusEnum::all() as $key => $val)
+                                    @foreach(\App\Enums\PaymentStatusEnum::labels() as $key => $val)
                                         <option value="{{ $key }}" {{ request('status') == $key ? 'selected' : '' }}>{{ $val }}</option>
                                     @endforeach
                                 </select>
