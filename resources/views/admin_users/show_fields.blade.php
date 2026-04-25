@@ -37,6 +37,22 @@
 
         <li class="list-group-item"><strong>Status:</strong> {{ $user->status ? 'Active' : 'Un Active' }}</li>
 
+        {{-- ── آخر تسجيل دخول ─────────────────────────────────────────── --}}
+        <li class="list-group-item">
+            <strong>آخر تسجيل دخول:</strong>
+            @if($user->last_login_at)
+                <span class="badge badge-success p-2" style="font-size:13px;">
+                    <i class="far fa-clock ml-1"></i>
+                    {{ $user->last_login_at->format('Y-m-d H:i:s') }}
+                </span>
+                <span class="text-muted small mr-2">
+                    ({{ $user->last_login_at->diffForHumans() }})
+                </span>
+            @else
+                <span class="badge badge-secondary p-2">لم يسجل الدخول من قبل</span>
+            @endif
+        </li>
+
         @if($user->invited_by)
             <li class="list-group-item"><strong>تم الدعوة بواسطة:</strong> {{ $user->invited_by }}</li>
         @endif
