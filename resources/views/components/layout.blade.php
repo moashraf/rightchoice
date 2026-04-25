@@ -608,7 +608,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">
+                                                <a href="{{ URL::to(Config::get('app.locale').'/my-payments') }}">
 
                                                     {{ trans('langsite.my_payments')}}
 

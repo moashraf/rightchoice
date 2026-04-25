@@ -60,7 +60,7 @@
                             <i class="fa fa-exclamation-circle"></i> شكاواي
                         </a>
 
-                        <a href="{{ URL::to(Config::get('app.locale').'/user/payments') }}"
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments') }}"
                            class="btn btn-sm btn-outline-success">
                             <i class="fa fa-credit-card"></i>
 
