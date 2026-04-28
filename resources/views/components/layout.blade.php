@@ -588,6 +588,25 @@
 
                                             </a></li>
 
+                                        @if(Auth::check() && (request()->is('*/dashboard') || request()->is('dashboard')))
+                                            @php
+                                                $__pendingDel  = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','pending')->first();
+                                                $__rejectedDel = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','rejected')->orderBy('id','desc')->first();
+                                            @endphp
+                                            <li>
+                                                @if($__pendingDel)
+                                                    <a href="#" style="color:#e67e22; cursor:default;">
+                                                        <i class="fa fa-clock"></i> طلب الحذف قيد المراجعة
+                                                    </a>
+                                                @else
+                                                    <a href="#" id="navDeleteAccountBtn" style="color:#dc3545;">
+                                                        <i class="fa fa-trash"></i>
+                                                        {{ $__rejectedDel ? 'طلب حذف الحساب مجدداً' : 'طلب حذف الحساب' }}
+                                                    </a>
+                                                @endif
+                                            </li>
+                                        @endif
+
                                     @else
 
                                         <li>
@@ -2429,6 +2448,65 @@ var CompareManager = (function() {
 })();
 </script>
 {{-- ==================== End Property Comparison Manager ==================== --}}
+
+{{-- Delete Account Modal (shown only on dashboard via nav link) --}}
+@if(Auth::check() && (request()->is('*/dashboard') || request()->is('dashboard')))
+@php
+    $__pendingDelNav  = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','pending')->first();
+@endphp
+@if(!$__pendingDelNav)
+<div class="modal fade" id="navDeleteAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{ URL::to('request-account-delete') }}" method="POST">
+                @csrf
+                <div class="modal-header" style="background:#dc3545; color:#fff;">
+                    <h5 class="modal-title"><i class="fa fa-trash ml-1"></i> طلب حذف الحساب</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle ml-1"></i>
+                        <strong>تنبيه:</strong> سيتم إرسال طلب حذف حسابك للإدارة للمراجعة.
+                    </div>
+                    <div class="form-group">
+                        <label for="navDeleteReason"><strong>سبب طلب الحذف <span style="color:red">*</span></strong></label>
+                        <textarea id="navDeleteReason" name="reason" class="form-control" rows="4"
+                                  placeholder="اكتب سبب رغبتك في حذف الحساب..." required minlength="10"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-paper-plane ml-1"></i> إرسال الطلب</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('navDeleteAccountBtn');
+    if (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
+                $('#navDeleteAccountModal').modal('show');
+            } else {
+                var m = document.getElementById('navDeleteAccountModal');
+                if (m) { m.style.display='block'; m.classList.add('show'); document.body.classList.add('modal-open'); }
+            }
+        });
+    }
+    document.querySelectorAll('#navDeleteAccountModal [data-dismiss="modal"]').forEach(function(el){
+        el.addEventListener('click', function(){
+            if (typeof $ !== 'undefined' && $.fn && $.fn.modal) { $('#navDeleteAccountModal').modal('hide'); }
+            else { var m=document.getElementById('navDeleteAccountModal'); if(m){m.style.display='none';m.classList.remove('show');document.body.classList.remove('modal-open');} }
+        });
+    });
+});
+</script>
+@endif
+@endif
 
 </body>
 

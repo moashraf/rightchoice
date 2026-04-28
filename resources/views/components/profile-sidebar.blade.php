@@ -69,44 +69,44 @@
                     </div>
 
                     {{-- Delete Account Request --}}
-                    <div class="mt-3">
+{{--                    <div class="mt-3">--}}
 
-                        @if(session('delete_request_success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fa fa-check-circle ml-1"></i> {{ session('delete_request_success') }}
-                                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        @endif
+{{--                        @if(session('delete_request_success'))--}}
+{{--                            <div class="alert alert-success alert-dismissible fade show" role="alert">--}}
+{{--                                <i class="fa fa-check-circle ml-1"></i> {{ session('delete_request_success') }}--}}
+{{--                                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
 
-                        @if(session('delete_request_error'))
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <i class="fa fa-exclamation-triangle ml-1"></i> {{ session('delete_request_error') }}
-                                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                            </div>
-                        @endif
+{{--                        @if(session('delete_request_error'))--}}
+{{--                            <div class="alert alert-warning alert-dismissible fade show" role="alert">--}}
+{{--                                <i class="fa fa-exclamation-triangle ml-1"></i> {{ session('delete_request_error') }}--}}
+{{--                                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
 
-                        @if($pendingDeleteReq)
-                            <div class="alert alert-warning" style="font-size:13px;">
-                                <i class="fa fa-clock ml-1"></i> <strong>طلب حذف الحساب قيد المراجعة</strong><br>
-                                <small>تم تقديم الطلب بتاريخ {{ $pendingDeleteReq->created_at->format('Y-m-d') }}</small>
-                            </div>
-                        @elseif($rejectedDeleteReq && !$pendingDeleteReq)
-                            <div class="alert alert-danger" style="font-size:13px;">
-                                <i class="fa fa-times-circle ml-1"></i> <strong>تم رفض طلب حذف حسابك</strong><br>
-                                @if($rejectedDeleteReq->admin_note)
-                                    <small>السبب: {{ $rejectedDeleteReq->admin_note }}</small><br>
-                                @endif
-                            </div>
-                            <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">
-                                <i class="fa fa-trash ml-1"></i> طلب حذف الحساب مجدداً
-                            </button>
-                        @else
-                            <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">
-                                <i class="fa fa-trash ml-1"></i> طلب حذف الحساب
-                            </button>
-                        @endif
+{{--                        @if($pendingDeleteReq)--}}
+{{--                            <div class="alert alert-warning" style="font-size:13px;">--}}
+{{--                                <i class="fa fa-clock ml-1"></i> <strong>طلب حذف الحساب قيد المراجعة</strong><br>--}}
+{{--                                <small>تم تقديم الطلب بتاريخ {{ $pendingDeleteReq->created_at->format('Y-m-d') }}</small>--}}
+{{--                            </div>--}}
+{{--                        @elseif($rejectedDeleteReq && !$pendingDeleteReq)--}}
+{{--                            <div class="alert alert-danger" style="font-size:13px;">--}}
+{{--                                <i class="fa fa-times-circle ml-1"></i> <strong>تم رفض طلب حذف حسابك</strong><br>--}}
+{{--                                @if($rejectedDeleteReq->admin_note)--}}
+{{--                                    <small>السبب: {{ $rejectedDeleteReq->admin_note }}</small><br>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                            <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">--}}
+{{--                                <i class="fa fa-trash ml-1"></i> طلب حذف الحساب مجدداً--}}
+{{--                            </button>--}}
+{{--                        @else--}}
+{{--                            <button type="button" id="openDeleteModalBtn" class="btn btn-sm btn-outline-danger mt-1">--}}
+{{--                                <i class="fa fa-trash ml-1"></i> طلب حذف الحساب--}}
+{{--                            </button>--}}
+{{--                        @endif--}}
 
-                    </div>
+{{--                    </div>--}}
 
                     {{-- Delete Account Modal --}}
                     <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog"
