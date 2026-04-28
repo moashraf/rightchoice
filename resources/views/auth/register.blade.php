@@ -137,11 +137,20 @@
                                         <span class="text-danger">*</span></label>
 
 
-                                    <input oninvalid="this.setCustomValidity('   برجاء ادخال    رقم الهاتف     ')"
-                                           oninput="this.setCustomValidity('')"
-                                           required id="phone" value="{{ old('MOP') }}" style="/* width:96% */"
-                                           type="number" name="MOP"
-                                           class="myselect"/>
+                                    <input
+                                           id="phone" value="{{ old('MOP') }}" style="/* width:96% */"
+                                           type="tel" name="MOP" inputmode="numeric" pattern="\d{11}"
+                                           maxlength="11"
+                                           required
+                                           class="myselect"
+                                           oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,11); validatePhone(this);"
+                                           oninvalid="this.setCustomValidity('برجاء إدخال رقم هاتف مكون من 11 رقم')"/>
+                                    <small id="phone-hint" style="color:#6c757d; font-size:12px;">
+                                        أدخل 11 رقم (مثال: 01012345678)
+                                    </small>
+                                    <small id="phone-error" class="text-danger" style="display:none; font-size:12px;">
+                                        <i class="fa fa-exclamation-circle"></i> رقم الهاتف يجب أن يكون 11 رقم بالضبط
+                                    </small>
 
                                 </div>
                             </div>
@@ -317,7 +326,39 @@
             position: relative;
             z-index: 2;
         }
+        #phone.is-valid-phone  { border-color: #28a745 !important; }
+        #phone.is-invalid-phone { border-color: #dc3545 !important; }
     </style>
 
+    <script>
+        function validatePhone(input) {
+            var val = input.value;
+            var hint  = document.getElementById('phone-hint');
+            var error = document.getElementById('phone-error');
+            if (val.length === 0) {
+                input.classList.remove('is-valid-phone','is-invalid-phone');
+                hint.style.display  = 'block';
+                error.style.display = 'none';
+                input.setCustomValidity('برجاء إدخال رقم هاتف مكون من 11 رقم');
+            } else if (val.length < 11) {
+                input.classList.remove('is-valid-phone');
+                input.classList.add('is-invalid-phone');
+                hint.style.display  = 'none';
+                error.style.display = 'block';
+                error.innerHTML = '<i class="fa fa-exclamation-circle"></i> أدخلت ' + val.length + ' أرقام — مطلوب 11 رقم';
+                input.setCustomValidity('برجاء إدخال رقم هاتف مكون من 11 رقم');
+            } else {
+                input.classList.remove('is-invalid-phone');
+                input.classList.add('is-valid-phone');
+                hint.style.display  = 'none';
+                error.style.display = 'none';
+                input.setCustomValidity('');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var phone = document.getElementById('phone');
+            if (phone && phone.value.length > 0) validatePhone(phone);
+        });
+    </script>
 
 </x-layout>
