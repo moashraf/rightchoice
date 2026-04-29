@@ -111,6 +111,22 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-2">
+                            <label>الباقة</label>
+                            <select class="form-control" name="has_package">
+                                <option value="">الكل</option>
+                                <option value="1" {{ request('has_package') === '1' ? 'selected' : '' }}>مشترك في باقة</option>
+                                <option value="0" {{ request('has_package') === '0' ? 'selected' : '' }}>غير مشترك في باقة</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>العقارات</label>
+                            <select class="form-control" name="has_aqars">
+                                <option value="">الكل</option>
+                                <option value="1" {{ request('has_aqars') === '1' ? 'selected' : '' }}>أضاف عقارات</option>
+                                <option value="0" {{ request('has_aqars') === '0' ? 'selected' : '' }}>لم يضف عقارات</option>
+                            </select>
+                        </div>
                         <div class="col-md-1">
                             <label>اظهار</label>
                             <select name="show" class="form-control">
@@ -146,6 +162,7 @@
                             <th>التليفون المحمول</th>
                             <th>عدد العقارات</th>
                             <th>مصدر الدعوة</th>
+                            <th>الاشتراك</th>
                             <th>التاريخ</th>
                             <th>حالة</th>
                             <th>حدث</th>
@@ -174,6 +191,21 @@
                                         <span class="badge badge-primary">{{ $user->invited_by }}</span>
                                     @else
                                         <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @php
+                                        $latestPackage = $user->UserPriceing->sortByDesc('id')->first();
+                                    @endphp
+                                    @if($latestPackage)
+                                        <span class="badge badge-success p-1" style="font-size:12px;">
+                                            <i class="fas fa-gem ml-1"></i>
+                                            {{ $latestPackage->type ?? 'باقة #'.$latestPackage->id }}
+                                        </span>
+                                    @else
+                                        <span class="badge badge-light text-muted" style="font-size:12px;">
+                                            <i class="fas fa-times-circle ml-1"></i> غير مشترك
+                                        </span>
                                     @endif
                                 </td>
                                 <td>

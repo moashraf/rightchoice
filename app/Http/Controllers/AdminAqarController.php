@@ -55,6 +55,9 @@ class AdminAqarController extends AppBaseController
         if ($request->filter_status !== null && $request->filter_status !== '')
             $allAqars->where('status', $request->filter_status);
 
+        if ($request->filled('filter_property_type'))
+            $allAqars->where('property_type', $request->filter_property_type);
+
         if ($request->key_word) {
             $allAqars->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->key_word . '%')
@@ -64,9 +67,19 @@ class AdminAqarController extends AppBaseController
             });
         }
 
+        if ($request->filled('date_from')) {
+            $allAqars->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $allAqars->whereDate('created_at', '<=', $request->date_to);
+        }
+
         $allAqars = $allAqars->paginate(50);
 
-        return view('admin_aqars.index', compact('allAqars'));
+        $propertyTypes = property_type::select('id', 'property_type')->get();
+
+        return view('admin_aqars.index', compact('allAqars', 'propertyTypes'));
     }
 
     /**

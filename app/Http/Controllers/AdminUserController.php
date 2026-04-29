@@ -62,6 +62,15 @@ class AdminUserController extends Controller
             }
         }
 
+        // فلتر حسب الاشتراك في باقة
+        if ($request->filled('has_package')) {
+            if ((int) $request->has_package === 1) {
+                $users->whereHas('UserPriceing');
+            } else {
+                $users->whereDoesntHave('UserPriceing');
+            }
+        }
+
         // فلتر حسب مصدر الدعوة
         if ($request->filled('filter_invited_by')) {
             $users->where('invited_by', $request->filter_invited_by);
