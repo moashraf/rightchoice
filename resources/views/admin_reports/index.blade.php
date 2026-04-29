@@ -612,7 +612,7 @@
     <div class="row mb-2">
         <div class="col-12">
             <h5 class="mt-2 mb-3" style="font-weight:700; color:#343a40;">
-                <i class="fas fa-trophy ml-2"></i> أكثر المستخدمين نشاطاً (عدد العقارات)
+                <i class="fas fa-trophy ml-2"></i> أكثر المستخدمين نشاطاً (عدد العقارات النشطة)
             </h5>
         </div>
     </div>
