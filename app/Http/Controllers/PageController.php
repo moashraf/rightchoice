@@ -227,7 +227,8 @@ class PageController extends Controller
                 ]);
 
             Auth::loginUsingId($user->id);
-            return redirect()->intended('/');
+            $locale = app()->getLocale() ?: 'ar';
+            return redirect('/' . $locale . '/donePhoneVerf');
         } else {
             return back()->withErrors([
                 'otp' => 'البيانات التى تم ادخالها غير صحيحه.',
