@@ -20,16 +20,23 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+        <label>نوع الوحدة</label>
+        <select class="form-control" name="filter_property_type">
+            <option value="">الكل</option>
+            @foreach($propertyTypes as $pt)
+                <option value="{{ $pt->id }}" {{ request('filter_property_type') == $pt->id ? 'selected' : '' }}>
+                    {{ $pt->property_type }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2">
         <label>ترتيب حسب</label>
         <select class="form-control" name="sortBy">
             <option value="">اختر</option>
-            <option value="0" {{ request('sortBy') !== null ? (request('sortBy') == 0 ? 'selected' : '') : '' }}>من
-                الاحدث للاقدم
-            </option>
-            <option value="1" {{ request('sortBy') !== null ? (request('sortBy') == 1 ? 'selected' : '') : '' }}>من
-                الاقدم للاحدث
-            </option>
+            <option value="0" {{ request('sortBy') == '0' ? 'selected' : '' }}>من الاحدث للاقدم</option>
+            <option value="1" {{ request('sortBy') == '1' ? 'selected' : '' }}>من الاقدم للاحدث</option>
         </select>
     </div>
     <div class="col-md-3">
@@ -38,9 +45,22 @@
                value="{{ request('key_word') }}">
     </div>
     <div class="col-md-2">
-        <button class="btn btn-success">
+        <label>من تاريخ</label>
+        <input type="date" name="date_from" class="form-control" value="{{ request('date_from') }}">
+    </div>
+    <div class="col-md-2">
+        <label>إلى تاريخ</label>
+        <input type="date" name="date_to" class="form-control" value="{{ request('date_to') }}">
+    </div>
+    <div class="col-md-1 mt-2">
+        <button class="btn btn-success btn-block">
             <i class="fa fa-filter"></i> فلتر
         </button>
+    </div>
+    <div class="col-md-1 mt-2">
+        <a href="{{ route('sitemanagement.aqars.index') }}" class="btn btn-secondary btn-block">
+            <i class="fa fa-times"></i>
+        </a>
     </div>
 </form>
 
