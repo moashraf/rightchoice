@@ -95,8 +95,8 @@ class User extends Authenticatable implements MustVerifyEmail
             UserPriceing::create([
                 'user_id'        => $user->id,
                 'pricing_id'     => 2,   // الباقة الافتراضية المستخدمة فى باقى أنحاء النظام
-                'start_points'   => 250,
-                'current_points' => 250,
+                'start_points'   => 200,
+                'current_points' => 200,
                 'sub_points'     => 0,
                 'statues'        => 1,
             ]);
