@@ -20,15 +20,32 @@
                     🎁 تم إضافة <span class="text-green-600 font-bold text-lg">200 نقطة</span> مجانية إلى حسابك!
                 </p>
                 <p class="text-yellow-700 text-sm mt-1">
-                    يمكنك استخدام هذه النقاط للاستفادة من خدمات المنصة.
+                    يمكنك استخدام هذه النقاط للاستفادة من خدمات الموقع.
                 </p>
             </div>
         </div>
 
-        <div class="mt-4 flex items-center justify-center">
-                <a href="#" class="underline text-sm text-gray-600 hover:text-gray-900">
-                        متابعة تسجيل الدخول
-                </a>
+        <div class="mt-6 grid grid-cols-2 gap-3">
+            <a href="{{ url(app()->getLocale() . '/') }}"
+               class="flex flex-col items-center justify-center bg-blue-50 border border-blue-200 rounded-lg p-3 hover:bg-blue-100 transition">
+                <span class="text-2xl mb-1">🏠</span>
+                <span class="text-sm font-semibold text-blue-700">الصفحة الرئيسية</span>
+            </a>
+            <a href="{{ url(app()->getLocale() . '/dashboard') }}"
+               class="flex flex-col items-center justify-center bg-purple-50 border border-purple-200 rounded-lg p-3 hover:bg-purple-100 transition">
+                <span class="text-2xl mb-1">👤</span>
+                <span class="text-sm font-semibold text-purple-700">الملف الشخصي</span>
+            </a>
+            <a href="{{ url(app()->getLocale() . '/all_aqar_for_sale') }}"
+               class="flex flex-col items-center justify-center bg-green-50 border border-green-200 rounded-lg p-3 hover:bg-green-100 transition">
+                <span class="text-2xl mb-1">🏢</span>
+                <span class="text-sm font-semibold text-green-700">عقارات للبيع</span>
+            </a>
+            <a href="{{ url(app()->getLocale() . '/all_aqar_for_rent') }}"
+               class="flex flex-col items-center justify-center bg-orange-50 border border-orange-200 rounded-lg p-3 hover:bg-orange-100 transition">
+                <span class="text-2xl mb-1">🔑</span>
+                <span class="text-sm font-semibold text-orange-700">عقارات للإيجار</span>
+            </a>
         </div>
     </x-jet-authentication-card>
 
