@@ -119,7 +119,7 @@ class AdminAqarController extends AppBaseController
      */
     public function show($id)
     {
-        $aqar = $this->aqarRepository->find($id);
+        $aqar = aqar::with('updatedBy')->find($id);
 
         if (empty($aqar)) {
             Flash::error('العقار غير موجود');

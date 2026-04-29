@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Enums\StatusEnumAqar;
 use App\Enums\VIPEnum;
+use Illuminate\Support\Facades\Auth;
 
 class aqar extends Model
 {
@@ -15,6 +16,23 @@ class aqar extends Model
 
     protected $table = 'aqar';
     protected $primaryKey = 'id';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
+
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
+    }
 
     protected $fillable = [
         'slug',
@@ -61,7 +79,8 @@ class aqar extends Model
         'status',
         'title_en',
         'description_en',
-        'slug_en'
+        'slug_en',
+        'updated_by'
     ];
 
     public static $rules = [
@@ -241,6 +260,10 @@ class aqar extends Model
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function updatedBy(){
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
     /**
