@@ -32,6 +32,17 @@
             <li class="list-group-item">{!! Form::label('points_avail', 'Aqar Points:') !!} {{ $aqar->points_avail }}</li>
             <li class="list-group-item">{!! Form::label('created_at', 'Created At:') !!} {{ $aqar->created_at }}</li>
             <li class="list-group-item">{!! Form::label('updated_at', 'Updated At:') !!} {{ $aqar->updated_at }}</li>
+            <li class="list-group-item d-flex align-items-center gap-2">
+                <strong>آخر تعديل بواسطة:</strong>
+                @if($aqar->updatedBy)
+                    <a href="{{ route('sitemanagement.users.show', $aqar->updatedBy->id) }}" class="ms-1">
+                        {{ $aqar->updatedBy->name }}
+                    </a>
+                    <small class="text-muted ms-1">({{ $aqar->updatedBy->email }})</small>
+                @else
+                    <span class="text-muted ms-1">—</span>
+                @endif
+            </li>
             <li class="list-group-item" style="background-color:#343a40; color:#fff; font-weight:bold;">Owner Details</li>
             <li class="list-group-item">{!! Form::label('user_id', 'User Id:') !!} {{ $aqar->user_id }}</li>
         </ul>

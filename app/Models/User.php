@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enums\RoleEnum;
 use App\Enums\UserTypeEnum;
 use App\Enums\UserStatusEnum;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -23,6 +24,23 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use TwoFactorAuthenticatable;
     use SoftDeletes;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
+
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
          'isAdmin',
          'invited_by',
          'role_id',
+         'updated_by',
     ];
 
     /**
@@ -95,8 +114,8 @@ class User extends Authenticatable implements MustVerifyEmail
             UserPriceing::create([
                 'user_id'        => $user->id,
                 'pricing_id'     => 2,   // الباقة الافتراضية المستخدمة فى باقى أنحاء النظام
-                'start_points'   => 250,
-                'current_points' => 250,
+                'start_points'   => 200,
+                'current_points' => 200,
                 'sub_points'     => 0,
                 'statues'        => 1,
             ]);
