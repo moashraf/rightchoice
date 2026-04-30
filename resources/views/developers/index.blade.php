@@ -4,8 +4,7 @@
         {{ trans('langsite.developers') }}
     @endsection
 
-    <div class="image-cover hero-banner"
-         style="background:url('{{ asset('assets/img/banner-1.jpg') }}') no-repeat center/cover;">
+    <div class="image-cover  " >
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12">

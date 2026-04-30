@@ -1199,7 +1199,7 @@ class AqarController extends Controller
 
         // return redirect("/")->with('status', '  تم الحفظ بنجاح!');
 
-        $message = 'تم اضافه الاعلان بنجاح و جاري المراجعه';
+        $message = ' شكرا  لك تم اضافه الاعلان بنجاح و جاري المراجعه';
         if ($validator->fails()) {
 
             return Redirect::back()->withErrors($validator)->withInput($request->input());

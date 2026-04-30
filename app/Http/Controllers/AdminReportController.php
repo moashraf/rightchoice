@@ -17,6 +17,7 @@ use App\Models\UserPriceing;
 use App\Models\RequestPhotoSession;
 use App\Models\PriceVip;
 use App\Models\Viewer;
+use App\Models\Pricing;
 
 class AdminReportController extends Controller
 {
@@ -219,5 +220,43 @@ class AdminReportController extends Controller
         return view('admin_reports.invited_by_details', compact(
             'users', 'invitedBy', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount'
         ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
+    }
+
+    public function userContacts(Request $request)
+    {
+        $fromDate = $request->input('from_date');
+        $toDate   = $request->input('to_date');
+        $search   = $request->input('search');
+
+        // Get users who have contacted aqars, with filter
+        $usersQuery = User::whereNull('deleted_at')
+            ->whereHas('contact', function ($q) use ($fromDate, $toDate) {
+                if ($fromDate) $q->whereDate('created_at', '>=', $fromDate);
+                if ($toDate)   $q->whereDate('created_at', '<=', $toDate);
+            })
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('name', 'like', "%{$search}%")
+                        ->orWhere('MOP', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->with([
+                'contact' => function ($q) use ($fromDate, $toDate) {
+                    if ($fromDate) $q->whereDate('created_at', '>=', $fromDate);
+                    if ($toDate)   $q->whereDate('created_at', '<=', $toDate);
+                    $q->orderByDesc('created_at');
+                },
+                'contact.all_aqat_viw',
+                'contact.all_aqat_viw.user',
+                'contact.all_aqat_viw.governrateq',
+                'contact.all_aqat_viw.offerTypes',
+                'userpricing.pricing',
+            ])
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->appends($request->all());
+
+        return view('admin_reports.user_contacts', compact('usersQuery', 'fromDate', 'toDate', 'search'));
     }
 }
