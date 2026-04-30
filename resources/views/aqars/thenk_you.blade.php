@@ -36,7 +36,6 @@
           </div>
     </section>
 
-
     <x-call-to-action />
 
 </x-layout>

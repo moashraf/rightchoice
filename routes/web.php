@@ -548,10 +548,14 @@ Route::group(['prefix' => '{locale?}'], function () {
     // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
     // Route::get('/tamyeez_vip/{vipid}/{aqarSingle_id}', 'App\Http\Controllers\PricController@tamyeez_vip')->middleware('setLocale');
 
-    Route::get('/search', 'App\Http\Controllers\AqarController@search')->name('search')->middleware('setLocale');
-    Route::get('/filter', 'App\Http\Controllers\AqarController@filter')->name('filter')->middleware('setLocale');
-    Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')->middleware('setLocale');
-    Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')->middleware('setLocale');
+    Route::get('/search', 'App\Http\Controllers\AqarController@search')->name('search')
+        ->middleware('setLocale');
+    Route::get('/filter', 'App\Http\Controllers\AqarController@filter')->name('filter')
+        ->middleware('setLocale');
+    Route::get('/sorted', 'App\Http\Controllers\AqarController@sorting')->name('sort')
+        ->middleware('setLocale');
+    Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')
+        ->middleware('setLocale');
 
     // ── Apartment Designer (صمم شقتك بنفسك) ────────────────────────
     Route::get('/designer', function () { return view('designer.index'); })->name('designer.index')->middleware('setLocale');
