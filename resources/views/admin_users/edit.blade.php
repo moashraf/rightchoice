@@ -25,6 +25,7 @@
 
         <div class="card">
             <form action="{{ route('sitemanagement.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="redirect_page" value="{{ $redirectPage ?? 1 }}">
                 @csrf
                 @method('PUT')
 

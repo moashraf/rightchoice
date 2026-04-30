@@ -134,7 +134,7 @@ class AdminUserController extends Controller
         return view('admin_users.show', compact('user'));
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -145,7 +145,19 @@ class AdminUserController extends Controller
 
         $all_point_of_user = UserPriceing::where('user_id', '=', $user->id)->latest()->first();
 
-        return view('admin_users.edit', compact('user', 'all_point_of_user'));
+        // Capture the page number from the referer URL so we can return to it after update
+        $redirectPage = $request->get('page');
+        if (!$redirectPage) {
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                parse_str(parse_url($referer, PHP_URL_QUERY), $params);
+                $redirectPage = $params['page'] ?? 1;
+            } else {
+                $redirectPage = 1;
+            }
+        }
+
+        return view('admin_users.edit', compact('user', 'all_point_of_user', 'redirectPage'));
     }
 
     public function update(Request $request, $id)
@@ -200,7 +212,8 @@ class AdminUserController extends Controller
 
         flash('تم تحديث المستخدم بنجاح.')->success();
 
-        return redirect(route('sitemanagement.users.index'));
+        $page = $request->input('redirect_page', 1);
+        return redirect(route('sitemanagement.users.index') . ($page > 1 ? '?page=' . $page : ''));
     }
 
     public function destroy($id)
