@@ -691,7 +691,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $totalInvited = $invitedByStats->sum('total'); @endphp
+                                @php
+                                    $totalInvited = $invitedByStats->sum('total');
+                                    $notInvited   = $notInvitedCount ?? 0;
+                                    $grandTotal   = $totalInvited + $notInvited;
+                                @endphp
                                 @foreach($invitedByStats as $index => $item)
                                 @php
                                     $detailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
@@ -699,6 +703,7 @@
                                         'from_date'  => $fromDate ?? null,
                                         'to_date'    => $toDate ?? null,
                                     ]));
+                                    $percent = $grandTotal > 0 ? round(($item->total / $grandTotal) * 100, 1) : 0;
                                 @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
@@ -715,8 +720,7 @@
                                     </td>
                                     <td>
                                         <div class="progress" style="height:20px;">
-                                            @php $percent = $totalInvited > 0 ? round(($item->total / $totalInvited) * 100, 1) : 0; @endphp
-                                            <div class="progress-bar bg-success" role="progressbar"
+                                            <div class="progress-bar bg-info" role="progressbar"
                                                  style="width: {{ $percent }}%;">
                                                 {{ $percent }}%
                                             </div>
@@ -731,13 +735,13 @@
                                 @endforeach
 
                                 {{-- ===== المستخدمون غير المدعوين ===== --}}
-                                @if(isset($notInvitedCount) && $notInvitedCount > 0)
                                 @php
                                     $notInvitedDetailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
                                         'invited_by' => $notInvitedFilterValue ?? '__not_invited__',
                                         'from_date'  => $fromDate ?? null,
                                         'to_date'    => $toDate ?? null,
                                     ]));
+                                    $notInvitedPercent = $grandTotal > 0 ? round(($notInvited / $grandTotal) * 100, 1) : 0;
                                 @endphp
                                 <tr class="table-warning">
                                     <td><i class="fas fa-minus-circle text-warning"></i></td>
@@ -749,14 +753,10 @@
                                     </td>
                                     <td>
                                         <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
-                                            <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvitedCount) }}</span>
+                                            <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvited) }}</span>
                                         </a>
                                     </td>
                                     <td>
-                                        @php
-                                            $totalAll = $totalInvited + $notInvitedCount;
-                                            $notInvitedPercent = $totalAll > 0 ? round(($notInvitedCount / $totalAll) * 100, 1) : 0;
-                                        @endphp
                                         <div class="progress" style="height:20px;">
                                             <div class="progress-bar bg-warning" role="progressbar"
                                                  style="width: {{ $notInvitedPercent }}%;">
@@ -770,15 +770,14 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @endif
 
                             </tbody>
                             <tfoot class="bg-light">
                                 <tr>
-                                    <td colspan="2" class="font-weight-bold">الإجمالي</td>
+                                    <td colspan="2" class="font-weight-bold">الإجمالي الكلي (مدعوين + غير مدعوين)</td>
                                     <td>
                                         <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="text-decoration-none">
-                                            <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($totalInvited) }}</span>
+                                            <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($grandTotal) }}</span>
                                         </a>
                                     </td>
                                     <td><strong>100%</strong></td>
