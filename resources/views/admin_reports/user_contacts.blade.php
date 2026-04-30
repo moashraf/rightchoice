@@ -70,7 +70,9 @@
     <div class="card shadow-sm border-0 mb-4">
         {{-- رأس كارد العميل --}}
         <div class="card-header d-flex align-items-center justify-content-between flex-wrap py-2"
-             style="background: linear-gradient(135deg,#007bff11,#28a74511); border-right:5px solid #007bff;">
+             data-toggle="collapse" data-target="#contact-details-{{ $user->id }}"
+             aria-expanded="false" aria-controls="contact-details-{{ $user->id }}"
+             style="background: linear-gradient(135deg,#007bff11,#28a74511); border-right:5px solid #007bff; cursor:pointer;">
             <div class="d-flex align-items-center">
                 <div class="rounded-circle d-flex align-items-center justify-content-center ml-3"
                      style="width:48px;height:48px;background:#007bff22;font-size:22px;color:#007bff;">
@@ -112,12 +114,13 @@
                     <i class="fas fa-phone-alt ml-1"></i>
                     عدد التواصلات: {{ $contactCount }}
                 </span>
+                <i class="fas fa-chevron-down text-muted mr-2" style="transition:transform .3s;"></i>
             </div>
         </div>
 
         {{-- جدول العقارات التي تواصل معها العميل --}}
-        <div class="card-body p-0">
-            <div class="table-responsive">
+        <div class="collapse" id="contact-details-{{ $user->id }}">
+        <div class="card-body p-0">            <div class="table-responsive">
                 <table class="table table-hover table-sm mb-0">
                     <thead style="background:#f8f9fa;">
                         <tr>
@@ -125,8 +128,7 @@
                             <th>العقار</th>
                             <th>صاحب العقار</th>
                             <th style="width:110px;">سعر العقار</th>
-                            <th style="width:130px;">باقة العميل وقت التواصل</th>
-                            <th style="width:130px;">النقاط المتبقية</th>
+
                             <th style="width:140px;">تاريخ التواصل</th>
                             <th style="width:80px;">رابط</th>
                         </tr>
@@ -178,29 +180,12 @@
                                 <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td>
-                                @if($contactPackage && $contactPackage->pricing)
-                                <span class="badge p-1" style="background:#009688;color:#fff;font-size:11px;">
-                                    {{ $contactPackage->pricing->type }}
-                                </span>
-                                @else
-                                <span class="text-muted" style="font-size:12px;">—</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($contactPackage)
-                                <span class="text-warning font-weight-bold">
-                                    <i class="fas fa-coins ml-1" style="font-size:11px;"></i>
-                                    {{ number_format($contactPackage->current_points ?? 0) }}
-                                </span>
-                                <small class="text-muted">/ {{ number_format($contactPackage->start_points ?? 0) }}</small>
-                                @else
-                                <span class="text-muted">—</span>
-                                @endif
-                            </td>
+
+
                             <td>
                                 <i class="fas fa-clock text-muted ml-1" style="font-size:11px;"></i>
-                                <span style="font-size:12px;">{{ $contact->created_at ? $contact->created_at->format('d/m/Y H:i') : '—' }}</span>
+                                <span style="font-size:12px;">{{ $contact->created_at ? $contact->created_at->format('d/m/Y H:i') : '—' }}
+                                </span>
                             </td>
                             <td>
                                 @if($aqar)
@@ -219,7 +204,8 @@
                 </table>
             </div>
         </div>
-    </div>
+        </div>{{-- end collapse --}}
+    </div>{{-- end card --}}
     @empty
     <div class="card shadow-sm border-0">
         <div class="card-body text-center py-5 text-muted">
@@ -238,4 +224,27 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // rotate chevron when collapse opens/closes
+    document.querySelectorAll('[data-toggle="collapse"]').forEach(function(header) {
+        var target = document.querySelector(header.getAttribute('data-target'));
+        if (!target) return;
+        var icon = header.querySelector('.fa-chevron-down');
+        target.addEventListener('show.bs.collapse', function() {
+            if (icon) icon.style.transform = 'rotate(180deg)';
+        });
+        target.addEventListener('hide.bs.collapse', function() {
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        });
+        // jQuery fallback (Bootstrap 3/4 uses jQuery events)
+        $(target).on('show.bs.collapse', function() {
+            if (icon) icon.style.transform = 'rotate(180deg)';
+        }).on('hide.bs.collapse', function() {
+            if (icon) icon.style.transform = 'rotate(0deg)';
+        });
+    });
+</script>
+@endpush
 
