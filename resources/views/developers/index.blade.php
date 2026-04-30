@@ -61,7 +61,7 @@
                                 @endif
 
                                 <h3 style="margin-top:15px;font-size:18px;">{{ $dev->name }}</h3>
-{{  $dev  }}
+
                                 <div style="color:#888;font-size:13px;margin-top:6px;">
                                     <i class="fas fa-building"></i>
                                     {{ trans('langsite.developer_badge') }}

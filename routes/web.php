@@ -254,6 +254,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:reports.view');
     Route::get('reports/invited-by-details', [App\Http\Controllers\AdminReportController::class, 'invitedByDetails'])->name('reports.invitedByDetails')
         ->middleware('permission:reports.view');
+    Route::get('reports/user-contacts', [App\Http\Controllers\AdminReportController::class, 'userContacts'])->name('reports.userContacts')
+        ->middleware('permission:reports.view');
 
     // ── Account Delete Requests ──────────────────────────────────────────
     Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index')

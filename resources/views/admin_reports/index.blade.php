@@ -453,7 +453,7 @@
 
         {{-- تواصل المستخدمين مع العقارات --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
-            <a href="{{ route('sitemanagement.users.index') }}" class="text-decoration-none">
+            <a href="{{ route('sitemanagement.reports.userContacts') }}" class="text-decoration-none">
                 <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #795548 !important;">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
@@ -463,6 +463,9 @@
                         <div style="font-size:42px; color:#795548; opacity:.25;">
                             <i class="fas fa-phone-alt"></i>
                         </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <small class="text-muted" style="color:#795548 !important;">عرض التفاصيل &rarr;</small>
                     </div>
                 </div>
             </a>
