@@ -163,7 +163,7 @@ class AdminAqarController extends AppBaseController
     /**
      * Show the form for editing the specified aqar.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $aqar = $this->aqarRepository->find($id);
 
@@ -174,6 +174,18 @@ class AdminAqarController extends AppBaseController
 
         // Eager-load map coordinates for the location fields
         $aqar->load('aqarLocation');
+
+        // Capture the page number from the referer URL so we can return to it after update
+        $redirectPage = $request->get('page');
+        if (!$redirectPage) {
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                parse_str(parse_url($referer, PHP_URL_QUERY), $params);
+                $redirectPage = $params['page'] ?? 1;
+            } else {
+                $redirectPage = 1;
+            }
+        }
 
         $governrate    = Governrate::pluck('governrate', 'id');
         $district      = District::get();
@@ -194,7 +206,7 @@ class AdminAqarController extends AppBaseController
         return view('admin_aqars.edit', compact(
             'governrate', 'callTimes', 'mzaya', 'mzayaAqar', 'getPhoneFirst',
             'district', 'finishtype', 'floor', 'licensetype', 'offertype',
-            'subarea', 'propertytype', 'users', 'aqarcategory', 'compound'
+            'subarea', 'propertytype', 'users', 'aqarcategory', 'compound', 'redirectPage'
         ))->with('aqar', $aqar);
     }
 
@@ -256,7 +268,8 @@ class AdminAqarController extends AppBaseController
         }
 
         Flash::success('تم تحديث العقار بنجاح.');
-        return redirect(route('sitemanagement.aqars.index'));
+        $page = $request->input('redirect_page', 1);
+        return redirect(route('sitemanagement.aqars.index') . ($page > 1 ? '?page=' . $page : ''));
     }
 
     /**

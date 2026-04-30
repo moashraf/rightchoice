@@ -26,6 +26,7 @@
 
         <div class="card">
             {!! Form::model($aqar, ['route' => ['sitemanagement.aqars.update', $aqar->id], 'files' => true, 'method' => 'patch']) !!}
+            <input type="hidden" name="redirect_page" value="{{ $redirectPage ?? 1 }}">
 
             <div class="card-body">
                 <div class="row">
