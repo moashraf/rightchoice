@@ -4,8 +4,7 @@
         {{ trans('langsite.developers') }}
     @endsection
 
-    <div class="image-cover hero-banner"
-         style="background:url('{{ asset('assets/img/banner-1.jpg') }}') no-repeat center/cover;">
+    <div class="image-cover  " >
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
@@ -62,7 +61,7 @@
                                 @endif
 
                                 <h3 style="margin-top:15px;font-size:18px;">{{ $dev->name }}</h3>
-
+{{  $dev  }}
                                 <div style="color:#888;font-size:13px;margin-top:6px;">
                                     <i class="fas fa-building"></i>
                                     {{ trans('langsite.developer_badge') }}
