@@ -66,6 +66,9 @@
     @php
         $activePackage = $user->userpricing->sortByDesc('id')->first();
         $contactCount  = $user->contact->count();
+        $totalPointsUsed = $user->contact->sum(function($c) {
+            return optional($c->all_aqat_viw)->points_avail ?? 0;
+        });
     @endphp
     <div class="card shadow-sm border-0 mb-4">
         {{-- رأس كارد العميل --}}
@@ -114,6 +117,10 @@
                     <i class="fas fa-phone-alt ml-1"></i>
                     عدد التواصلات: {{ $contactCount }}
                 </span>
+                <span class="badge badge-warning p-2" style="font-size:12px;">
+                    <i class="fas fa-coins ml-1"></i>
+                    إجمالي النقاط المستهلكة: {{ number_format($totalPointsUsed) }}
+                </span>
                 <i class="fas fa-chevron-down text-muted mr-2" style="transition:transform .3s;"></i>
             </div>
         </div>
@@ -128,7 +135,7 @@
                             <th>العقار</th>
                             <th>صاحب العقار</th>
                             <th style="width:110px;">سعر العقار</th>
-
+                            <th style="width:110px;">نقاط مستهلكة</th>
                             <th style="width:140px;">تاريخ التواصل</th>
                             <th style="width:80px;">رابط</th>
                         </tr>
@@ -180,12 +187,18 @@
                                 <span class="text-muted">—</span>
                                 @endif
                             </td>
-
-
+                            <td>
+                                @if($aqar && $aqar->points_avail)
+                                <span class="badge badge-warning p-1" style="font-size:12px;">
+                                    <i class="fas fa-coins ml-1"></i>{{ number_format($aqar->points_avail) }}
+                                </span>
+                                @else
+                                <span class="text-muted">—</span>
+                                @endif
+                            </td>
                             <td>
                                 <i class="fas fa-clock text-muted ml-1" style="font-size:11px;"></i>
-                                <span style="font-size:12px;">{{ $contact->created_at ? $contact->created_at->format('d/m/Y H:i') : '—' }}
-                                </span>
+                                <span style="font-size:12px;">{{ $contact->created_at ? $contact->created_at->format('d/m/Y H:i') : '—' }}</span>
                             </td>
                             <td>
                                 @if($aqar)
