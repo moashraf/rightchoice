@@ -107,7 +107,7 @@ class Company extends Model
     }
 
 
-    public function district_ashraf(){
+    public function district_data(){
         return $this->belongsTo(District::class, 'district_id');
     }
 
