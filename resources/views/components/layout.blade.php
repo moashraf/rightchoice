@@ -138,6 +138,9 @@
             color: #fff !important;
         }
 
+        @keyframes rc-spin {
+            to { transform: rotate(360deg); }
+        }
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
@@ -1725,6 +1728,13 @@ else{
 
             @auth
 
+            // show loading spinner
+            document.getElementById('contMop').innerHTML =
+                '<div id="rc-loading-spinner" style="display:inline-flex;align-items:center;gap:8px;padding:8px 0;">' +
+                '<div style="width:22px;height:22px;border:3px solid #e0e0e0;border-top:3px solid #25a244;border-radius:50%;animation:rc-spin 0.7s linear infinite;"></div>' +
+                '<span style="font-size:14px;color:#555;">جاري التحميل...</span>' +
+                '</div>';
+
             $.ajax({
 
 
@@ -1752,14 +1762,25 @@ else{
                         });
 
                     }
-                    document.getElementById('contMop').innerHTML = '<a class="btn btn-success" href="tel:' + data.massage + '">' + data.massage + '</a>';
+                    var phone = data.massage;
+                    var waPhone = phone.replace(/[^0-9]/g, '');
+                    if (waPhone.indexOf('20') !== 0) {
+                        waPhone = '20' + waPhone.replace(/^0+/, '');
+                    }
+                    var waMsg = encodeURIComponent('السلام عليكم، أنا مهتم بالعقار:\n' + window.location.href);
+                    document.getElementById('contMop').innerHTML =
+                        '<a class="btn btn-success" href="tel:' + phone + '">' + phone + '</a> ' +
+                        '<a href="https://wa.me/' + waPhone + '?text=' + waMsg + '" target="_blank" class="btn btn-success mt-1" style="background-color:#25D366;border-color:#25D366;">' +
+                        '<img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" width="20" height="20"/> واتساب</a>';
 
 
                 },
 
                 error: function (data) {
 
-                    toastr.success(data.massage, '', {
+                    document.getElementById('contMop').innerHTML = '<span style="color:red;font-size:13px;">حدث خطأ، حاول مجدداً</span>';
+
+                    toastr.error(data.massage || 'حدث خطأ', '', {
 
                         timeOut: 5000
 
