@@ -66,6 +66,8 @@ class CreateaqarAPIRequest extends APIRequest
             'monthly_rent.numeric'    => __('validation.rentError'),
             'reciving.numeric'        => __('validation.recivingError'),
             'rec_time.string'         => __('validation.recivingTimeError'),
+            'slug.required'           => 'حقل الـ slug إلزامي',
+            'slug.unique'             => 'الـ slug مستخدم من قبل، يرجى اختيار قيمة أخرى',
         ];
     }
 

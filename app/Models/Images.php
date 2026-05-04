@@ -18,4 +18,9 @@ class Images extends Model
         'main_img',
         'aqar_id',
     ];
+
+    public function aqar()
+    {
+        return $this->belongsTo(\App\Models\aqar::class, 'aqar_id');
+    }
 }

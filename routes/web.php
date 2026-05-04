@@ -125,6 +125,12 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:settings.manage');
 
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
+
+    // ── Images Management ─────────────────────────────────────────────────
+    Route::get('images', [App\Http\Controllers\AdminImagesController::class, 'index'])->name('images.index');
+    Route::delete('images/bulk-delete', [App\Http\Controllers\AdminImagesController::class, 'bulkDelete'])->name('images.bulk-delete');
+    Route::delete('images/{id}', [App\Http\Controllers\AdminImagesController::class, 'destroy'])->name('images.destroy');
+
     Route::resource('priceVips', App\Http\Controllers\AdminPriceVipController::class)
         ->middleware('permission:pricing.manage');
     Route::resource('pages', App\Http\Controllers\AdminPagesController::class);
