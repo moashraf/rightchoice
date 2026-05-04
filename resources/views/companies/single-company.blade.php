@@ -32,8 +32,8 @@
 
                                     <div class="listing-card-info-icon">
                                         {{ $company->governrateq->governrate ?? '' }}
-                                        @if($company->district_ashraf)
-                                            , {{ $company->district_ashraf->district}}
+                                        @if($company->district_data)
+                                            , {{ $company->district_data->district}}
                                         @endif
                                         @if($company->subArea)
                                             , {{ $company->subArea->area}}
@@ -113,8 +113,8 @@
                             <div class="fr-grid-deatil-flex">
                                 <div class="listing-card-info-icon">
                                     {{ $company->governrateq->governrate ?? '' }}
-                                    @if($company->district_ashraf)
-                                        , {{ $company->district_ashraf->district}}
+                                    @if($company->district_data)
+                                        , {{ $company->district_data->district}}
                                     @endif
                                     @if($company->subArea)
                                         , {{ $company->subArea->area}}

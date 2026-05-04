@@ -104,7 +104,7 @@ class CompanyAPIController extends AppBaseController
             $company = $this->companyRepository->create($input);
 
             return $this->sendResponse(
-                $company->load(['serv', 'governrateq', 'district_ashraf', 'subArea'])->toArray(),
+                $company->load(['serv', 'governrateq', 'district_data', 'subArea'])->toArray(),
                 'Company saved successfully'
             );
         } catch (\Exception $e) {
@@ -123,7 +123,7 @@ class CompanyAPIController extends AppBaseController
     public function show($id)
     {
         /** @var Company $company */
-        $company = $this->companyRepository->find($id);
+        $company = Company::with(['serv', 'governrateq', 'district_data', 'subArea'])->find($id);
 
         if (empty($company)) {
             return $this->sendError('Company not found');

@@ -80,7 +80,7 @@
                                                             {{ $comp->governrateq->governrate }},
                                                         @endif
                                                         @if ($comp->district_id)
-                                                            {{ $comp->district_ashraf->district }}
+                                                            {{ $comp->district_data->district }}
                                                         @endif
                                                         @if ($comp->area_id && $comp->subArea)
                                                             ,{{ $comp->subArea->area }}
