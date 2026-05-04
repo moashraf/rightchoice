@@ -105,15 +105,9 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('sitemanagement.images.index') }}"
-                                   class="nav-link {{ request()->is('sitemanagement/images*') ? 'active' : '' }}">
-                                    <i class="far fa-images nav-icon"></i>
-                                    <p>إدارة الصور</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
+                    <li class="nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -185,6 +179,13 @@
                         <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-gem"></i>
                             <p>{{ __('admin.price_vip') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.images.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/images*') ? 'active' : '' }}">
+                            <i class="far fa-images nav-icon"></i>
+                            <p>إدارة الصور</p>
                         </a>
                     </li>
                     <li class="nav-item">
