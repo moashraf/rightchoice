@@ -105,9 +105,15 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.images.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/images*') ? 'active' : '' }}">
+                                    <i class="far fa-images nav-icon"></i>
+                                    <p>إدارة الصور</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li class="nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
