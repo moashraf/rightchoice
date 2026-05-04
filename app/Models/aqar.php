@@ -131,6 +131,9 @@ class aqar extends Model
         'rec_time'         => 'nullable|string',
         'vip'              => 'nullable|integer|in:0,1',
         'status'           => 'nullable|integer|in:0,1,2',
+
+        // ── الـ Slug ─────────────────────────────────────────────
+        'slug'             => 'required|string|unique:aqar,slug',
     ];
 
 
