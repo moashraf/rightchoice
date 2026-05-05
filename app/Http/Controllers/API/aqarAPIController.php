@@ -220,6 +220,25 @@ class aqarAPIController extends AppBaseController
         }
         $this->aqarRepository->update($request->all(), $id);
 
+        // رفع الصور إن وُجدت
+        if ($request->hasFile('photos_id')) {
+            $counter = 0;
+            foreach ($request->file('photos_id') as $photo) {
+                $namerand = '-' . rand(1, 999900) . rand(1, 999900) . rand(1, 999900) . '-';
+                $imageNameGallery = date('Ymd') . '-aqar' . $id . $namerand . '.' . $photo->getClientOriginalExtension();
+                $photo->move(base_path() . '/public/images/', $imageNameGallery);
+
+                $news_photo = new Images();
+                $news_photo->aqar_id = $id;
+                $news_photo->img_url = $imageNameGallery;
+                $news_photo->main_img = ($request->main_img !== null && $counter == (int)$request->main_img) ? 1 : 0;
+                $news_photo->save();
+
+                $counter++;
+                if ($counter >= 8) break;
+            }
+        }
+
         // إعادة تحميل العقار مع كل العلاقات
         $aqar = aqar::with([
             'images',
