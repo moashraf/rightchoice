@@ -365,7 +365,6 @@
                                 </a>
                             </li>
                             @endif
-                            @if($__canPayRefunds)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.refunds') }}"
                                    class="nav-link {{ request()->is('sitemanagement/payments/refunds') ? 'active' : '' }}">
@@ -373,16 +372,14 @@
                                     <p>المستردات</p>
                                 </a>
                             </li>
-                            @endif
-                            @if($__canPayReports)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.reports') }}"
                                    class="nav-link {{ request()->is('sitemanagement/payments/reports') ? 'active' : '' }}">
                                     <i class="fas fa-chart-bar nav-icon"></i>
-                                    <p>التقارير</p>
+                                    <p>تقارير المدفوعات
+                                    </p>
                                 </a>
                             </li>
-                            @endif
                         </ul>
                     </li>
                     @endif
