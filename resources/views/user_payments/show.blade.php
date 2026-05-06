@@ -17,7 +17,7 @@
                             <i class="fa fa-receipt ml-2 text-primary"></i>
                             تفاصيل الدفعة #{{ $payment->id }}
                         </h3>
-                        <a href="{{ URL::to(Config::get('app.locale').'/user/payments') }}"
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments') }}"
                            class="btn btn-secondary btn-sm">
                             <i class="fa fa-arrow-right ml-1"></i> العودة لقائمة المدفوعات
                         </a>
@@ -124,7 +124,7 @@
                                 <i class="fa fa-undo ml-1"></i> طلب استرداد
                             </div>
                             <div class="card-body">
-                                <form action="{{ URL::to(Config::get('app.locale').'/user/payments/'.$payment->id.'/refund') }}" method="POST">
+                                <form action="{{ URL::to(Config::get('app.locale').'/my-payments/'.$payment->id.'/refund') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <label>المبلغ المطلوب استرداده</label>
