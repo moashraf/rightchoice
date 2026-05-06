@@ -28,7 +28,11 @@ class AdminCompanyController extends AppBaseController
 
     public function index(AdminCompanyDataTable $companyDataTable)
     {
-        return $companyDataTable->render('admin_companies.index');
+        $governrates = Governrate::orderBy('governrate')->pluck('governrate', 'id');
+        $districts   = District::orderBy('district')->pluck('district', 'id');
+        $services    = services::orderBy('service')->pluck('service', 'id');
+        $statuses    = [1 => 'نشطة', 0 => 'غير نشطة'];
+        return $companyDataTable->render('admin_companies.index', compact('governrates', 'districts', 'services', 'statuses'));
     }
 
     public function create()
