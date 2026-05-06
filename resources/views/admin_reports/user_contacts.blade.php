@@ -83,7 +83,7 @@
                 </div>
                 <div>
                     <h6 class="mb-0 font-weight-bold" style="font-size:16px;">
-                        <a href="{{ route('sitemanagement.users.show', $user->id) }}" class="text-dark text-decoration-none">
+                        <a href="{{ route('sitemanagement.users.show', $user->id) }}"  target="_blank" class="text-dark text-decoration-none">
                             {{ $user->name }}
                         </a>
                     </h6>
@@ -127,7 +127,8 @@
 
         {{-- جدول العقارات التي تواصل معها العميل --}}
         <div class="collapse" id="contact-details-{{ $user->id }}">
-        <div class="card-body p-0">            <div class="table-responsive">
+        <div class="card-body p-0">
+            <div class="table-responsive">
                 <table class="table table-hover table-sm mb-0">
                     <thead style="background:#f8f9fa;">
                         <tr>
@@ -155,7 +156,7 @@
                             <td class="text-muted" style="font-size:12px;">{{ $idx + 1 }}</td>
                             <td>
                                 @if($aqar)
-                                <a href="{{ route('sitemanagement.aqars.show', $aqar->id) }}" class="text-decoration-none font-weight-bold text-dark">
+                                <a href="{{ route('sitemanagement.aqars.show', $aqar->id) }}" target="_blank" class="text-decoration-none font-weight-bold text-dark">
                                     <i class="fas fa-building text-primary ml-1" style="font-size:12px;"></i>
                                     {{ Str::limit($aqar->title ?? 'بدون عنوان', 40) }}
                                 </a>
@@ -170,7 +171,7 @@
                             </td>
                             <td>
                                 @if($owner)
-                                <a href="{{ route('sitemanagement.users.show', $owner->id) }}" class="text-decoration-none">
+                                <a href="{{ route('sitemanagement.users.show', $owner->id) }}" target="_blank" class="text-decoration-none">
                                     <i class="fas fa-user-tie text-success ml-1" style="font-size:12px;"></i>
                                     {{ $owner->name }}
                                 </a>
@@ -202,7 +203,8 @@
                             </td>
                             <td>
                                 @if($aqar)
-                                <a href="{{ route('sitemanagement.aqars.show', $aqar->id) }}" class="btn btn-xs btn-outline-primary" style="font-size:11px;padding:2px 8px;">
+                                <a href="{{ route('sitemanagement.aqars.show', $aqar->id) }}" target="_blank"
+                                   class="btn btn-xs btn-outline-primary" style="font-size:11px;padding:2px 8px;">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 @endif

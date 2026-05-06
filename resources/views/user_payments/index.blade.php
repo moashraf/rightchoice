@@ -119,7 +119,7 @@
                                         </small>
                                     </div>
                                     <div class="col-md-2 text-center mt-2 mt-md-0">
-                                        <a href="{{ URL::to(Config::get('app.locale').'/user/payments/'.$payment->id) }}"
+                                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments/'.$payment->id) }}"
                                            class="btn btn-sm btn-outline-primary">
                                             <i class="fa fa-eye ml-1"></i> التفاصيل
                                         </a>

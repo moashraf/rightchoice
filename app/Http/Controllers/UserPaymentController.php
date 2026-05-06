@@ -59,8 +59,10 @@ class UserPaymentController extends Controller
     /**
      * Show single payment details.
      */
-    public function show(int $id)
+    public function show(Request $request)
     {
+        $id = (int) $request->route('id');
+
         $payment = FawryPayment::where('user_id', Auth::id())
             ->with(['pricingSale', 'priceVip', 'refunds'])
             ->findOrFail($id);
@@ -71,8 +73,9 @@ class UserPaymentController extends Controller
     /**
      * Request a refund for a payment.
      */
-    public function requestRefund(CreateRefundRequest $request, int $id)
+    public function requestRefund(CreateRefundRequest $request)
     {
+        $id = (int) $request->route('id');
         $payment = FawryPayment::where('user_id', Auth::id())->findOrFail($id);
 
         if (!$payment->canRefund()) {

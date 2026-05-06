@@ -23,26 +23,28 @@
     @endphp
 
     {{-- ── Open Graph (Facebook / WhatsApp / LinkedIn share) ── --}}
-    <meta property="og:type"        content="website">
-    <meta property="og:site_name"   content="RightChoice">
-    <meta property="og:locale"      content="{{ app()->getLocale() == 'ar' ? 'ar_EG' : 'en_US' }}">
-    <meta property="og:url"         content="{{ $og_url }}">
-    <meta property="og:title"       content="{{ $og_title }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RightChoice">
+    <meta property="og:locale" content="{{ app()->getLocale() == 'ar' ? 'ar_EG' : 'en_US' }}">
+    <meta property="og:url" content="{{ $og_url }}">
+    <meta property="og:title" content="{{ $og_title }}">
     <meta property="og:description" content="{{ $og_description }}">
-    <meta property="og:image"       content="{{ $og_image }}">
-    <meta property="og:image:width"  content="1200">
+    <meta property="og:image" content="{{ $og_image }}">
+    <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     {{-- ── Twitter / X Card ── --}}
-    <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="{{ $og_title }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $og_title }}">
     <meta name="twitter:description" content="{{ $og_description }}">
-    <meta name="twitter:image"       content="{{ $og_image }}">
+    <meta name="twitter:image" content="{{ $og_image }}">
 
     {{-- ── Standard description ── --}}
     <meta name="description" content="{{ $og_description }}">
 
-    <title>RightChoice @if (!\Request::is('/')) | @endif @yield('title')</title>
+    <title>RightChoice @if (!\Request::is('/'))
+            |
+        @endif @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/icon.png') }}" type="image/x-icon">
 
 
@@ -139,8 +141,11 @@
         }
 
         @keyframes rc-spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
+
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
@@ -285,7 +290,7 @@
                                 {{ trans('langsite.NavCash')}}</a>
 
 
-                            <ul class="nav-dropdown nav-submenu">
+                            <ul class="all_all nav-dropdown nav-submenu">
 
                                 <li><a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">
                                         الكل
@@ -338,9 +343,7 @@
 
                         </li>
 
-                        <li
-
-                            class="{{ Request::is('aqars-new-rent-law') || Request::is('aqars-furnished-rent') ? 'active' : '' }}">
+                        <li  class="{{ Request::is('aqars-new-rent-law') || Request::is('aqars-furnished-rent') ? 'active' : '' }}">
 
                             <a href=""><span class="submenu-indicator"></span>{{ trans('langsite.NavRent')}}</a>
 
@@ -385,7 +388,6 @@
                         </li>
 
 
-
                         @if(count($serviceInHeader) > 0)
                             <li
 
@@ -396,7 +398,7 @@
                                 </a>
 
 
-                                <ul class="nav-dropdown nav-submenu">
+                                <ul class=" serviceInHeader_serviceInHeader nav-dropdown nav-submenu">
 
 
                                     @if(!empty($serviceInHeader))
@@ -419,81 +421,81 @@
                         @endif
 
 
+                        <li
 
-                            <li
+                            class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
 
-                                class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
-
-                                <a href=""><span class="submenu-indicator"></span>
-                                    مميزات
-                                </a>
-
-
-                                <ul class="nav-dropdown nav-submenu">
+                            <a href=""><span class="submenu-indicator"></span>
+                                مميزات
+                            </a>
 
 
-                                    <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">
-                                        <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">
-                                            {{ trans('langsite.developers') }}
-                                        </a>
-                                    </li>
-                                    {{-- Map Page Link --}}
-                                    <li class="{{ Request::is('*/map') ? 'active' : '' }}">
-                                        <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
-                                            <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>
-                                            {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
-                                        </a>
-                                    </li>
+                            <ul class=" momayezz nav-dropdown nav-submenu">
 
-                                    {{-- Smart Search Link --}}
-                                    <li class="{{ Request::is('*/smart-search*') ? 'active' : '' }}">
-                                        <a href="{{ URL::to(Config::get('app.locale').'/smart-search') }}">
-                                            <i class="fas fa-robot" style="margin-left:4px; margin-right:4px;"></i>
-                                            {{ App::isLocale('en') ? 'Smart Search' : 'البحث الذكي' }}
-                                        </a>
-                                    </li>
 
-                                    {{-- Apartment Designer --}}
-                                    <li class="{{ Request::is('*/designer*') ? 'active' : '' }}">
-                                        <a href="{{ URL::to(Config::get('app.locale').'/designer') }}">
-                                            <i class="fas fa-drafting-compass" style="margin-left:4px; margin-right:4px;"></i>
-                                            {{ App::isLocale('en') ? 'Designer' : 'صمم شقتك' }}
-                                        </a>
-                                    </li>
+                                <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">
+                                        {{ trans('langsite.developers') }}
+                                    </a>
+                                </li>
+                                {{-- Map Page Link --}}
+                                <li class="{{ Request::is('*/map') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
+                                        <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Map' : 'الخريطة' }}
+                                    </a>
+                                </li>
 
-                                    {{-- Property Hunter Game --}}
-                                    <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
-                                        <a href="{{ URL::to(Config::get('app.locale').'/game') }}">
-                                            <i class="fas fa-gamepad" style="margin-left:4px; margin-right:4px;"></i>
-                                            {{ App::isLocale('en') ? 'Game' : 'اللعبة' }}
-                                        </a>
-                                    </li>
+                                {{-- Smart Search Link --}}
+                                <li class="{{ Request::is('*/smart-search*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale').'/smart-search') }}">
+                                        <i class="fas fa-robot" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Smart Search' : 'البحث الذكي' }}
+                                    </a>
+                                </li>
 
-                                    {{-- Community Link --}}
-{{--                                    @auth--}}
-{{--                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">--}}
-{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">--}}
-{{--                                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>--}}
-{{--                                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">--}}
-{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">--}}
-{{--                                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>--}}
-{{--                                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">--}}
-{{--                                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">--}}
-{{--                                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>--}}
-{{--                                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}--}}
-{{--                                            </a>--}}
-{{--                                        </li>--}}
-{{--                                    @endauth--}}
+                                {{-- Apartment Designer --}}
+                                <li class="{{ Request::is('*/designer*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale').'/designer') }}">
+                                        <i class="fas fa-drafting-compass"
+                                           style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Designer' : 'صمم شقتك' }}
+                                    </a>
+                                </li>
 
-                                </ul>
+                                {{-- Property Hunter Game --}}
+                                <li class="{{ Request::is('*/game*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale').'/game') }}">
+                                        <i class="fas fa-gamepad" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Game' : 'اللعبة' }}
+                                    </a>
+                                </li>
 
-                            </li>
+                                {{-- Community Link --}}
+                                {{--                                    @auth--}}
+                                {{--                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">--}}
+                                {{--                                            <a href="{{ URL::to(Config::get('app.locale').'/community') }}">--}}
+                                {{--                                                <i class="fas fa-users" style="margin-left:4px; margin-right:4px;"></i>--}}
+                                {{--                                                {{ App::isLocale('en') ? 'Community' : 'المجتمع' }}--}}
+                                {{--                                            </a>--}}
+                                {{--                                        </li>--}}
+                                {{--                                        <li class="{{ Request::is('*/chat*') ? 'active' : '' }}">--}}
+                                {{--                                            <a href="{{ URL::to(Config::get('app.locale').'/chat') }}">--}}
+                                {{--                                                <i class="fas fa-comments" style="margin-left:4px; margin-right:4px;"></i>--}}
+                                {{--                                                {{ App::isLocale('en') ? 'Messages' : 'الرسائل' }}--}}
+                                {{--                                            </a>--}}
+                                {{--                                        </li>--}}
+                                {{--                                        <li class="{{ Request::is('*/friends*') ? 'active' : '' }}">--}}
+                                {{--                                            <a href="{{ URL::to(Config::get('app.locale').'/friends') }}">--}}
+                                {{--                                                <i class="fas fa-user-friends" style="margin-left:4px; margin-right:4px;"></i>--}}
+                                {{--                                                {{ App::isLocale('en') ? 'Friends' : 'الأصدقاء' }}--}}
+                                {{--                                            </a>--}}
+                                {{--                                        </li>--}}
+                                {{--                                    @endauth--}}
+
+                            </ul>
+
+                        </li>
 
                     </ul>
 
@@ -553,43 +555,32 @@
                         @endif
                         @if(Auth::check())
 
-                            <li class="add-listing"><a href=""><span class=""></span>
-
-
+                            <li class="add-listing">
+                                <a href=""><span class=""></span>
                                     @if(Auth::check())
                                         @if(Auth::user()->TYPE == 3)
                                             {{\Illuminate\Support\Str::limit(Auth::user()->Employee_Name, 10, $ned='') }}
-
                                         @else
                                             {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
-
                                         @endif
                                     @else
-
                                         {{ trans('langsite.login')}}
-
                                     @endif
-
-
                                 </a>
 
-                                <ul style="top:60px;" class="nav-dropdown nav-submenu">
+                                <ul style="top:60px;" class="profile_profile nav-dropdown nav-submenu">
 
                                     @if(Auth()->user()->TYPE != 4)
 
-                                        <li><a href="{{ asset(Config::get('app.locale').'/login') }}">
-
-
+                                        <li>
+                                            <a href="{{ asset(Config::get('app.locale').'/login') }}">
                                                 @if(Auth::check())
-
                                                     {{ trans('langsite.profile')}}
                                                 @else
                                                     {{ trans('langsite.login')}}
-
                                                 @endif
-
-
-                                            </a></li>
+                                            </a>
+                                        </li>
 
                                         @if(Auth::check() && (request()->is('*/dashboard') || request()->is('dashboard')))
                                             @php
@@ -631,14 +622,12 @@
                                             </li>
                                             <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/my-payments') }}">
-
                                                     {{ trans('langsite.my_payments')}}
-
 
                                                 </a>
                                             </li>
 
-                                                <li>
+                                            <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">
 
                                                     {{ trans('langsite.my_ads')}}
@@ -653,7 +642,8 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="user_complaints_user_complaints" href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">
+                                                <a class="user_complaints_user_complaints"
+                                                   href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}">
                                                     <i class="fa fa-exclamation-circle ml-1"></i>
                                                     شكاواي
                                                 </a>
@@ -723,12 +713,13 @@
                             <li class="add-listing"><a href="{{ asset(Config::get('app.locale').'/login') }}"><span
                                         class=""></span> {{ trans('langsite.login')}}</li>
 
-                            <ul class="nav-dropdown nav-submenu">
+                            <ul class="login_login nav-dropdown nav-submenu">
 
-                                <li class="{{ Request::is(Config::get('app.locale').'/login') ? 'active' : '' }}"><a
-                                        href="{{ asset(Config::get('app.locale').'/login') }}"
-
-                                        class="text-success">{{ trans('langsite.login')}}</a></li>
+                                <li class="{{ Request::is(Config::get('app.locale').'/login') ? 'active' : '' }}">
+                                    <a  href="{{ asset(Config::get('app.locale').'/login') }}"  class="text-success">
+                                        {{ trans('langsite.login')}}
+                                    </a>
+                                </li>
 
                             </ul>
 
@@ -1455,22 +1446,22 @@ else{
         });
 
         {{-- Mark already-saved aqars on page load --}}
-        @auth
-        (function() {
-            var $buttons = $('a.addToCart');
-            if ($buttons.length === 0) return;
-            $.get("{{ route('get-wish_list_ids') }}", function(data) {
-                if (data.ids && data.ids.length > 0) {
-                    $buttons.each(function() {
-                        var aqarId = Number($(this).data('id'));
-                        if ($.inArray(aqarId, data.ids) !== -1) {
-                            $(this).removeClass('btn-light').addClass('btn-success saved text-white');
-                            $(this).html('<i class="fa fa-check ml-1"></i>   محفوظ');
-                        }
-                    });
-                }
-            });
-        })();
+            @auth
+            (function() {
+                var $buttons = $('a.addToCart');
+                if ($buttons.length === 0) return;
+                $.get("{{ route('get-wish_list_ids') }}", function(data) {
+                    if (data.ids && data.ids.length > 0) {
+                        $buttons.each(function() {
+                            var aqarId = Number($(this).data('id'));
+                            if ($.inArray(aqarId, data.ids) !== -1) {
+                                $(this).removeClass('btn-light').addClass('btn-success saved text-white');
+                                $(this).html('<i class="fa fa-check ml-1"></i>   محفوظ');
+                            }
+                        });
+                    }
+                });
+            })();
         @endauth
 
     });
@@ -1926,10 +1917,10 @@ else{
 
         $('body').on("click", "a.AddComplain", function () {
 
-            var token    = "{{ csrf_token() }}";
-            var item_id  = $(this).data('id');
-            var message  = $("textarea[name='message']").val();
-            var url      = "{{route('add-user-complain')}}";
+            var token = "{{ csrf_token() }}";
+            var item_id = $(this).data('id');
+            var message = $("textarea[name='message']").val();
+            var url = "{{route('add-user-complain')}}";
 
             if (!message || message.trim() === '') {
                 toastr.error('يجب اختيار سبب البلاغ أو كتابة رسالة', '');
@@ -1948,7 +1939,7 @@ else{
                 type: "POST",
                 url: url,
                 data: {
-                    _token:  token,
+                    _token: token,
                     item_id: item_id,
                     message: message,
                 },
@@ -1963,7 +1954,7 @@ else{
 
                     } else if (data.status == 404) {
                         $('#report-body').show();
-                        toastr.error(data.massage, '', { timeOut: 5000 });
+                        toastr.error(data.massage, '', {timeOut: 5000});
 
                     } else {
                         // إظهار رسالة النجاح داخل البوب اب
@@ -1976,9 +1967,9 @@ else{
                     $('#report-preloader').hide();
                     $('#report-body').show();
                     if (data.status == 400) {
-                        toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', { timeOut: 5000 });
+                        toastr.error('يجب إدخال رساله البلاغ المقدم من سيادتكم', '', {timeOut: 5000});
                     } else {
-                        toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', { timeOut: 5000 });
+                        toastr.error('يوجد خطأ ما ، حاول مرة اخرى', '', {timeOut: 5000});
                     }
                 }
 
@@ -2268,13 +2259,19 @@ else{
         color: #fff;
         z-index: 9999;
         padding: 12px 20px;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
         animation: slideUp 0.3s ease-out;
     }
+
     @keyframes slideUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
     }
+
     .compare-bar-inner {
         max-width: 1200px;
         margin: 0 auto;
@@ -2283,6 +2280,7 @@ else{
         justify-content: space-between;
         gap: 15px;
     }
+
     .compare-bar-info {
         font-size: 15px;
         font-weight: 600;
@@ -2290,7 +2288,12 @@ else{
         align-items: center;
         gap: 8px;
     }
-    .compare-bar-info i { font-size: 20px; color: #4fc3f7; }
+
+    .compare-bar-info i {
+        font-size: 20px;
+        color: #4fc3f7;
+    }
+
     #compare-bar-count {
         background: #ff5722;
         width: 26px;
@@ -2302,8 +2305,17 @@ else{
         font-size: 13px;
         font-weight: 700;
     }
-    .compare-bar-actions { display: flex; gap: 8px; }
-    .compare-bar-btn { border-radius: 20px; font-size: 13px; padding: 6px 16px; }
+
+    .compare-bar-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .compare-bar-btn {
+        border-radius: 20px;
+        font-size: 13px;
+        padding: 6px 16px;
+    }
 
     .btn-compare-toggle {
         background: transparent;
@@ -2318,215 +2330,258 @@ else{
         align-items: center;
         gap: 5px;
     }
+
     .btn-compare-toggle:hover {
         background: #294c5f;
         color: #fff;
     }
+
     .btn-compare-toggle.active {
         background: #ff5722;
         border-color: #ff5722;
         color: #fff;
     }
+
     .btn-compare-toggle.active:hover {
         background: #e64a19;
         border-color: #e64a19;
     }
 
     @media (max-width: 768px) {
-        #compare-floating-bar { padding: 10px 12px; }
-        .compare-bar-info { font-size: 13px; }
-        .compare-bar-btn { font-size: 12px; padding: 5px 12px; }
+        #compare-floating-bar {
+            padding: 10px 12px;
+        }
+
+        .compare-bar-info {
+            font-size: 13px;
+        }
+
+        .compare-bar-btn {
+            font-size: 12px;
+            padding: 5px 12px;
+        }
     }
 </style>
 
 <script>
-var CompareManager = (function() {
-    var STORAGE_KEY = 'rc_compare_ids';
-    var MAX_ITEMS = 3;
-    var locale = '{{ Config::get("app.locale") }}';
+    var CompareManager = (function () {
+        var STORAGE_KEY = 'rc_compare_ids';
+        var MAX_ITEMS = 3;
+        var locale = '{{ Config::get("app.locale") }}';
 
-    function getIds() {
-        try {
-            var ids = JSON.parse(localStorage.getItem(STORAGE_KEY));
-            return Array.isArray(ids) ? ids : [];
-        } catch(e) { return []; }
-    }
-
-    function saveIds(ids) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-    }
-
-    function add(id) {
-        id = parseInt(id);
-        var ids = getIds();
-        if (ids.indexOf(id) !== -1) return false;
-        if (ids.length >= MAX_ITEMS) {
-            toastr.warning('يمكنك مقارنة ' + MAX_ITEMS + ' عقارات كحد أقصى', '', { timeOut: 3000, positionClass: 'toast-top-center' });
-            return false;
+        function getIds() {
+            try {
+                var ids = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                return Array.isArray(ids) ? ids : [];
+            } catch (e) {
+                return [];
+            }
         }
-        ids.push(id);
-        saveIds(ids);
-        updateUI();
-        toastr.success('تمت الإضافة للمقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
-        return true;
-    }
 
-    function remove(id) {
-        id = parseInt(id);
-        var ids = getIds();
-        var idx = ids.indexOf(id);
-        if (idx > -1) {
-            ids.splice(idx, 1);
+        function saveIds(ids) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+        }
+
+        function add(id) {
+            id = parseInt(id);
+            var ids = getIds();
+            if (ids.indexOf(id) !== -1) return false;
+            if (ids.length >= MAX_ITEMS) {
+                toastr.warning('يمكنك مقارنة ' + MAX_ITEMS + ' عقارات كحد أقصى', '', {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-center'
+                });
+                return false;
+            }
+            ids.push(id);
             saveIds(ids);
             updateUI();
+            toastr.success('تمت الإضافة للمقارنة', '', {timeOut: 2000, positionClass: 'toast-top-center'});
+            return true;
         }
-    }
 
-    function has(id) {
-        return getIds().indexOf(parseInt(id)) !== -1;
-    }
-
-    function clearAll() {
-        localStorage.removeItem(STORAGE_KEY);
-        updateUI();
-    }
-
-    function getCount() {
-        return getIds().length;
-    }
-
-    function updateUI() {
-        var ids = getIds();
-        var count = ids.length;
-        var bar = document.getElementById('compare-floating-bar');
-        var countEl = document.getElementById('compare-bar-count');
-        var viewBtn = document.getElementById('compare-bar-view');
-
-        if (bar) {
-            bar.style.display = count > 0 ? 'block' : 'none';
-        }
-        if (countEl) {
-            countEl.textContent = count;
-        }
-        if (viewBtn) {
-            viewBtn.href = '/' + locale + '/compare?ids=' + ids.join(',');
-            if (count < 2) {
-                viewBtn.classList.add('disabled');
-                viewBtn.setAttribute('title', 'أضف عقارين على الأقل');
-            } else {
-                viewBtn.classList.remove('disabled');
-                viewBtn.removeAttribute('title');
+        function remove(id) {
+            id = parseInt(id);
+            var ids = getIds();
+            var idx = ids.indexOf(id);
+            if (idx > -1) {
+                ids.splice(idx, 1);
+                saveIds(ids);
+                updateUI();
             }
         }
 
-        // Update all toggle buttons on page
-        var buttons = document.querySelectorAll('.btn-compare-toggle');
-        buttons.forEach(function(btn) {
-            var btnId = parseInt(btn.getAttribute('data-compare-id'));
-            if (ids.indexOf(btnId) !== -1) {
-                btn.classList.add('active');
-                btn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
-            } else {
-                btn.classList.remove('active');
-                btn.innerHTML = '<i class="fas fa-balance-scale"></i> قارن';
-            }
-        });
-    }
-
-    function toggle(id) {
-        if (has(id)) {
-            remove(id);
-            toastr.info('تمت الإزالة من المقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
-        } else {
-            add(id);
+        function has(id) {
+            return getIds().indexOf(parseInt(id)) !== -1;
         }
-    }
 
-    // Init on DOM ready
-    document.addEventListener('DOMContentLoaded', function() {
-        updateUI();
+        function clearAll() {
+            localStorage.removeItem(STORAGE_KEY);
+            updateUI();
+        }
 
-        var clearBtn = document.getElementById('compare-bar-clear');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', function() {
-                clearAll();
-                toastr.info('تم مسح قائمة المقارنة', '', { timeOut: 2000, positionClass: 'toast-top-center' });
+        function getCount() {
+            return getIds().length;
+        }
+
+        function updateUI() {
+            var ids = getIds();
+            var count = ids.length;
+            var bar = document.getElementById('compare-floating-bar');
+            var countEl = document.getElementById('compare-bar-count');
+            var viewBtn = document.getElementById('compare-bar-view');
+
+            if (bar) {
+                bar.style.display = count > 0 ? 'block' : 'none';
+            }
+            if (countEl) {
+                countEl.textContent = count;
+            }
+            if (viewBtn) {
+                viewBtn.href = '/' + locale + '/compare?ids=' + ids.join(',');
+                if (count < 2) {
+                    viewBtn.classList.add('disabled');
+                    viewBtn.setAttribute('title', 'أضف عقارين على الأقل');
+                } else {
+                    viewBtn.classList.remove('disabled');
+                    viewBtn.removeAttribute('title');
+                }
+            }
+
+            // Update all toggle buttons on page
+            var buttons = document.querySelectorAll('.btn-compare-toggle');
+            buttons.forEach(function (btn) {
+                var btnId = parseInt(btn.getAttribute('data-compare-id'));
+                if (ids.indexOf(btnId) !== -1) {
+                    btn.classList.add('active');
+                    btn.innerHTML = '<i class="fas fa-check"></i> تمت الإضافة';
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerHTML = '<i class="fas fa-balance-scale"></i> قارن';
+                }
             });
         }
 
-        // Delegate click on compare toggle buttons
-        document.addEventListener('click', function(e) {
-            var btn = e.target.closest('.btn-compare-toggle');
-            if (btn) {
-                e.preventDefault();
-                var id = btn.getAttribute('data-compare-id');
-                if (id) toggle(id);
+        function toggle(id) {
+            if (has(id)) {
+                remove(id);
+                toastr.info('تمت الإزالة من المقارنة', '', {timeOut: 2000, positionClass: 'toast-top-center'});
+            } else {
+                add(id);
             }
-        });
-    });
+        }
 
-    return { add: add, remove: remove, has: has, toggle: toggle, clearAll: clearAll, getIds: getIds, getCount: getCount, updateUI: updateUI };
-})();
+        // Init on DOM ready
+        document.addEventListener('DOMContentLoaded', function () {
+            updateUI();
+
+            var clearBtn = document.getElementById('compare-bar-clear');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    clearAll();
+                    toastr.info('تم مسح قائمة المقارنة', '', {timeOut: 2000, positionClass: 'toast-top-center'});
+                });
+            }
+
+            // Delegate click on compare toggle buttons
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.btn-compare-toggle');
+                if (btn) {
+                    e.preventDefault();
+                    var id = btn.getAttribute('data-compare-id');
+                    if (id) toggle(id);
+                }
+            });
+        });
+
+        return {
+            add: add,
+            remove: remove,
+            has: has,
+            toggle: toggle,
+            clearAll: clearAll,
+            getIds: getIds,
+            getCount: getCount,
+            updateUI: updateUI
+        };
+    })();
 </script>
 {{-- ==================== End Property Comparison Manager ==================== --}}
 
 {{-- Delete Account Modal (shown only on dashboard via nav link) --}}
 @if(Auth::check() && (request()->is('*/dashboard') || request()->is('dashboard')))
-@php
-    $__pendingDelNav  = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','pending')->first();
-@endphp
-@if(!$__pendingDelNav)
-<div class="modal fade" id="navDeleteAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form action="{{ URL::to('request-account-delete') }}" method="POST">
-                @csrf
-                <div class="modal-header" style="background:#dc3545; color:#fff;">
-                    <h5 class="modal-title"><i class="fa fa-trash ml-1"></i> طلب حذف الحساب</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+    @php
+        $__pendingDelNav  = \App\Models\AccountDeleteRequest::where('user_id', auth()->id())->where('status','pending')->first();
+    @endphp
+    @if(!$__pendingDelNav)
+        <div class="modal fade" id="navDeleteAccountModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{ URL::to('request-account-delete') }}" method="POST">
+                        @csrf
+                        <div class="modal-header" style="background:#dc3545; color:#fff;">
+                            <h5 class="modal-title"><i class="fa fa-trash ml-1"></i> طلب حذف الحساب</h5>
+                            <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning">
+                                <i class="fa fa-exclamation-triangle ml-1"></i>
+                                <strong>تنبيه:</strong> سيتم إرسال طلب حذف حسابك للإدارة للمراجعة.
+                            </div>
+                            <div class="form-group">
+                                <label for="navDeleteReason"><strong>سبب طلب الحذف <span
+                                            style="color:red">*</span></strong></label>
+                                <textarea id="navDeleteReason" name="reason" class="form-control" rows="4"
+                                          placeholder="اكتب سبب رغبتك في حذف الحساب..." required
+                                          minlength="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-paper-plane ml-1"></i> إرسال
+                                الطلب
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-warning">
-                        <i class="fa fa-exclamation-triangle ml-1"></i>
-                        <strong>تنبيه:</strong> سيتم إرسال طلب حذف حسابك للإدارة للمراجعة.
-                    </div>
-                    <div class="form-group">
-                        <label for="navDeleteReason"><strong>سبب طلب الحذف <span style="color:red">*</span></strong></label>
-                        <textarea id="navDeleteReason" name="reason" class="form-control" rows="4"
-                                  placeholder="اكتب سبب رغبتك في حذف الحساب..." required minlength="10"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-paper-plane ml-1"></i> إرسال الطلب</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('navDeleteAccountBtn');
-    if (btn) {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
-                $('#navDeleteAccountModal').modal('show');
-            } else {
-                var m = document.getElementById('navDeleteAccountModal');
-                if (m) { m.style.display='block'; m.classList.add('show'); document.body.classList.add('modal-open'); }
-            }
-        });
-    }
-    document.querySelectorAll('#navDeleteAccountModal [data-dismiss="modal"]').forEach(function(el){
-        el.addEventListener('click', function(){
-            if (typeof $ !== 'undefined' && $.fn && $.fn.modal) { $('#navDeleteAccountModal').modal('hide'); }
-            else { var m=document.getElementById('navDeleteAccountModal'); if(m){m.style.display='none';m.classList.remove('show');document.body.classList.remove('modal-open');} }
-        });
-    });
-});
-</script>
-@endif
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var btn = document.getElementById('navDeleteAccountBtn');
+                if (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
+                            $('#navDeleteAccountModal').modal('show');
+                        } else {
+                            var m = document.getElementById('navDeleteAccountModal');
+                            if (m) {
+                                m.style.display = 'block';
+                                m.classList.add('show');
+                                document.body.classList.add('modal-open');
+                            }
+                        }
+                    });
+                }
+                document.querySelectorAll('#navDeleteAccountModal [data-dismiss="modal"]').forEach(function (el) {
+                    el.addEventListener('click', function () {
+                        if (typeof $ !== 'undefined' && $.fn && $.fn.modal) {
+                            $('#navDeleteAccountModal').modal('hide');
+                        } else {
+                            var m = document.getElementById('navDeleteAccountModal');
+                            if (m) {
+                                m.style.display = 'none';
+                                m.classList.remove('show');
+                                document.body.classList.remove('modal-open');
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    @endif
 @endif
 
 </body>

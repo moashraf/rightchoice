@@ -15,26 +15,54 @@ class AdminCompanyDataTable extends DataTable
         return $dataTable->addColumn('action', 'admin_companies.datatables_actions')
             ->editColumn('status', function ($row) {
                 return $row->status == 1
-                    ? '<span class="badge badge-success">Active</span>'
-                    : '<span class="badge badge-danger">UnActive</span>';
+                    ? '<span class="badge badge-success">نشطة</span>'
+                    : '<span class="badge badge-danger">غير نشطة</span>';
+            })
+            ->addColumn('governrate', function ($row) {
+                return $row->governrateq ? $row->governrateq->governrate : '-';
+            })
+            ->addColumn('service', function ($row) {
+                return $row->serv ? $row->serv->Service : '-';
             })
             ->rawColumns(['action', 'status']);
     }
 
     public function query(Company $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery()->with(['governrateq', 'serv']);
+
+        if ($name = request('filter_name')) {
+            $query->where('Name', 'like', '%' . $name . '%');
+        }
+        if ($gov = request('filter_governrate')) {
+            $query->where('governrate_id', $gov);
+        }
+        if ($dist = request('filter_district')) {
+            $query->where('district_id', $dist);
+        }
+        if ($serv = request('filter_service')) {
+            $query->where('Serv_id', $serv);
+        }
+        if (request('filter_status') !== null && request('filter_status') !== '') {
+            $query->where('status', request('filter_status'));
+        }
+
+        return $query;
     }
 
     public function html()
     {
+        // Bake current filter params into the AJAX URL so pagination/sorting keep filters
+        $params = request()->only(['filter_name', 'filter_governrate', 'filter_district', 'filter_service', 'filter_status']);
+        $ajaxUrl = route('sitemanagement.companies.index') . (count(array_filter($params)) ? '?' . http_build_query($params) : '');
+
         return $this->builder()
             ->columns($this->getColumns())
-            ->minifiedAjax()
+            ->minifiedAjax($ajaxUrl)
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([
                 'dom'       => 'Bfrtip',
-                'stateSave' => true,
+                'stateSave' => false,
                 'order'     => [[0, 'desc']],
                 'buttons'   => [],
             ]);
@@ -43,10 +71,12 @@ class AdminCompanyDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
-            'Name',
-            'Phone',
-            'status',
+            ['data' => 'id',          'name' => 'id',          'title' => '#'],
+            ['data' => 'Name',        'name' => 'Name',        'title' => 'اسم الشركة'],
+            ['data' => 'Phone',       'name' => 'Phone',       'title' => 'الهاتف'],
+            ['data' => 'governrate',  'name' => 'governrateq.governrate', 'title' => 'المحافظة', 'searchable' => false, 'orderable' => false],
+            ['data' => 'service',     'name' => 'serv.service',           'title' => 'الخدمة',   'searchable' => false, 'orderable' => false],
+            ['data' => 'status',      'name' => 'status',      'title' => 'الحالة'],
         ];
     }
 
