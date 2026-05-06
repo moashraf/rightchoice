@@ -95,7 +95,7 @@
 
                     @if($isFree)
                     <div class="free-plan-features">
-                        <div class="free-plan-feature"><span class="fcheck">✓</span> 100 نقطة مجانية فور التسجيل</div>
+                        <div class="free-plan-feature"><span class="fcheck">✓</span> 200 نقطة مجانية فور التسجيل</div>
                         <div class="free-plan-feature"><span class="fcheck">✓</span> تواصل مباشر مع الملاك</div>
                         <div class="free-plan-feature"><span class="fcheck">✓</span> بدون بطاقة ائتمان</div>
                     </div>

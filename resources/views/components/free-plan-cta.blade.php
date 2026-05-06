@@ -85,7 +85,7 @@
                                     <i class="fa fa-coins"></i>
                                 </div>
                                 <div class="fp-feature-text">
-                                    <strong>100 نقطة مجانية</strong>
+                                    <strong>200 نقطة مجانية</strong>
                                     <span>فور إنشاء حسابك مباشرة</span>
                                 </div>
                             </div>
