@@ -59,9 +59,11 @@ class AdminComplaintsController extends AppBaseController
             return redirect(route('sitemanagement.complaints.index'));
         }
 
+        $user  = $complaints->user_id  ? User::find($complaints->user_id)  : null;
+        $aqar  = $complaints->aqars_id ? \App\Models\aqar::find($complaints->aqars_id) : null;
         $users = User::pluck('name', 'id');
-        $aqars = aqar::pluck('title', 'id');
-        return view('admin_complaints.show', compact('users', 'aqars'))->with('complaints', $complaints);
+        $aqars = \App\Models\aqar::pluck('title', 'id');
+        return view('admin_complaints.show', compact('users', 'aqars', 'user', 'aqar'))->with('complaints', $complaints);
     }
 
     public function edit($id)
