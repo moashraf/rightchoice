@@ -140,22 +140,22 @@ class AdminReportController extends Controller
             ->limit(15)
             ->get();
 
-        // ===== عقارات حسب المحافظة والمنطقة (subarea) =====
+        // ===== عقارات حسب المحافظة والمنطقة (district) =====
         $aqarsBySubArea = DB::table('aqar')
             ->join('governrate', 'aqar.governrate_id', '=', 'governrate.id')
-            ->join('subarea', 'aqar.area_id', '=', 'subarea.id')
+            ->join('district', 'aqar.district_id', '=', 'district.id')
             ->select(
                 'governrate.id as gov_id',
-                'subarea.area as area_name',
+                'district.district as area_name',
                 DB::raw('count(aqar.id) as total')
             )
             ->whereNull('aqar.deleted_at')
-            ->whereNotNull('aqar.area_id')
+            ->whereNotNull('aqar.district_id')
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
             })
-            ->groupBy('governrate.id', 'subarea.area')
+            ->groupBy('governrate.id', 'district.district')
             ->orderByDesc('total')
             ->get()
             ->groupBy('gov_id');

@@ -124,6 +124,45 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index', ['filter_status' => 1]) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_status') == '1' ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon text-success"></i>
+                                    <p>
+                                        النشطون
+                                        @php $activeCount = \App\Models\User::whereNull('deleted_at')->where('status', 1)->count(); @endphp
+                                        @if($activeCount > 0)
+                                            <span class="badge badge-success badge-pill mr-1">{{ $activeCount }}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index', ['filter_status' => 0]) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_status') == '0' ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>
+                                        غير النشطين
+                                        @php $inactiveCount = \App\Models\User::whereNull('deleted_at')->where('status', 0)->count(); @endphp
+                                        @if($inactiveCount > 0)
+                                            <span class="badge badge-warning badge-pill mr-1">{{ $inactiveCount }}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index', ['filter_status' => 2]) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_status') == '2' ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon text-danger"></i>
+                                    <p>
+                                        المحظورون
+                                        @php $blockedCount = \App\Models\User::whereNull('deleted_at')->where('status', 2)->count(); @endphp
+                                        @if($blockedCount > 0)
+                                            <span class="badge badge-danger badge-pill mr-1">{{ $blockedCount }}</span>
+                                        @endif
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('sitemanagement.users.deleted') }}"
                                    class="nav-link {{ request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
                                     <i class="far fa-trash-alt nav-icon text-danger"></i>
