@@ -68,7 +68,15 @@ class AdminReportController extends Controller
         $stats['aqars_vip'] = aqar::whereNull('deleted_at')->where('vip', 1)->when($fromDate || $toDate, $filter)->count();
 
         // ===== إحصائيات الدعوات =====
-        $invitedByStats = User::select('invited_by', DB::raw('count(*) as total'))
+        $invitedByStats = User::select(
+                'invited_by',
+                DB::raw('count(*) as total'),
+                DB::raw('SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as active_count'),
+                DB::raw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as inactive_count'),
+                DB::raw('SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) as blocked_count'),
+                DB::raw('SUM(CASE WHEN (SELECT COUNT(*) FROM aqar WHERE aqar.user_id = users.id AND aqar.deleted_at IS NULL) > 0 THEN 1 ELSE 0 END) as with_aqars_count'),
+                DB::raw('SUM(CASE WHEN (SELECT COUNT(*) FROM aqar WHERE aqar.user_id = users.id AND aqar.deleted_at IS NULL) = 0 THEN 1 ELSE 0 END) as without_aqars_count')
+            )
             ->whereNull('deleted_at')
             ->whereNotNull('invited_by')
             ->whereRaw("TRIM(invited_by) != ''")
@@ -78,13 +86,23 @@ class AdminReportController extends Controller
             ->get();
 
         // المستخدمون غير المدعوين (invited_by فارغ أو null)
-        $notInvitedCount = User::whereNull('deleted_at')
+        $notInvitedStats = User::selectRaw("
+                count(*) as total,
+                SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as active_count,
+                SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as inactive_count,
+                SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) as blocked_count,
+                SUM(CASE WHEN (SELECT COUNT(*) FROM aqar WHERE aqar.user_id = users.id AND aqar.deleted_at IS NULL) > 0 THEN 1 ELSE 0 END) as with_aqars_count,
+                SUM(CASE WHEN (SELECT COUNT(*) FROM aqar WHERE aqar.user_id = users.id AND aqar.deleted_at IS NULL) = 0 THEN 1 ELSE 0 END) as without_aqars_count
+            ")
+            ->whereNull('deleted_at')
             ->where(function ($q) {
                 $q->whereNull('invited_by')
                   ->orWhereRaw("TRIM(COALESCE(invited_by, '')) = ''");
             })
             ->when($fromDate || $toDate, $filter)
-            ->count();
+            ->first();
+
+        $notInvitedCount = $notInvitedStats->total ?? 0;
 
         // ===== إحصائيات أنواع المستخدمين =====
         $userTypeStats = User::select('TYPE', DB::raw('count(*) as total'))
@@ -155,7 +173,7 @@ class AdminReportController extends Controller
             ->count();
 
         return view('admin_reports.index', compact(
-            'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount',
+            'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount', 'notInvitedStats',
             'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars',
             'usersWithAqars', 'usersWithoutAqars'
         ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
