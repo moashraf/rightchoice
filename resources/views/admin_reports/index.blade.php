@@ -691,14 +691,19 @@
                     <div class="card-body p-0">
                         @if($invitedByStats->count() > 0 || (isset($notInvitedCount) && $notInvitedCount > 0))
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped mb-0">
+                            <table class="table table-hover table-striped mb-0" style="font-size:13px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th style="width:60px;">#</th>
+                                        <th style="width:45px;">#</th>
                                         <th>الداعي (Invited By)</th>
-                                        <th style="width:150px;">عدد المدعوين</th>
-                                        <th style="width:200px;">النسبة</th>
-                                        <th style="width:120px;">التفاصيل</th>
+                                        <th class="text-center" style="width:80px;">إجمالي</th>
+                                        <th class="text-center" style="width:75px;"><i class="fas fa-user-check text-success"></i><br><small>نشط</small></th>
+                                        <th class="text-center" style="width:75px;"><i class="fas fa-user-clock text-warning"></i><br><small>غير نشط</small></th>
+                                        <th class="text-center" style="width:75px;"><i class="fas fa-user-slash text-danger"></i><br><small>محظور</small></th>
+                                        <th class="text-center" style="width:85px;"><i class="fas fa-building text-primary"></i><br><small>أضاف عقار</small></th>
+                                        <th class="text-center" style="width:85px;"><i class="fas fa-times-circle text-secondary"></i><br><small>بدون عقار</small></th>
+                                        <th style="width:130px;">النسبة</th>
+                                        <th style="width:80px;">تفاصيل</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -706,6 +711,7 @@
                                         $totalInvited = $invitedByStats->sum('total');
                                         $notInvited   = $notInvitedCount ?? 0;
                                         $grandTotal   = $totalInvited + $notInvited;
+                                        $niStats      = $notInvitedStats ?? null;
                                     @endphp
                                     @foreach($invitedByStats as $index => $item)
                                     @php
@@ -724,15 +730,29 @@
                                                 <strong>{{ $item->invited_by }}</strong>
                                             </a>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{ $detailsUrl }}" class="text-decoration-none">
-                                                <span class="badge badge-info p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                                <span class="badge badge-info p-2" style="font-size:13px;">{{ number_format($item->total) }}</span>
                                             </a>
                                         </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success p-1" style="font-size:12px;">{{ number_format($item->active_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-warning p-1" style="font-size:12px;">{{ number_format($item->inactive_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-danger p-1" style="font-size:12px;">{{ number_format($item->blocked_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary p-1" style="font-size:12px;">{{ number_format($item->with_aqars_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-secondary p-1" style="font-size:12px;">{{ number_format($item->without_aqars_count ?? 0) }}</span>
+                                        </td>
                                         <td>
-                                            <div class="progress" style="height:20px;">
-                                                <div class="progress-bar bg-info" role="progressbar"
-                                                     style="width: {{ $percent }}%;">
+                                            <div class="progress" style="height:18px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: {{ $percent }}%;">
                                                     {{ $percent }}%
                                                 </div>
                                             </div>
@@ -762,15 +782,29 @@
                                                 <strong>بدون داعي (غير مدعوين)</strong>
                                             </a>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
-                                                <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvited) }}</span>
+                                                <span class="badge badge-warning p-2" style="font-size:13px;">{{ number_format($notInvited) }}</span>
                                             </a>
                                         </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success p-1" style="font-size:12px;">{{ number_format($niStats->active_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-warning p-1" style="font-size:12px;">{{ number_format($niStats->inactive_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-danger p-1" style="font-size:12px;">{{ number_format($niStats->blocked_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-primary p-1" style="font-size:12px;">{{ number_format($niStats->with_aqars_count ?? 0) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-secondary p-1" style="font-size:12px;">{{ number_format($niStats->without_aqars_count ?? 0) }}</span>
+                                        </td>
                                         <td>
-                                            <div class="progress" style="height:20px;">
-                                                <div class="progress-bar bg-warning" role="progressbar"
-                                                     style="width: {{ $notInvitedPercent }}%;">
+                                            <div class="progress" style="height:18px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ $notInvitedPercent }}%;">
                                                     {{ $notInvitedPercent }}%
                                                 </div>
                                             </div>
@@ -784,12 +818,17 @@
                                 </tbody>
                                 <tfoot class="bg-light">
                                     <tr>
-                                        <td colspan="2" class="font-weight-bold">الإجمالي الكلي (مدعوين + غير مدعوين)</td>
-                                        <td>
+                                        <td colspan="2" class="font-weight-bold">الإجمالي الكلي</td>
+                                        <td class="text-center">
                                             <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="text-decoration-none">
-                                                <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($grandTotal) }}</span>
+                                                <span class="badge badge-dark p-2" style="font-size:13px;">{{ number_format($grandTotal) }}</span>
                                             </a>
                                         </td>
+                                        <td class="text-center"><span class="badge badge-success p-1">{{ number_format($invitedByStats->sum('active_count') + ($niStats->active_count ?? 0)) }}</span></td>
+                                        <td class="text-center"><span class="badge badge-warning p-1">{{ number_format($invitedByStats->sum('inactive_count') + ($niStats->inactive_count ?? 0)) }}</span></td>
+                                        <td class="text-center"><span class="badge badge-danger p-1">{{ number_format($invitedByStats->sum('blocked_count') + ($niStats->blocked_count ?? 0)) }}</span></td>
+                                        <td class="text-center"><span class="badge badge-primary p-1">{{ number_format($invitedByStats->sum('with_aqars_count') + ($niStats->with_aqars_count ?? 0)) }}</span></td>
+                                        <td class="text-center"><span class="badge badge-secondary p-1">{{ number_format($invitedByStats->sum('without_aqars_count') + ($niStats->without_aqars_count ?? 0)) }}</span></td>
                                         <td><strong>100%</strong></td>
                                         <td>
                                             <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="btn btn-sm btn-dark">
