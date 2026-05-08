@@ -529,48 +529,79 @@
                      data-toggle="collapse" data-target="#govSection"
                      aria-expanded="false" style="cursor:pointer;">
                     <h5 class="mb-0" style="font-weight:700; color:#343a40;">
-                        <i class="fas fa-map-marker-alt ml-2 text-primary"></i> العقارات حسب المحافظة (أعلى 15)
+                        <i class="fas fa-map-marker-alt ml-2 text-primary"></i> العقارات حسب المحافظة والمنطقة (أعلى 15)
                     </h5>
                     <i class="fas fa-chevron-down text-muted toggle-icon"></i>
                 </div>
                 <div id="govSection" class="collapse">
                     <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped mb-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th style="width:60px;">#</th>
-                                        <th>المحافظة</th>
-                                        <th style="width:150px;">عدد العقارات</th>
-                                        <th style="width:200px;">النسبة</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php $totalGov = $aqarsByGovernrate->sum('total'); @endphp
-                                    @foreach($aqarsByGovernrate as $index => $item)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>
-                                            <i class="fas fa-map-pin text-primary ml-1"></i>
-                                            <strong>{{ $item->gov_name }}</strong>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-primary p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
-                                        </td>
-                                        <td>
-                                            <div class="progress" style="height:20px;">
-                                                @php $percent = $totalGov > 0 ? round(($item->total / $totalGov) * 100, 1) : 0; @endphp
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                     style="width: {{ $percent }}%;">
-                                                    {{ $percent }}%
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        @php $totalGov = $aqarsByGovernrate->sum('total'); @endphp
+                        @foreach($aqarsByGovernrate as $index => $item)
+                        @php
+                            $percent  = $totalGov > 0 ? round(($item->total / $totalGov) * 100, 1) : 0;
+                            $subAreas = $aqarsBySubArea->get($item->gov_id, collect());
+                            $collapseId = 'gov_sub_' . $item->gov_id;
+                        @endphp
+                        {{-- صف المحافظة --}}
+                        <div class="d-flex align-items-center px-3 py-2 border-bottom"
+                             style="background:{{ $index % 2 == 0 ? '#f8f9fa' : '#fff' }};">
+                            <div style="width:45px; text-align:center;" class="text-muted font-weight-bold">
+                                {{ $index + 1 }}
+                            </div>
+                            <div class="flex-grow-1 px-2">
+                                @if($subAreas->count() > 0)
+                                <a class="text-decoration-none font-weight-bold text-dark"
+                                   data-toggle="collapse" href="#{{ $collapseId }}" style="cursor:pointer;">
+                                    <i class="fas fa-map-pin text-primary ml-1"></i>
+                                    {{ $item->gov_name }}
+                                    <i class="fas fa-chevron-down text-muted mr-1" style="font-size:11px;" id="icon_{{ $collapseId }}"></i>
+                                </a>
+                                @else
+                                <span class="font-weight-bold">
+                                    <i class="fas fa-map-pin text-primary ml-1"></i>
+                                    {{ $item->gov_name }}
+                                </span>
+                                @endif
+                            </div>
+                            <div style="width:120px; text-align:center;">
+                                <span class="badge badge-primary p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                            </div>
+                            <div style="width:220px;">
+                                <div class="progress" style="height:20px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $percent }}%;">
+                                        {{ $percent }}%
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {{-- صفوف المناطق (subareas) قابلة للطي --}}
+                        @if($subAreas->count() > 0)
+                        <div class="collapse" id="{{ $collapseId }}">
+                            @php $govTotal = $item->total; @endphp
+                            @foreach($subAreas->sortByDesc('total') as $area)
+                            @php $areaPercent = $govTotal > 0 ? round(($area->total / $govTotal) * 100, 1) : 0; @endphp
+                            <div class="d-flex align-items-center px-3 py-1 border-bottom"
+                                 style="background:#e9f4ff; padding-right:60px !important;">
+                                <div style="width:45px;"></div>
+                                <div class="flex-grow-1 px-2 pr-4">
+                                    <i class="fas fa-map-marker text-info ml-1" style="font-size:12px;"></i>
+                                    <span style="font-size:13px;">{{ $area->area_name }}</span>
+                                </div>
+                                <div style="width:120px; text-align:center;">
+                                    <span class="badge badge-info" style="font-size:12px; padding:4px 8px;">{{ number_format($area->total) }}</span>
+                                </div>
+                                <div style="width:220px;">
+                                    <div class="progress" style="height:14px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ $areaPercent }}%;">
+                                            {{ $areaPercent }}%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -860,6 +891,17 @@ $(function () {
     $('[data-toggle="collapse"]').on('click', function () {
         var $icon = $(this).find('.toggle-icon');
         var target = $(this).data('target');
+        if ($(target).hasClass('show')) {
+            $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        } else {
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        }
+    });
+
+    // rotate sub-area chevron icons
+    $('[data-toggle="collapse"][href^="#gov_sub_"]').on('click', function () {
+        var target = $(this).attr('href');
+        var $icon  = $(this).find('i.fa-chevron-down, i.fa-chevron-up').last();
         if ($(target).hasClass('show')) {
             $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
         } else {
