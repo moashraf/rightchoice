@@ -129,16 +129,36 @@ class AdminReportController extends Controller
         // ===== عقارات حسب المحافظة =====
         $aqarsByGovernrate = DB::table('aqar')
             ->join('governrate', 'aqar.governrate_id', '=', 'governrate.id')
-            ->select('governrate.governrate as gov_name', DB::raw('count(aqar.id) as total'))
+            ->select('governrate.id as gov_id', 'governrate.governrate as gov_name', DB::raw('count(aqar.id) as total'))
             ->whereNull('aqar.deleted_at')
             ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
                 if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
                 if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
             })
-            ->groupBy('governrate.governrate')
+            ->groupBy('governrate.id', 'governrate.governrate')
             ->orderByDesc('total')
             ->limit(15)
             ->get();
+
+        // ===== عقارات حسب المحافظة والمنطقة (subarea) =====
+        $aqarsBySubArea = DB::table('aqar')
+            ->join('governrate', 'aqar.governrate_id', '=', 'governrate.id')
+            ->join('subarea', 'aqar.area_id', '=', 'subarea.id')
+            ->select(
+                'governrate.id as gov_id',
+                'subarea.area as area_name',
+                DB::raw('count(aqar.id) as total')
+            )
+            ->whereNull('aqar.deleted_at')
+            ->whereNotNull('aqar.area_id')
+            ->when($fromDate || $toDate, function ($query) use ($fromDate, $toDate) {
+                if ($fromDate) $query->whereDate('aqar.created_at', '>=', $fromDate);
+                if ($toDate)   $query->whereDate('aqar.created_at', '<=', $toDate);
+            })
+            ->groupBy('governrate.id', 'subarea.area')
+            ->orderByDesc('total')
+            ->get()
+            ->groupBy('gov_id');
 
         // ===== أكثر المستخدمين نشاطاً (عدد العقارات النشطة فقط) =====
         $topUsersByAqars = DB::table('aqar')
@@ -174,7 +194,7 @@ class AdminReportController extends Controller
 
         return view('admin_reports.index', compact(
             'stats', 'fromDate', 'toDate', 'invitedByStats', 'notInvitedCount', 'notInvitedStats',
-            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'topUsersByAqars',
+            'userTypeStats', 'aqarsByOfferType', 'aqarsByGovernrate', 'aqarsBySubArea', 'topUsersByAqars',
             'usersWithAqars', 'usersWithoutAqars'
         ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
     }
