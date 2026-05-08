@@ -520,54 +520,57 @@
     </div>
     @endif
 
-    {{-- ===== عقارات حسب المحافظة ===== --}}
+    {{-- ===== عقارات حسب المحافظة (قابل للطي) ===== --}}
     @if($aqarsByGovernrate->count() > 0)
-    <div class="row mb-2">
+    <div class="row mb-3">
         <div class="col-12">
-            <h5 class="mt-2 mb-3" style="font-weight:700; color:#343a40;">
-                <i class="fas fa-map-marker-alt ml-2"></i> العقارات حسب المحافظة (أعلى 15)
-            </h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 mb-4">
             <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th style="width:60px;">#</th>
-                                    <th>المحافظة</th>
-                                    <th style="width:150px;">عدد العقارات</th>
-                                    <th style="width:200px;">النسبة</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php $totalGov = $aqarsByGovernrate->sum('total'); @endphp
-                                @foreach($aqarsByGovernrate as $index => $item)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>
-                                        <i class="fas fa-map-pin text-primary ml-1"></i>
-                                        <strong>{{ $item->gov_name }}</strong>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-primary p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
-                                    </td>
-                                    <td>
-                                        <div class="progress" style="height:20px;">
-                                            @php $percent = $totalGov > 0 ? round(($item->total / $totalGov) * 100, 1) : 0; @endphp
-                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                 style="width: {{ $percent }}%;">
-                                                {{ $percent }}%
+                <div class="card-header bg-white d-flex align-items-center justify-content-between"
+                     data-toggle="collapse" data-target="#govSection"
+                     aria-expanded="false" style="cursor:pointer;">
+                    <h5 class="mb-0" style="font-weight:700; color:#343a40;">
+                        <i class="fas fa-map-marker-alt ml-2 text-primary"></i> العقارات حسب المحافظة (أعلى 15)
+                    </h5>
+                    <i class="fas fa-chevron-down text-muted toggle-icon"></i>
+                </div>
+                <div id="govSection" class="collapse">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width:60px;">#</th>
+                                        <th>المحافظة</th>
+                                        <th style="width:150px;">عدد العقارات</th>
+                                        <th style="width:200px;">النسبة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $totalGov = $aqarsByGovernrate->sum('total'); @endphp
+                                    @foreach($aqarsByGovernrate as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <i class="fas fa-map-pin text-primary ml-1"></i>
+                                            <strong>{{ $item->gov_name }}</strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-primary p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height:20px;">
+                                                @php $percent = $totalGov > 0 ? round(($item->total / $totalGov) * 100, 1) : 0; @endphp
+                                                <div class="progress-bar bg-primary" role="progressbar"
+                                                     style="width: {{ $percent }}%;">
+                                                    {{ $percent }}%
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -610,58 +613,61 @@
     </div>
     @endif
 
-    {{-- ===== أكثر المستخدمين نشاطاً ===== --}}
+    {{-- ===== أكثر المستخدمين نشاطاً (قابل للطي) ===== --}}
     @if($topUsersByAqars->count() > 0)
-    <div class="row mb-2">
+    <div class="row mb-3">
         <div class="col-12">
-            <h5 class="mt-2 mb-3" style="font-weight:700; color:#343a40;">
-                <i class="fas fa-trophy ml-2"></i> أكثر المستخدمين نشاطاً (عدد العقارات النشطة)
-            </h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 mb-4">
             <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th style="width:60px;">#</th>
-                                    <th>اسم المستخدم</th>
-                                    <th>رقم الموبايل</th>
-                                    <th style="width:150px;">عدد العقارات</th>
-                                    <th style="width:100px;">التفاصيل</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($topUsersByAqars as $index => $item)
-                                <tr>
-                                    <td>
-                                        @if($index < 3)
-                                            <span class="badge badge-{{ $index == 0 ? 'warning' : ($index == 1 ? 'secondary' : 'dark') }} p-2">
-                                                <i class="fas fa-trophy"></i> {{ $index + 1 }}
-                                            </span>
-                                        @else
-                                            {{ $index + 1 }}
-                                        @endif
-                                    </td>
-                                    <td><strong>{{ $item->name }}</strong></td>
-                                    <td>{{ $item->MOP ?? '' }}</td>
-                                    <td>
-                                        <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="text-decoration-none">
-                                            <span class="badge badge-success p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="btn btn-sm btn-outline-success">
-                                            <i class="fas fa-building ml-1"></i> عقاراته
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <div class="card-header bg-white d-flex align-items-center justify-content-between"
+                     data-toggle="collapse" data-target="#topUsersSection"
+                     aria-expanded="false" style="cursor:pointer;">
+                    <h5 class="mb-0" style="font-weight:700; color:#343a40;">
+                        <i class="fas fa-trophy ml-2 text-warning"></i> أكثر المستخدمين نشاطاً (عدد العقارات النشطة)
+                    </h5>
+                    <i class="fas fa-chevron-down text-muted toggle-icon"></i>
+                </div>
+                <div id="topUsersSection" class="collapse">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width:60px;">#</th>
+                                        <th>اسم المستخدم</th>
+                                        <th>رقم الموبايل</th>
+                                        <th style="width:150px;">عدد العقارات</th>
+                                        <th style="width:100px;">التفاصيل</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($topUsersByAqars as $index => $item)
+                                    <tr>
+                                        <td>
+                                            @if($index < 3)
+                                                <span class="badge badge-{{ $index == 0 ? 'warning' : ($index == 1 ? 'secondary' : 'dark') }} p-2">
+                                                    <i class="fas fa-trophy"></i> {{ $index + 1 }}
+                                                </span>
+                                            @else
+                                                {{ $index + 1 }}
+                                            @endif
+                                        </td>
+                                        <td><strong>{{ $item->name }}</strong></td>
+                                        <td>{{ $item->MOP ?? '' }}</td>
+                                        <td>
+                                            <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="text-decoration-none">
+                                                <span class="badge badge-success p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('sitemanagement.users.aqars', $item->id) }}" class="btn btn-sm btn-outline-success">
+                                                <i class="fas fa-building ml-1"></i> عقاراته
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -669,140 +675,159 @@
     </div>
     @endif
 
-    {{-- ===== إحصائيات الدعوات ===== --}}
-    <div class="row mb-2">
+    {{-- ===== إحصائيات الدعوات (قابل للطي) ===== --}}
+    <div class="row mb-3">
         <div class="col-12">
-            <h5 class="mt-2 mb-3" style="font-weight:700; color:#343a40;">
-                <i class="fas fa-user-plus ml-2"></i> إحصائيات الدعوات (Invited By)
-            </h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 mb-4">
             <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    @if($invitedByStats->count() > 0 || (isset($notInvitedCount) && $notInvitedCount > 0))
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped mb-0">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th style="width:60px;">#</th>
-                                    <th>الداعي (Invited By)</th>
-                                    <th style="width:150px;">عدد المدعوين</th>
-                                    <th style="width:200px;">النسبة</th>
-                                    <th style="width:120px;">التفاصيل</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $totalInvited = $invitedByStats->sum('total');
-                                    $notInvited   = $notInvitedCount ?? 0;
-                                    $grandTotal   = $totalInvited + $notInvited;
-                                @endphp
-                                @foreach($invitedByStats as $index => $item)
-                                @php
-                                    $detailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
-                                        'invited_by' => $item->invited_by,
-                                        'from_date'  => $fromDate ?? null,
-                                        'to_date'    => $toDate ?? null,
-                                    ]));
-                                    $percent = $grandTotal > 0 ? round(($item->total / $grandTotal) * 100, 1) : 0;
-                                @endphp
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>
-                                        <a href="{{ $detailsUrl }}" class="text-decoration-none">
-                                            <i class="fas fa-user text-primary ml-1"></i>
-                                            <strong>{{ $item->invited_by }}</strong>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ $detailsUrl }}" class="text-decoration-none">
-                                            <span class="badge badge-info p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="progress" style="height:20px;">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: {{ $percent }}%;">
-                                                {{ $percent }}%
+                <div class="card-header bg-white d-flex align-items-center justify-content-between"
+                     data-toggle="collapse" data-target="#invitationSection"
+                     aria-expanded="false" style="cursor:pointer;">
+                    <h5 class="mb-0" style="font-weight:700; color:#343a40;">
+                        <i class="fas fa-user-plus ml-2 text-info"></i> إحصائيات الدعوات (Invited By)
+                    </h5>
+                    <i class="fas fa-chevron-down text-muted toggle-icon"></i>
+                </div>
+                <div id="invitationSection" class="collapse">
+                    <div class="card-body p-0">
+                        @if($invitedByStats->count() > 0 || (isset($notInvitedCount) && $notInvitedCount > 0))
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width:60px;">#</th>
+                                        <th>الداعي (Invited By)</th>
+                                        <th style="width:150px;">عدد المدعوين</th>
+                                        <th style="width:200px;">النسبة</th>
+                                        <th style="width:120px;">التفاصيل</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $totalInvited = $invitedByStats->sum('total');
+                                        $notInvited   = $notInvitedCount ?? 0;
+                                        $grandTotal   = $totalInvited + $notInvited;
+                                    @endphp
+                                    @foreach($invitedByStats as $index => $item)
+                                    @php
+                                        $detailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
+                                            'invited_by' => $item->invited_by,
+                                            'from_date'  => $fromDate ?? null,
+                                            'to_date'    => $toDate ?? null,
+                                        ]));
+                                        $percent = $grandTotal > 0 ? round(($item->total / $grandTotal) * 100, 1) : 0;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <a href="{{ $detailsUrl }}" class="text-decoration-none">
+                                                <i class="fas fa-user text-primary ml-1"></i>
+                                                <strong>{{ $item->invited_by }}</strong>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ $detailsUrl }}" class="text-decoration-none">
+                                                <span class="badge badge-info p-2" style="font-size:14px;">{{ number_format($item->total) }}</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height:20px;">
+                                                <div class="progress-bar bg-info" role="progressbar"
+                                                     style="width: {{ $percent }}%;">
+                                                    {{ $percent }}%
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="{{ $detailsUrl }}" class="btn btn-sm btn-outline-primary">
-                                            <i class="fas fa-eye ml-1"></i> عرض
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                        </td>
+                                        <td>
+                                            <a href="{{ $detailsUrl }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye ml-1"></i> عرض
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
 
-                                {{-- ===== المستخدمون غير المدعوين ===== --}}
-                                @php
-                                    $notInvitedDetailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
-                                        'invited_by' => $notInvitedFilterValue ?? '__not_invited__',
-                                        'from_date'  => $fromDate ?? null,
-                                        'to_date'    => $toDate ?? null,
-                                    ]));
-                                    $notInvitedPercent = $grandTotal > 0 ? round(($notInvited / $grandTotal) * 100, 1) : 0;
-                                @endphp
-                                <tr class="table-warning">
-                                    <td><i class="fas fa-minus-circle text-warning"></i></td>
-                                    <td>
-                                        <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
-                                            <i class="fas fa-user-slash text-warning ml-1"></i>
-                                            <strong>بدون داعي (غير مدعوين)</strong>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
-                                            <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvited) }}</span>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <div class="progress" style="height:20px;">
-                                            <div class="progress-bar bg-warning" role="progressbar"
-                                                 style="width: {{ $notInvitedPercent }}%;">
-                                                {{ $notInvitedPercent }}%
+                                    {{-- المستخدمون غير المدعوين --}}
+                                    @php
+                                        $notInvitedDetailsUrl = route('sitemanagement.reports.invitedByDetails', array_filter([
+                                            'invited_by' => $notInvitedFilterValue ?? '__not_invited__',
+                                            'from_date'  => $fromDate ?? null,
+                                            'to_date'    => $toDate ?? null,
+                                        ]));
+                                        $notInvitedPercent = $grandTotal > 0 ? round(($notInvited / $grandTotal) * 100, 1) : 0;
+                                    @endphp
+                                    <tr class="table-warning">
+                                        <td><i class="fas fa-minus-circle text-warning"></i></td>
+                                        <td>
+                                            <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
+                                                <i class="fas fa-user-slash text-warning ml-1"></i>
+                                                <strong>بدون داعي (غير مدعوين)</strong>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ $notInvitedDetailsUrl }}" class="text-decoration-none">
+                                                <span class="badge badge-warning p-2" style="font-size:14px;">{{ number_format($notInvited) }}</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height:20px;">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                     style="width: {{ $notInvitedPercent }}%;">
+                                                    {{ $notInvitedPercent }}%
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="{{ $notInvitedDetailsUrl }}" class="btn btn-sm btn-outline-warning">
-                                            <i class="fas fa-eye ml-1"></i> عرض
-                                        </a>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                            <tfoot class="bg-light">
-                                <tr>
-                                    <td colspan="2" class="font-weight-bold">الإجمالي الكلي (مدعوين + غير مدعوين)</td>
-                                    <td>
-                                        <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="text-decoration-none">
-                                            <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($grandTotal) }}</span>
-                                        </a>
-                                    </td>
-                                    <td><strong>100%</strong></td>
-                                    <td>
-                                        <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="btn btn-sm btn-dark">
-                                            <i class="fas fa-list ml-1"></i> الكل
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                        </td>
+                                        <td>
+                                            <a href="{{ $notInvitedDetailsUrl }}" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-eye ml-1"></i> عرض
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="bg-light">
+                                    <tr>
+                                        <td colspan="2" class="font-weight-bold">الإجمالي الكلي (مدعوين + غير مدعوين)</td>
+                                        <td>
+                                            <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="text-decoration-none">
+                                                <span class="badge badge-dark p-2" style="font-size:14px;">{{ number_format($grandTotal) }}</span>
+                                            </a>
+                                        </td>
+                                        <td><strong>100%</strong></td>
+                                        <td>
+                                            <a href="{{ route('sitemanagement.reports.invitedByDetails', array_filter(['from_date' => $fromDate ?? null, 'to_date' => $toDate ?? null])) }}" class="btn btn-sm btn-dark">
+                                                <i class="fas fa-list ml-1"></i> الكل
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        @else
+                        <div class="text-center py-4 text-muted">
+                            <i class="fas fa-info-circle fa-2x mb-2"></i>
+                            <p>لا توجد بيانات دعوات حالياً</p>
+                        </div>
+                        @endif
                     </div>
-                    @else
-                    <div class="text-center py-4 text-muted">
-                        <i class="fas fa-info-circle fa-2x mb-2"></i>
-                        <p>لا توجد بيانات دعوات حالياً</p>
-                    </div>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+@push('page_scripts')
+<script>
+$(function () {
+    // rotate chevron icon on toggle
+    $('[data-toggle="collapse"]').on('click', function () {
+        var $icon = $(this).find('.toggle-icon');
+        var target = $(this).data('target');
+        if ($(target).hasClass('show')) {
+            $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        } else {
+            $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        }
+    });
+});
+</script>
+@endpush
 @endsection

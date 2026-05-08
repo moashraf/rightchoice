@@ -24,6 +24,10 @@
                        href="{{ route('sitemanagement.complaints.index', ['user_id' => $user->id]) }}">
                         عرض الشكاوى
                     </a>
+                    <a class="btn btn-secondary float-right ml-2"
+                       href="{{ route('sitemanagement.users.history', $user->id) }}">
+                        <i class="fas fa-history"></i> تاريخ المستخدم
+                    </a>
                     <a class="btn btn-default float-right"
                        href="{{ route('sitemanagement.users.index') }}">
                         رجوع

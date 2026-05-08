@@ -247,6 +247,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('users/{user}/contact-forms', [App\Http\Controllers\AdminUserController::class, 'contactForms'])->name('users.contactForms')
         ->middleware('permission:users.view');
     Route::get('users/{user}/packages', [App\Http\Controllers\AdminUserController::class, 'packages'])->name('users.packages')
+    ->middleware('permission:users.view');
+    Route::get('users/{user}/history', [App\Http\Controllers\AdminUserController::class, 'history'])->name('users.history')
         ->middleware('permission:users.view');
     Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers')
         ->middleware('permission:users.export');
