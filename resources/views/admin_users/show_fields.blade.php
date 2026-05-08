@@ -37,6 +37,21 @@
 
         <li class="list-group-item"><strong>Status:</strong> {{ $user->status ? 'Active' : 'Un Active' }}</li>
 
+        <li class="list-group-item">
+            <strong>تاريخ التسجيل:</strong>
+            @if($user->created_at)
+                <span class="badge badge-info p-2" style="font-size:13px;">
+                    <i class="far fa-calendar-alt ml-1"></i>
+                    {{ $user->created_at->format('Y-m-d H:i:s') }}
+                </span>
+                <span class="text-muted small mr-2">
+                    ({{ $user->created_at->diffForHumans() }})
+                </span>
+            @else
+                <span class="text-muted">-</span>
+            @endif
+        </li>
+
         {{-- ── آخر تسجيل دخول ─────────────────────────────────────────── --}}
         <li class="list-group-item">
             <strong>آخر تسجيل دخول:</strong>

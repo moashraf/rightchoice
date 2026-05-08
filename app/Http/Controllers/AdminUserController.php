@@ -304,6 +304,26 @@ class AdminUserController extends Controller
         return view('admin_users.packages', compact('user', 'packages'));
     }
 
+    public function history($id)
+    {
+        $user = User::find($id);
+
+        if (empty($user)) {
+            flash('المستخدم غير موجود.')->error();
+            return redirect(route('sitemanagement.users.index'));
+        }
+
+        $activities = \App\Models\ActivityLog::where(function ($q) use ($user) {
+                $q->where('causer_type', get_class($user))->where('causer_id', $user->id);
+            })->orWhere(function ($q) use ($user) {
+                $q->where('subject_type', get_class($user))->where('subject_id', $user->id);
+            })
+            ->orderBy('id', 'DESC')
+            ->paginate(30);
+
+        return view('admin_users.history', compact('user', 'activities'));
+    }
+
     public function exportUsers(Request $request)
     {
         $filters = $request->only(['search_key', 'filter_status', 'filter_type', 'sortBy']);
