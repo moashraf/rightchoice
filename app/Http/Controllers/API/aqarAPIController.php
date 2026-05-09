@@ -151,6 +151,12 @@ class aqarAPIController extends AppBaseController
     {
         $aqar = $this->aqarRepository->create($request->all());
 
+        // حفظ المزايا (mzaya) - علاقة many-to-many
+        if ($request->filled('mzaya')) {
+            $mzayaIds = is_array($request->mzaya) ? $request->mzaya : explode(',', $request->mzaya);
+            $aqar->mzaya()->sync(array_filter($mzayaIds, 'is_numeric'));
+        }
+
         // رفع الصور إن وُجدت
         if ($request->hasFile('photos_id')) {
             $counter = 0;
@@ -219,6 +225,12 @@ class aqarAPIController extends AppBaseController
             return $this->sendError('Aqar not found');
         }
         $this->aqarRepository->update($request->all(), $id);
+
+        // تحديث المزايا (mzaya) - علاقة many-to-many
+        if ($request->filled('mzaya')) {
+            $mzayaIds = is_array($request->mzaya) ? $request->mzaya : explode(',', $request->mzaya);
+            $aqar->mzaya()->sync(array_filter($mzayaIds, 'is_numeric'));
+        }
 
         // رفع الصور إن وُجدت
         if ($request->hasFile('photos_id')) {
