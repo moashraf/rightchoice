@@ -540,7 +540,21 @@ public function addToWishlistByUserId(Request $request): JsonResponse
             ->where('user_id', $user->id)
             ->get();
 
-        $contactHistory = UserContactAqar::with('all_aqat_viw')
+        $contactHistory = UserContactAqar::with([
+                'all_aqat_viw.images',
+                'all_aqat_viw.aqarLocation',
+                'all_aqat_viw.governrateq',
+                'all_aqat_viw.districte',
+                'all_aqat_viw.subAreaa',
+                'all_aqat_viw.callTimes',
+                'all_aqat_viw.offerTypes',
+                'all_aqat_viw.categoryRel',
+                'all_aqat_viw.finishType',
+                'all_aqat_viw.mzaya',
+                'all_aqat_viw.propertyType',
+                'all_aqat_viw.user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
+                'all_aqat_viw.user.companiess',
+            ])
             ->where('user_id', $user->id)
             ->orderBy('created_at', 'DESC')
             ->paginate($request->get('per_page', 15));
