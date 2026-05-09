@@ -53,7 +53,8 @@
 
                                         <h5> {{ $aqar->monthly_rent }} {{ trans('langsite.egyptian_pound') }}</h5>
                                         @if ($aqar->daily_rent)
-                                            <h6 class="text-muted"> الايجار اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound') }}</h6>
+                                            <h6 class="text-muted"> الايجار
+                                                اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound') }}</h6>
                                         @endif
                                     @endif
                                 </div>
@@ -124,12 +125,12 @@
                                                 @endphp
                                                 <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
                                                    target="_blank"
-                                                   class="btn btn-success  " style="background-color:#25D366; border-color:#25D366;">
-                                                    <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" width="20" height="20"/>
+                                                   class="btn btn-success  "
+                                                   style="background-color:#25D366; border-color:#25D366;">
+                                                    <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png"
+                                                         width="20" height="20"/>
                                                     واتساب
                                                 </a>
-
-
 
                                             @else
 
@@ -173,7 +174,8 @@
                                     <a style="width:30%" class="btn our-btn {{--<?php if(@show){ echo 'mt-3'; } ?>--}}"
                                        id="trigger-2">{{ trans('langsite.sharing')}}</a>
 
-                                    <button type="button" class="btn btn-compare-toggle mt-2" data-compare-id="{{ $aqar->id }}" style="width:30%;">
+                                    <button type="button" class="btn btn-compare-toggle mt-2"
+                                            data-compare-id="{{ $aqar->id }}" style="width:30%;">
                                         <i class="fas fa-balance-scale"></i> قارن
                                     </button>
 
@@ -383,7 +385,8 @@
                                                     @endif
                                                     @if ($aqar->daily_rent)
                                                         <div class="listing-card-info-icon">
-                                                            الايجار اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound')}}
+                                                            الايجار
+                                                            اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound')}}
                                                             <div class="inc-fleat-icon"><img
                                                                     src="{{asset('images/icons/cash.png')}}"
                                                                     width="13" alt=""/></div>
@@ -592,6 +595,7 @@
                             $eastern_arabic = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
                             $western_arabic = array('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩');
                             $str = str_replace($western_arabic, $eastern_arabic, $aqar->description) ?? '';
+                            $str = preg_replace('/(\+?[\d\s\-]{7,15})/', ' ', $str);
                             $data_final = preg_replace('/[^\w\s]+/u', ' ', $str);
 
                             echo \Illuminate\Support\Str::limit($data_final, 500, '');
@@ -600,12 +604,8 @@
                         </div>
                         @if (\Illuminate\Support\Str::length($aqar->description) > 500)
                             <span id="dots">...</span>
-                            <span
-                                id="more">
-
-                                {{-- preg_replace('/\d{3}([().-\s[\]]*)\d{3}([().-\s[\]]*)\d{4}/', '*********', preg_replace('/\d+/u', '*********', $aqar->description)) --}}
-
-                                    <?php echo $data_final; ?>
+                            <span id="more">
+                                     <?php echo $data_final; ?>
                                 </span>
 
                             <a class="btnMore" onclick="myFunction()" id="myBtn"> اقرا المزيد</a>
