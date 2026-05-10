@@ -688,4 +688,101 @@ public function addToWishlistByUserId(Request $request): JsonResponse
             'points_left'    => $currentPoints,
         ], 'تم استرداد بيانات التواصل وخصم النقاط بنجاح.');
     }
+
+    /**
+     * POST /api/aqar-contact-preview
+     * معاينة قبل فتح بيانات التواصل — بدون أي خصم.
+     * يوضح للمستخدم:
+     *   - تفاصيل العقار
+     *   - عدد النقاط اللي هتتخصم
+     *   - عدد النقاط اللي هتفضل بعد الخصم
+     *   - رسالة لو مفيش نقاط كافية
+     *   - لو سبق ومشافش الرقم ده قبل كده
+     */
+    public function aqarContactPreview(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'aqar_id' => 'required|integer|exists:aqar,id',
+            'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'aqar_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqar_id.exists'   => 'العقار غير موجود في النظام.',
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
+        $aqarId = $request->aqar_id;
+        $userId = $request->user_id;
+
+        $aqar = aqar::with(['governrateq', 'districte', 'offerTypes', 'propertyType'])->findOrFail($aqarId);
+
+        // هل سبق ومشاف الرقم ده؟
+        $alreadyViewed = UserContactAqar::where('aqars_id', $aqarId)
+            ->where('user_id', $userId)
+            ->exists();
+
+        // بيانات العقار للعرض
+        $aqarInfo = [
+            'id'            => $aqar->id,
+            'title'         => $aqar->title,
+            'offer_type'    => $aqar->offerTypes->name ?? null,
+            'property_type' => $aqar->propertyType->name ?? null,
+            'governrate'    => $aqar->governrateq->name ?? null,
+            'district'      => $aqar->districte->name ?? null,
+            'total_price'   => $aqar->total_price,
+            'total_area'    => $aqar->total_area,
+        ];
+
+        if ($alreadyViewed) {
+            return $this->sendResponse([
+                'aqar'           => $aqarInfo,
+                'already_viewed' => true,
+                'points_cost'    => 0,
+                'current_points' => null,
+                'points_after'   => null,
+                'can_view'       => true,
+                'message'        => 'سبق مشاهدة بيانات التواصل لهذا العقار، يمكنك الاطلاع عليها مجاناً.',
+            ], 'معاينة بيانات التواصل.');
+        }
+
+        // باقة المستخدم
+        $userPackage = UserPriceing::where('user_id', $userId)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        if (!$userPackage) {
+            return $this->sendResponse([
+                'aqar'           => $aqarInfo,
+                'already_viewed' => false,
+                'points_cost'    => $aqar->points_avail,
+                'current_points' => 0,
+                'points_after'   => null,
+                'can_view'       => false,
+                'message'        => 'لا توجد باقة مفعّلة. يرجى الاشتراك في إحدى الباقات لعرض بيانات التواصل.',
+            ], 'معاينة بيانات التواصل.');
+        }
+
+        $pointsCost    = $aqar->points_avail;
+        $currentPoints = $userPackage->current_points;
+        $hasEnough     = $currentPoints >= $pointsCost && $currentPoints > 0;
+        $pointsAfter   = $hasEnough ? ($currentPoints - $pointsCost) : null;
+
+        $message = $hasEnough
+            ? "سيتم خصم {$pointsCost} نقطة لعرض بيانات التواصل. سيتبقى لك {$pointsAfter} نقطة."
+            : "رصيدك الحالي {$currentPoints} نقطة وهو غير كافٍ لعرض هذا العقار ({$pointsCost} نقطة مطلوبة). يرجى تجديد الباقة.";
+
+        return $this->sendResponse([
+            'aqar'           => $aqarInfo,
+            'already_viewed' => false,
+            'points_cost'    => $pointsCost,
+            'current_points' => $currentPoints,
+            'points_after'   => $pointsAfter,
+            'can_view'       => $hasEnough,
+            'message'        => $message,
+        ], 'معاينة بيانات التواصل.');
+    }
 }
