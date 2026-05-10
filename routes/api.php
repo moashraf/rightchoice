@@ -116,9 +116,10 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 Route::get('fawry/callback',     [App\Http\Controllers\API\FawryPaymentAPIController::class, 'fawryCallback']);
 Route::get('fawry/vip-callback', [App\Http\Controllers\API\FawryPaymentAPIController::class, 'tmyezzFawryCallback']);
 
-// إنشاء طلب الدفع (authenticated)
+// إنشاء طلب الدفع والتحقق من الحالة (authenticated)
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('fawry/charge', [App\Http\Controllers\API\FawryPaymentAPIController::class, 'charge']);
+    Route::post('fawry/charge',        [App\Http\Controllers\API\FawryPaymentAPIController::class, 'charge']);
+    Route::get('fawry/check-status',   [App\Http\Controllers\API\FawryPaymentAPIController::class, 'checkStatus']);
 });
 
 /*

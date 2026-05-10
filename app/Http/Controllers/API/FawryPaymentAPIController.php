@@ -197,6 +197,143 @@ class FawryPaymentAPIController extends AppBaseController
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+    // GET /api/fawry/check-status   (التحقق من حالة الدفع)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * التحقق من حالة الدفع عن طريق فوري.
+     *
+     * Query Parameters:
+     *   - reference_number     : رقم المرجع من فوري (referenceNumber)
+     *   - merchant_ref_number  : رقم المرجع الداخلي (merchantRefNumber) — بديل عن reference_number
+     *
+     * يمكن الاستعلام بـ reference_number أو merchant_ref_number أو payment_id
+     */
+    public function checkStatus(Request $request): JsonResponse
+    {
+        // ── Validation ───────────────────────────────────────────────────────
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'merchant_ref_number' => 'required_without_all:reference_number,payment_id|nullable|string',
+                'reference_number'    => 'required_without_all:merchant_ref_number,payment_id|nullable|string',
+                'payment_id'          => 'required_without_all:merchant_ref_number,reference_number|nullable|integer|exists:fawryPayment,id',
+            ],
+            array_merge($this->arabicMessages, [
+                'merchant_ref_number.required_without_all' => 'يجب إرسال أحد الحقول: merchant_ref_number أو reference_number أو payment_id.',
+                'reference_number.required_without_all'    => 'يجب إرسال أحد الحقول: merchant_ref_number أو reference_number أو payment_id.',
+                'payment_id.required_without_all'          => 'يجب إرسال أحد الحقول: merchant_ref_number أو reference_number أو payment_id.',
+                'payment_id.exists'                        => 'رقم الدفعة غير موجود في النظام.',
+            ]),
+            [
+                'merchant_ref_number' => 'رقم المرجع الداخلي',
+                'reference_number'    => 'رقم المرجع من فوري',
+                'payment_id'          => 'رقم الدفعة',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة', 422, $validator->errors()->toArray());
+        }
+
+        // ── جلب سجل الدفع من الداتابيز ───────────────────────────────────────
+        $query = FawryPayment::query();
+
+        if ($request->filled('payment_id')) {
+            $query->where('id', $request->payment_id);
+        } elseif ($request->filled('reference_number')) {
+            $query->where('referenceNumber', $request->reference_number);
+        } else {
+            $query->where('merchantRefNumber', $request->merchant_ref_number);
+        }
+
+        // التحقق من أن الدفعة تخص المستخدم الحالي (لو مسجل دخول)
+        if ($request->user()) {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $payment = $query->first();
+
+        if (!$payment) {
+            return $this->sendError('لم يتم العثور على عملية الدفع', 404, [
+                'message' => ['لا توجد عملية دفع بهذا الرقم.'],
+            ]);
+        }
+
+        // ── الاستعلام من سيرفر فوري ──────────────────────────────────────────
+        $merchantRefNumber = $payment->merchantRefNumber;
+        $signature         = hash('sha256', $this->merchantCode . $merchantRefNumber . $this->merchantSecKey);
+        $statusUrl         = 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/status'
+                             . '?merchantCode=' . urlencode($this->merchantCode)
+                             . '&merchantRefNumber=' . $merchantRefNumber
+                             . '&signature=' . $signature;
+
+        try {
+            $client      = new \GuzzleHttp\Client();
+            $apiRequest  = $client->request('GET', $statusUrl, [
+                'headers' => [
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+
+            $fawryResponse = json_decode($apiRequest->getBody()->getContents(), true);
+
+            $fawryStatus = $fawryResponse['paymentStatus'] ?? $fawryResponse['orderStatus'] ?? null;
+
+            // ── تحديث حالة الدفع في الداتابيز إذا تغيرت ─────────────────────
+            if ($fawryStatus && $fawryStatus !== $payment->paymentStatus) {
+                $updateData = ['paymentStatus' => $fawryStatus];
+                if ($fawryStatus === 'PAID' && !$payment->paid_at) {
+                    $updateData['paid_at']          = now();
+                    $updateData['gateway_response'] = json_encode($fawryResponse);
+                }
+                $payment->update($updateData);
+                $payment->refresh();
+            }
+
+            return $this->sendResponse([
+                'payment_id'          => $payment->id,
+                'merchantRefNumber'   => $payment->merchantRefNumber,
+                'referenceNumber'     => $payment->referenceNumber,
+                'amount'              => $payment->paymentAmount,
+                'currency'            => $payment->currency ?? 'EGP',
+                'paymentMethod'       => $payment->paymentMethod,
+                'paymentStatus'       => $payment->paymentStatus,
+                'is_paid'             => $payment->paymentStatus === 'PAID',
+                'paid_at'             => $payment->paid_at,
+                'created_at'          => $payment->created_at,
+                'fawry_status'        => $fawryStatus,
+                'fawry_raw_response'  => $fawryResponse,
+            ], 'تم التحقق من حالة الدفع بنجاح');
+
+        } catch (\GuzzleHttp\Exception\ConnectException $e) {
+            Log::error('Fawry status check connection error: ' . $e->getMessage());
+
+            // إرجاع حالة الدفع من الداتابيز في حالة فشل الاتصال بفوري
+            return $this->sendResponse([
+                'payment_id'        => $payment->id,
+                'merchantRefNumber' => $payment->merchantRefNumber,
+                'referenceNumber'   => $payment->referenceNumber,
+                'amount'            => $payment->paymentAmount,
+                'currency'          => $payment->currency ?? 'EGP',
+                'paymentMethod'     => $payment->paymentMethod,
+                'paymentStatus'     => $payment->paymentStatus,
+                'is_paid'           => $payment->paymentStatus === 'PAID',
+                'paid_at'           => $payment->paid_at,
+                'created_at'        => $payment->created_at,
+                'fawry_status'      => null,
+                'source'            => 'database_only',
+                'warning'           => 'تعذر الاتصال بسيرفر فوري، الحالة مأخوذة من الداتابيز.',
+            ], 'حالة الدفع (من الداتابيز)');
+
+        } catch (\Exception $e) {
+            Log::error('Fawry status check error: ' . $e->getMessage());
+            return $this->sendError('حدث خطأ أثناء التحقق من حالة الدفع.', 500);
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     // GET /api/fawry/callback   (اشتراك باقة)
     // ─────────────────────────────────────────────────────────────────────────
 
