@@ -614,4 +614,78 @@ public function addToWishlistByUserId(Request $request): JsonResponse
             'phone' => $aqar->user->MOP ?? null,
         ], 'Contact retrieved successfully.');
     }
+
+    /**
+     * POST /api/aqar-contact-info
+     * يقبل aqar_id و user_id، يعرض بيانات التواصل للعقار ويخصم من الباقة.
+     * لو المستخدم شاف الرقم قبل كده، يرجعه بدون خصم.
+     */
+    public function aqarContactInfo(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'aqar_id' => 'required|integer|exists:aqar,id',
+            'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'aqar_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqar_id.exists'   => 'العقار غير موجود في النظام.',
+            'user_id.required' => 'حقل معرف المستخدم مطلوب.',
+            'user_id.exists'   => 'المستخدم غير موجود في النظام.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
+        $aqarId = $request->aqar_id;
+        $userId = $request->user_id;
+
+        $aqar = aqar::findOrFail($aqarId);
+
+        // تحقق هل المستخدم شاف الرقم ده قبل كده
+        $existingContact = UserContactAqar::where('aqars_id', $aqarId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existingContact) {
+            // موجود → رجّع البيانات بدون خصم
+            return $this->sendResponse([
+                'phone'           => $aqar->user->MOP ?? null,
+                'already_viewed'  => true,
+            ], 'تم استرداد بيانات التواصل بنجاح.');
+        }
+
+        // مش موجود → تحقق من الباقة واخصم
+        $userPackage = UserPriceing::where('user_id', $userId)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        if (!$userPackage) {
+            return $this->sendError('لا توجد باقة مفعّلة لهذا المستخدم.', 400);
+        }
+
+        if ($userPackage->current_points == 0 || $aqar->points_avail > $userPackage->current_points) {
+            return $this->sendError('رصيد النقاط غير كافٍ. يرجى تجديد الباقة.', 400);
+        }
+
+        $pointsUsed   = $aqar->points_avail;
+        $subPoints    = $pointsUsed + $userPackage->sub_points;
+        $currentPoints = $userPackage->start_points - $subPoints;
+
+        $userPackage->update([
+            'sub_points'     => $subPoints,
+            'current_points' => $currentPoints,
+        ]);
+
+        UserContactAqar::create([
+            'user_id'  => $userId,
+            'aqars_id' => $aqarId,
+        ]);
+
+        return $this->sendResponse([
+            'phone'          => $aqar->user->MOP ?? null,
+            'already_viewed' => false,
+            'points_used'    => $pointsUsed,
+            'points_left'    => $currentPoints,
+        ], 'تم استرداد بيانات التواصل وخصم النقاط بنجاح.');
+    }
 }

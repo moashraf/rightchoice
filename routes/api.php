@@ -131,6 +131,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/users_wishlist', [App\Http\Controllers\API\UserDashboardAPIController::class, 'getUserWishlistByUserId']);
 
 Route::post('my-aqar-data',          [App\Http\Controllers\API\UserDashboardAPIController::class, 'myAqarPosts']);
+Route::post('aqar-contact-info',     [App\Http\Controllers\API\UserDashboardAPIController::class, 'aqarContactInfo']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
