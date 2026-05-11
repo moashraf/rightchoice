@@ -261,10 +261,10 @@ class FawryPaymentAPIController extends AppBaseController
         }
 
         // ── الاستعلام من سيرفر فوري ──────────────────────────────────────────
-        $merchantRefNumber = $payment->merchantRefNumber;
+        $merchantRefNumber = (string) $payment->merchantRefNumber;
         $signature         = hash('sha256', $this->merchantCode . $merchantRefNumber . $this->merchantSecKey);
         $statusUrl         = 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/status'
-                             . '?merchantCode=' . urlencode($this->merchantCode)
+                             . '?merchantCode=' . $this->merchantCode
                              . '&merchantRefNumber=' . $merchantRefNumber
                              . '&signature=' . $signature;
 
