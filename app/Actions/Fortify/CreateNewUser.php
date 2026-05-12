@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
@@ -27,10 +28,24 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
+        return tap(User::create([
+            'name'     => $input['name'],
+            'email'    => $input['email'],
             'password' => Hash::make($input['password']),
-        ]);
+        ]), function ($user) {
+            // ── Meta Conversions API: CompleteRegistration ─────────────────
+            try {
+                app(\App\Services\MetaConversionsService::class)->sendEvent(
+                    'CompleteRegistration',
+                    [
+                        'email'      => $user->email,
+                        'first_name' => $user->name,
+                    ]
+                );
+            } catch (\Throwable $e) {
+                Log::error('[CAPI CompleteRegistration] ' . $e->getMessage());
+            }
+            // ───────────────────────────────────────────────────────────────
+        });
     }
 }

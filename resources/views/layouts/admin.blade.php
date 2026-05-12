@@ -209,6 +209,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.meta-conversions.index') }}" class="nav-link {{ request()->is('sitemanagement/meta-conversions*') ? 'active' : '' }}">
+                            <i class="nav-icon fab fa-facebook-square"></i>
+                            <p>Meta Conversions API</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('sitemanagement.requestPhotoSessions.index') }}" class="nav-link {{ request()->is('sitemanagement/requestPhotoSessions*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-camera"></i>
                             <p>{{ __('admin.photo_sessions') }}</p>

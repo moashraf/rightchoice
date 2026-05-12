@@ -55,6 +55,23 @@ class UserContactAqarController extends AppBaseController
 
         $userContactAqar = $this->userContactAqarRepository->create($input);
 
+        // ── Meta Conversions API: Lead (Property Inquiry) ─────────────────
+        try {
+            $userData = [];
+            if (\Auth::check()) {
+                $userData['email']      = \Auth::user()->email ?? null;
+                $userData['phone']      = \Auth::user()->phone ?? null;
+                $userData['first_name'] = \Auth::user()->name  ?? null;
+            }
+            app(\App\Services\MetaConversionsService::class)->lead(
+                $userData,
+                ['lead_type' => 'property_inquiry', 'content_ids' => [$request->aqars_id ?? null]]
+            );
+        } catch (\Throwable $e) {
+            \Log::error('[CAPI Lead UserContactAqar] ' . $e->getMessage());
+        }
+        // ─────────────────────────────────────────────────────────────────
+
         Flash::success('User Contact Aqar saved successfully.');
 
         return redirect(route('userContactAqars.index'));

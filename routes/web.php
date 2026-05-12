@@ -124,6 +124,17 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
         ->middleware('permission:settings.manage');
 
+    // ── Meta Conversions API ─────────────────────────────────────────────
+    Route::get('meta-conversions', [App\Http\Controllers\AdminMetaConversionsController::class, 'index'])
+        ->name('meta-conversions.index')
+        ->middleware('permission:settings.manage');
+    Route::put('meta-conversions', [App\Http\Controllers\AdminMetaConversionsController::class, 'update'])
+        ->name('meta-conversions.update')
+        ->middleware('permission:settings.manage');
+    Route::post('meta-conversions/test-event', [App\Http\Controllers\AdminMetaConversionsController::class, 'testEvent'])
+        ->name('meta-conversions.test-event')
+        ->middleware('permission:settings.manage');
+
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
 
     // ── Images Management ─────────────────────────────────────────────────

@@ -1291,5 +1291,24 @@
         }
     </script>
 
+    {{-- ── Meta Pixel: ViewContent (Browser-side) ───────────────────────── --}}
+    @php
+        $metaSetting = \App\Models\SettingSite::first();
+    @endphp
+    @if($metaSetting && $metaSetting->fb_conversions_api_enabled && $metaSetting->fb_pixel_id)
+    <script>
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'ViewContent', {
+                content_ids: ['{{ $aqar->id }}'],
+                content_type: 'product',
+                content_name: '{{ addslashes($aqar->title ?? '') }}',
+                currency: 'EGP',
+                value: {{ $aqar->price ?? 0 }}
+            });
+        }
+    </script>
+    @endif
+    {{-- ─────────────────────────────────────────────────────────────────── --}}
+
 
 </x-layout>

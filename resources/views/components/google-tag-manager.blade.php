@@ -1,6 +1,14 @@
+@php
+    $metaSetting = \App\Models\SettingSite::first();
+    $fbPixelId   = $metaSetting?->fb_pixel_id;
+    $gtmId       = $metaSetting?->gtm_id ?: 'GTM-587DNHZS';
+    $pixelEnabled = $metaSetting?->fb_conversions_api_enabled && !empty($fbPixelId);
+@endphp
 
 @if(isset($section) && $section === 'head')
 
+    {{-- Meta Pixel Code (Browser-side) --}}
+    @if($pixelEnabled)
     <!-- Meta Pixel Code -->
     <script>
         !function(f,b,e,v,n,t,s)
@@ -11,21 +19,22 @@
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '27103159892621171');
+        fbq('init', '{{ $fbPixelId }}');
         fbq('track', 'PageView');
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
-                   src="https://www.facebook.com/tr?id=27103159892621171&ev=PageView&noscript=1"
+             src="https://www.facebook.com/tr?id={{ $fbPixelId }}&ev=PageView&noscript=1"
         /></noscript>
     <!-- End Meta Pixel Code -->
+    @endif
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-587DNHZS');</script>
+        })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
     <!-- End Google Tag Manager -->
 
 
@@ -36,7 +45,7 @@
 
     <!-- Google Tag Manager (noscript) -->
     <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-587DNHZS"
+        <iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}"
                       height="0" width="0" style="display:none;visibility:hidden">
 
         </iframe>
@@ -45,5 +54,4 @@
 
 
 @endif
-
 

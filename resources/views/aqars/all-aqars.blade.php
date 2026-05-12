@@ -1312,4 +1312,17 @@
         })();
     </script>
 
+    {{-- ── Meta Pixel: Search (Browser-side) ─────────────────────────── --}}
+    @php $metaSetting = \App\Models\SettingSite::first(); @endphp
+    @if($metaSetting && $metaSetting->fb_conversions_api_enabled && $metaSetting->fb_pixel_id)
+    <script>
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Search', {
+                search_string: '{{ addslashes(request()->keyWords ?? request()->location1 ?? '') }}'
+            });
+        }
+    </script>
+    @endif
+    {{-- ─────────────────────────────────────────────────────────────────── --}}
+
 </x-layout>
