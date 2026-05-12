@@ -166,6 +166,25 @@ class AqarController extends Controller
         $district = District::all();
         $areas = SubArea::select('area')->distinct()->get();
         $mzaya = Mzaya::all();
+
+        // ── Meta Conversions API: Search ──────────────────────────────────
+        try {
+            $searchStr = trim(implode(' ', array_filter([
+                $request->keyWords ?? null,
+                $request->location1 ?? null,
+            ])));
+            if (!empty($searchStr)) {
+                $userData = [];
+                if (\Auth::check()) {
+                    $userData['email'] = \Auth::user()->email ?? null;
+                }
+                app(\App\Services\MetaConversionsService::class)->search($searchStr, $userData);
+            }
+        } catch (\Throwable $e) {
+            \Log::error('[CAPI Search] ' . $e->getMessage());
+        }
+        // ─────────────────────────────────────────────────────────────────
+
         return view('aqars.all-aqars', compact('allAqars', 'vipAqars', 'mzaya', 'finishes', 'categories', 'offerTypes', 'governrates', 'district', 'areas',
             'compounds', 'maxPrice', 'minPrice', 'keyWords', 'cat_id', 'prop_id', 'saletype', 'governratew'
             , 'districtw', 'areaw', 'finishType', 'minPrice', 'maxPrice', 'minArea', 'maxArea', 'minRooms', 'maxRooms', 'minBaths', 'maxBaths', 'maz', 'offs', 'sort'));
@@ -1277,6 +1296,25 @@ class AqarController extends Controller
 
         if (!empty($updateview)) {
             $updateview->increment('views', 1);
+
+            // ── Meta Conversions API: ViewContent ──────────────────────────
+            try {
+                $userData = [];
+                if (Auth::check()) {
+                    $userData['email']      = Auth::user()->email ?? null;
+                    $userData['phone']      = Auth::user()->phone ?? null;
+                    $userData['first_name'] = Auth::user()->name  ?? null;
+                }
+                app(\App\Services\MetaConversionsService::class)->viewContent(
+                    (string) $aqar->id,
+                    'product',
+                    $userData
+                );
+            } catch (\Throwable $e) {
+                \Log::error('[CAPI ViewContent] ' . $e->getMessage());
+            }
+            // ───────────────────────────────────────────────────────────────
+
             return view('aqars.show', ['aqar' => $aqar], compact('allAqars', 'show', 'show2', 'random_ads'));
         } else {
             return redirect()->route('homeBlade', ['locale' => $locale]);

@@ -56,6 +56,18 @@ class ContactFormController extends AppBaseController
 
         $contactForm = $this->contactFormRepository->create($input);
 
+        // ── Meta Conversions API: Lead ────────────────────────────────────
+        try {
+            app(\App\Services\MetaConversionsService::class)->lead([
+                'email' => $request->email ?? null,
+                'phone' => $request->phone ?? $request->mobile ?? null,
+                'first_name' => $request->name ?? null,
+            ], ['lead_type' => 'contact_form']);
+        } catch (\Throwable $e) {
+            \Log::error('[CAPI Lead] ' . $e->getMessage());
+        }
+        // ─────────────────────────────────────────────────────────────────
+
         Flash::success('Contact Form saved successfully.');
 
         return redirect(route('contactForms.index'));

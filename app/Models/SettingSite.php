@@ -41,7 +41,7 @@ class SettingSite extends Model
 
 
     public $table = 'settingsite';
-    
+
 
 
 
@@ -73,7 +73,12 @@ class SettingSite extends Model
         'call_to_action_title_en',
         'call_to_action_title',
         'call_to_action_desc_en',
-        'call_to_action_desc'
+        'call_to_action_desc',
+        'fb_pixel_id',
+        'fb_access_token',
+        'fb_test_event_code',
+        'fb_conversions_api_enabled',
+        'gtm_id',
     ];
 
     /**
@@ -107,10 +112,15 @@ class SettingSite extends Model
         'services_dis' => 'string',
         'most_searched_dis' => 'string',
         'connect_us_dis' => 'string',
-         'call_to_action_title_en' => 'string',
+        'call_to_action_title_en' => 'string',
         'call_to_action_title' => 'string',
         'call_to_action_desc_en' => 'string',
-        'call_to_action_desc' => 'string'
+        'call_to_action_desc' => 'string',
+        'fb_pixel_id' => 'string',
+        'fb_access_token' => 'string',
+        'fb_test_event_code' => 'string',
+        'fb_conversions_api_enabled' => 'boolean',
+        'gtm_id' => 'string',
     ];
 
     /**
@@ -119,7 +129,7 @@ class SettingSite extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
 }
