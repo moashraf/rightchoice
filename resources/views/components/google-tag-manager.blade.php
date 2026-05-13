@@ -2,6 +2,7 @@
     $metaSetting = \App\Models\SettingSite::first();
     $fbPixelId   = $metaSetting?->fb_pixel_id;
     $gtmId       = $metaSetting?->gtm_id ?: 'GTM-587DNHZS';
+    $googleAdsId = $metaSetting?->google_ads_id;
     $pixelEnabled = $metaSetting?->fb_conversions_api_enabled && !empty($fbPixelId);
 @endphp
 
@@ -36,6 +37,19 @@
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','{{ $gtmId }}');</script>
     <!-- End Google Tag Manager -->
+
+    {{-- Google Ads gtag.js --}}
+    @if(!empty($googleAdsId))
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $googleAdsId }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $googleAdsId }}');
+    </script>
+    <!-- End Google tag (gtag.js) -->
+    @endif
 
 
 
