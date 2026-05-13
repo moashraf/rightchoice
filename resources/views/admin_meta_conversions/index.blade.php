@@ -154,6 +154,25 @@
                             @enderror
                         </div>
 
+                        {{-- Google Ads ID --}}
+                        <div class="form-group">
+                            <label for="google_ads_id">
+                                <i class="fab fa-google mr-1 text-success"></i>
+                                Google Ads ID (gtag.js)
+                                <small class="text-muted">(اختياري)</small>
+                            </label>
+                            <input type="text" class="form-control @error('google_ads_id') is-invalid @enderror"
+                                id="google_ads_id" name="google_ads_id"
+                                value="{{ old('google_ads_id', $setting?->google_ads_id) }}"
+                                placeholder="مثال: AW-XXXXXXXXXXXXXXXXX">
+                            @error('google_ads_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted">
+                                تجده في: <strong>Google Ads → الأدوات → تتبع التحويلات → علامة Google</strong>
+                            </small>
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">
@@ -230,6 +249,17 @@
                                 <td>
                                     @if($setting?->gtm_id)
                                         <code>{{ $setting->gtm_id }}</code>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i class="fab fa-google text-success mr-1"></i> Google Ads ID</td>
+                                <td>
+                                    @if($setting?->google_ads_id)
+                                        <code>{{ $setting->google_ads_id }}</code>
+                                        <span class="badge badge-success ml-1">محدد</span>
                                     @else
                                         <span class="text-muted">—</span>
                                     @endif

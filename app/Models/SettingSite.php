@@ -79,6 +79,7 @@ class SettingSite extends Model
         'fb_test_event_code',
         'fb_conversions_api_enabled',
         'gtm_id',
+        'google_ads_id',
     ];
 
     /**
@@ -121,6 +122,7 @@ class SettingSite extends Model
         'fb_test_event_code' => 'string',
         'fb_conversions_api_enabled' => 'boolean',
         'gtm_id' => 'string',
+        'google_ads_id' => 'string',
     ];
 
     /**

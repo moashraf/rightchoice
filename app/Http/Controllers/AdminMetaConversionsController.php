@@ -29,6 +29,7 @@ class AdminMetaConversionsController extends AppBaseController
             'fb_access_token'   => 'nullable|string|max:500',
             'fb_test_event_code'=> 'nullable|string|max:50',
             'gtm_id'            => 'nullable|string|max:50',
+            'google_ads_id'     => 'nullable|string|max:50',
         ]);
 
         $setting = SettingSite::first();
@@ -43,6 +44,7 @@ class AdminMetaConversionsController extends AppBaseController
             'fb_test_event_code'        => $request->fb_test_event_code,
             'fb_conversions_api_enabled'=> $request->boolean('fb_conversions_api_enabled'),
             'gtm_id'                    => $request->gtm_id,
+            'google_ads_id'             => $request->google_ads_id,
         ]);
 
         return back()->with('success', '✅ تم حفظ إعدادات Meta Conversions API بنجاح.');
