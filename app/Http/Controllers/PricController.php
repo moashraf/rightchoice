@@ -842,10 +842,12 @@ $paymentStatus = $response['type']; // get response values
      */
     public function show($locale,$single)
     {
-        //
+        $pric = Pricing::find($single);
 
-        $pric= Pricing::find($single);
-//dd($pric);
+        if (!$pric) {
+            return view('price.show', ['single' => null]);
+        }
+
         return view('price.show', ['single' => $pric]);
     }
 
