@@ -126,11 +126,25 @@
                                                 <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
                                                    target="_blank"
                                                    class="btn btn-success  "
-                                                   style="background-color:#25D366; border-color:#25D366;">
+                                                   style="background-color:#25D366; border-color:#25D366;"
+                                                   onclick="trackWhatsappContact({{ $aqar->id }})">
                                                     <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png"
                                                          width="20" height="20"/>
                                                     واتساب
                                                 </a>
+
+                                                <script>
+                                                function trackWhatsappContact(aqarId) {
+                                                    fetch('{{ route("track-whatsapp-contact") }}', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                        },
+                                                        body: JSON.stringify({ aqar_id: aqarId })
+                                                    }).catch(function(){});
+                                                }
+                                                </script>
 
                                             @else
 

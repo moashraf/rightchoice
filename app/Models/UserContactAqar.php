@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class UserContactAqar extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'usercontactaqar';
     protected $primaryKey = 'id';
 
     public $fillable = [
         'user_id',
         'aqars_id',
+        'contact_via_whats_app',
     ];
 
 
-       
+
 
 public function user()
     {
@@ -33,6 +34,6 @@ public function all_aqat_viw()
     }
 
 
-   
-    
+
+
 }
