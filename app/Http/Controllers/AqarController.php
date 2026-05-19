@@ -1515,8 +1515,7 @@ $request->validate([
 
         $existing = $query->first();
          if ($existing) {
-             var_dump($aqarId);
-             $existing->update([
+              $existing->update([
                 'contact_via_whats_app' => 1,
             ]);
         }

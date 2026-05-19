@@ -125,7 +125,7 @@
                                                 @endphp
                                                 <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
                                                    target="_blank"
-                                                   class="btn btn-success  "
+                                                   class=" normal_normal btn btn-success  "
                                                    style="background-color:#25D366; border-color:#25D366;"
                                                    onclick="trackWhatsappContact({{ $aqar->id }})">
                                                     <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png"
