@@ -311,7 +311,13 @@ class PageController extends Controller
         $getUser = Auth::user();
 
         //  $data_con = user::with('contact')->where('id','=',$getUser->id)->get();
-        $all_data = UserContactAqar::with('all_aqat_viw')->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(5);
+        $all_data = UserContactAqar::with([
+            'all_aqat_viw',
+            'all_aqat_viw.firstImage',
+            'all_aqat_viw.categoryRel',
+            'all_aqat_viw.governrateq',
+            'all_aqat_viw.offerTypes',
+        ])->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(50);
 
         $all_history_of_point_of_user = UserPriceing::with('pricing')->where('user_id', '=', $getUser->id)->get();
         $points = 0;
