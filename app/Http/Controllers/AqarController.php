@@ -51,7 +51,12 @@ class AqarController extends Controller
 
     public function submited()
     {
-        return view('aqars.thenk_you');
+        $aqar = null;
+        if (session('id')) {
+            $aqar = aqar::with(['categoryRel', 'offerTypes', 'propertyType', 'governrateq', 'districte'])
+                ->find(session('id'));
+        }
+        return view('aqars.thenk_you', compact('aqar'));
     }
 
 

@@ -1,9 +1,21 @@
- <x-layout>
- @section('title')
-{{    $single->type   }}
+<x-layout>
+@section('title')
+{{ $single->type ?? 'الباقة غير موجودة' }}
 @endsection
 
-    <div   class="{{    $single->bk_color   }} text-center">
+@if(!$single)
+    <div class="text-center container" style="padding: 80px 20px;">
+        <div class="alert alert-warning" style="max-width:500px; margin: auto; border-radius:16px;">
+            <i class="fa fa-exclamation-triangle fa-3x mb-3" style="color:#f0ad4e;"></i>
+            <h3>هذه الباقة غير موجودة</h3>
+            <p class="text-muted">الباقة التي تبحث عنها غير متاحة أو تم حذفها.</p>
+            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}" class="btn btn-primary mt-2">
+                <i class="fa fa-arrow-right ml-1"></i> عرض جميع الباقات
+            </a>
+        </div>
+    </div>
+@else
+    <div class="{{ $single->bk_color ?? '' }} text-center">
         <div style="height: 100%;">
                         <br> <br>
 
@@ -259,7 +271,7 @@ function failureCallBack(data) {
 </div>
     </div>
 
-
+    @endif
 </x-layout>
 
 

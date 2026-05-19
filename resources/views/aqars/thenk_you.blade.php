@@ -12,22 +12,80 @@
              <hr>
 
 
-            <h3 style=" line-height: 41px;">
+            <h3 style="line-height: 41px;">
                 {{ session('success') }}</h3>
             <br>
 
-            <p>
+            {{-- بطاقة تفاصيل العقار المضاف --}}
+            @if($aqar)
+            <div class="ty-aqar-card">
+                <div class="ty-aqar-badge-row">
+                    @if($aqar->categoryRel)
+                        <span class="ty-badge ty-badge-cat">
+                            <i class="fa fa-building ml-1"></i>
+                            {{ $aqar->categoryRel->category_name ?? 'عقار' }}
+                        </span>
+                    @endif
+                    @if($aqar->propertyType)
+                        <span class="ty-badge ty-badge-prop">
+                            <i class="fa fa-tags ml-1"></i>
+                            {{ $aqar->propertyType->property_type ?? '' }}
+                        </span>
+                    @endif
+                    @if($aqar->offerTypes)
+                        @php
+                            $offerName = $aqar->offerTypes->type_offer ?? '';
+                            $isRent = in_array($aqar->offer_type, [3, 4]);
+                        @endphp
+                        <span class="ty-badge {{ $isRent ? 'ty-badge-rent' : 'ty-badge-sale' }}">
+                            <i class="fa {{ $isRent ? 'fa-key' : 'fa-handshake-o' }} ml-1"></i>
+                            {{ $offerName }}
+                        </span>
+                    @endif
+                </div>
+
+                @if($aqar->title)
+                    <h4 class="ty-aqar-title">{{ $aqar->title }}</h4>
+                @endif
+
+                <div class="ty-aqar-meta">
+                    @if($aqar->governrateq)
+                        <span><i class="fa fa-map-marker ml-1"></i>{{ $aqar->governrateq->name ?? '' }}</span>
+                    @endif
+                    @if($aqar->districte)
+                        <span><i class="fa fa-map-pin ml-1"></i>{{ $aqar->districte->name ?? '' }}</span>
+                    @endif
+                    @if($aqar->total_area)
+                        <span><i class="fa fa-crop ml-1"></i>{{ number_format($aqar->total_area) }} م²</span>
+                    @endif
+                </div>
+
+                <div class="ty-aqar-actions">
+                    <a class="btn ty-btn-view"
+                       href="{{ url(Config::get('app.locale').'/aqars/'.$aqar->slug) }}">
+                        <i class="fa fa-eye ml-1"></i> عرض الإعلان
+                    </a>
+                    <a class="btn ty-btn-vip"
+                       href="{{ url(Config::get('app.locale').'/pricing-vip/'.$aqar->id) }}">
+                        <i class="fa fa-star ml-1"></i> ميز إعلانك
+                    </a>
+                </div>
+            </div>
+            @else
+                <p class="lead">
+                    @if(session('id'))
+                    <a class="btn btn-light btn-sm" style="padding:10px"
+                       href="{{ url(Config::get('app.locale').'/pricing-vip/'.session('id')) }}" role="button">
+                        ميز اعلانك</a>
+                    @endif
+                </p>
+            @endif
+
+            <p class="mt-3">
               لديك مشكله ؟
               <a href="{{ url(Config::get('app.locale').'/contact-us') }}">
                  تواصل معنا
               </a>
-            </p>
-            <p class="lead">
-                @if(session('id'))
-              <a class="btn btn-light btn-sm" style="padding:10px"
-                 href="{{ url(Config::get('app.locale').'/pricing-vip/'.session('id')) }}" role="button">
-                  ميز اعلانك</a>
-                @endif
             </p>
 
             {{-- Quick Navigation Links --}}
@@ -135,6 +193,85 @@
         .ty-nav-btn { width: 100px; height: 90px; }
         .ty-nav-icon { font-size: 22px; }
         .ty-nav-label { font-size: 12px; }
+    }
+
+    /* ── بطاقة العقار المضاف ── */
+    .ty-aqar-card {
+        background: #fff;
+        border: 2px solid #196aa2;
+        border-radius: 18px;
+        padding: 24px 28px;
+        max-width: 560px;
+        margin: 0 auto 30px;
+        box-shadow: 0 4px 20px rgba(25,106,162,0.13);
+        text-align: right;
+        animation: ty-fadeup 0.5s ease both;
+    }
+    .ty-aqar-badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+        justify-content: flex-end;
+    }
+    .ty-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 14px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .ty-badge-cat  { background: #196aa2; }
+    .ty-badge-prop { background: #5a6a85; }
+    .ty-badge-sale { background: #28a745; }
+    .ty-badge-rent { background: #fd7e14; }
+    .ty-aqar-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #196aa2;
+        margin-bottom: 12px;
+        line-height: 1.5;
+    }
+    .ty-aqar-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: flex-end;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+    .ty-aqar-meta span { display: flex; align-items: center; gap: 4px; }
+    .ty-aqar-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .ty-btn-view {
+        background: #196aa2;
+        color: #fff !important;
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+    .ty-btn-view:hover { background: #145585; }
+    .ty-btn-vip {
+        background: #ffc107;
+        color: #333 !important;
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+    .ty-btn-vip:hover { background: #e0a800; }
+    @media (max-width: 560px) {
+        .ty-aqar-card { padding: 16px; }
     }
     </style>
 

@@ -152,15 +152,15 @@ class PageController extends Controller
         $locale = app()->getLocale();
         $random_mass_num = random_int(111, 10000);
         $validator = Validator::make($request->all(), [
-
             'name' => 'required|min:3|max:90',
-            'MOP' => 'required|min:10|max:11|unique:users',
+            'MOP'  => ['required', 'min:11', 'max:11', 'unique:users', 'regex:/^01[0-9]{9}$/'],
             'password' => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
-
-            //    'TYPE' => 'required|max:90',
-            // 'AGE' => 'required|max:90',
-
+        ], [
+            'MOP.regex' => 'رقم الهاتف يجب أن يبدأ بـ 01 ويكون مكوناً من 11 رقم.',
+            'MOP.min'   => 'رقم الهاتف يجب أن يكون 11 رقم.',
+            'MOP.max'   => 'رقم الهاتف يجب أن يكون 11 رقم.',
+            'MOP.unique'=> 'رقم الهاتف مسجل مسبقاً.',
         ]);
 
 
@@ -311,7 +311,13 @@ class PageController extends Controller
         $getUser = Auth::user();
 
         //  $data_con = user::with('contact')->where('id','=',$getUser->id)->get();
-        $all_data = UserContactAqar::with('all_aqat_viw')->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(5);
+        $all_data = UserContactAqar::with([
+            'all_aqat_viw',
+            'all_aqat_viw.firstImage',
+            'all_aqat_viw.categoryRel',
+            'all_aqat_viw.governrateq',
+            'all_aqat_viw.offerTypes',
+        ])->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(50);
 
         $all_history_of_point_of_user = UserPriceing::with('pricing')->where('user_id', '=', $getUser->id)->get();
         $points = 0;
