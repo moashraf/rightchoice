@@ -158,8 +158,7 @@
                             <th>#</th>
                              <th>اسم</th>
                             <th>نوع</th>
-                            <th>الباقة</th>
-                            <th>التليفون المحمول</th>
+                             <th>التليفون المحمول</th>
                             <th>عدد العقارات</th>
                             <th>مصدر الدعوة</th>
                             <th>الاشتراك</th>
@@ -174,11 +173,7 @@
                                 <td>{{ $users->total() - ($users->currentPage() - 1) * $users->perPage() - $loop->index }}</td>
                                  <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
                                 <td>{{ $user->getUserType() }}</td>
-                                <td>
-                                    @foreach($user->UserPriceing as $val)
-                                        {{ $val->type ?? '' }}
-                                    @endforeach
-                                </td>
+
                                 <td>{{ $user->MOP }}</td>
                                 <td>
                                     <a href="{{ route('sitemanagement.users.aqars', $user->id) }}"
