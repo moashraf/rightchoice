@@ -237,9 +237,18 @@ class AdminUserController extends Controller
         $user = User::findOrFail($id);
         $user->update(['status' => 2]);
 
-        flash('تم حظر المستخدم بنجاح.')->success();
+        // إخفاء عقارات المستخدم من الواجهة (status=0) دون حذفها نهائياً
+        // ويجب التأكد من عدم soft-delete لها حتى لا تظهر في العقارات المحذوفة
 
-        return redirect(route('sitemanagement.users.index'));
+        // استعادة أي عقارات محذوفة ناعمة أولاً (إن وجدت)
+
+        \App\Models\aqar::where('user_id', $user->id)
+            ->update(['status' => 0]);
+        // إخفاء فقط بدون حذف
+
+        flash('تم حظر المستخدم وإخفاء عقاراته بنجاح.')->success();
+
+        return redirect()->back();
     }
 
     public function activate($id)
@@ -253,9 +262,14 @@ class AdminUserController extends Controller
 
         $user->update(['status' => 1]);
 
-        flash('تم تفعيل المستخدم بنجاح.')->success();
+        // إعادة إظهار عقارات المستخدم عند رفع الحظر
+        \App\Models\aqar::where('user_id', $user->id)
+            ->where('status', 0)
+            ->update(['status' => 1]);
 
-        return redirect(route('sitemanagement.users.index'));
+        flash('تم تفعيل المستخدم وإعادة إظهار عقاراته بنجاح.')->success();
+
+        return redirect()->back();
     }
 
     public function aqars($id)
