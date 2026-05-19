@@ -1494,22 +1494,38 @@ class AqarController extends Controller
     public function trackWhatsappContact(Request $request)
     {
 
+$request->validate([
+            'aqar_id' => 'required|integer|exists:aqar,id',
+        ]);
+
         $userId = Auth::check() ? Auth::user()->id : null;
+        $aqarId = $request->input('aqar_id');
+            if (!$userId) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
 
-        // تحقق إذا كان السجل موجود مسبقاً
-        $existing = UserContactAqar::where('aqars_id', )
-            ->where(function ($q) use ($userId, $request) {
-                if ($userId) {
-                    $q->where('user_id', $userId);
-                } else {
-                    $q->whereNull('user_id');
-                }
-            })
-             ->first();
+        $query = UserContactAqar::where('aqars_id', $aqarId);
 
-        return response()->json(['status' => 200, 'message' => 'تم التسجيل']);
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
+        $existing = $query->first();
+         if ($existing) {
+             var_dump($aqarId);
+             $existing->update([
+                'contact_via_whats_app' => 1,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'تم التسجيل',
+        ]);
     }
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
