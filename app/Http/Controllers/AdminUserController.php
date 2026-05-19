@@ -299,9 +299,21 @@ class AdminUserController extends Controller
 
         $packages = UserPriceing::where('user_id', $user->id)
             ->with('pricing')
+            ->orderBy('id', 'DESC')
             ->get();
 
-        return view('admin_users.packages', compact('user', 'packages'));
+        // العقارات التي شاهدها العميل (خُصمت نقاط عليها)
+        $viewedAqars = \App\Models\UserContactAqar::with([
+            'all_aqat_viw',
+            'all_aqat_viw.firstImage',
+            'all_aqat_viw.categoryRel',
+            'all_aqat_viw.offerTypes',
+            'all_aqat_viw.governrateq',
+        ])->where('user_id', $user->id)
+          ->orderBy('created_at', 'DESC')
+          ->get();
+
+        return view('admin_users.packages', compact('user', 'packages', 'viewedAqars'));
     }
 
     public function history($id)
