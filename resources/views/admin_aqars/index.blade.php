@@ -26,6 +26,33 @@
 
     <div class="content px-3">
         @include('flash::message')
+
+        @if(request()->filled('filter_user_id'))
+        @php
+            $filteredUser = \App\Models\User::find(request('filter_user_id'));
+        @endphp
+        @if($filteredUser)
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+            <span>
+                <i class="fas fa-filter ml-1"></i>
+                عرض عقارات المستخدم:
+                <strong>{{ $filteredUser->name }}</strong>
+                ({{ $filteredUser->MOP }})
+            </span>
+            <div>
+                <a href="{{ route('sitemanagement.users.show', $filteredUser->id) }}"
+                   class="btn btn-sm btn-outline-primary ml-2">
+                    <i class="fas fa-user ml-1"></i> بيانات المستخدم
+                </a>
+                <a href="{{ route('sitemanagement.aqars.index') }}"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-times ml-1"></i> إلغاء الفلتر
+                </a>
+            </div>
+        </div>
+        @endif
+        @endif
+
         <div class="clearfix"></div>
         <div class="card">
             <div class="card-body">

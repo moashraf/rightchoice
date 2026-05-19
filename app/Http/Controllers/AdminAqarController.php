@@ -75,6 +75,10 @@ class AdminAqarController extends AppBaseController
             $allAqars->whereDate('created_at', '<=', $request->date_to);
         }
 
+        if ($request->filled('filter_user_id')) {
+            $allAqars->where('user_id', $request->filter_user_id);
+        }
+
         $allAqars = $allAqars->paginate(50);
 
         $propertyTypes = property_type::select('id', 'property_type')->get();

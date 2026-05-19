@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right ml-2"
-                       href="{{ route('sitemanagement.users.aqars', $user->id) }}">
+                       href="{{ route('sitemanagement.aqars.index', ['filter_user_id' => $user->id]) }}">
                         عرض العقارات
                     </a>
                     <a class="btn btn-info float-right ml-2"
