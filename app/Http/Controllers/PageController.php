@@ -152,15 +152,15 @@ class PageController extends Controller
         $locale = app()->getLocale();
         $random_mass_num = random_int(111, 10000);
         $validator = Validator::make($request->all(), [
-
             'name' => 'required|min:3|max:90',
-            'MOP' => 'required|min:10|max:11|unique:users',
+            'MOP'  => ['required', 'min:11', 'max:11', 'unique:users', 'regex:/^01[0-9]{9}$/'],
             'password' => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
-
-            //    'TYPE' => 'required|max:90',
-            // 'AGE' => 'required|max:90',
-
+        ], [
+            'MOP.regex' => 'رقم الهاتف يجب أن يبدأ بـ 01 ويكون مكوناً من 11 رقم.',
+            'MOP.min'   => 'رقم الهاتف يجب أن يكون 11 رقم.',
+            'MOP.max'   => 'رقم الهاتف يجب أن يكون 11 رقم.',
+            'MOP.unique'=> 'رقم الهاتف مسجل مسبقاً.',
         ]);
 
 
