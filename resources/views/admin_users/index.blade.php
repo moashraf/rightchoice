@@ -156,7 +156,9 @@
                         <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                             <th>اسم</th>
+                            <th>ID</th>
+
+                            <th>اسم</th>
                             <th>نوع</th>
                              <th>التليفون المحمول</th>
                             <th>عدد العقارات</th>
@@ -171,7 +173,9 @@
                         @foreach($users as $user)
                             <tr>
                                 <td>{{ $users->total() - ($users->currentPage() - 1) * $users->perPage() - $loop->index }}</td>
-                                 <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
+                                <td>{{ $user->id }}</td>
+
+                                <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
                                 <td>{{ $user->getUserType() }}</td>
 
                                 <td>{{ $user->MOP }}</td>
