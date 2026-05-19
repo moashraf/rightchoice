@@ -57,6 +57,10 @@
             <i class="fa fa-filter"></i> فلتر
         </button>
     </div>
+
+    @if(request()->filled('filter_user_id'))
+        <input type="hidden" name="filter_user_id" value="{{ request('filter_user_id') }}">
+    @endif
     <div class="col-md-1 mt-2">
         <a href="{{ route('sitemanagement.aqars.index') }}" class="btn btn-secondary btn-block">
             <i class="fa fa-times"></i>

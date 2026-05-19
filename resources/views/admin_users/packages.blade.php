@@ -150,6 +150,7 @@
                                         <th>الفئة</th>
                                         <th>نوع العرض</th>
                                         <th>المحافظة</th>
+                                        <th class="text-center">طريقة التواصل</th>
                                         <th class="text-danger text-center">النقاط المخصومة</th>
                                         <th>تاريخ المشاهدة</th>
                                         <th></th>
@@ -192,6 +193,18 @@
                                         </td>
                                         <td>{{ $aq->governrateq->governrate ?? '—' }}</td>
                                         <td class="text-center">
+                                            @if($contact->contact_via_whats_app)
+                                                <span class="badge badge-success" style="font-size:12px;padding:5px 8px;">
+                                                    <img src="https://img.icons8.com/color/16/000000/whatsapp--v1.png" width="14" height="14"/>
+                                                    واتساب
+                                                </span>
+                                            @else
+                                                <span class="badge badge-info" style="font-size:12px;padding:5px 8px;">
+                                                    <i class="fas fa-phone ml-1"></i> اتصال
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
                                             <span style="font-size:18px;font-weight:800;color:#dc3545;">
                                                 {{ $aq->points_avail ?? 0 }}
                                             </span>
@@ -214,6 +227,16 @@
                                     <tfoot class="thead-light">
                                     <tr>
                                         <th colspan="5" class="text-right">الإجمالي</th>
+                                        <th class="text-center">
+                                            <span class="badge badge-success" style="font-size:12px;">
+                                                {{ $validAqars->filter(fn($v) => $v->contact_via_whats_app)->count() }}
+                                                <img src="https://img.icons8.com/color/14/000000/whatsapp--v1.png" width="14" height="14"/>
+                                            </span>
+                                            <span class="badge badge-info" style="font-size:12px;">
+                                                {{ $validAqars->filter(fn($v) => !$v->contact_via_whats_app)->count() }}
+                                                <i class="fas fa-phone"></i>
+                                            </span>
+                                        </th>
                                         <th class="text-center text-danger" style="font-size:16px;font-weight:800;">
                                             {{ $validAqars->sum(fn($v) => $v->all_aqat_viw->points_avail ?? 0) }}
                                             <div style="font-size:10px;font-weight:400;">نقطة</div>

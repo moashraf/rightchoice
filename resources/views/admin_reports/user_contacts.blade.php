@@ -66,6 +66,8 @@
     @php
         $activePackage = $user->userpricing->sortByDesc('id')->first();
         $contactCount  = $user->contact->count();
+        $whatsappCount = $user->contact->filter(fn($c) => $c->contact_via_whats_app)->count();
+        $callCount     = $user->contact->filter(fn($c) => !$c->contact_via_whats_app)->count();
         $totalPointsUsed = $user->contact->sum(function($c) {
             return optional($c->all_aqat_viw)->points_avail ?? 0;
         });
@@ -117,6 +119,18 @@
                     <i class="fas fa-phone-alt ml-1"></i>
                     عدد التواصلات: {{ $contactCount }}
                 </span>
+                @if($whatsappCount)
+                <span class="badge badge-success p-2" style="font-size:12px;">
+                    <img src="https://img.icons8.com/color/14/000000/whatsapp--v1.png" width="14" height="14"/>
+                    واتساب: {{ $whatsappCount }}
+                </span>
+                @endif
+                @if($callCount)
+                <span class="badge badge-primary p-2" style="font-size:12px;">
+                    <i class="fas fa-phone ml-1"></i>
+                    اتصال: {{ $callCount }}
+                </span>
+                @endif
                 <span class="badge badge-warning p-2" style="font-size:12px;">
                     <i class="fas fa-coins ml-1"></i>
                     إجمالي النقاط المستهلكة: {{ number_format($totalPointsUsed) }}
@@ -137,6 +151,7 @@
                             <th>صاحب العقار</th>
                             <th style="width:110px;">سعر العقار</th>
                             <th style="width:110px;">نقاط مستهلكة</th>
+                            <th style="width:120px;">طريقة التواصل</th>
                             <th style="width:140px;">تاريخ التواصل</th>
                             <th style="width:80px;">رابط</th>
                         </tr>
@@ -197,6 +212,18 @@
                                 <span class="text-muted">—</span>
                                 @endif
                             </td>
+                            <td class="text-center">
+                                @if($contact->contact_via_whats_app)
+                                    <span class="badge badge-success p-1" style="font-size:12px;">
+                                        <img src="https://img.icons8.com/color/14/000000/whatsapp--v1.png" width="14" height="14"/>
+                                        واتساب
+                                    </span>
+                                @else
+                                    <span class="badge badge-info p-1" style="font-size:12px;">
+                                        <i class="fas fa-phone ml-1"></i> اتصال
+                                    </span>
+                                @endif
+                            </td>
                             <td>
                                 <i class="fas fa-clock text-muted ml-1" style="font-size:11px;"></i>
                                 <span style="font-size:12px;">{{ $contact->created_at ? $contact->created_at->format('d/m/Y H:i') : '—' }}</span>
@@ -212,7 +239,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-3">لا توجد سجلات</td>
+                            <td colspan="9" class="text-center text-muted py-3">لا توجد سجلات</td>
                         </tr>
                         @endforelse
                     </tbody>

@@ -1694,7 +1694,6 @@ else{
 
     $(document).ready(function () {
 
-
         $.ajaxSetup({
 
             headers: {
@@ -1704,7 +1703,6 @@ else{
             }
 
         });
-
 
         $('body').on("click", "button.addToContact", function () {
 
@@ -1740,18 +1738,12 @@ else{
                     aqars_id: aqars_id
 
                 },
-
                 success: function (data) {
-
                     // location.reload();
                     if (data.status == 202) {
-
                         toastr.info(data.massage, '', {
-
                             timeOut: 5000
-
                         });
-
                     }
                     var phone = data.massage;
                     var waPhone = phone.replace(/[^0-9]/g, '');
@@ -1761,7 +1753,7 @@ else{
                     var waMsg = encodeURIComponent('السلام عليكم، أنا مهتم بالعقار:\n' + window.location.href);
                     document.getElementById('contMop').innerHTML =
                         '<a class="btn btn-success" href="tel:' + phone + '">' + phone + '</a> ' +
-                        '<a href="https://wa.me/' + waPhone + '?text=' + waMsg + '" target="_blank" class="btn btn-success mt-1" style="background-color:#25D366;border-color:#25D366;">' +
+                        '<a href="https://wa.me/' + waPhone + '?text=' + waMsg + '" target="_blank" class="btn btn-success mt-1" style="background-color:#25D366;border-color:#25D366;" onclick="trackWhatsappContactById(' + aqars_id + ')">' +
                         '<img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png" width="20" height="20"/> واتساب</a>';
 
 
@@ -1791,6 +1783,17 @@ else{
         });
 
     });
+
+    function trackWhatsappContactById(aqarId) {
+        fetch('{{ route("track-whatsapp-contact") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ aqar_id: aqarId })
+        }).catch(function(){});
+    }
 
 </script>
 

@@ -638,6 +638,7 @@ Route::post('/add-wish_list', 'App\Http\Controllers\AqarController@addwish_list'
 Route::get('/get-wish_list_ids', 'App\Http\Controllers\AqarController@getWishListIds')->name('get-wish_list_ids');
 Route::post('/remove-wish_list', 'App\Http\Controllers\AqarController@removewish_list')->name('remove-wish_list');
 Route::post('/add-contactaqar', 'App\Http\Controllers\AqarController@addContact')->name('add-contactaqar');
+Route::post('/track-whatsapp-contact', 'App\Http\Controllers\AqarController@trackWhatsappContact')->name('track-whatsapp-contact');
 Route::post('/ajx_main_img_edit_only', 'App\Http\Controllers\AqarController@ajx_main_img_edit_only')->name('ajx_main_img_edit_only');
 
 Route::post('/contact-info', 'App\Http\Controllers\PagesController@store')->name('contact-info');

@@ -1458,7 +1458,6 @@ class AqarController extends Controller
 
     public function addContact(Request $request)
     {
-        //dd("dd");
         $pointAqqr = aqar::where('id', $request->aqars_id)->first();
 
         $cheackPoint = UserPriceing::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
@@ -1489,6 +1488,43 @@ class AqarController extends Controller
         return response()->json(['massage' => $pointAqqr->user->MOP, 'status' => 200], 200);
     }
 
+    /**
+     * تسجيل التواصل عبر واتساب مع صاحب العقار
+     */
+    public function trackWhatsappContact(Request $request)
+    {
+
+$request->validate([
+            'aqar_id' => 'required|integer|exists:aqar,id',
+        ]);
+
+        $userId = Auth::check() ? Auth::user()->id : null;
+        $aqarId = $request->input('aqar_id');
+            if (!$userId) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $query = UserContactAqar::where('aqars_id', $aqarId);
+
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
+        $existing = $query->first();
+         if ($existing) {
+              $existing->update([
+                'contact_via_whats_app' => 1,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'تم التسجيل',
+        ]);
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
