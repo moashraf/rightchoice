@@ -294,7 +294,13 @@ class AdminReportController extends Controller
                 'contact.all_aqat_viw.offerTypes',
                 'userpricing.pricing',
             ])
-            ->orderByDesc('id')
+            ->orderByDesc(
+                DB::table('usercontactaqar')
+                    ->select('created_at')
+                    ->whereColumn('user_id', 'users.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1)
+            )
             ->paginate(15)
             ->appends($request->all());
 
