@@ -83,11 +83,21 @@ class AdminAqarController extends AppBaseController
             $allAqars->where('user_id', $request->filter_user_id);
         }
 
+        if ($request->filled('filter_governrate')) {
+            $allAqars->where('governrate_id', $request->filter_governrate);
+        }
+
+        if ($request->filled('filter_offer_type')) {
+            $allAqars->where('offer_type', $request->filter_offer_type);
+        }
+
         $allAqars = $allAqars->paginate(50);
 
         $propertyTypes = property_type::select('id', 'property_type')->get();
+        $governrates   = Governrate::select('id', 'governrate')->get();
+        $offerTypes    = \App\Models\OfferTypes::select('id', 'type_offer')->get();
 
-        return view('admin_aqars.index', compact('allAqars', 'propertyTypes'));
+        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'offerTypes'));
     }
 
     /**

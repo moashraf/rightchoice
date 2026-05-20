@@ -32,6 +32,28 @@
         </select>
     </div>
     <div class="col-md-2">
+        <label>المحافظة</label>
+        <select class="form-control" name="filter_governrate">
+            <option value="">الكل</option>
+            @foreach($governrates as $gov)
+                <option value="{{ $gov->id }}" {{ request('filter_governrate') == $gov->id ? 'selected' : '' }}>
+                    {{ $gov->governrate }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label>نوع العرض</label>
+        <select class="form-control" name="filter_offer_type">
+            <option value="">الكل</option>
+            @foreach($offerTypes as $ot)
+                <option value="{{ $ot->id }}" {{ request('filter_offer_type') == $ot->id ? 'selected' : '' }}>
+                    {{ $ot->type_offer }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2">
         <label>ترتيب حسب</label>
         <select class="form-control" name="sortBy">
             <option value="">اختر</option>
