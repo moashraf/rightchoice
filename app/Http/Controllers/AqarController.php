@@ -1757,19 +1757,34 @@ $request->validate([
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function removeuserAds(Request $request)
+    public function getDeleteReasons()
     {
+         $reasons = \App\Models\AqarDeleteReason::select('id', 'title_ar')->get();
+        return response()->json($reasons);
+    }
 
-        $cheackAqar = aqar::find($request->item_id)->delete();
+    public function removeuserAds(Request $request)    {
+        $user = auth()->user();
+        $aqar = aqar::find($request->item_id);
 
-        if (!$cheackAqar) {
-
+        if (!$aqar) {
             return response()->json(['massage' => 'This item is not found', 'status' => 202], 202);
         }
 
+        // التأكد أن العقار ملك للمستخدم الحالي
+        if ($aqar->user_id !== $user->id) {
+            return response()->json(['massage' => 'Unauthorized', 'status' => 403], 403);
+        }
 
-        return response()->json(['massage' => 'Deleted Suucess!', 'status' => 200], 200);
+        // حفظ سبب الحذف إن وُجد
+        if ($request->delete_reason_id) {
+            $aqar->aqar_delete_reasons_id = $request->delete_reason_id;
+            $aqar->saveQuietly();
+        }
 
+        $aqar->delete();
+
+        return response()->json(['massage' => 'Deleted Success!', 'status' => 200], 200);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////

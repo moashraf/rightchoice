@@ -457,7 +457,11 @@
                 <div class="card shadow-sm border-0 h-100" style="border-right: 5px solid #795548 !important;">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1" style="font-size:14px;">تواصل مع العقارات</p>
+                            <p class="text-muted mb-1" style="font-size:14px;">عدد العملاء الذين تواصلو  مع العقارات</p>
+                            <h2 class="font-weight-bold mb-0" style="color:#795548;">{{ number_format($stats['usersContacted']) }}</h2>
+                        </div>
+                        <div>
+                            <p class="text-muted mb-1" style="font-size:14px;">  عدد العقارات التي  تم التواصل معها</p>
                             <h2 class="font-weight-bold mb-0" style="color:#795548;">{{ number_format($stats['userContacts']) }}</h2>
                         </div>
                         <div style="font-size:42px; color:#795548; opacity:.25;">
@@ -470,6 +474,7 @@
                 </div>
             </a>
         </div>
+
 
         {{-- اشتراكات الباقات --}}
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">

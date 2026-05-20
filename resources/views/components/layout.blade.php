@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -1796,127 +1796,13 @@ else{
     }
 
 </script>
-
-
-<script>
-
+ <script>
     $(document).ready(function () {
-
-
         $.ajaxSetup({
-
             headers: {
-
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
             }
-
         });
-        $('body').on("click", "a.removeFromAds", function () {
-            var token = "{{ csrf_token() }}"
-
-            var item_id = $(this).data('id');
-
-            var $input = $('.js-result').val();
-
-
-            var url = "{{route('remove-user-Ads')}}";
-            var confirmation = confirm('تاكيد حذف العقار ؟');
-            if (confirmation) {
-
-                @auth
-
-                $.ajax({
-
-
-                    type: "POST",
-
-                    url: url,
-
-                    data: {
-
-                        _token: token,
-
-                        item_id: item_id
-
-                    },
-
-
-                    success: function (data) {
-
-
-                        if (data.status == 202) {
-
-
-                            toastr.info(data.massage, '', {
-
-                                timeOut: 50000,
-
-                                extendedTimeOut: 50000
-
-
-                            });
-
-
-                        } else {
-
-
-                            toastr.success(data.massage, '', {
-
-                                timeOut: 50000,
-
-                                extendedTimeOut: 50000
-
-
-                            });
-
-
-                            location.reload();
-
-
-                        }
-
-
-                    },
-
-                    error: function (data) {
-
-                        //console.log('Error:', data);
-
-
-                    }
-
-                });
-
-                @else
-
-                toastr.error("you must login!", '');
-
-                @endauth
-            }
-
-        });
-
-
-    });
-
-</script>
-
-<script>
-
-    $(document).ready(function () {
-
-
-        $.ajaxSetup({
-
-            headers: {
-
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-            }
-
-        });
-
 
         $('body').on("click", "a.AddComplain", function () {
 

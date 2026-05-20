@@ -57,6 +57,9 @@ class AdminReportController extends Controller
         $stats['notifications'] = Notification::when($fromDate || $toDate, $filter)->count();
         $stats['photoSessions'] = RequestPhotoSession::when($fromDate || $toDate, $filter)->count();
         $stats['userContacts']  = UserContactAqar::when($fromDate || $toDate, $filter)->count();
+        $stats['usersContacted'] = UserContactAqar::when($fromDate || $toDate, $filter)
+            ->distinct('user_id')
+            ->count('user_id');
         $stats['subscriptions'] = UserPriceing::when($fromDate || $toDate, $filter)->count();
 
         // عقارات نشطة / في الانتظار / متوقفة
@@ -291,7 +294,13 @@ class AdminReportController extends Controller
                 'contact.all_aqat_viw.offerTypes',
                 'userpricing.pricing',
             ])
-            ->orderByDesc('id')
+            ->orderByDesc(
+                DB::table('usercontactaqar')
+                    ->select('created_at')
+                    ->whereColumn('user_id', 'users.id')
+                    ->orderByDesc('created_at')
+                    ->limit(1)
+            )
             ->paginate(15)
             ->appends($request->all());
 

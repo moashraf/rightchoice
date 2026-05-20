@@ -32,6 +32,14 @@ class aqar extends Model
                 $model->updated_by = Auth::id();
             }
         });
+
+        static::deleting(function ($model) {
+            if (Auth::check()) {
+                // تسجيل من قام بالحذف قبل تنفيذ SoftDelete
+                $model->updated_by = Auth::id();
+                $model->saveQuietly();
+            }
+        });
     }
 
     protected $fillable = [
@@ -80,7 +88,8 @@ class aqar extends Model
         'title_en',
         'description_en',
         'slug_en',
-        'updated_by'
+        'updated_by',
+        'aqar_delete_reasons_id',
     ];
 
     public static $rules = [
@@ -267,6 +276,10 @@ class aqar extends Model
 
     public function updatedBy(){
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function deleteReason(){
+        return $this->belongsTo(\App\Models\AqarDeleteReason::class, 'aqar_delete_reasons_id');
     }
 
     /**

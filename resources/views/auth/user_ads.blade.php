@@ -21,7 +21,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
 
 
-                           @foreach ($allAqars as $aqar)
+                           @forelse ($allAqars as $aqar)
                            @if($aqar != null)
                                 <div class="col-lg-12">
                                     <div class="card mt-3">
@@ -169,10 +169,10 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         </div>
 
                                                     <div class="btnAdds">
-                                                        <a type="button" class="btn btn-outline-danger removeFromAds  ml-2" data-id="{{$aqar['id']}}"> حذف</a>
-
-
-                                                        <a  href="{{ URL::to(Config::get('app.locale').'/aqars/update/'.$aqar->slug ) }}" class="btn btn-outline-dark ml-2">تعديل</a>
+                                                        <a type="button" class="btn btn-outline-danger removeFromAds ml-2" data-id="{{$aqar['id']}}"> حذف</a>
+                                                        <a  href="{{ URL::to(Config::get('app.locale').'/aqars/update/'.$aqar->slug ) }}" class="btn btn-outline-dark ml-2">
+                                                            تعديل
+                                                          </a>
 
                                                        @if($aqar->vip === 19999999999)
                                                         <a  href="{{ URL::to(Config::get('app.locale').'/pricing-vip/'.$aqar->id ) }}" class="btn btn-outline-success ml-2">تمييز</a>
@@ -343,7 +343,26 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                     </div>
                                 </div>
                                                                         @endif
-                            @endforeach
+                            @empty
+                                {{-- رسالة عدم وجود إعلانات --}}
+                                <div class="col-lg-12">
+                                    <div class="text-center py-5 mt-4">
+                                        <div style="background:#fff; border-radius:16px; padding:50px 30px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                                            <div style="font-size:80px; margin-bottom:20px;">🏠</div>
+                                            <h3 style="color:#333; font-weight:700; margin-bottom:12px;">لا توجد إعلانات حتى الآن</h3>
+                                            <p style="color:#888; font-size:16px; margin-bottom:30px;">
+                                                لم تقم بإضافة أي إعلان عقاري بعد.<br>
+                                                ابدأ الآن وأضف عقارك للوصول لآلاف المشترين والمستأجرين.
+                                            </p>
+                                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}"
+                                               style="background:#e74c3c; color:#fff; padding:14px 40px; border-radius:30px; font-size:16px; font-weight:600; text-decoration:none; display:inline-block;">
+                                                <i class="fas fa-plus-circle ml-2"></i>
+                                                أضف إعلانك الآن
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforelse
 
                             {{ $allAqars->links() }}
 
@@ -371,7 +390,145 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 								<x-call-to-action />
 		<!-- ============================ Call To Action End ================================== -->
 
+{{-- ========== Modal حذف العقار ========== --}}
+<div class="modal fade" id="deleteAqarModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius:12px; overflow:hidden;">
+            <div class="modal-header" style="background:#e74c3c; color:#fff;">
+                <h5 class="modal-title">
+                    <i class="fas fa-trash-alt ml-2"></i>
+                    حذف الإعلان
+                </h5>
+                <button type="button" class="close text-white" onclick="$('#deleteAqarModal').modal('hide')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center mb-3" style="font-size:15px; color:#555;">
+                    يرجى تحديد سبب حذف الإعلان
+                </p>
+                <div id="deleteReasonsContainer">
+                    <div class="text-center py-3">
+                        <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary" onclick="$('#deleteAqarModal').modal('hide')">إلغاء</button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-danger" disabled>
+                    <i class="fas fa-trash ml-1"></i> تأكيد الحذف
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var currentDeleteId = null;
+    var selectedReasonId = null;
+    var deleteReasonsLoaded = false;
+
+    // جلب أسباب الحذف مرة واحدة
+    function loadDeleteReasons() {
+        if (deleteReasonsLoaded) return;
+        fetch('{{ url("/api/aqar-delete-reasons-list") }}')
+            .then(r => r.json())
+            .then(function(data) {
+                deleteReasonsLoaded = true;
+                var html = '';
+                if (data.length === 0) {
+                    html = '<p class="text-muted text-center">لا توجد أسباب مضافة</p>';
+                } else {
+                    html = '<div class="list-group">';
+                    data.forEach(function(r) {
+                        html += '<button type="button" class="list-group-item list-group-item-action reason-btn" data-id="' + r.id + '">' +
+                                    '<i class="far fa-circle ml-2 text-muted"></i>' + r.title_ar +
+                                '</button>';
+                    });
+                    // خيار بدون سبب
+                    html += '<button type="button" class="list-group-item list-group-item-action reason-btn" data-id="">' +
+                                '<i class="far fa-circle ml-2 text-muted"></i> بدون تحديد سبب' +
+                            '</button>';
+                    html += '</div>';
+                }
+                document.getElementById('deleteReasonsContainer').innerHTML = html;
+
+                // أحداث الاختيار
+                document.querySelectorAll('.reason-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.reason-btn').forEach(function(b) {
+                            b.classList.remove('active');
+                            b.querySelector('i').className = 'far fa-circle ml-2 text-muted';
+                        });
+                        this.classList.add('active');
+                        this.querySelector('i').className = 'fas fa-check-circle ml-2 text-white';
+                        selectedReasonId = this.getAttribute('data-id');
+                        document.getElementById('confirmDeleteBtn').disabled = false;
+                    });
+                });
+            });
+    }
+
+    // فتح modal عند ضغط حذف
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.removeFromAds');
+        if (!btn) return;
+        e.preventDefault();
+        currentDeleteId = btn.getAttribute('data-id');
+        selectedReasonId = null;
+        document.getElementById('confirmDeleteBtn').disabled = true;
+        // إعادة تعيين الاختيار
+        document.querySelectorAll('.reason-btn').forEach(function(b) {
+            b.classList.remove('active');
+            if (b.querySelector('i')) b.querySelector('i').className = 'far fa-circle ml-2 text-muted';
+        });
+        loadDeleteReasons();
+        $('#deleteAqarModal').modal('show');
+    });
+
+    // تأكيد الحذف
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (!currentDeleteId) return;
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin ml-1"></i> جاري الحذف...';
+
+        fetch('{{ route("remove-user-Ads") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                item_id: currentDeleteId,
+                delete_reason_id: selectedReasonId || null
+            })
+        })
+        .then(r => r.json())
+        .then(function(data) {
+            $('#deleteAqarModal').modal('hide');
+            if (data.status === 200) {
+                // إزالة الكارد من الصفحة
+                var card = document.querySelector('.removeFromAds[data-id="' + currentDeleteId + '"]');
+                if (card) {
+                    var row = card.closest('.col-lg-12');
+                    if (row) row.remove();
+                }
+                // إعادة تحميل الصفحة
+                setTimeout(function() { location.reload(); }, 500);
+            } else {
+                alert('حدث خطأ، يرجى المحاولة مرة أخرى');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-trash ml-1"></i> تأكيد الحذف';
+            }
+        })
+        .catch(function() {
+            alert('حدث خطأ في الاتصال');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-trash ml-1"></i> تأكيد الحذف';
+        });
+    });
+
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.toggle-interested');
         if (!btn) return;
