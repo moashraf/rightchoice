@@ -371,6 +371,7 @@ class AdminAqarController extends AppBaseController
                 'user', 'governrateq', 'districte', 'updatedBy',
                 'offerTypes', 'propertyType', 'categoryRel',
                 'subAreaa', 'compounds', 'finishType', 'images',
+                'deleteReason',
             ])
             ->orderBy('deleted_at', 'DESC');
 

@@ -278,6 +278,10 @@ class aqar extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function deleteReason(){
+        return $this->belongsTo(\App\Models\AqarDeleteReason::class, 'aqar_delete_reasons_id');
+    }
+
     /**
      * المستخدمون الذين أبدوا اهتماماً بهذا العقار (سجلات usercontactaqar).
      */

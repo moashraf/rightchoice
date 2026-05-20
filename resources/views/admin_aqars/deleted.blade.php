@@ -64,6 +64,7 @@
                             <th>تاريخ الإنشاء</th>
                             <th>تاريخ الحذف</th>
                             <th>تم الحذف بواسطة</th>
+                            <th>سبب الحذف</th>
                             <th style="min-width:150px;">إجراءات</th>
                         </tr>
                     </thead>
@@ -122,6 +123,16 @@
                                         </a>
                                         <br>
                                         <small class="text-muted">{{ $aqar->updatedBy->MOP ?? '' }}</small>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($aqar->deleteReason)
+                                        <span class="badge badge-warning" style="font-size:12px; white-space:normal;">
+                                            <i class="fas fa-tag mr-1"></i>
+                                            {{ $aqar->deleteReason->title_ar }}
+                                        </span>
                                     @else
                                         <span class="text-muted">—</span>
                                     @endif
@@ -277,6 +288,18 @@
                                         </a>
                                         {{ $aqar->updatedBy->MOP ?? '' }}
                                     @else — @endif
+                                </td>
+                            </tr>
+                            <tr><td><strong>سبب الحذف</strong></td>
+                                <td>
+                                    @if($aqar->deleteReason)
+                                        <span class="badge badge-warning" style="font-size:13px;">
+                                            <i class="fas fa-tag mr-1"></i>
+                                            {{ $aqar->deleteReason->title_ar }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
                                 </td>
                             </tr>
                         </table>
