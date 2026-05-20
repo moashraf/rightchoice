@@ -48,6 +48,22 @@ class AdminComplaintsDataTable extends DataTable
             $query->where('user_id', request('user_id'));
         }
 
+        if (request()->filled('keyword')) {
+            $kw = request('keyword');
+            $query->where(function ($q) use ($kw) {
+                $q->where('message', 'like', '%' . $kw . '%')
+                  ->orWhereHas('userinfo', function ($q2) use ($kw) {
+                      $q2->where('name',  'like', '%' . $kw . '%')
+                         ->orWhere('MOP',   'like', '%' . $kw . '%')
+                         ->orWhere('email', 'like', '%' . $kw . '%');
+                  })
+                  ->orWhereHas('aqarinfo', function ($q2) use ($kw) {
+                      $q2->where('title',    'like', '%' . $kw . '%')
+                         ->orWhere('ref_code', 'like', '%' . $kw . '%');
+                  });
+            });
+        }
+
         if (request()->filled('status')) {
             $query->where('status', request('status'));
         }
@@ -69,6 +85,7 @@ class AdminComplaintsDataTable extends DataTable
             ->setTableId('complaints-table')
             ->columns($this->getColumns())
             ->minifiedAjax('', "
+                data.keyword   = $('#filter_keyword').val();
                 data.user_id   = $('#filter_user_id').val();
                 data.status    = $('#filter_status').val();
                 data.date_from = $('#filter_date_from').val();
