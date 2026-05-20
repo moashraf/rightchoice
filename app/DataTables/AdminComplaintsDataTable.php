@@ -42,7 +42,7 @@ class AdminComplaintsDataTable extends DataTable
 
     public function query(Complaints $model)
     {
-        $query = $model->newQuery()->with(['userinfo', 'aqarinfo']);
+        $query = $model->newQuery()->with(['userinfo', 'aqarinfo'])->orderBy('id', 'DESC');
 
         if (request()->filled('user_id')) {
             $query->where('user_id', request('user_id'));
@@ -68,7 +68,7 @@ class AdminComplaintsDataTable extends DataTable
             ->parameters([
                 'dom'       => 'Bfrtip',
                 'stateSave' => false,
-                'order'     => [[0, 'desc']],
+                'order'     => [[1, 'desc']],
                 'buttons'   => [],
             ]);
     }

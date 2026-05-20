@@ -1,15 +1,27 @@
 <!-- User Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('user_id', 'المستخدم:') !!} <span class="text-danger">*</span>
-    {!! Form::select('user_id', $users, null, ['placeholder' => 'اختر مستخدماً...', 'class' => 'form-control custom-select']) !!}
-    <small class="text-danger">{{ $errors->first('user_id') }}</small>
+     <small class="text-danger">{{ $errors->first('user_id') }}</small>
+    @if(isset($complaints) && $complaints->userinfo)
+        <div class="mt-1">
+            <a href="{{ route('sitemanagement.users.index', ['filter_user_id' => $complaints->userinfo->id]) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-user ml-1"></i> عرض المستخدم: {{ $complaints->userinfo->name }}
+            </a>
+        </div>
+    @endif
 </div>
 
 <!-- Aqar Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('aqars_id', 'العقار:') !!} <span class="text-danger">*</span>
-    {!! Form::select('aqars_id', $aqars, null, ['placeholder' => 'اختر العقار...', 'class' => 'form-control custom-select']) !!}
-    <small class="text-danger">{{ $errors->first('aqars_id') }}</small>
+     <small class="text-danger">{{ $errors->first('aqars_id') }}</small>
+    @if(isset($complaints) && $complaints->aqarinfo)
+        <div class="mt-1">
+            <a href="{{ route('sitemanagement.aqars.index', ['key_word' => $complaints->aqarinfo->ref_code ?: $complaints->aqarinfo->title]) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                <i class="fas fa-home ml-1"></i> عرض العقار: {{ \Illuminate\Support\Str::limit($complaints->aqarinfo->title, 40) }}
+            </a>
+        </div>
+    @endif
 </div>
 
 <!-- Status Field -->
