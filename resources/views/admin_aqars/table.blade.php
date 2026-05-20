@@ -32,6 +32,28 @@
         </select>
     </div>
     <div class="col-md-2">
+        <label>المحافظة</label>
+        <select class="form-control" name="filter_governrate">
+            <option value="">الكل</option>
+            @foreach($governrates as $gov)
+                <option value="{{ $gov->id }}" {{ request('filter_governrate') == $gov->id ? 'selected' : '' }}>
+                    {{ $gov->governrate }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label>نوع العرض</label>
+        <select class="form-control" name="filter_offer_type">
+            <option value="">الكل</option>
+            @foreach($offerTypes as $ot)
+                <option value="{{ $ot->id }}" {{ request('filter_offer_type') == $ot->id ? 'selected' : '' }}>
+                    {{ $ot->type_offer }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2">
         <label>ترتيب حسب</label>
         <select class="form-control" name="sortBy">
             <option value="">اختر</option>
@@ -41,7 +63,7 @@
     </div>
     <div class="col-md-3">
         <label>بحث</label>
-        <input type="search" name="key_word" class="form-control" placeholder="بحث بالاسم أو المالك"
+        <input type="search" name="key_word" class="form-control" placeholder="بحث: اسم العقار / الكود المرجعي / اسم المالك / موبايل / إيميل"
                value="{{ request('key_word') }}">
     </div>
     <div class="col-md-2">
@@ -77,6 +99,7 @@
             <th>الاسم</th>
             <th>محافظه</th>
             <th>نوع الوحده</th>
+            <th>نوع العرض</th>
             <th>التمييز</th>
             <th>الحاله</th>
             <th>اسم المالك</th>
@@ -88,15 +111,29 @@
         <tbody>
         @foreach($allAqars as $allAqars_val)
             <tr>
-                <td>{{ $allAqars_val->id }}</td>
+                <td>
+                    {{ $allAqars_val->id }}
+                    @if($allAqars_val->ref_code)
+                        <br>
+                        <small>
+                            <a href="#" class="badge badge-secondary aqar-stats-btn"
+                               data-id="{{ $allAqars_val->id }}"
+                               data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
+                               title="إحصائيات الإعلان">
+                                <i class="fas fa-chart-bar ml-1"></i>{{ $allAqars_val->ref_code }}
+                            </a>
+                        </small>
+                    @endif
+                </td>
                 <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
                 <td>{{ $allAqars_val->governrateq->governrate ?? '' }}</td>
                 <td>{{ $allAqars_val->propertyType->property_type ?? '' }}</td>
+                <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}</td>
                 <td>{{ $allAqars_val->getVIP() }}</td>
                 <td>{{ $allAqars_val->getStatus() }}</td>
                 <td>
                     @if($allAqars_val->user)
-                        <a href="{{ route('sitemanagement.aqars.show', $allAqars_val->id) }}">
+                        <a href="{{ route('sitemanagement.users.index', ['filter_user_id' => $allAqars_val->user->id]) }}" target="_blank" title="عرض المستخدم في صفحة المستخدمين">
                             {{ $allAqars_val->user->name }}
                         </a>
                     @else
@@ -148,3 +185,123 @@
         {{ $allAqars->appends(request()->query())->links() }}
     </div>
 </div>
+
+{{-- ── Modal إحصائيات العقار ─────────────────────────────── --}}
+<div class="modal fade" id="aqarStatsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-chart-bar ml-1"></i>
+                    إحصائيات الإعلان — <span id="statsRefCode"></span>
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                {{-- Loading --}}
+                <div id="statsLoading" class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                </div>
+
+                <div id="statsContent" style="display:none;">
+                    {{-- بطاقات الإحصائيات --}}
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="info-box bg-info">
+                                <span class="info-box-icon"><i class="fas fa-eye"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">عدد المشاهدات العامة</span>
+                                    <span class="info-box-number" id="statsViews">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box bg-success">
+                                <span class="info-box-icon"><i class="fas fa-phone"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">من فتح رقم العميل</span>
+                                    <span class="info-box-number" id="statsContactsCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- جدول من فتح رقم العميل --}}
+                    <h6 class="font-weight-bold mb-2"><i class="fas fa-users ml-1"></i>تفاصيل من فتح رقم العميل</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم المستخدم</th>
+                                    <th>رقم الهاتف</th>
+                                    <th>واتساب</th>
+                                    <th>التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsContactsTable">
+                                <tr><td colspan="5" class="text-center text-muted">لا توجد بيانات</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.aqar-stats-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var url = this.dataset.url;
+
+            // reset modal
+            document.getElementById('statsLoading').style.display  = 'block';
+            document.getElementById('statsContent').style.display  = 'none';
+            document.getElementById('statsRefCode').textContent     = '';
+            document.getElementById('statsViews').textContent       = '0';
+            document.getElementById('statsContactsCount').textContent = '0';
+            document.getElementById('statsContactsTable').innerHTML = '<tr><td colspan="5" class="text-center"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+
+            $('#aqarStatsModal').modal('show');
+
+            fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                document.getElementById('statsRefCode').textContent        = data.ref_code || '';
+                document.getElementById('statsViews').textContent          = data.views;
+                document.getElementById('statsContactsCount').textContent  = data.contacts_count;
+
+                var tbody = '';
+                if (data.contacts && data.contacts.length > 0) {
+                    data.contacts.forEach(function (c, i) {
+                        tbody += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td><a href="/sitemanagement/users?filter_user_id=' + c.user_id + '" target="_blank">' + c.name + '</a></td>' +
+                            '<td><span class="badge badge-primary">' + c.phone + '</span></td>' +
+                            '<td>' + (c.via_whats ? '<span class="badge badge-success">نعم</span>' : '<span class="badge badge-secondary">لا</span>') + '</td>' +
+                            '<td>' + c.date + '</td>' +
+                        '</tr>';
+                    });
+                } else {
+                    tbody = '<tr><td colspan="5" class="text-center text-muted">لم يفتح أحد رقم العميل بعد</td></tr>';
+                }
+                document.getElementById('statsContactsTable').innerHTML = tbody;
+
+                document.getElementById('statsLoading').style.display = 'none';
+                document.getElementById('statsContent').style.display = 'block';
+            })
+            .catch(function () {
+                document.getElementById('statsLoading').style.display = 'none';
+                document.getElementById('statsContent').innerHTML = '<div class="alert alert-danger">حدث خطأ أثناء تحميل البيانات</div>';
+                document.getElementById('statsContent').style.display = 'block';
+            });
+        });
+    });
+});
+</script>
+

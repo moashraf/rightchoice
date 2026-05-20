@@ -19,14 +19,12 @@
             <div class="card-body">
                 <form id="filter-form" class="form-inline flex-wrap" style="gap:10px;">
                     <div class="form-group mr-2 mb-2">
-                        <label class="mr-1 ml-1">المستخدم:</label>
-                        <select name="user_id" id="filter_user_id" class="form-control">
-                            <option value="">-- الكل --</option>
-                            @foreach($users as $id => $name)
-                                <option value="{{ $id }}" {{ request('user_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                            @endforeach
-                        </select>
+                        <label class="mr-1 ml-1">بحث:</label>
+                        <input type="text" id="filter_keyword" name="keyword" class="form-control" style="min-width:260px;"
+                               placeholder="اسم / عقار / رسالة / كود / موبايل / إيميل"
+                               value="{{ request('keyword') }}">
                     </div>
+
                     <div class="form-group mr-2 mb-2">
                         <label class="mr-1 ml-1">الحالة:</label>
                         <select name="status" id="filter_status" class="form-control">
@@ -35,6 +33,14 @@
                                 <option value="{{ $val }}" {{ request('status') == $val ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="form-group mr-2 mb-2">
+                        <label class="mr-1 ml-1">من تاريخ:</label>
+                        <input type="date" id="filter_date_from" name="date_from" class="form-control" value="{{ request('date_from') }}">
+                    </div>
+                    <div class="form-group mr-2 mb-2">
+                        <label class="mr-1 ml-1">إلى تاريخ:</label>
+                        <input type="date" id="filter_date_to" name="date_to" class="form-control" value="{{ request('date_to') }}">
                     </div>
                     <div class="mb-2">
                         <button type="submit" class="btn btn-primary mr-1">
@@ -67,8 +73,11 @@
         });
 
         $('#reset-filter').on('click', function () {
+            $('#filter_keyword').val('');
             $('#filter_user_id').val('');
             $('#filter_status').val('');
+            $('#filter_date_from').val('');
+            $('#filter_date_to').val('');
             window.LaravelDataTables['complaints-table'].ajax.reload();
         });
     });

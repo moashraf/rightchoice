@@ -25,8 +25,11 @@ class UpdateComplaintsRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = Complaints::$rules;
-        
-        return $rules;
+        return [
+            'user_id'  => 'nullable|exists:users,id',
+            'aqars_id' => 'nullable|exists:aqar,id',
+            'status'   => 'nullable',
+            'message'  => 'nullable|string',
+        ];
     }
 }
