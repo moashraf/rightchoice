@@ -105,6 +105,13 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.aqar-delete-reasons.index') }}"
+                                   class="nav-link {{ request()->is('sitemanagement/aqar-delete-reasons*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon text-warning"></i>
+                                    <p>أسباب حذف العقار</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">

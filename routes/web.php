@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use App\Models\aqar;
 use Illuminate\Support\Facades\Route;
@@ -91,7 +91,7 @@ Route::middleware('admin-web')->group(function () {
 */
 Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web', 'adminfCheckAdmin'])->group(function () {
 
-    // ── Blogs ────────────────────────────────────────────────────────────
+    // â”€â”€ Blogs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.create')->only(['create', 'store']);
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
@@ -110,7 +110,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
         ->middleware('permission:sliders.delete')->only(['destroy']);
 
-    // ── Ads (اعلانات خارجية) ─────────────────────────────────────────
+    // â”€â”€ Ads (Ø§Ø¹Ù„Ø§Ù†Ø§Øª Ø®Ø§Ø±Ø¬ÙŠØ©) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
         ->middleware('permission:ads.create')->only(['create', 'store']);
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
@@ -120,11 +120,11 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
         ->middleware('permission:ads.delete')->only(['destroy']);
 
-    // ── Settings ─────────────────────────────────────────────────────────
+    // â”€â”€ Settings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Meta Conversions API ─────────────────────────────────────────────
+    // â”€â”€ Meta Conversions API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('meta-conversions', [App\Http\Controllers\AdminMetaConversionsController::class, 'index'])
         ->name('meta-conversions.index')
         ->middleware('permission:settings.manage');
@@ -137,7 +137,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
 
-    // ── Images Management ─────────────────────────────────────────────────
+    // â”€â”€ Images Management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('images', [App\Http\Controllers\AdminImagesController::class, 'index'])->name('images.index');
     Route::delete('images/bulk-delete', [App\Http\Controllers\AdminImagesController::class, 'bulkDelete'])->name('images.bulk-delete');
     Route::delete('images/{id}', [App\Http\Controllers\AdminImagesController::class, 'destroy'])->name('images.destroy');
@@ -146,7 +146,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:pricing.manage');
     Route::resource('pages', App\Http\Controllers\AdminPagesController::class);
 
-    // ── Companies ────────────────────────────────────────────────────────
+    // â”€â”€ Companies â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
         ->middleware('permission:companies.create')->only(['create', 'store']);
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
@@ -162,7 +162,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Location Data ────────────────────────────────────────────────────
+    // â”€â”€ Location Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class)
         ->middleware('permission:locations.manage');
     Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class)
@@ -184,13 +184,13 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Notifications ────────────────────────────────────────────────────
+    // â”€â”€ Notifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
         ->middleware('permission:notifications.manage')->only(['create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
         ->middleware('permission:notifications.view')->only(['index', 'show']);
 
-    // ── Contact Forms ────────────────────────────────────────────────────
+    // â”€â”€ Contact Forms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
         ->middleware('permission:contact_forms.view')->only(['create', 'store', 'edit', 'update']);
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
@@ -201,7 +201,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Complaints ───────────────────────────────────────────────────────
+    // â”€â”€ Complaints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.update')->only(['edit', 'update']);
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
@@ -209,7 +209,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.delete')->only(['destroy']);
 
-    // ── Real Estate (Aqars) ──────────────────────────────────────────────
+    // â”€â”€ Real Estate (Aqars) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('aqars/deleted', [App\Http\Controllers\AdminAqarController::class, 'deletedAqars'])->name('aqars.deleted')
         ->middleware('permission:aqars.delete');
     Route::post('aqars/{id}/restore', [App\Http\Controllers\AdminAqarController::class, 'restoreAqar'])->name('aqars.restore')
@@ -232,7 +232,10 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints')
         ->middleware('permission:aqars.refund');
 
-    // ── Users ────────────────────────────────────────────────────────────
+    // â”€â”€ Aqar Delete Reasons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    Route::resource('aqar-delete-reasons', App\Http\Controllers\AdminAqarDeleteReasonController::class);
+
+    // â”€â”€ Users â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('users/deleted', [App\Http\Controllers\AdminUserController::class, 'deletedUsers'])->name('users.deleted')
         ->middleware('permission:users.delete');
     Route::post('users/{id}/restore', [App\Http\Controllers\AdminUserController::class, 'restoreUser'])->name('users.restore')
@@ -268,7 +271,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('users/{user}/get-points', [App\Http\Controllers\AdminUserPointsController::class, 'getPoints'])->name('users.getPoints')
         ->middleware('permission:users.update');
 
-    // ── Reports ──────────────────────────────────────────────────────────
+    // â”€â”€ Reports â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index')
         ->middleware('permission:reports.view');
     Route::get('reports/invited-by-details', [App\Http\Controllers\AdminReportController::class, 'invitedByDetails'])->name('reports.invitedByDetails')
@@ -276,7 +279,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('reports/user-contacts', [App\Http\Controllers\AdminReportController::class, 'userContacts'])->name('reports.userContacts')
         ->middleware('permission:reports.view');
 
-    // ── Account Delete Requests ──────────────────────────────────────────
+    // â”€â”€ Account Delete Requests â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index')
         ->middleware('permission:users.view');
     Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve')
@@ -286,21 +289,21 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
 
-    // ── Error Logs ─────────────────────────────────────────────────────
+    // â”€â”€ Error Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])
         ->name('errorLogs.clearAll')
         ->middleware('role:admin');
     Route::resource('errorLogs', App\Http\Controllers\AdminErrorLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
 
-    // ── Activity Logs ──────────────────────────────────────────────────
+    // â”€â”€ Activity Logs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::post('activityLogs/clear', [App\Http\Controllers\AdminActivityLogController::class, 'clearAll'])
         ->name('activityLogs.clearAll')
         ->middleware('role:admin');
     Route::resource('activityLogs', App\Http\Controllers\AdminActivityLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
 
-    // ── Online Users ───────────────────────────────────────────────────
+    // â”€â”€ Online Users â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('onlineUsers', [App\Http\Controllers\AdminOnlineUsersController::class, 'index'])
         ->name('onlineUsers.index')
         ->middleware('role:admin');
@@ -308,7 +311,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('onlineUsers.show')
         ->middleware('role:admin');
 
-    // ── SMS Messaging ────────────────────────────────────────────────────
+    // â”€â”€ SMS Messaging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('sms', [App\Http\Controllers\AdminSmsController::class, 'index'])
         ->name('sms.index')
         ->middleware('permission:sms.view');
@@ -332,7 +335,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('sms.previewRecipients')
         ->middleware('permission:sms.send');
 
-    // ── WhatsApp Messaging ───────────────────────────────────────────────
+    // â”€â”€ WhatsApp Messaging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'index'])
         ->name('whatsapp.index')
         ->middleware('permission:whatsapp.view');
@@ -356,7 +359,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('whatsapp.previewRecipients')
         ->middleware('permission:whatsapp.send');
 
-    // ── Payment Management ────────────────────────────────────────────────
+    // â”€â”€ Payment Management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('payments', [App\Http\Controllers\AdminPaymentController::class, 'index'])
         ->name('payments.index')
         ->middleware('permission:payments.view');
@@ -391,7 +394,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('refunds.markRefunded')
         ->middleware('permission:payments.refunds');
 
-    // ── RBAC Management Panel (admin-only) ───────────────────────────────
+    // â”€â”€ RBAC Management Panel (admin-only) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
         ->name('rbac.index')
         ->middleware('role:admin');
@@ -416,7 +419,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('rbac.permissions.destroy')
         ->middleware('role:admin');
 
-    // ── Chat Reports Management ──────────────────────────────────────────
+    // â”€â”€ Chat Reports Management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('chatReports', [App\Http\Controllers\AdminChatReportController::class, 'index'])
         ->name('chatReports.index')
         ->middleware('permission:reports.view');
@@ -451,10 +454,10 @@ Route::get('/dashboard', function () {
 
 Route::group(['prefix' => '{locale?}'], function () {
 
-    // ── Real Estate Map Page (public, no auth required) ──────────────
+    // â”€â”€ Real Estate Map Page (public, no auth required) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/map', [App\Http\Controllers\MapController::class, 'index'])->middleware('setLocale')->name('map.index');
 
-    // ── Real Estate Developers (public) ──────────────────────────────
+    // â”€â”€ Real Estate Developers (public) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/developers', [App\Http\Controllers\DeveloperController::class, 'index'])
         ->middleware('setLocale')->name('developers.index');
     Route::get('/developers/{id}', [App\Http\Controllers\DeveloperController::class, 'show'])
@@ -495,12 +498,12 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
 
-        // ── User Payment History ──────────────────────────────────────────
+        // â”€â”€ User Payment History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/my-payments', [App\Http\Controllers\UserPaymentController::class, 'index'])->name('user.payments.index')->middleware('setLocale');
         Route::get('/my-payments/{id}', [App\Http\Controllers\UserPaymentController::class, 'show'])->name('user.payments.show')->middleware('setLocale');
         Route::post('/my-payments/{id}/refund', [App\Http\Controllers\UserPaymentController::class, 'requestRefund'])->name('user.payments.refund')->middleware('setLocale');
 
-        // ── Chat & Social Routes ─────────────────────────────────────────
+        // â”€â”€ Chat & Social Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index')->middleware('setLocale');
         Route::post('/chat/start', [App\Http\Controllers\ChatController::class, 'startConversation'])->name('chat.start')->middleware('setLocale');
         Route::post('/chat/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send')->middleware('setLocale');
@@ -508,7 +511,7 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::delete('/chat/message/{messageId}', [App\Http\Controllers\ChatController::class, 'deleteMessage'])->name('chat.deleteMessage')->middleware('setLocale');
         Route::get('/chat/unread-count', [App\Http\Controllers\ChatController::class, 'unreadCount'])->name('chat.unreadCount')->middleware('setLocale');
 
-        // ── Friends ──────────────────────────────────────────────────────
+        // â”€â”€ Friends â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/friends', [App\Http\Controllers\FriendController::class, 'index'])->name('friends.index')->middleware('setLocale');
         Route::post('/friends/request', [App\Http\Controllers\FriendController::class, 'sendRequest'])->name('friends.request')->middleware('setLocale');
         Route::post('/friends/{friendshipId}/accept', [App\Http\Controllers\FriendController::class, 'acceptRequest'])->name('friends.accept')->middleware('setLocale');
@@ -516,15 +519,15 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::post('/friends/remove', [App\Http\Controllers\FriendController::class, 'removeFriend'])->name('friends.remove')->middleware('setLocale');
         Route::get('/friends/search', [App\Http\Controllers\FriendController::class, 'searchUsers'])->name('friends.search')->middleware('setLocale');
 
-        // ── Block ────────────────────────────────────────────────────────
+        // â”€â”€ Block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/blocked', [App\Http\Controllers\BlockController::class, 'index'])->name('blocked.index')->middleware('setLocale');
         Route::post('/block', [App\Http\Controllers\BlockController::class, 'block'])->name('block.store')->middleware('setLocale');
         Route::post('/unblock', [App\Http\Controllers\BlockController::class, 'unblock'])->name('block.destroy')->middleware('setLocale');
 
-        // ── Report ───────────────────────────────────────────────────────
+        // â”€â”€ Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::post('/report', [App\Http\Controllers\ReportController::class, 'store'])->name('report.store')->middleware('setLocale');
 
-        // ── Community / Posts ────────────────────────────────────────────
+        // â”€â”€ Community / Posts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/community', [App\Http\Controllers\PostController::class, 'index'])->name('community.index')->middleware('setLocale');
         Route::post('/community/posts', [App\Http\Controllers\PostController::class, 'store'])->name('posts.store')->middleware('setLocale');
         Route::post('/community/posts/{postId}/like', [App\Http\Controllers\PostController::class, 'toggleLike'])->name('posts.like')->middleware('setLocale');
@@ -578,13 +581,13 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/aqar-added', 'App\Http\Controllers\AqarController@submited')->name('thankyou')
         ->middleware('setLocale');
 
-    // ── Apartment Designer (صمم شقتك بنفسك) ────────────────────────
+    // â”€â”€ Apartment Designer (ØµÙ…Ù… Ø´Ù‚ØªÙƒ Ø¨Ù†ÙØ³Ùƒ) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/designer', function () { return view('designer.index'); })->name('designer.index')->middleware('setLocale');
 
-    // ── Property Hunter Game ─────────────────────────────────────────
+    // â”€â”€ Property Hunter Game â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/game', function () { return view('game.index'); })->name('game.index')->middleware('setLocale');
 
-    // ── Smart Search (AI Chat Assistant) ─────────────────────────────
+    // â”€â”€ Smart Search (AI Chat Assistant) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/smart-search', [App\Http\Controllers\SmartSearchController::class, 'index'])->name('smart-search.index')->middleware('setLocale');
     Route::post('/smart-search/search', [App\Http\Controllers\SmartSearchController::class, 'search'])->name('smart-search.search')->middleware('setLocale');
     Route::get('/smart-search/suggestions', [App\Http\Controllers\SmartSearchController::class, 'suggestions'])->name('smart-search.suggestions')->middleware('setLocale');
@@ -652,7 +655,7 @@ Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricControll
 Route::post('api/fetch-states', [App\Http\Controllers\DropdownController::class, 'fetchState']);
 Route::get('api/fetch-property-types', 'App\Http\Controllers\AqarController@fetchPropertyTypesByCat')->name('api.fetchPropertyTypes');
 
-// ── Map API Endpoints ────────────────────────────────────────────────
+// â”€â”€ Map API Endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Route::get('/api/map/aqars', [App\Http\Controllers\MapController::class, 'getAqars'])->name('api.map.aqars');
 Route::post('/api/map/location', [App\Http\Controllers\MapController::class, 'storeLocation'])->name('api.map.storeLocation');
 Route::get('/api/map/governorate-coords', [App\Http\Controllers\MapController::class, 'getGovernorateDefaultCoords'])->name('api.map.govCoords');
