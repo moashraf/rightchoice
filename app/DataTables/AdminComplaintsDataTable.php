@@ -13,12 +13,20 @@ class AdminComplaintsDataTable extends DataTable
         $dataTable = new EloquentDataTable($query);
 
         return $dataTable
+            ->addIndexColumn()
             ->addColumn('action', 'admin_complaints.datatables_actions')
             ->addColumn('user_name', function ($row) {
-                return $row->userinfo ? $row->userinfo->name : '-';
+                if (!$row->userinfo) return '-';
+                $url = route('sitemanagement.users.index', ['filter_user_id' => $row->userinfo->id]);
+                return '<a href="' . $url . '" target="_blank">' . e($row->userinfo->name) . '</a>';
+            })
+            ->addColumn('user_phone', function ($row) {
+                return $row->userinfo ? '<span class="badge badge-primary">' . e($row->userinfo->MOP) . '</span>' : '-';
             })
             ->addColumn('aqar_title', function ($row) {
-                return $row->aqarinfo ? $row->aqarinfo->title : '-';
+                if (!$row->aqarinfo) return '-';
+                $url = route('sitemanagement.aqars.index', ['key_word' => $row->aqarinfo->ref_code ?: $row->aqarinfo->title]);
+                return '<a href="' . $url . '" target="_blank">' . e(\Illuminate\Support\Str::limit($row->aqarinfo->title, 30)) . '</a>';
             })
             ->addColumn('status_label', function ($row) {
                 if ($row->status == Complaints::COMPLAINT_PENDING)    return '<span class="badge badge-warning">متوقف</span>';
@@ -26,7 +34,10 @@ class AdminComplaintsDataTable extends DataTable
                 if ($row->status == Complaints::COMPLAINT_SOLVED)     return '<span class="badge badge-success">تم الحل</span>';
                 return '-';
             })
-            ->rawColumns(['action', 'status_label']);
+            ->addColumn('created_date', function ($row) {
+                return $row->created_at ? $row->created_at->format('Y-m-d H:i') : '-';
+            })
+            ->rawColumns(['action', 'status_label', 'user_name', 'user_phone', 'aqar_title']);
     }
 
     public function query(Complaints $model)
@@ -65,11 +76,14 @@ class AdminComplaintsDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'DT_RowIndex' => ['title' => '#', 'data' => 'DT_RowIndex', 'name' => 'DT_RowIndex', 'searchable' => false, 'orderable' => false],
             'id',
             'user_name'    => ['title' => 'المستخدم',  'data' => 'user_name',    'name' => 'user_name',    'searchable' => false, 'orderable' => false],
+            'user_phone'    => ['title' => 'رقم الهاتف',  'data' => 'user_phone',    'name' => 'user_phone',    'searchable' => false, 'orderable' => false],
             'aqar_title'   => ['title' => 'العقار',    'data' => 'aqar_title',   'name' => 'aqar_title',   'searchable' => false, 'orderable' => false],
             'message',
             'status_label' => ['title' => 'الحالة',    'data' => 'status_label', 'name' => 'status_label', 'searchable' => false, 'orderable' => false],
+            'created_date' => ['title' => 'تاريخ الإنشاء', 'data' => 'created_date', 'name' => 'created_date', 'searchable' => false, 'orderable' => false],
         ];
     }
 
