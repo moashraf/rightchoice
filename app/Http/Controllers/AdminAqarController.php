@@ -60,9 +60,13 @@ class AdminAqarController extends AppBaseController
 
         if ($request->key_word) {
             $allAqars->where(function ($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->key_word . '%')
-                  ->orWhereHas('user', function ($q2) use ($request) {
-                      $q2->where('name', 'like', '%' . $request->key_word . '%');
+                $kw = $request->key_word;
+                $q->where('title', 'like', '%' . $kw . '%')
+                  ->orWhere('ref_code', 'like', '%' . $kw . '%')
+                  ->orWhereHas('user', function ($q2) use ($kw) {
+                      $q2->where('name',  'like', '%' . $kw . '%')
+                         ->orWhere('MOP',   'like', '%' . $kw . '%')
+                         ->orWhere('email', 'like', '%' . $kw . '%');
                   });
             });
         }
@@ -420,5 +424,34 @@ class AdminAqarController extends AppBaseController
 
         Flash::success('تم الحذف النهائي للعقار بنجاح.');
         return redirect()->route('sitemanagement.aqars.deleted');
+    }
+
+    /**
+     * AJAX: إحصائيات العقار (مشاهدات + من فتح رقم العميل)
+     */
+    public function stats($id)
+    {
+        $aqar = aqar::withTrashed()->findOrFail($id);
+
+        $contacts = \App\Models\UserContactAqar::where('aqars_id', $id)
+            ->with('user:id,name,MOP')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'ref_code'      => $aqar->ref_code,
+            'title'         => $aqar->title,
+            'views'         => $aqar->views ?? 0,
+            'contacts_count'=> $contacts->count(),
+            'contacts'      => $contacts->map(function ($c) {
+                return [
+                    'user_id'   => $c->user_id,
+                    'name'      => $c->user->name  ?? 'مجهول',
+                    'phone'     => $c->user->MOP   ?? '-',
+                    'via_whats' => $c->contact_via_whats_app,
+                    'date'      => $c->created_at ? $c->created_at->format('Y-m-d H:i') : '',
+                ];
+            }),
+        ]);
     }
 }

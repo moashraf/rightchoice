@@ -53,6 +53,18 @@
 
         @include('flash::message')
 
+        @if(request()->filled('filter_user_id'))
+        <div class="alert alert-info d-flex justify-content-between align-items-center">
+            <span>
+                <i class="fas fa-filter ml-1"></i>
+                عرض المستخدم رقم: <strong>#{{ request('filter_user_id') }}</strong>
+            </span>
+            <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-times ml-1"></i> إلغاء الفلتر
+            </a>
+        </div>
+        @endif
+
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>

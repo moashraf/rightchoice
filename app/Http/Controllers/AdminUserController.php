@@ -20,6 +20,11 @@ class AdminUserController extends Controller
         else
             $users->orderBy('id', 'ASC');
 
+        // فلتر بالـ ID مباشرة (من لينك صفحة العقارات)
+        if ($request->filled('filter_user_id')) {
+            $users->where('id', (int) $request->filter_user_id);
+        }
+
         if ($request->search_key)
             $users->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search_key . '%')

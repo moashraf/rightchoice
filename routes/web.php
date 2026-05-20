@@ -231,6 +231,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:aqars.update');
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints')
         ->middleware('permission:aqars.refund');
+    Route::get('aqars/{id}/stats', [App\Http\Controllers\AdminAqarController::class, 'stats'])->name('aqars.stats')
+        ->middleware('permission:aqars.view');
     Route::resource('aqar-delete-reasons', App\Http\Controllers\AdminAqarDeleteReasonController::class);
 
     // ── Users ────────────────────────────────────────────────────────────
