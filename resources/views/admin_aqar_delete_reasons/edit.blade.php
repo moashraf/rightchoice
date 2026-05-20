@@ -34,31 +34,31 @@
                     @error('title_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="form-group">
-                    <label>العنوان بالإنجليزية <span class="text-danger">*</span></label>
-                    <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror"
-                           value="{{ old('title_en', $aqarDeleteReason->title_en) }}">
-                    @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
+{{--                <div class="form-group">--}}
+{{--                    <label>العنوان بالإنجليزية</label>--}}
+{{--                    <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror"--}}
+{{--                           value="{{ old('title_en', $aqarDeleteReason->title_en) }}">--}}
+{{--                    @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror--}}
+{{--                </div>--}}
 
-                <div class="form-group">
-                    <label>صورة السبب</label>
-                    @if($aqarDeleteReason->image)
-                        <div class="mb-2">
-                            <img id="preview" src="{{ Storage::url($aqarDeleteReason->image) }}"
-                                 style="width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;"
-                                 onerror="this.src='{{ asset('images/FBO.png') }}'">
-                        </div>
-                    @else
-                        <div class="mb-2">
-                            <img id="preview" src="#" alt="" style="display:none; width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
-                        </div>
-                    @endif
-                    <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror" accept="image/*"
-                           onchange="previewImg(this)">
-                    <small class="text-muted">اتركه فارغاً للإبقاء على الصورة الحالية</small>
-                    @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
-                </div>
+{{--                <div class="form-group">--}}
+{{--                    <label>صورة السبب</label>--}}
+{{--                    @if($aqarDeleteReason->image)--}}
+{{--                        <div class="mb-2">--}}
+{{--                            <img id="preview" src="{{ Storage::url($aqarDeleteReason->image) }}"--}}
+{{--                                 style="width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;"--}}
+{{--                                 onerror="this.src='{{ asset('images/FBO.png') }}'">--}}
+{{--                        </div>--}}
+{{--                    @else--}}
+{{--                        <div class="mb-2">--}}
+{{--                            <img id="preview" src="#" alt="" style="display:none; width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror" accept="image/*"--}}
+{{--                           onchange="previewImg(this)">--}}
+{{--                    <small class="text-muted">اتركه فارغاً للإبقاء على الصورة الحالية</small>--}}
+{{--                    @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror--}}
+{{--                </div>--}}
 
                 <div class="form-group mb-0 text-right">
                     <button type="submit" class="btn btn-warning px-4">

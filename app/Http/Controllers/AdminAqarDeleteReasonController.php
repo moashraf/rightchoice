@@ -24,7 +24,7 @@ class AdminAqarDeleteReasonController extends Controller
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'image'    => 'nullable|image|max:2048',
         ]);
 
@@ -49,7 +49,7 @@ class AdminAqarDeleteReasonController extends Controller
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'image'    => 'nullable|image|max:2048',
         ]);
 
@@ -80,4 +80,3 @@ class AdminAqarDeleteReasonController extends Controller
         return redirect()->route('sitemanagement.aqar-delete-reasons.index');
     }
 }
-

@@ -33,10 +33,8 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>#</th>
-                            <th>الصورة</th>
-                            <th>العنوان (عربي)</th>
-                            <th>العنوان (English)</th>
-                            <th>تاريخ الإضافة</th>
+                             <th>العنوان (عربي)</th>
+                             <th>تاريخ الإضافة</th>
                             <th style="min-width:120px;">إجراءات</th>
                         </tr>
                     </thead>
@@ -44,18 +42,9 @@
                         @forelse($reasons as $reason)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    @if($reason->image)
-                                        <img src="{{ Storage::url($reason->image) }}"
-                                             style="width:60px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #ddd;"
-                                             onerror="this.src='{{ asset('images/FBO.png') }}'">
-                                    @else
-                                        <span class="text-muted">—</span>
-                                    @endif
-                                </td>
+
                                 <td><strong>{{ $reason->title_ar }}</strong></td>
-                                <td>{{ $reason->title_en }}</td>
-                                <td><small>{{ $reason->created_at?->format('Y-m-d') }}</small></td>
+                                 <td><small>{{ $reason->created_at?->format('Y-m-d') }}</small></td>
                                 <td>
                                     <a href="{{ route('sitemanagement.aqar-delete-reasons.edit', $reason->id) }}"
                                        class="btn btn-warning btn-xs">

@@ -33,22 +33,22 @@
                     @error('title_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="form-group">
-                    <label>العنوان بالإنجليزية <span class="text-danger">*</span></label>
-                    <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror"
-                           value="{{ old('title_en') }}" placeholder="e.g. Ad expired">
-                    @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
+{{--                <div class="form-group">--}}
+{{--                    <label>العنوان بالإنجليزية</label>--}}
+{{--                    <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror"--}}
+{{--                           value="{{ old('title_en') }}" placeholder="e.g. Ad expired">--}}
+{{--                    @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror--}}
+{{--                </div>--}}
 
-                <div class="form-group">
-                    <label>صورة السبب</label>
-                    <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror" accept="image/*"
-                           onchange="previewImg(this)">
-                    @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
-                    <div class="mt-2">
-                        <img id="preview" src="#" alt="" style="display:none; width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
-                    </div>
-                </div>
+{{--                <div class="form-group">--}}
+{{--                    <label>صورة السبب</label>--}}
+{{--                    <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror" accept="image/*"--}}
+{{--                           onchange="previewImg(this)">--}}
+{{--                    @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror--}}
+{{--                    <div class="mt-2">--}}
+{{--                        <img id="preview" src="#" alt="" style="display:none; width:120px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="form-group mb-0 text-right">
                     <button type="submit" class="btn btn-primary px-4">
