@@ -66,6 +66,12 @@
 
                             {{ trans('langsite.my_payments')}}
                         </a>
+
+                        <a href="{{ URL::to(Config::get('app.locale').'/user_contacted_aqars') }}"
+                           class="btn btn-sm btn-outline-info">
+                            <i class="fa fa-building"></i>
+                            عقارات تواصلت معها
+                        </a>
                     </div>
 
                     {{-- Delete Account Request --}}

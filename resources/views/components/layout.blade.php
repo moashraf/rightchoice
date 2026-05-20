@@ -628,6 +628,14 @@
                                             </li>
 
                                             <li>
+                                                <a href="{{ URL::to(Config::get('app.locale').'/user_contacted_aqars') }}">
+
+                                                    عقارات تواصلت معها
+
+                                                </a>
+                                            </li>
+
+                                            <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">
 
                                                     {{ trans('langsite.my_ads')}}

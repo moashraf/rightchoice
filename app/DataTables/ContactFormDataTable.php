@@ -66,6 +66,7 @@ class ContactFormDataTable extends DataTable
     {
         return [
             'id',
+            'name',
             'phone',
             'email',
             'subject'
