@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -1796,13 +1796,23 @@ else{
     }
 
 </script>
- <script>
+
+
+<script>
+
     $(document).ready(function () {
+
+
         $.ajaxSetup({
+
             headers: {
+
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
             }
+
         });
+
 
         $('body').on("click", "a.AddComplain", function () {
 
