@@ -206,17 +206,47 @@
                                 </td>
                                 <td>
                                     @php
-                                        $latestPackage = $user->UserPriceing->sortByDesc('id')->first();
+                                        $packages = $user->userpricing->sortByDesc('id');
+                                        $packagesCount = $packages->count();
+                                        $contactCount = $user->contact_count ?? 0;
                                     @endphp
-                                    @if($latestPackage)
-                                        <span class="badge badge-success p-1" style="font-size:12px;">
-                                            <i class="fas fa-gem ml-1"></i>
-                                            {{ $latestPackage->type ?? 'باقة #'.$latestPackage->id }}
-                                        </span>
+                                    @if($packagesCount > 0)
+                                        <div class="mb-1">
+                                            <span class="badge badge-secondary" style="font-size:11px;">
+                                                <i class="fas fa-layer-group ml-1"></i> {{ $packagesCount }} باقة
+                                            </span>
+                                            <a href="{{ route('sitemanagement.users.packages', $user->id) }}"
+                                               class="badge badge-info" style="font-size:11px;" title="عرض العقارات التي تواصل معها" target="_blank">
+                                                <i class="fas fa-phone ml-1"></i> {{ $contactCount }} تواصل
+                                            </a>
+                                        </div>
+                                        @foreach($packages as $pkg)
+                                            @php
+                                                $pkgName = optional($pkg->pricing)->type ?? ('باقة #'.$pkg->pricing_id);
+                                            @endphp
+                                            <div class="mb-1 p-1 border rounded" style="font-size:11px; background:#f8f9fa;">
+                                                <strong class="text-success">{{ $pkgName }}</strong><br>
+                                                <span class="text-muted">أساسية:</span>
+                                                <span class="badge badge-primary">{{ number_format($pkg->start_points) }}</span>
+                                                &nbsp;
+                                                <span class="text-muted">متبقية:</span>
+                                                <span class="badge badge-{{ $pkg->current_points > 0 ? 'success' : 'danger' }}">
+                                                    {{ number_format($pkg->current_points) }}
+                                                </span>
+                                            </div>
+                                        @endforeach
                                     @else
-                                        <span class="badge badge-light text-muted" style="font-size:12px;">
-                                            <i class="fas fa-times-circle ml-1"></i> غير مشترك
-                                        </span>
+                                        <div>
+                                            <span class="badge badge-light text-muted" style="font-size:12px;">
+                                                <i class="fas fa-times-circle ml-1"></i> غير مشترك
+                                            </span>
+                                            @if($contactCount > 0)
+                                                <a href="{{ route('sitemanagement.users.packages', $user->id) }}"
+                                                   class="badge badge-info" style="font-size:11px;" title="عرض العقارات التي تواصل معها" target="_blank">
+                                                    <i class="fas fa-phone ml-1"></i> {{ $contactCount }} تواصل
+                                                </a>
+                                            @endif
+                                        </div>
                                     @endif
                                 </td>
                                 <td>
