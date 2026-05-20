@@ -52,6 +52,14 @@ class AdminComplaintsDataTable extends DataTable
             $query->where('status', request('status'));
         }
 
+        if (request()->filled('date_from')) {
+            $query->whereDate('created_at', '>=', request('date_from'));
+        }
+
+        if (request()->filled('date_to')) {
+            $query->whereDate('created_at', '<=', request('date_to'));
+        }
+
         return $query;
     }
 
@@ -61,8 +69,10 @@ class AdminComplaintsDataTable extends DataTable
             ->setTableId('complaints-table')
             ->columns($this->getColumns())
             ->minifiedAjax('', "
-                data.user_id = $('#filter_user_id').val();
-                data.status  = $('#filter_status').val();
+                data.user_id   = $('#filter_user_id').val();
+                data.status    = $('#filter_status').val();
+                data.date_from = $('#filter_date_from').val();
+                data.date_to   = $('#filter_date_to').val();
             ")
             ->addAction(['width' => '120px', 'printable' => false])
             ->parameters([

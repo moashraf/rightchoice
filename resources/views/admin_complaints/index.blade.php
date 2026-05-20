@@ -36,6 +36,14 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group mr-2 mb-2">
+                        <label class="mr-1 ml-1">من تاريخ:</label>
+                        <input type="date" id="filter_date_from" name="date_from" class="form-control" value="{{ request('date_from') }}">
+                    </div>
+                    <div class="form-group mr-2 mb-2">
+                        <label class="mr-1 ml-1">إلى تاريخ:</label>
+                        <input type="date" id="filter_date_to" name="date_to" class="form-control" value="{{ request('date_to') }}">
+                    </div>
                     <div class="mb-2">
                         <button type="submit" class="btn btn-primary mr-1">
                             <i class="fa fa-filter"></i> فلترة
@@ -69,6 +77,8 @@
         $('#reset-filter').on('click', function () {
             $('#filter_user_id').val('');
             $('#filter_status').val('');
+            $('#filter_date_from').val('');
+            $('#filter_date_to').val('');
             window.LaravelDataTables['complaints-table'].ajax.reload();
         });
     });
