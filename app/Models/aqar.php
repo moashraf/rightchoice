@@ -32,6 +32,14 @@ class aqar extends Model
                 $model->updated_by = Auth::id();
             }
         });
+
+        static::deleting(function ($model) {
+            if (Auth::check()) {
+                // تسجيل من قام بالحذف قبل تنفيذ SoftDelete
+                $model->updated_by = Auth::id();
+                $model->saveQuietly();
+            }
+        });
     }
 
     protected $fillable = [

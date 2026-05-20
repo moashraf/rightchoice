@@ -63,6 +63,7 @@
                             <th>الحالة</th>
                             <th>تاريخ الإنشاء</th>
                             <th>تاريخ الحذف</th>
+                            <th>تم الحذف بواسطة</th>
                             <th style="min-width:150px;">إجراءات</th>
                         </tr>
                     </thead>
@@ -106,6 +107,18 @@
                                     </small>
                                 </td>
                                 <td>
+                                    @if($aqar->updatedBy)
+                                        <span class="badge badge-danger">
+                                            <i class="fas fa-user-times mr-1"></i>
+                                            {{ $aqar->updatedBy->name }}
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">{{ $aqar->updatedBy->MOP ?? '' }}</small>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                                <td>
                                     {{-- Restore --}}
                                     <form method="POST"
                                           action="{{ route('sitemanagement.aqars.restore', $aqar->id) }}"
@@ -132,7 +145,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">
+                                <td colspan="9" class="text-center py-4 text-muted">
                                     <i class="fas fa-check-circle fa-2x text-success mb-2 d-block"></i>
                                     لا توجد عقارات محذوفة
                                 </td>
