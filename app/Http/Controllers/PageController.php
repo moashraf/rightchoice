@@ -365,6 +365,24 @@ class PageController extends Controller
         return view('user_point_count_history', compact('FawryPayment_data', 'FawryPayment_data_unpaid', 'all_data', 'points', 'all_history_of_point_of_user'));
     }
 
+    public function user_contacted_aqars()
+    {
+        $getUser = Auth::user();
+
+        $all_data = UserContactAqar::with([
+            'all_aqat_viw',
+            'all_aqat_viw.firstImage',
+            'all_aqat_viw.governrateq',
+            'all_aqat_viw.districte',
+            'all_aqat_viw.subAreaa',
+            'all_aqat_viw.offerTypes',
+        ])->where('user_id', '=', $getUser->id)
+          ->orderBy('created_at', 'DESC')
+          ->paginate(9);
+
+        return view('user_contacted_aqars', compact('all_data'));
+    }
+
 
     public function notification()
     {

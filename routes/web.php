@@ -497,6 +497,7 @@ Route::group(['prefix' => '{locale?}'], function () {
         //  Route::post('/add-user-session', 'App\Http\Controllers\PageController@usersession')->name('add-user-session')->middleware('setLocale');
         Route::get('/notification', 'App\Http\Controllers\PageController@notification')->name('nots')->middleware(['setLocale']);
         Route::get('/user_point_count_history', 'App\Http\Controllers\PageController@user_point_count_history')->name('user_point_count_history')->middleware(['setLocale']);
+        Route::get('/user_contacted_aqars', 'App\Http\Controllers\PageController@user_contacted_aqars')->name('user_contacted_aqars')->middleware(['setLocale']);
 
         // â”€â”€ User Payment History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/my-payments', [App\Http\Controllers\UserPaymentController::class, 'index'])->name('user.payments.index')->middleware('setLocale');
