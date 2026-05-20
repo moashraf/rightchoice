@@ -21,7 +21,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
 
 
-                           @foreach ($allAqars as $aqar)
+                           @forelse ($allAqars as $aqar)
                            @if($aqar != null)
                                 <div class="col-lg-12">
                                     <div class="card mt-3">
@@ -343,7 +343,26 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                     </div>
                                 </div>
                                                                         @endif
-                            @endforeach
+                            @empty
+                                {{-- رسالة عدم وجود إعلانات --}}
+                                <div class="col-lg-12">
+                                    <div class="text-center py-5 mt-4">
+                                        <div style="background:#fff; border-radius:16px; padding:50px 30px; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                                            <div style="font-size:80px; margin-bottom:20px;">🏠</div>
+                                            <h3 style="color:#333; font-weight:700; margin-bottom:12px;">لا توجد إعلانات حتى الآن</h3>
+                                            <p style="color:#888; font-size:16px; margin-bottom:30px;">
+                                                لم تقم بإضافة أي إعلان عقاري بعد.<br>
+                                                ابدأ الآن وأضف عقارك للوصول لآلاف المشترين والمستأجرين.
+                                            </p>
+                                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}"
+                                               style="background:#e74c3c; color:#fff; padding:14px 40px; border-radius:30px; font-size:16px; font-weight:600; text-decoration:none; display:inline-block;">
+                                                <i class="fas fa-plus-circle ml-2"></i>
+                                                أضف إعلانك الآن
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforelse
 
                             {{ $allAqars->links() }}
 
