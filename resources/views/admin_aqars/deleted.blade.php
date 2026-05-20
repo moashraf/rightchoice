@@ -72,14 +72,18 @@
                             <tr>
                                 <td>{{ $aqar->id }}</td>
                                 <td>
-                                    <span class="font-weight-bold">{{ Str::limit($aqar->title, 40) }}</span>
+                                    <a href="{{ url('sitemanagement/aqars/' . $aqar->id . '/edit') }}" target="_blank" class="font-weight-bold">
+                                        {{ Str::limit($aqar->title, 40) }}
+                                    </a>
                                     @if($aqar->vip)
                                         <span class="badge badge-warning badge-sm ml-1">VIP</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($aqar->user)
-                                        <span>{{ $aqar->user->name }}</span><br>
+                                        <a href="{{ url('sitemanagement/users/' . $aqar->user->id) }}" target="_blank">
+                                            {{ $aqar->user->name }}
+                                        </a><br>
                                         <small class="text-muted">{{ $aqar->user->MOP }}</small>
                                     @else
                                         <span class="text-muted">—</span>
@@ -108,10 +112,12 @@
                                 </td>
                                 <td>
                                     @if($aqar->updatedBy)
-                                        <span class="badge badge-danger">
-                                            <i class="fas fa-user-times mr-1"></i>
-                                            {{ $aqar->updatedBy->name }}
-                                        </span>
+                                        <a href="{{ url('sitemanagement/users/' . $aqar->updatedBy->id) }}" target="_blank">
+                                            <span class="badge badge-danger">
+                                                <i class="fas fa-user-times mr-1"></i>
+                                                {{ $aqar->updatedBy->name }}
+                                            </span>
+                                        </a>
                                         <br>
                                         <small class="text-muted">{{ $aqar->updatedBy->MOP ?? '' }}</small>
                                     @else
