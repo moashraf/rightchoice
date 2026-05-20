@@ -57,6 +57,9 @@ class AdminReportController extends Controller
         $stats['notifications'] = Notification::when($fromDate || $toDate, $filter)->count();
         $stats['photoSessions'] = RequestPhotoSession::when($fromDate || $toDate, $filter)->count();
         $stats['userContacts']  = UserContactAqar::when($fromDate || $toDate, $filter)->count();
+        $stats['usersContacted'] = UserContactAqar::when($fromDate || $toDate, $filter)
+            ->distinct('user_id')
+            ->count('user_id');
         $stats['subscriptions'] = UserPriceing::when($fromDate || $toDate, $filter)->count();
 
         // عقارات نشطة / في الانتظار / متوقفة
