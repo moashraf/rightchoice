@@ -367,7 +367,11 @@ class AdminAqarController extends AppBaseController
     public function deletedAqars(Request $request)
     {
         $allAqars = aqar::onlyTrashed()
-            ->with('user', 'governrateq', 'districte', 'updatedBy')
+            ->with([
+                'user', 'governrateq', 'districte', 'updatedBy',
+                'offerTypes', 'propertyType', 'categoryRel',
+                'subAreaa', 'compounds', 'finishType', 'images',
+            ])
             ->orderBy('deleted_at', 'DESC');
 
         if ($request->key_word) {
