@@ -88,7 +88,8 @@ class aqar extends Model
         'title_en',
         'description_en',
         'slug_en',
-        'updated_by'
+        'updated_by',
+        'aqar_delete_reasons_id',
     ];
 
     public static $rules = [

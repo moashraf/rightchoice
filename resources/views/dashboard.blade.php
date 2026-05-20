@@ -28,7 +28,6 @@
 
 
                                 <form action="{{ URL::to('updatedProfileUser') }}" enctype="multipart/form-data"
-
                                       method="POST" files="true">
 
                                     @csrf

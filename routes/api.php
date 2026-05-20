@@ -104,6 +104,11 @@ Route::get('smart-search/suggestions',  [App\Http\Controllers\API\SmartSearchAPI
 |--------------------------------------------------------------------------
 */
 Route::get('map/aqars',              [App\Http\Controllers\API\MapAPIController::class, 'getAqars']);
+
+Route::get('/aqar-delete-reasons-list', 'App\Http\Controllers\AqarController@getDeleteReasons')
+    ->name('aqar-delete-reasons-list');
+
+
 Route::post('map/location',          [App\Http\Controllers\API\MapAPIController::class, 'storeLocation']);
 Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController::class, 'getGovernorateCoords']);
 
