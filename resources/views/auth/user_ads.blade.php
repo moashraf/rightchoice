@@ -399,8 +399,8 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                     <i class="fas fa-trash-alt ml-2"></i>
                     حذف الإعلان
                 </h5>
-                <button type="button" class="close text-white" data-dismiss="modal">
-                    <span>&times;</span>
+                <button type="button" class="close text-white" onclick="$('#deleteAqarModal').modal('hide')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -414,7 +414,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-secondary" onclick="$('#deleteAqarModal').modal('hide')">إلغاء</button>
                 <button type="button" id="confirmDeleteBtn" class="btn btn-danger" disabled>
                     <i class="fas fa-trash ml-1"></i> تأكيد الحذف
                 </button>
