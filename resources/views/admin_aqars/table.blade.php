@@ -33,11 +33,22 @@
     </div>
     <div class="col-md-2">
         <label>المحافظة</label>
-        <select class="form-control" name="filter_governrate">
+        <select class="form-control" name="filter_governrate" id="filter_governrate">
             <option value="">الكل</option>
             @foreach($governrates as $gov)
                 <option value="{{ $gov->id }}" {{ request('filter_governrate') == $gov->id ? 'selected' : '' }}>
                     {{ $gov->governrate }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2" id="district-filter-wrapper" style="{{ request()->filled('filter_governrate') ? '' : 'display: none;' }}">
+        <label>الحي</label>
+        <select class="form-control" name="filter_district" id="filter_district" {{ request()->filled('filter_governrate') ? '' : 'disabled' }}>
+            <option value="">الكل</option>
+            @foreach($districts as $district)
+                <option value="{{ $district->id }}" {{ request('filter_district') == $district->id ? 'selected' : '' }}>
+                    {{ $district->district }}
                 </option>
             @endforeach
         </select>
@@ -126,7 +137,13 @@
                     @endif
                 </td>
                 <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
-                <td>{{ $allAqars_val->governrateq->governrate ?? '' }}</td>
+                <td>
+                    {{ $allAqars_val->governrateq->governrate ?? '' }}
+                    @if($allAqars_val->districte)
+                        <br>
+                        <small class="text-muted">{{ $allAqars_val->districte->district }}</small>
+                    @endif
+                </td>
                 <td>{{ $allAqars_val->propertyType->property_type ?? '' }}</td>
                 <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}</td>
                 <td>{{ $allAqars_val->getVIP() }}</td>
@@ -140,7 +157,16 @@
                         N/A
                     @endif
                 </td>
-                <td>{{ $allAqars_val->views }}</td>
+                <td>{{ $allAqars_val->views }}
+                    <small>
+                        <a href="#" class="badge badge-secondary aqar-stats-btn"
+                           data-id="{{ $allAqars_val->id }}"
+                           data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
+                           title="إحصائيات الإعلان">
+                            <i class="fas fa-chart-bar ml-1"></i> التعامل مع العقار
+                        </a>
+                    </small>
+                </td>
                 <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                 <td>
                     @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
@@ -252,6 +278,67 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    var governrateFilter = document.getElementById('filter_governrate');
+    var districtWrapper = document.getElementById('district-filter-wrapper');
+    var districtFilter = document.getElementById('filter_district');
+
+    function resetDistrictFilter() {
+        districtFilter.innerHTML = '<option value="">الكل</option>';
+        districtFilter.value = '';
+    }
+
+    function hideDistrictFilter() {
+        resetDistrictFilter();
+        districtFilter.disabled = true;
+        districtWrapper.style.display = 'none';
+    }
+
+    function showDistrictFilter() {
+        districtFilter.disabled = false;
+        districtWrapper.style.display = '';
+    }
+
+    if (governrateFilter && districtFilter && districtWrapper) {
+        governrateFilter.addEventListener('change', function () {
+            var governrateId = this.value;
+            var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+
+            if (!governrateId) {
+                hideDistrictFilter();
+                return;
+            }
+
+            showDistrictFilter();
+            districtFilter.innerHTML = '<option value="">جاري التحميل...</option>';
+
+            fetch("{{ route('sitemanagement.aqars.getDistrictByGovernrate') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfMeta ? csrfMeta.getAttribute('content') : ''
+                },
+                body: JSON.stringify({ governrate_id: governrateId })
+            })
+            .then(function (response) { return response.json(); })
+            .then(function (result) {
+                resetDistrictFilter();
+
+                if (result.status === 200 && result.data && result.data.length > 0) {
+                    result.data.forEach(function (district) {
+                        var option = document.createElement('option');
+                        option.value = district.id;
+                        option.textContent = district.district;
+                        districtFilter.appendChild(option);
+                    });
+                }
+            })
+            .catch(function () {
+                districtFilter.innerHTML = '<option value="">تعذر تحميل الأحياء</option>';
+            });
+        });
+    }
+
     document.querySelectorAll('.aqar-stats-btn').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
