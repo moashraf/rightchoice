@@ -126,7 +126,13 @@
                     @endif
                 </td>
                 <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
-                <td>{{ $allAqars_val->governrateq->governrate ?? '' }}</td>
+                <td>
+                    {{ $allAqars_val->governrateq->governrate ?? '' }}
+                    @if($allAqars_val->districte)
+                        <br>
+                        <small class="text-muted">{{ $allAqars_val->districte->district }}</small>
+                    @endif
+                </td>
                 <td>{{ $allAqars_val->propertyType->property_type ?? '' }}</td>
                 <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}</td>
                 <td>{{ $allAqars_val->getVIP() }}</td>
@@ -140,7 +146,16 @@
                         N/A
                     @endif
                 </td>
-                <td>{{ $allAqars_val->views }}</td>
+                <td>{{ $allAqars_val->views }}
+                    <small>
+                        <a href="#" class="badge badge-secondary aqar-stats-btn"
+                           data-id="{{ $allAqars_val->id }}"
+                           data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
+                           title="إحصائيات الإعلان">
+                            <i class="fas fa-chart-bar ml-1"></i> التعامل مع العقار
+                        </a>
+                    </small>
+                </td>
                 <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                 <td>
                     @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
