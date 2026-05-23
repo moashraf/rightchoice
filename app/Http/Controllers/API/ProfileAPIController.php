@@ -128,10 +128,15 @@ class ProfileAPIController extends AppBaseController
     {
         $user = $request->user();
 
+        if ($request->has('MOP') && (string) $request->MOP !== (string) $user->MOP) {
+            return $this->sendError('لا يمكن تغيير رقم الهاتف من الملف الشخصي.', 422, [
+                'MOP' => ['لا يمكن تغيير رقم الهاتف من الملف الشخصي.'],
+            ]);
+        }
+
         $validator = Validator::make($request->all(), [
             'name'                => 'required|max:255',
             'email'               => "required|email|unique:users,email,{$user->id}",
-            'MOP'                 => "required|min:11|numeric|unique:users,MOP,{$user->id}",
             'AGE'                 => 'nullable|integer',
             'TYPE'                => 'nullable|integer',
             'Employee_Name'       => ($request->TYPE == 3 ? 'required' : 'nullable'),
@@ -145,10 +150,6 @@ class ProfileAPIController extends AppBaseController
             'email.required'               => 'حقل البريد الإلكتروني مطلوب.',
             'email.email'                  => 'صيغة البريد الإلكتروني غير صحيحة.',
             'email.unique'                 => 'البريد الإلكتروني مستخدم مسبقًا.',
-            'MOP.required'                 => 'حقل رقم الهاتف مطلوب.',
-            'MOP.min'                      => 'رقم الهاتف يجب أن يكون 11 رقمًا على الأقل.',
-            'MOP.numeric'                  => 'رقم الهاتف يجب أن يحتوي على أرقام فقط.',
-            'MOP.unique'                   => 'رقم الهاتف مستخدم مسبقًا.',
             'AGE.integer'                  => 'العمر يجب أن يكون رقمًا صحيحًا.',
             'TYPE.integer'                 => 'نوع المستخدم يجب أن يكون رقمًا صحيحًا.',
             'Employee_Name.required'       => 'حقل اسم الموظف مطلوب.',
@@ -164,7 +165,7 @@ class ProfileAPIController extends AppBaseController
             return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
-        $data = $request->only(['name', 'email', 'MOP', 'AGE', 'TYPE', 'Employee_Name', 'Job_title', 'Tax_card', 'Commercial_Register']);
+        $data = $request->only(['name', 'email', 'AGE', 'TYPE', 'Employee_Name', 'Job_title', 'Tax_card', 'Commercial_Register']);
 
         if ($request->hasFile('img')) {
             $data['profile_image'] = _uploadFileWeb($request->img, 'user/');

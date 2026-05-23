@@ -77,15 +77,15 @@
                                     <div class="form-group {{ $errors->has('MOP') ? ' has-error' : '' }}">
 
 
-                                        <label for="exampleInputEmail1">الهاتف <span
-
-                                                class="text-danger">*</span></label>
+                                        <label for="profile-phone">الهاتف</label>
 
 
-                                        <input minLength="9" maxLength="18" type="text" name="MOP" class="myselect"
-                                               id="exampleInputEmail1"
+                                        <input minLength="9" maxLength="18" type="text" class="myselect" readonly
+                                               id="profile-phone"
 
                                                aria-describedby="emailHelp" VALUE="{{ Auth::user()->MOP }}">
+
+                                        <small class="text-muted d-block mt-1">لا يمكن تغيير رقم الهاتف من لوحة التحكم.</small>
 
 
                                         <small class="text-danger">{{ $errors->first('MOP') }}</small>
