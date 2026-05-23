@@ -1,20 +1,12 @@
 <section class="bg call-to-act-wrap">
-
     <div class="container">
-
         <div class="row clltoAct">
-
-
-            <div class="col-lg-5"><img width="70%" src="{{ asset('/assets/img/4740491.jpg') }}" height="90%" alt="">
-
+            <div class="col-lg-5">
+                <img width="70%" src="{{ asset('/assets/img/4740491.jpg') }}" height="90%" alt="">
             </div>
-
             <div class="col-lg-7">
-
                 <br><br>
-
                 <div class="call-to-act">
-
                     <div style="text-align: center;" class="call-to-act-head">
 
                         <h3 class="headingTitle2">
