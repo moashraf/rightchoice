@@ -161,6 +161,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:pricing.manage');
     Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class)
         ->middleware('permission:settings.manage');
+    Route::resource('jobTitles', App\Http\Controllers\AdminJobTitleController::class)
+        ->middleware('permission:settings.manage');
 
     // ── Location Data ────────────────────────────────────────────────────
     Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class)

@@ -17,6 +17,7 @@ return [
     'mzaya'              => 'Mzaya',
     'pricing_sales'      => 'Pricing Sales',
     'services'           => 'Services',
+    'job_titles'         => 'Job Titles',
     'sub_areas'          => 'Sub Areas',
     'license_types'      => 'License Types',
     'floors'             => 'Floors',
