@@ -85,6 +85,10 @@ class AdminAqarController extends AppBaseController
 
         if ($request->filled('filter_governrate')) {
             $allAqars->where('governrate_id', $request->filter_governrate);
+
+            if ($request->filled('filter_district')) {
+                $allAqars->where('district_id', $request->filter_district);
+            }
         }
 
         if ($request->filled('filter_offer_type')) {
@@ -95,9 +99,15 @@ class AdminAqarController extends AppBaseController
 
         $propertyTypes = property_type::select('id', 'property_type')->get();
         $governrates   = Governrate::select('id', 'governrate')->get();
+        $districts     = $request->filled('filter_governrate')
+            ? District::select('id', 'district')
+                ->where('govern_id', $request->filter_governrate)
+                ->orderBy('district')
+                ->get()
+            : collect();
         $offerTypes    = \App\Models\OfferTypes::select('id', 'type_offer')->get();
 
-        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'offerTypes'));
+        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'districts', 'offerTypes'));
     }
 
     /**
