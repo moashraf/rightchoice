@@ -233,7 +233,7 @@
                     <table class="table">
                         <thead class="thead-light">
                         <tr>
-                            <th>التسلسل</th>
+                            <th> تسلسل</th>
                             <th>ID</th>
                             <th>اسم</th>
                             <th>نوع</th>

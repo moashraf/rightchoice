@@ -106,7 +106,7 @@
     <table class="table" id="datatable">
         <thead class="thead-light">
         <tr>
-            <th>التسلسل</th>
+            <th> تسلسل</th>
 
             <th>ID</th>
             <th>اسم  العقار</th>
@@ -123,7 +123,7 @@
         <tbody>
         @foreach($allAqars as $index => $allAqars_val)
             <tr >
-                <td class="index_index">
+                <td class="index_index text-center small align-middle">
                     {{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}
                 </td>
 
