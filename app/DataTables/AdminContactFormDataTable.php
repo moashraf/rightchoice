@@ -12,12 +12,24 @@ class AdminContactFormDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'admin_contact_forms.datatables_actions');
+        return $dataTable
+            ->editColumn('user_id', function ($contactForm) {
+                if (!$contactForm->user_id) {
+                    return '-';
+                }
+
+                $label = $contactForm->user ? $contactForm->user->name : ('مستخدم #' . $contactForm->user_id);
+                $url = route('sitemanagement.users.show', $contactForm->user_id);
+
+                return '<a href="' . e($url) . '" target="_blank">' . e($label) . '</a>';
+            })
+            ->addColumn('action', 'admin_contact_forms.datatables_actions')
+            ->rawColumns(['user_id', 'action']);
     }
 
     public function query(ContactForm $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('user');
     }
 
     public function html()
@@ -41,6 +53,7 @@ class AdminContactFormDataTable extends DataTable
             'name',
             'phone',
             'email',
+            'user_id' => ['title' => 'المستخدم'],
             'subject',
         ];
     }

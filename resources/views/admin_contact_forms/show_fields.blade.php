@@ -22,6 +22,20 @@
     <p>{{ $contactForm->email }}</p>
 </div>
 
+<!-- User Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('user_id', 'المستخدم:') !!}
+    <p>
+        @if($contactForm->user_id)
+            <a href="{{ route('sitemanagement.users.show', $contactForm->user_id) }}" target="_blank">
+                {{ $contactForm->user ? $contactForm->user->name : 'مستخدم #' . $contactForm->user_id }}
+            </a>
+        @else
+            -
+        @endif
+    </p>
+</div>
+
 <!-- Subject Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('subject', 'الموضوع:') !!}

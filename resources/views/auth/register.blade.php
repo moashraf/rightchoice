@@ -177,10 +177,8 @@
                                     <select class="myselect" name="Job_title" id="employe-type">
                                         <option value="">اختر</option>
                                         <option value="1">صاحب عمل</option>
-                                        <option value="2">مدير عام</option>
-                                        <option value="3">مدير تسويق</option>
-                                        <option value="4">مدير فرع</option>
-                                        <option value="5">اخرى</option>
+                                         <option value="3">مدير تسويق</option>
+                                         <option value="5">اخرى</option>
                                     </select>
                                     <small class="text-danger">{{ $errors->first('Job_title') }}</small>
                                 </div>
