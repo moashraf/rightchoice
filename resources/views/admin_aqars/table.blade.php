@@ -107,12 +107,12 @@
         <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>الاسم</th>
+            <th>التسلسل</th>
+            <th>اسم  العقار</th>
             <th>محافظه</th>
             <th>نوع الوحده</th>
             <th>نوع العرض</th>
-            <th>التمييز</th>
-            <th>الحاله</th>
+             <th>الحاله</th>
             <th>اسم المالك</th>
             <th>المشاهدات</th>
             <th>تاريخ الاضافه</th>
@@ -120,7 +120,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($allAqars as $allAqars_val)
+        @foreach($allAqars as $index => $allAqars_val)
             <tr>
                 <td>
                     {{ $allAqars_val->id }}
@@ -136,7 +136,15 @@
                         </small>
                     @endif
                 </td>
-                <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
+                <td>{{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}</td>
+                <td>
+                    @php
+                        $titleWords = preg_split('/\s+/u', trim((string) \Illuminate\Support\Str::limit($allAqars_val->title, 30, '')), -1, PREG_SPLIT_NO_EMPTY);
+                    @endphp
+                    @foreach($titleWords as $titleWord)
+                        {{ $titleWord }}@if(!$loop->last)<br>@endif
+                    @endforeach
+                </td>
                 <td>
                     {{ $allAqars_val->governrateq->governrate ?? '' }}
                     @if($allAqars_val->districte)
@@ -145,8 +153,14 @@
                     @endif
                 </td>
                 <td>{{ $allAqars_val->propertyType->property_type ?? '' }}</td>
-                <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}</td>
-                <td>{{ $allAqars_val->getVIP() }}</td>
+                <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}
+                    <br>
+                    <small class="getVIP_getVIP" style=" background: #eee8e8; padding: 1px;">
+                    {{ $allAqars_val->getVIP() }}
+
+                    </small>
+                </td>
+
                 <td>{{ $allAqars_val->getStatus() }}</td>
                 <td>
                     @if($allAqars_val->user)
@@ -157,13 +171,23 @@
                         N/A
                     @endif
                 </td>
-                <td>{{ $allAqars_val->views }}
+                <td>
                     <small>
+                        عدد مشاهدات
+                    </small>
+                    {{ $allAqars_val->views }}
+                    <small>
+                        <br>
                         <a href="#" class="badge badge-secondary aqar-stats-btn"
                            data-id="{{ $allAqars_val->id }}"
                            data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
                            title="إحصائيات الإعلان">
-                            <i class="fas fa-chart-bar ml-1"></i> التعامل مع العقار
+                            <i class="fas fa-chart-bar ml-1"></i>
+                            التعامل مع العقار
+                            <br>
+                            <span class="badge badge-light text-dark mr-1">
+                                {{ $allAqars_val->interested_users_count ?? 0 }} مستخدم
+                            </span>
                         </a>
                     </small>
                 </td>
