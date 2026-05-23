@@ -18,10 +18,26 @@
         ? request('type_tab')
         : 'all';
     $userTypeTabs = [
-        'all'       => 'الكل',
-        'companies' => 'الشركات',
-        'developer' => 'مطور عقاري',
-        'normal'    => 'مستخدم عادي',
+        'all' => [
+            'label' => 'الكل',
+            'icon'  => 'fas fa-users',
+            'color' => 'primary',
+        ],
+        'companies' => [
+            'label' => 'الشركات',
+            'icon'  => 'fas fa-building',
+            'color' => 'success',
+        ],
+        'developer' => [
+            'label' => 'مطور عقاري',
+            'icon'  => 'fas fa-city',
+            'color' => 'info',
+        ],
+        'normal' => [
+            'label' => 'مستخدم عادي',
+            'icon'  => 'fas fa-user',
+            'color' => 'warning',
+        ],
     ];
     $userTypeTabBaseQuery = request()->except(['page', 'type_tab', 'filter_type']);
     $exportUsersParams = request()->only([
@@ -97,17 +113,25 @@
         <div class="card">
             <div class="card-header">
                 <ul class="nav nav-pills mb-3">
-                    @foreach($userTypeTabs as $tabKey => $tabLabel)
+                    @foreach($userTypeTabs as $tabKey => $tabData)
                         @php
                             $tabQuery = $userTypeTabBaseQuery;
                             if ($tabKey !== 'all') {
                                 $tabQuery['type_tab'] = $tabKey;
                             }
+
+                            $isActiveTab = $activeUserTypeTab === $tabKey;
+                            $tabColor = $tabData['color'];
+                            $tabClasses = $isActiveTab
+                                ? 'active bg-'.$tabColor.($tabColor === 'warning' ? ' text-dark' : ' text-white')
+                                : 'border border-'.$tabColor.' text-'.$tabColor.' bg-white';
                         @endphp
                         <li class="nav-item ml-2 mb-2">
                             <a href="{{ route('sitemanagement.users.index', $tabQuery) }}"
-                               class="nav-link {{ $activeUserTypeTab === $tabKey ? 'active' : '' }}">
-                                {{ $tabLabel }}
+                               class="nav-link {{ $tabClasses }}"
+                               style="font-weight:600; min-width:125px; text-align:center;">
+                                <i class="{{ $tabData['icon'] }} ml-1"></i>
+                                {{ $tabData['label'] }}
                             </a>
                         </li>
                     @endforeach
