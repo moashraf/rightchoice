@@ -998,11 +998,11 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
                         </li>
                         @if(!Auth()->user())
 
-                            <li class="text-white fw-bolder d-block">
+                            <li class="text-white fw-bolder d-block footer-add-company-item">
 
                                 <a href="{{ url(Config::get('app.locale').'/add_company') }}"
 
-                                   class="text-white">{{ trans('langsite.add_company')}}</a>
+                                   class="text-white footer-add-company-cta">{{ trans('langsite.add_company')}}</a>
 
                             </li>
                         @endif
