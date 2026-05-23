@@ -108,7 +108,7 @@
         <tr>
             <th>ID</th>
             <th>التسلسل</th>
-            <th>الاسم</th>
+            <th>اسم  العقار</th>
             <th>محافظه</th>
             <th>نوع الوحده</th>
             <th>نوع العرض</th>
@@ -138,7 +138,14 @@
                     @endif
                 </td>
                 <td>{{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}</td>
-                <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
+                <td>
+                    @php
+                        $titleWords = preg_split('/\s+/u', trim((string) \Illuminate\Support\Str::limit($allAqars_val->title, 30, '')), -1, PREG_SPLIT_NO_EMPTY);
+                    @endphp
+                    @foreach($titleWords as $titleWord)
+                        {{ $titleWord }}@if(!$loop->last)<br>@endif
+                    @endforeach
+                </td>
                 <td>
                     {{ $allAqars_val->governrateq->governrate ?? '' }}
                     @if($allAqars_val->districte)
