@@ -17,6 +17,7 @@ return [
     'mzaya'              => 'المزايا',
     'pricing_sales'      => 'أسعار المبيعات',
     'services'           => 'الخدمات',
+    'job_titles'         => 'المسميات الوظيفية',
     'sub_areas'          => 'المناطق الفرعية',
     'license_types'      => 'أنواع التراخيص',
     'floors'             => 'الأدوار',
