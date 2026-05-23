@@ -233,9 +233,8 @@
                     <table class="table">
                         <thead class="thead-light">
                         <tr>
-                            <th>#</th>
+                            <th>التسلسل</th>
                             <th>ID</th>
-
                             <th>اسم</th>
                             <th>نوع</th>
                              <th>التليفون المحمول</th>
