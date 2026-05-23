@@ -18,5 +18,6 @@ class ContactForm extends Model
         'email',
         'phone',
         'subject',
+        'user_id',
         ];
 }
