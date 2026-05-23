@@ -94,22 +94,25 @@
                                     <div class="col-lg-12">
                                         <div
                                             class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
-                                            <label
-                                                for="employe-type">{{ trans('langsite.job-title') }}<span
+                                            <label>{{ trans('langsite.job-title') }}<span
                                                     class="text-danger">*</span></label>
-                                            <select class="myselect" required name="Job_title" id="employe-type">
-                                                <option selected disabled value="">
-                                                    {{ trans('langsite.search') }}</option>
+
+                                            <div class="d-flex flex-wrap" style="gap: 10px;">
                                                 @foreach($jobs as $job)
-                                                    <option  <?php if(old('Job_title') == $job->id){ echo 'selected'; } ?> value="{{ $job->id }}">
-                                                        @if(App::isLocale('en'))
-                                                            {{ $job->Job_title_en }}
-                                                        @else
-                                                            {{ $job->Job_title }}
-                                                        @endif
-                                                    </option>
+                                                    <div class="form-check form-check-inline mb-2" style="background: #fff; border: 1px solid #e6eaf3; border-radius: 8px; padding: 8px 14px;">
+                                                        <input class="form-check-input" type="radio" required name="Job_title"
+                                                               id="job-title-{{ $job->id }}" value="{{ $job->id }}"
+                                                            <?php if(old('Job_title') == $job->id){ echo 'checked'; } ?>>
+                                                        <label class="form-check-label" for="job-title-{{ $job->id }}">
+                                                            @if(App::isLocale('en'))
+                                                                {{ $job->Job_title_en }}
+                                                            @else
+                                                                {{ $job->Job_title }}
+                                                            @endif
+                                                        </label>
+                                                    </div>
                                                 @endforeach
-                                            </select>
+                                            </div>
                                             <small
                                                 class="text-danger">{{ $errors->first('Job_title') }}</small>
                                         </div>
