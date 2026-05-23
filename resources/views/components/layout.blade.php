@@ -1007,23 +1007,16 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
                             </li>
                         @endif
 
-
                     </ul>
-
 
                     <br>
 
-
                     <ul class="footer-bottom-social text-center">
-
 
                         <li><a target="_blank" href="https://www.facebook.com/right.choice.co"><i
                                     style="background-color: #3b5998;" class="shadow ti-facebook"></i></a>
 
                         </li>
-
-
-                        <!--      <li><a href="#"><i style="background-color: #55acee;" class="shadow ti-twitter"></i></a> -->
 
                         </li>
 
@@ -1049,12 +1042,6 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
 
 
      " class="instagram shadow ti-instagram"></i></a></li>
-
-
-                        <!--       <li><a href="#"><i style="background-color: #0082ca;" class="shadow ti-linkedin"></i></a>
-
-                            </li>
--->
 
 
                         <li><a target="_blank" href="https://www.youtube.com/channel/UCuatA5ibPU-K_GHHqjK_6UA"><i
@@ -1103,22 +1090,6 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
             </div>
 
         </div>
-
-
-        <!--
-
-    <div  class="text-center p-1 footer-bottom text-white">
-
-
-
-    All rights reserved @
-    <a class="text-white" href="#">RightChoice-co</a>
-
-
-    <a class="text-white small" target="_blank" href="https://corddigital.com/">by Cord Digital</a>
-  </div>
-
-   -->
 
 
         <div class="text-center p-1 footer-bottom text-white">
