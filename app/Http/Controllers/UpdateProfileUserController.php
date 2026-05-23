@@ -4,12 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-
-use Auth;
-use App\Models\User;
-Use Redirect;
 
 
 class UpdateProfileUserController extends Controller
@@ -17,19 +12,19 @@ class UpdateProfileUserController extends Controller
 
    public function UpdateProfileUser(Request $request)
     {
-        $vendor = Auth::user();
+        $vendor = auth()->user();
 
-        $oldmob= $vendor->MOP;
-
-        $locale=   app()->getLocale();
-
-        $random_mass_num= random_int(111, 10000);
 
         if ($request->isMethod('post')) {
+            if ($request->has('MOP') && (string) $request->MOP !== (string) $vendor->MOP) {
+                return redirect()->back()
+                    ->withErrors(['MOP' => 'لا يمكن تغيير رقم الهاتف من لوحة التحكم.'])
+                    ->withInput($request->except('MOP'));
+            }
+
             $rules = [
                 'name'                  => 'required|max:255',
                 'email'                 => "required|email|unique:users,email,".$vendor->id,
-                'MOP'                   => "required|min:11|numeric|unique:users,MOP,".$vendor->id,
                 'password'              => ( $request->password != null ? 'required|confirmed|min:8' : ''),
                 'old_password'          => ( $request->old_password != null ? 'required|min:8' : ''),
                 'img'                   => ( $request->img != null ? 'required|image|mimes:jpeg,jpg,png,gif' : ''),
@@ -60,37 +55,32 @@ class UpdateProfileUserController extends Controller
                                    $request->merge(['password' =>  Hash::make($request->password)]);
 
                                    //update User
-                                    $vendor->update($request->only(['name','email','MOP','password','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
+                                    $vendor->update($request->only(['name','email','password','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
 
                                     session()->flash('success', 'تم التعديل بنجاح');
-                                     return Redirect::back();
+                                     return redirect()->back();
 
                             } else {
                                    session()->flash('error', 'كلمة المرور القديمة غير صحيحة');
-                                   return Redirect::back();
+                                   return redirect()->back();
                             }
                         }else{
 
                             //update User
-                            $vendor->update($request->only(['name','email','MOP','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
+                            $vendor->update($request->only(['name','email','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
 
-                            if($oldmob == $request->MOP){
-                                 session()->flash('success', 'تم التعديل بنجاح');
-                             return Redirect::back();
-                            }else{
-
-
-
-
-                            }
+                            session()->flash('success', 'تم التعديل بنجاح');
+                            return redirect()->back();
                         }
                 }catch (\Exception $ex) {
                     session()->flash('error', 'عفوا, يوجد خطأ ما');
 
-                    return Redirect::back()->withInput($request->all());
+                    return redirect()->back()->withInput($request->all());
                 }
             }
         }
+
+        return redirect()->back();
 
     }
 }

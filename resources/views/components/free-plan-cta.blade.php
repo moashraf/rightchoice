@@ -44,10 +44,17 @@
                         </p>
 
                         @auth
-                            <a href="/ar/pricing-seller" class="fp-cta-btn">
-                                <span>اشترك مجاناً الآن</span>
-                                <i class="fa fa-arrow-left fp-btn-icon"></i>
-                            </a>
+                            @if(auth()->user()->isCompanyAccount())
+                                <button type="button" class="fp-cta-btn" style="border:0; cursor:not-allowed; opacity:.65;" disabled>
+                                    <span>غير متاح لحسابات الشركات</span>
+                                    <i class="fa fa-ban fp-btn-icon"></i>
+                                </button>
+                            @else
+                                <a href="/ar/pricing-seller" class="fp-cta-btn">
+                                    <span>اشترك مجاناً الآن</span>
+                                    <i class="fa fa-arrow-left fp-btn-icon"></i>
+                                </a>
+                            @endif
                         @else
                             <a href="/ar/register" class="fp-cta-btn">
                                 <span>اشترك مجاناً الآن</span>

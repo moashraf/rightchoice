@@ -19571,6 +19571,26 @@ footer a:hover {
   text-decoration: none;
 }
 
+footer .footer-add-company-cta {
+  display: inline-block;
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 25px;
+  background: linear-gradient(135deg, #FA944B 0%, #f46b45 100%);
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(250, 148, 75, 0.35);
+  transition: all 0.25s ease;
+}
+
+footer .footer-add-company-cta:hover,
+footer .footer-add-company-cta:focus {
+  color: #fff !important;
+  background: linear-gradient(135deg, #f46b45 0%, #FA944B 100%);
+  box-shadow: 0 10px 24px rgba(250, 148, 75, 0.45);
+  transform: translateY(-2px);
+}
+
 .copy {
   font-size: 12px;
   padding: 10px;

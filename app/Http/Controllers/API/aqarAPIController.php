@@ -9,6 +9,7 @@ use App\Repositories\aqarRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Images;
+use App\Models\User;
 
 class aqarAPIController extends AppBaseController
 {
@@ -149,6 +150,13 @@ class aqarAPIController extends AppBaseController
 
     public function store(CreateaqarAPIRequest $request)
     {
+        $requestUser = $request->user();
+        $aqarOwner = $requestUser ?: User::find($request->input('user_id'));
+
+        if ($aqarOwner && $aqarOwner->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بإضافة عقارات.', 403);
+        }
+
         $aqar = $this->aqarRepository->create($request->all());
 
         // حفظ المزايا (mzaya) - علاقة many-to-many

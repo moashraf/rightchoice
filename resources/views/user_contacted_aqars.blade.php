@@ -16,7 +16,7 @@
                             </a>
                         </div>
 
-                        @if($all_data->count() === 0)
+                        @if($all_data->isEmpty())
                             <div class="alert alert-info text-center">
                                 لم تقم بالتواصل مع أي عقار حتى الآن.
                             </div>
@@ -29,7 +29,7 @@
                                     @endphp
 
                                     <div class="col-lg-12">
-                                        <div class="card mt-3" style="margin: 0;">
+                                        <div class="card mt-3" style="margin: 0 0px;">
                                             <div class="row no-gutters">
                                                 <div class="col-sm-5 col-card-imgs">
                                                     <div class="click">
@@ -123,7 +123,7 @@
                                     </div>
                                 @else
                                     <div class="col-lg-12">
-                                        <div class="card mt-3" style="margin: 0;">
+                                        <div class="card mt-3" style="margin: 0 0px;">
                                             <div class="row no-gutters">
                                                 <div class="col-sm-5 col-card-imgs">
                                                     <div class="click">

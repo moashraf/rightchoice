@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\CreateUserContactAqarAPIRequest;
 use App\Http\Requests\API\UpdateUserContactAqarAPIRequest;
 use App\Models\UserContactAqar;
+use App\Models\User;
 use App\Repositories\UserContactAqarRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -54,6 +55,11 @@ class UserContactAqarAPIController extends AppBaseController
     public function store(CreateUserContactAqarAPIRequest $request)
     {
         $input = $request->all();
+
+        $contactUser = $request->user() ?: User::find($input['user_id'] ?? null);
+        if ($contactUser && $contactUser->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', 403);
+        }
 
         $userContactAqar = $this->userContactAqarRepository->create($input);
 

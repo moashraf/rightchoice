@@ -170,6 +170,8 @@ return [
      'terms' =>'terms and conditions ',
      'add_company' =>'Add company',
      'add_company_free' =>'Add Your Company Free',
+     'company_activity_notice' => 'The company activity you add must be one of the existing activities/services on the website, so please choose the suitable activity from the list below.',
+     'company_activity_examples' => 'Examples of available activities:',
     'company-name' => 'Company Name',
     'company-service' => 'Company Service',
     'company-employee' => 'Responsible Employee',

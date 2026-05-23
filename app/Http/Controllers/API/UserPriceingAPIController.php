@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\CreateUserPriceingAPIRequest;
 use App\Http\Requests\API\UpdateUserPriceingAPIRequest;
 use App\Models\UserPriceing;
+use App\Models\User;
 use App\Repositories\UserPriceingRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -54,6 +55,11 @@ class UserPriceingAPIController extends AppBaseController
     public function store(CreateUserPriceingAPIRequest $request)
     {
         $input = $request->all();
+
+        $pricingUser = $request->user() ?: User::find($input['user_id'] ?? null);
+        if ($pricingUser && $pricingUser->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بالاشتراك في باقات العقارات أو الباقة المجانية.', 403);
+        }
 
         $userPriceing = $this->userPriceingRepository->create($input);
 

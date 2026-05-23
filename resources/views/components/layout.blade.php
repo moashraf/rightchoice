@@ -252,15 +252,17 @@
                             <span>     أضف عقارك مجانا</span>
                         </a>
                     @else
-                        <!-- Mobile Floating Add Property Button -->
-                        <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}" class="mobile-register-btn"
-                           id="mobileRegBtn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff"
-                                 viewBox="0 0 24 24">
-                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                            </svg>
-                            <span>أضف عقارك مجاناً</span>
-                        </a>
+                        @if(!auth()->user()->isCompanyAccount())
+                            <!-- Mobile Floating Add Property Button -->
+                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}" class="mobile-register-btn"
+                               id="mobileRegBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff"
+                                      viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                <span>أضف عقارك مجاناً</span>
+                            </a>
+                        @endif
                     @endguest
                     <a href="{{ URL::to('/'.Config::get('app.locale'))}}">
                         <?php if (App::getLocale() == 'en')
@@ -503,8 +505,7 @@
                     <ul class="nav-menu nav-menu-social align-to-right">
 
                         @if(Auth::check())
-                            @if(Auth()->user()->TYPE == 4)
-                            @else
+                            @if(!Auth()->user()->isCompanyAccount())
                                 <li class="{{ Request::is('newlisting') ? 'active' : '' }}">
                                     <a href="{{ url(Config::get('app.locale').'/aqars/create') }}" class="text-success">
                                         <!--
@@ -522,7 +523,6 @@
                                 </li>
 
                             @endif
-
                         @else
                             <li class="{{ Request::is('newlisting') ? 'active' : '' }}">
 
@@ -998,32 +998,25 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
                         </li>
                         @if(!Auth()->user())
 
-                            <li class="text-white fw-bolder d-block">
+                            <li class="text-white fw-bolder d-block footer-add-company-item">
 
                                 <a href="{{ url(Config::get('app.locale').'/add_company') }}"
 
-                                   class="text-white">{{ trans('langsite.add_company')}}</a>
+                                   class="text-white footer-add-company-cta">{{ trans('langsite.add_company')}}</a>
 
                             </li>
                         @endif
 
-
                     </ul>
-
 
                     <br>
 
-
                     <ul class="footer-bottom-social text-center">
-
 
                         <li><a target="_blank" href="https://www.facebook.com/right.choice.co"><i
                                     style="background-color: #3b5998;" class="shadow ti-facebook"></i></a>
 
                         </li>
-
-
-                        <!--      <li><a href="#"><i style="background-color: #55acee;" class="shadow ti-twitter"></i></a> -->
 
                         </li>
 
@@ -1049,12 +1042,6 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
 
 
      " class="instagram shadow ti-instagram"></i></a></li>
-
-
-                        <!--       <li><a href="#"><i style="background-color: #0082ca;" class="shadow ti-linkedin"></i></a>
-
-                            </li>
--->
 
 
                         <li><a target="_blank" href="https://www.youtube.com/channel/UCuatA5ibPU-K_GHHqjK_6UA"><i
@@ -1103,22 +1090,6 @@ else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/f
             </div>
 
         </div>
-
-
-        <!--
-
-    <div  class="text-center p-1 footer-bottom text-white">
-
-
-
-    All rights reserved @
-    <a class="text-white" href="#">RightChoice-co</a>
-
-
-    <a class="text-white small" target="_blank" href="https://corddigital.com/">by Cord Digital</a>
-  </div>
-
-   -->
 
 
         <div class="text-center p-1 footer-bottom text-white">
@@ -1725,6 +1696,13 @@ else{
 
             @auth
 
+            @if(Auth::user()->isCompanyAccount())
+                toastr.info('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', '', {
+                    timeOut: 5000
+                });
+                return;
+            @endif
+
             // show loading spinner
             document.getElementById('contMop').innerHTML =
                 '<div id="rc-loading-spinner" style="display:inline-flex;align-items:center;gap:8px;padding:8px 0;">' +
@@ -1748,10 +1726,12 @@ else{
                 },
                 success: function (data) {
                     // location.reload();
-                    if (data.status == 202) {
+                    if (data.status == 202 || data.status == 403) {
                         toastr.info(data.massage, '', {
                             timeOut: 5000
                         });
+                        document.getElementById('contMop').innerHTML = '<span style="color:#dc3545;font-size:13px;display:inline-block;margin-top:8px;">' + data.massage + '</span>';
+                        return;
                     }
                     var phone = data.massage;
                     var waPhone = phone.replace(/[^0-9]/g, '');
@@ -1769,9 +1749,11 @@ else{
 
                 error: function (data) {
 
-                    document.getElementById('contMop').innerHTML = '<span style="color:red;font-size:13px;">حدث خطأ، حاول مجدداً</span>';
+                    var message = (data.responseJSON && (data.responseJSON.massage || data.responseJSON.message)) ? (data.responseJSON.massage || data.responseJSON.message) : 'حدث خطأ، حاول مجدداً';
 
-                    toastr.error(data.massage || 'حدث خطأ', '', {
+                    document.getElementById('contMop').innerHTML = '<span style="color:red;font-size:13px;">' + message + '</span>';
+
+                    toastr.error(message, '', {
 
                         timeOut: 5000
 
