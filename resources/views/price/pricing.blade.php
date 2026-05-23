@@ -4,6 +4,10 @@
     اختر احدى الباقات
 @endsection
 
+@php
+    $isCompanyAccount = auth()->check() && auth()->user()->isCompanyAccount();
+@endphp
+
 
 
 
@@ -109,11 +113,20 @@
                         تفاصيل الباقه
                     </button>
 
-                    <a style="font-size:1.4rem;"
-                       href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
-                       class="btn btn-block {{ $isFree ? 'free-plan-cta-btn' : 'bg-white ' . $single->title_color }} text-uppercase">
-                       {{ $isFree ? '🚀 اشترك مجاناً الآن' : 'اشترك بالباقه' }}
-                    </a>
+                    @if($isCompanyAccount)
+                        <button style="font-size:1.4rem; cursor:not-allowed;"
+                                type="button"
+                                class="btn btn-block btn-secondary text-uppercase"
+                                disabled>
+                            غير متاح لحسابات الشركات
+                        </button>
+                    @else
+                        <a style="font-size:1.4rem;"
+                           href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
+                           class="btn btn-block {{ $isFree ? 'free-plan-cta-btn' : 'bg-white ' . $single->title_color }} text-uppercase">
+                           {{ $isFree ? '🚀 اشترك مجاناً الآن' : 'اشترك بالباقه' }}
+                        </a>
+                    @endif
 
 
 
@@ -344,8 +357,14 @@
 
 
 
-                    <a  style=" font-size: 1.4rem;"  href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
-                    class="btn btn-block  bg-white  {{ $single->title_color }} text-uppercase">اشترك بالباقه</a>
+                    @if($isCompanyAccount)
+                        <button style="font-size:1.4rem; cursor:not-allowed;" type="button" class="btn btn-block btn-secondary text-uppercase" disabled>
+                            غير متاح لحسابات الشركات
+                        </button>
+                    @else
+                        <a  style=" font-size: 1.4rem;"  href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
+                        class="btn btn-block  bg-white  {{ $single->title_color }} text-uppercase">اشترك بالباقه</a>
+                    @endif
                   </div>
                 </div>
 

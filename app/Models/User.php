@@ -105,6 +105,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function booted()
     {
         static::created(function (User $user) {
+            if ($user->isCompanyAccount()) {
+                return;
+            }
+
             // تجنّب الإنشاء المكرر إذا تم منحه باقة من مكان آخر فى نفس الطلب
             $exists = UserPriceing::where('user_id', $user->id)->exists();
             if ($exists) {
@@ -176,6 +180,11 @@ class User extends Authenticatable implements MustVerifyEmail
         if($this->TYPE == 4)
             return UserTypeEnum::COMPANY;
         return '';
+    }
+
+    public function isCompanyAccount(): bool
+    {
+        return (int) $this->TYPE === 4;
     }
 
     public function getStatus()

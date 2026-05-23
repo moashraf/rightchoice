@@ -9,6 +9,7 @@ use App\Models\UserPriceing;
 use App\Models\UserContactAqar;
 use App\Models\FawryPayment;
 use App\Models\Complaints;
+use App\Models\User;
 use App\Services\Chat\PostService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -586,6 +587,10 @@ public function addToWishlistByUserId(Request $request): JsonResponse
         $user = $request->user();
         $aqar = aqar::findOrFail($request->aqars_id);
 
+        if ($user->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', 403);
+        }
+
         $checkPoint = UserPriceing::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
         $existingContact = UserContactAqar::where('aqars_id', $request->aqars_id)
             ->where('user_id', $user->id)->get();
@@ -638,6 +643,12 @@ public function addToWishlistByUserId(Request $request): JsonResponse
 
         $aqarId = $request->aqar_id;
         $userId = $request->user_id;
+
+        $viewer = User::findOrFail($userId);
+
+        if ($viewer->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', 403);
+        }
 
         $aqar = aqar::findOrFail($aqarId);
 
@@ -717,6 +728,20 @@ public function addToWishlistByUserId(Request $request): JsonResponse
 
         $aqarId = $request->aqar_id;
         $userId = $request->user_id;
+
+        $viewer = User::findOrFail($userId);
+
+        if ($viewer->isCompanyAccount()) {
+            return $this->sendResponse([
+                'aqar'           => null,
+                'already_viewed' => false,
+                'points_cost'    => 0,
+                'current_points' => 0,
+                'points_after'   => null,
+                'can_view'       => false,
+                'message'        => 'حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.',
+            ], 'معاينة بيانات التواصل.');
+        }
 
         $aqar = aqar::with(['governrateq', 'districte', 'offerTypes', 'propertyType'])->findOrFail($aqarId);
 

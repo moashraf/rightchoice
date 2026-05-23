@@ -6,6 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\FawryPayment;
 use App\Models\Pricing;
 use App\Models\UserPriceing;
+use App\Models\User;
 use App\Models\aqar;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -92,6 +93,10 @@ class FawryPaymentAPIController extends AppBaseController
 
         // ── Business Rules ───────────────────────────────────────────────────
         $user = $request->user();
+
+        if ($user->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بالاشتراك في باقات العقارات أو الباقة المجانية.', 403);
+        }
 
         if (empty($user->email)) {
             return $this->sendError('بيانات المستخدم غير مكتملة', 422, [
@@ -390,6 +395,17 @@ class FawryPaymentAPIController extends AppBaseController
             return $this->sendError('معرف المستخدم غير صحيح', 422, [
                 'user_id' => ['تعذر تحديد المستخدم من بيانات الدفع.'],
             ]);
+        }
+
+        $user = User::find($userId);
+        if (!$user) {
+            return $this->sendError('المستخدم غير موجود', 404, [
+                'user_id' => ["المستخدم رقم {$userId} غير موجود في النظام."],
+            ]);
+        }
+
+        if ($user->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بالاشتراك في باقات العقارات أو الباقة المجانية.', 403);
         }
 
         // التحقق من عدم تكرار تفعيل نفس الدفعة

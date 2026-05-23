@@ -101,6 +101,12 @@
                                 <div class="text-center">
 
                                     @if(Auth::user())
+                                        @if(Auth::user()->isCompanyAccount())
+                                            <div class="alert alert-warning" style="font-size:14px;">
+                                                <i class="fa fa-ban ml-1"></i>
+                                                حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.
+                                            </div>
+                                        @else
                                             <?php if ($show && $aqar->user != null){ ?>
                                         <div id="contMop">
                                             @if($show2)
@@ -166,6 +172,8 @@
 
 
                                         <?php } ?>
+
+                                        @endif
 
 
 

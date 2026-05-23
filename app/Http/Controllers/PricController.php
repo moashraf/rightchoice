@@ -17,6 +17,11 @@ use Redirect;
 class PricController extends Controller
 {
 
+    private function companyRestrictionMessage(): string
+    {
+        return 'حسابات الشركات غير مسموح لها بالاشتراك في باقات العقارات أو الباقة المجانية أو مشاهدة أرقام التواصل.';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -235,11 +240,17 @@ class PricController extends Controller
 
  if (  ($_GET['orderStatus'])=='PAID') {
 
+         if (auth()->check() && auth()->user()->isCompanyAccount()) {
+             $message = $this->companyRestrictionMessage();
+             session()->flash('success', $message);
+             return Redirect::back();
+         }
+
 
          $ckeckPricing = UserPriceing::where('user_id',auth()->user()->id)->where('statues',1)->orderBy('id', 'DESC')->first();
          $free_points_olny_one_time = UserPriceing::where('user_id',auth()->user()->id)->where('pricing_id','=',2) ->first();
          //dd($free_points_olny_one_time);
-         if(($free_points_olny_one_time) != NULL && $request->price_id == 2)
+         if(($free_points_olny_one_time) != NULL && request('price_id') == 2)
          {
 
         $message = ' غير مسموح     ';
@@ -423,6 +434,12 @@ $message ="  تم تميز اعلانك بنجاح ";
      */
     public function store(Request $request)
     {
+
+        if (!auth()->check() || auth()->user()->isCompanyAccount()) {
+            $message = $this->companyRestrictionMessage();
+            session()->flash('success', $message);
+            return Redirect::back();
+        }
 
           //  dd(auth()->user()->email);
 
@@ -807,6 +824,12 @@ $paymentStatus = $response['type']; // get response values
       /**********/
 
     public function storeFree(Request $request){
+
+        if (!auth()->check() || auth()->user()->isCompanyAccount()) {
+            $message = $this->companyRestrictionMessage();
+            session()->flash('success', $message);
+            return view('/th', compact('message'));
+        }
 
    $check_user_one_time_ok_only = UserPriceing::where('user_id' , '=', auth()->user()->id )->where('pricing_id','=',2)->get();
 

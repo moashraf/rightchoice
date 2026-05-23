@@ -37,6 +37,11 @@ use App;
 class AqarController extends Controller
 {
 
+    private function companyRestrictionMessage(): string
+    {
+        return 'حسابات الشركات غير مسموح لها بإضافة عقارات أو الاشتراك في باقات العقارات أو مشاهدة أرقام التواصل.';
+    }
+
     /**
      * AJAX: Fetch property types by category ID (public).
      */
@@ -902,6 +907,12 @@ class AqarController extends Controller
     public function create($locale)
     {
 
+        if (Auth::check() && Auth::user()->isCompanyAccount()) {
+            session()->flash('error', $this->companyRestrictionMessage());
+            session()->flash('success', $this->companyRestrictionMessage());
+            return redirect()->to($locale . '/dashboard');
+        }
+
         // dd(App::currentLocale());
         $offerTypes = OfferTypes::all();
         $categories = Category::all();
@@ -933,6 +944,12 @@ class AqarController extends Controller
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public function store(Request $request)
     {
+
+        if (!Auth::check() || Auth::user()->isCompanyAccount()) {
+            session()->flash('error', $this->companyRestrictionMessage());
+            session()->flash('success', $this->companyRestrictionMessage());
+            return Redirect::back()->withInput();
+        }
 
         if (!empty($request->area_id)) {
             $areaCheck = SubArea::where('area', $request->area_id)->orWhere('area', $request->area_id)->first();
@@ -1295,6 +1312,11 @@ class AqarController extends Controller
                 }
             }
 
+            if (Auth::check() && Auth::user()->isCompanyAccount()) {
+                $show2 = false;
+                $show = false;
+            }
+
             $updateview = aqar::findOrFail($aqar->id);
 
         }
@@ -1458,7 +1480,19 @@ class AqarController extends Controller
 
     public function addContact(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json(['massage' => 'يجب تسجيل الدخول أولاً', 'status' => 401], 401);
+        }
+
+        if (Auth::user()->isCompanyAccount()) {
+            return response()->json(['massage' => $this->companyRestrictionMessage(), 'status' => 403], 403);
+        }
+
         $pointAqqr = aqar::where('id', $request->aqars_id)->first();
+
+        if (!$pointAqqr) {
+            return response()->json(['massage' => 'العقار غير موجود', 'status' => 404], 404);
+        }
 
         $cheackPoint = UserPriceing::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
         $all_data = UserContactAqar::where('aqars_id', '=', $request->aqars_id)->where('user_id', '=', Auth::user()->id)->get();
@@ -1493,6 +1527,13 @@ class AqarController extends Controller
      */
     public function trackWhatsappContact(Request $request)
     {
+
+        if (Auth::check() && Auth::user()->isCompanyAccount()) {
+            return response()->json([
+                'status' => 403,
+                'message' => $this->companyRestrictionMessage(),
+            ], 403);
+        }
 
 $request->validate([
             'aqar_id' => 'required|integer|exists:aqar,id',

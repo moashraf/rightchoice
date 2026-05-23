@@ -354,11 +354,18 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                 لم تقم بإضافة أي إعلان عقاري بعد.<br>
                                                 ابدأ الآن وأضف عقارك للوصول لآلاف المشترين والمستأجرين.
                                             </p>
-                                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}"
-                                               style="background:#e74c3c; color:#fff; padding:14px 40px; border-radius:30px; font-size:16px; font-weight:600; text-decoration:none; display:inline-block;">
-                                                <i class="fas fa-plus-circle ml-2"></i>
-                                                أضف إعلانك الآن
-                                            </a>
+                                            @if(auth()->check() && auth()->user()->isCompanyAccount())
+                                                <div class="alert alert-warning" style="max-width:520px;margin:0 auto;">
+                                                    <i class="fas fa-ban ml-1"></i>
+                                                    حسابات الشركات غير مسموح لها بإضافة عقارات.
+                                                </div>
+                                            @else
+                                                <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}"
+                                                   style="background:#e74c3c; color:#fff; padding:14px 40px; border-radius:30px; font-size:16px; font-weight:600; text-decoration:none; display:inline-block;">
+                                                    <i class="fas fa-plus-circle ml-2"></i>
+                                                    أضف إعلانك الآن
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

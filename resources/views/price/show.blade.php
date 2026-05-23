@@ -3,6 +3,10 @@
 {{ $single->type ?? 'الباقة غير موجودة' }}
 @endsection
 
+@php
+    $isCompanyAccount = auth()->check() && auth()->user()->isCompanyAccount();
+@endphp
+
 @if(!$single)
     <div class="text-center container" style="padding: 80px 20px;">
         <div class="alert alert-warning" style="max-width:500px; margin: auto; border-radius:16px;">
@@ -29,7 +33,14 @@
 
 
 
-  @if($single->id == 2)
+  @if($isCompanyAccount)
+
+      <div class="alert alert-warning" style="max-width:520px;margin:30px auto;border-radius:14px;font-size:16px;">
+          <i class="fa fa-ban ml-1"></i>
+          حسابات الشركات غير مسموح لها بالاشتراك في باقات العقارات أو الباقة المجانية أو مشاهدة أرقام التواصل.
+      </div>
+
+  @elseif($single->id == 2)
 
    <section id="register" class="bg-light text-center">
 
