@@ -45,7 +45,13 @@ class AdminAqarController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $allAqars = aqar::with('mzaya', 'compounds', 'governrateq', 'districte', 'subAreaa', 'images', 'finishType', 'propertyType', 'user');
+        $allAqars = aqar::with('mzaya', 'compounds', 'governrateq', 'districte', 'subAreaa', 'images', 'finishType', 'propertyType', 'user')
+            ->select('aqar.*')
+            ->selectSub(function ($query) {
+                $query->from('usercontactaqar')
+                    ->selectRaw('COUNT(DISTINCT user_id)')
+                    ->whereColumn('usercontactaqar.aqars_id', 'aqar.id');
+            }, 'interested_users_count');
 
         $allAqars->orderBy('status', 'ASC')->orderBy('created_at', 'DESC');
 
@@ -462,7 +468,7 @@ class AdminAqarController extends AppBaseController
             'ref_code'      => $aqar->ref_code,
             'title'         => $aqar->title,
             'views'         => $aqar->views ?? 0,
-            'contacts_count'=> $contacts->count(),
+            'contacts_count'=> $contacts->pluck('user_id')->filter()->unique()->count(),
             'contacts'      => $contacts->map(function ($c) {
                 return [
                     'user_id'   => $c->user_id,

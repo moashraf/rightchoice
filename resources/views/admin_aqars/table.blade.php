@@ -182,7 +182,12 @@
                            data-id="{{ $allAqars_val->id }}"
                            data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
                            title="إحصائيات الإعلان">
-                            <i class="fas fa-chart-bar ml-1"></i> التعامل مع العقار
+                            <i class="fas fa-chart-bar ml-1"></i>
+                            التعامل مع العقار
+                            <br>
+                            <span class="badge badge-light text-dark mr-1">
+                                {{ $allAqars_val->interested_users_count ?? 0 }} مستخدم
+                            </span>
                         </a>
                     </small>
                 </td>
