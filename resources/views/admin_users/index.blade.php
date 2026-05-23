@@ -233,7 +233,7 @@
                     <table class="table">
                         <thead class="thead-light">
                         <tr>
-                            <th>التسلسل</th>
+                            <th> تسلسل</th>
                             <th>ID</th>
                             <th>اسم</th>
                             <th>نوع</th>
@@ -257,7 +257,7 @@
 
                                 <td>{{ $user->MOP }}</td>
                                 <td>
-                                    <a href="{{ route('sitemanagement.aqars.index', ['filter_user_id' => $user->id]) }}"
+                                    <a target="_blank" href="{{ route('sitemanagement.aqars.index', ['filter_user_id' => $user->id]) }}"
                                        class="badge badge-info" style="font-size:13px;"
                                        title="عرض عقارات هذا المستخدم">
                                         {{ $user->aqars_count }}

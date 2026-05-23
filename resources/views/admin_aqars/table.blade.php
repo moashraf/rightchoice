@@ -106,8 +106,9 @@
     <table class="table" id="datatable">
         <thead class="thead-light">
         <tr>
+            <th> تسلسل</th>
+
             <th>ID</th>
-            <th>التسلسل</th>
             <th>اسم  العقار</th>
             <th>محافظه</th>
             <th>نوع الوحده</th>
@@ -121,8 +122,12 @@
         </thead>
         <tbody>
         @foreach($allAqars as $index => $allAqars_val)
-            <tr>
-                <td>
+            <tr >
+                <td class="index_index text-center small align-middle">
+                    {{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}
+                </td>
+
+                <td class="id_id">
                     {{ $allAqars_val->id }}
                     @if($allAqars_val->ref_code)
                         <br>
@@ -136,7 +141,7 @@
                         </small>
                     @endif
                 </td>
-                <td>{{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}</td>
+
                 <td>
                     @php
                         $titleWords = preg_split('/\s+/u', trim((string) \Illuminate\Support\Str::limit($allAqars_val->title, 30, '')), -1, PREG_SPLIT_NO_EMPTY);
@@ -165,7 +170,9 @@
                 <td>
                     @if($allAqars_val->user)
                         <a href="{{ route('sitemanagement.users.index', ['filter_user_id' => $allAqars_val->user->id]) }}" target="_blank" title="عرض المستخدم في صفحة المستخدمين">
-                            {{ $allAqars_val->user->name }}
+                            @foreach(preg_split('/\s+/u', trim((string) $allAqars_val->user->name), -1, PREG_SPLIT_NO_EMPTY) as $ownerNameWord)
+                                {{ $ownerNameWord }}@if(!$loop->last)<br>@endif
+                            @endforeach
                         </a>
                     @else
                         N/A
