@@ -107,6 +107,7 @@
         <thead class="thead-light">
         <tr>
             <th>ID</th>
+            <th>التسلسل</th>
             <th>الاسم</th>
             <th>محافظه</th>
             <th>نوع الوحده</th>
@@ -120,7 +121,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($allAqars as $allAqars_val)
+        @foreach($allAqars as $index => $allAqars_val)
             <tr>
                 <td>
                     {{ $allAqars_val->id }}
@@ -136,6 +137,7 @@
                         </small>
                     @endif
                 </td>
+                <td>{{ $allAqars->total() - ($allAqars->firstItem() + $index) + 1 }}</td>
                 <td>{{ \Illuminate\Support\Str::limit($allAqars_val->title, 30, '') }}</td>
                 <td>
                     {{ $allAqars_val->governrateq->governrate ?? '' }}
