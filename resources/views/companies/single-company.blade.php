@@ -1,22 +1,15 @@
 <x-layout>
-
-
     @section('title')
         {{$company->Name}}
     @endsection
-
-
     <section id="inner-listing">
-
         <div class="container">
             <x-ads :randomAds="$random_ads ?? null" />
-
             <h3 class=" single-company headingTitle2 hideTitle2"
                 style="    margin-bottom: 28px;  font-size: 24px!important;">
                 {{ $company->serv->Service ?? '' }}
 
             </h3>
-
             <div class="row">
                 <div class="col-lg-4">
                     <div class="sticky">

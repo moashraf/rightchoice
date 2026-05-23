@@ -19,8 +19,6 @@ use App\Models\User;
 use App\Models\Ads;
 
 use App\Models\District;
-use App\Models\JobTitles;
-
 use Illuminate\Support\Facades\Validator;
 use App\Models\wish;
 use App\Models\UserPriceing;
@@ -179,9 +177,7 @@ class CompanyController extends Controller
 
         $governrate = Governrate::with('districts')->get();
 
-        $jobs = JobTitles::all();
-
-        return view('companies.create-company', compact('areas', 'governrate', 'jobs'));
+        return view('companies.create-company', compact('areas', 'governrate'));
 
     }
 
@@ -218,7 +214,7 @@ class CompanyController extends Controller
                 'Employee_Name' => 'required|max:225',
                 'details' => 'required|max:2500',
                 'Serv_id' => 'required|integer|exists:services,id',
-                'Job_title' => 'required|integer',
+                'Job_title' => 'required|integer|exists:jobTitles,id',
                 'Name' => 'required|max:225',
                 'Phone' => 'required|numeric|unique:company',
                 'email' => 'required|unique:users',
@@ -380,7 +376,7 @@ class CompanyController extends Controller
 
                 'Serv_id' => 'required|integer',
 
-                'Job_title' => 'required|integer',
+                'Job_title' => 'required|integer|exists:jobTitles,id',
 
                 'Name' => 'required|max:225',
 

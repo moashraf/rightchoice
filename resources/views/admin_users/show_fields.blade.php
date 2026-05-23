@@ -89,10 +89,14 @@
         @if($user->Job_title)
             <li class="list-group-item"><strong>Job Title:</strong>
                 <span>
-                    @if($user->Job_title == 1) صاحب عمل
-                    @elseif($user->Job_title == 2) مدير عام
-                    @elseif($user->Job_title == 3) مدير تسويق
-                    @elseif($user->Job_title == 4) مدير فرع
+                    @if($user->jobTitle)
+                        @if(App::isLocale('en'))
+                            {{ $user->jobTitle->Job_title_en ?: $user->jobTitle->Job_title }}
+                        @else
+                            {{ $user->jobTitle->Job_title }}
+                        @endif
+                    @else
+                        {{ $user->Job_title }}
                     @endif
                 </span>
             </li>

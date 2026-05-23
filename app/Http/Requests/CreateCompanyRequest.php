@@ -27,6 +27,7 @@ class CreateCompanyRequest extends FormRequest
     {
         return [
             'Name' => 'required',
+            'Job_title' => 'nullable|integer|exists:jobTitles,id',
         ];
     }
 }

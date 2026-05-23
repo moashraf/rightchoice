@@ -26,20 +26,6 @@
                         <strong>{{ trans('langsite.Note') }}:</strong>
                         {{ trans('langsite.company_activity_notice') }}
 
-                        @if(!empty($serviceInHeader) && count($serviceInHeader) > 0)
-                            <div class="mt-2">
-                                <span class="font-weight-bold">{{ trans('langsite.company_activity_examples') }}</span>
-                                @foreach($serviceInHeader->take(6) as $serv)
-                                    <span class="badge badge-light border mx-1 my-1" style="font-size: 12px; color: #196aa2;">
-                                        @if(App::isLocale('en'))
-                                            {{ $serv->Service_en ?: $serv->Service }}
-                                        @else
-                                            {{ $serv->Service }}
-                                        @endif
-                                    </span>
-                                @endforeach
-                            </div>
-                        @endif
                     </div>
 
                     <div class="container">
@@ -55,24 +41,25 @@
                                     <div class="col-lg-12">
                                         <div
                                             class="form-group {{ $errors->has('Serv_id') ? ' has-error' : '' }}">
-                                            <label
-                                                for="company-type">{{ trans('langsite.company-service') }}<span
+                                            <label>{{ trans('langsite.company-service') }}<span
                                                     class="text-danger">*</span></label>
-                                            <select required name="Serv_id" id="company-type" class="myselect">
-                                                <option selected disabled value="">
-                                                    {{ trans('langsite.choose') }}</option>
+
+                                            <div class="d-flex flex-wrap" style="gap: 10px;">
                                                 @foreach($serviceInHeader as $serv)
-                                                    <option <?php if(old('Serv_id') == $serv->id){ echo 'selected'; } ?>  value="{{ $serv->id }}">
-                                                        @if(App::isLocale('en'))
-                                                            {{ $serv->Service_en }}
-                                                        @else
-                                                            {{ $serv->Service }}
-                                                        @endif
-
-                                                    </option>
-
+                                                    <div class="form-check form-check-inline mb-2" style="background: #fff; border: 1px solid #e6eaf3; border-radius: 8px; padding: 8px 14px;">
+                                                        <input class="form-check-input" type="radio" required name="Serv_id"
+                                                               id="company-service-{{ $serv->id }}" value="{{ $serv->id }}"
+                                                            <?php if(old('Serv_id') == $serv->id){ echo 'checked'; } ?>>
+                                                        <label class="form-check-label" for="company-service-{{ $serv->id }}">
+                                                            @if(App::isLocale('en'))
+                                                                {{ $serv->Service_en }}
+                                                            @else
+                                                                {{ $serv->Service }}
+                                                            @endif
+                                                        </label>
+                                                    </div>
                                                 @endforeach
-                                            </select>
+                                            </div>
                                             <small
                                                 class="text-danger">{{ $errors->first('Serv_id') }}</small>
                                         </div>

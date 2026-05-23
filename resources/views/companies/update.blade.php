@@ -2,7 +2,7 @@
 
 
  @section('title')
-{{$company->Name }} 
+{{$company->Name }}
 @endsection
 
 
@@ -67,7 +67,7 @@
                                     @csrf
 
 
-                                    
+
                                 <input type="hidden" name="user_id" value="{{  auth()->user()->id }}">
 
 
@@ -135,15 +135,17 @@
 
                                                 <option value="">اختر</option>
 
-                                                <option value="1" {{ $company->Job_title == 1 ? 'selected' : '' }}>صاحب عمل</option>
+                                                @foreach($jobs ?? [] as $job)
 
-                                                <option value="2" {{ $company->Job_title == 2 ? 'selected' : '' }}>مدير عام</option>
+                                                    <option value="{{ $job->id }}" {{ old('Job_title', $company->Job_title) == $job->id ? 'selected' : '' }}>
+                                                        @if(App::isLocale('en'))
+                                                            {{ $job->Job_title_en ?: $job->Job_title }}
+                                                        @else
+                                                            {{ $job->Job_title }}
+                                                        @endif
+                                                    </option>
 
-                                                <option value="3" {{ $company->Job_title == 3 ? 'selected' : '' }}>مدير تسويق</option>
-
-                                                <option value="4" {{ $company->Job_title == 4 ? 'selected' : '' }}>مدير فرع</option>
-
-                                                <option value="5" {{ $company->Job_title == 5 ? 'selected' : '' }}>اخرى</option>
+                                                @endforeach
 
                                             </select>
 
@@ -267,7 +269,7 @@
                                           <select required name="area_id" id="area" class="myselect">
                                                 @foreach ($areas as $area)
                                                     <option value="{{ $area->id }}" {{ $company->area_id == $area->id ? 'selected' : '' }}>{{ $area->area }}</option>
-                
+
                                                 @endforeach
                                             </select>
 
@@ -400,7 +402,7 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->has('img') ? ' has-error' : '' }}">
-                                    
+
                                 <label for="logo-company">اضف لوجو الشركه<span class="text-danger">*</span></label>
                                     @if(!empty($company->photo))
                                         <div class="mb-2">
@@ -423,7 +425,7 @@
 
                                 <button type="submit" class="btn our-btn">
 
-تعديل 
+تعديل
 </button>
 
 
@@ -482,13 +484,13 @@
                     </div>
 
 
-                
 
 
 
 
 
-                    
+
+
 
 
 

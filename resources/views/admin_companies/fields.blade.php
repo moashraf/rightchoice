@@ -44,7 +44,7 @@
 <!-- Job Title Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('Job_title', 'Job Title:') !!}
-    {!! Form::text('Job_title', null, ['class' => 'form-control']) !!}
+    {!! Form::select('Job_title', ['' => 'اختر'] + ($jobTitlesOptions ?? []), null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Phone Field -->
