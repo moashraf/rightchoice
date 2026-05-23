@@ -13,6 +13,31 @@
     $canUpdate  = $__au && $__au->hasPermission('users.update');
     $canDelete  = $__au && $__au->hasPermission('users.delete');
     $canBlock   = $__au && $__au->hasPermission('users.block');
+
+    $activeUserTypeTab = in_array(request('type_tab'), ['companies', 'developer', 'normal'], true)
+        ? request('type_tab')
+        : 'all';
+    $userTypeTabs = [
+        'all'       => 'الكل',
+        'companies' => 'الشركات',
+        'developer' => 'مطور عقاري',
+        'normal'    => 'مستخدم عادي',
+    ];
+    $userTypeTabBaseQuery = request()->except(['page', 'type_tab', 'filter_type']);
+    $exportUsersParams = request()->only([
+        'search_key',
+        'filter_status',
+        'filter_type',
+        'type_tab',
+        'filter_invited_by',
+        'filter_user_id',
+        'has_package',
+        'has_aqars',
+        'sortBy',
+    ]);
+    $exportUsersParams = array_filter($exportUsersParams, function ($value) {
+        return $value !== null && $value !== '';
+    });
 @endphp
 
 @section('content')
@@ -32,13 +57,7 @@
 
                     @if($canExport)
                     <a id="export-users-btn" class="btn btn-success float-right mr-2"
-                       href="{{ route('sitemanagement.users.exportUsers', array_filter([
-                           'search_key'        => request('search_key'),
-                           'filter_status'     => request('filter_status'),
-                           'filter_type'       => request('filter_type'),
-                           'filter_invited_by' => request('filter_invited_by'),
-                           'sortBy'            => request('sortBy'),
-                       ])) }}">
+                       href="{{ route('sitemanagement.users.exportUsers', $exportUsersParams) }}">
                         <i class="fa fa-file-excel ml-1"></i>
                         <span id="export-users-text">تصدير نتائج البحث</span>
                         <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
@@ -77,7 +96,27 @@
 
         <div class="card">
             <div class="card-header">
+                <ul class="nav nav-pills mb-3">
+                    @foreach($userTypeTabs as $tabKey => $tabLabel)
+                        @php
+                            $tabQuery = $userTypeTabBaseQuery;
+                            if ($tabKey !== 'all') {
+                                $tabQuery['type_tab'] = $tabKey;
+                            }
+                        @endphp
+                        <li class="nav-item ml-2 mb-2">
+                            <a href="{{ route('sitemanagement.users.index', $tabQuery) }}"
+                               class="nav-link {{ $activeUserTypeTab === $tabKey ? 'active' : '' }}">
+                                {{ $tabLabel }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+
                 <form action="{{ route('sitemanagement.users.index') }}" method="GET">
+                    @if($activeUserTypeTab !== 'all')
+                        <input type="hidden" name="type_tab" value="{{ $activeUserTypeTab }}">
+                    @endif
                     <div class="users_users_users row align-items-end">
                         <div class="col-md-3">
                             <label>بحث</label>
@@ -97,12 +136,15 @@
                         </div>
                         <div class="col-md-2">
                             <label>النوع</label>
-                            <select class="form-control" name="filter_type">
+                            <select class="form-control" name="filter_type" {{ $activeUserTypeTab !== 'all' ? 'disabled' : '' }}>
                                 <option value="">اختر</option>
                                 @foreach(\App\Enums\UserTypeEnum::values() as $key => $case)
                                     <option value="{{ $case }}" {{ request('filter_type') == $case ? 'selected' : '' }}>{{ $key }}</option>
                                 @endforeach
                             </select>
+                            @if($activeUserTypeTab !== 'all')
+                                <small class="text-muted">الفلتر مطبق من التابات بالأعلى</small>
+                            @endif
                         </div>
                         <div class="col-md-2">
                             <label>ترتيب حسب</label>

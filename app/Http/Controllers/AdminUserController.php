@@ -36,8 +36,7 @@ class AdminUserController extends Controller
         if ($request->filter_status != null)
             $users->where('status', $request->filter_status);
 
-        if ($request->filter_type)
-            $users->where('TYPE', $request->filter_type);
+        $this->applyUserTypeTabFilter($users, $request->type_tab, $request->filter_type);
 
         // ── RBAC filters (from RBAC page links) ──────────────────────────
         if ($request->filled('filter_isAdmin')) {
@@ -358,10 +357,42 @@ class AdminUserController extends Controller
 
     public function exportUsers(Request $request)
     {
-        $filters = $request->only(['search_key', 'filter_status', 'filter_type', 'sortBy']);
+        $filters = $request->only([
+            'search_key',
+            'filter_status',
+            'filter_type',
+            'type_tab',
+            'filter_invited_by',
+            'filter_user_id',
+            'has_package',
+            'has_aqars',
+            'sortBy',
+        ]);
         $filename = 'users_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
 
         return Excel::download(new LastUsersExport($filters), $filename);
+    }
+
+    private function applyUserTypeTabFilter($query, ?string $typeTab, $filterType = null): void
+    {
+        if ($typeTab === 'companies') {
+            $query->where('TYPE', 4);
+            return;
+        }
+
+        if ($typeTab === 'developer') {
+            $query->where('TYPE', 3);
+            return;
+        }
+
+        if ($typeTab === 'normal') {
+            $query->whereIn('TYPE', [1, 2]);
+            return;
+        }
+
+        if ($filterType) {
+            $query->where('TYPE', $filterType);
+        }
     }
 
     /**
