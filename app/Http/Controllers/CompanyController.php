@@ -217,7 +217,7 @@ class CompanyController extends Controller
 
                 'Employee_Name' => 'required|max:225',
                 'details' => 'required|max:2500',
-                'Serv_id' => 'required|integer',
+                'Serv_id' => 'required|integer|exists:services,id',
                 'Job_title' => 'required|integer',
                 'Name' => 'required|max:225',
                 'Phone' => 'required|numeric|unique:company',

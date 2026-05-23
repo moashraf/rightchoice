@@ -22,6 +22,26 @@
 
                          </h4>
 
+                    <div class="alert alert-info mb-4" role="alert" style="border-right: 4px solid #196aa2; background: #eef8ff; color: #24506b;">
+                        <strong>{{ trans('langsite.Note') }}:</strong>
+                        {{ trans('langsite.company_activity_notice') }}
+
+                        @if(!empty($serviceInHeader) && count($serviceInHeader) > 0)
+                            <div class="mt-2">
+                                <span class="font-weight-bold">{{ trans('langsite.company_activity_examples') }}</span>
+                                @foreach($serviceInHeader->take(6) as $serv)
+                                    <span class="badge badge-light border mx-1 my-1" style="font-size: 12px; color: #196aa2;">
+                                        @if(App::isLocale('en'))
+                                            {{ $serv->Service_en ?: $serv->Service }}
+                                        @else
+                                            {{ $serv->Service }}
+                                        @endif
+                                    </span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="container">
 
 
