@@ -112,8 +112,7 @@
             <th>محافظه</th>
             <th>نوع الوحده</th>
             <th>نوع العرض</th>
-            <th>التمييز</th>
-            <th>الحاله</th>
+             <th>الحاله</th>
             <th>اسم المالك</th>
             <th>المشاهدات</th>
             <th>تاريخ الاضافه</th>
@@ -154,8 +153,14 @@
                     @endif
                 </td>
                 <td>{{ $allAqars_val->propertyType->property_type ?? '' }}</td>
-                <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}</td>
-                <td>{{ $allAqars_val->getVIP() }}</td>
+                <td>{{ $allAqars_val->offerTypes->type_offer ?? '' }}
+                    <br>
+                    <small class="getVIP_getVIP" style=" background: #eee8e8; padding: 1px;">
+                    {{ $allAqars_val->getVIP() }}
+
+                    </small>
+                </td>
+
                 <td>{{ $allAqars_val->getStatus() }}</td>
                 <td>
                     @if($allAqars_val->user)
@@ -166,8 +171,13 @@
                         N/A
                     @endif
                 </td>
-                <td>{{ $allAqars_val->views }}
+                <td>
                     <small>
+                        عدد مشاهدات
+                    </small>
+                    {{ $allAqars_val->views }}
+                    <small>
+                        <br>
                         <a href="#" class="badge badge-secondary aqar-stats-btn"
                            data-id="{{ $allAqars_val->id }}"
                            data-url="{{ route('sitemanagement.aqars.stats', $allAqars_val->id) }}"
