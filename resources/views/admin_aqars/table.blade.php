@@ -170,7 +170,9 @@
                 <td>
                     @if($allAqars_val->user)
                         <a href="{{ route('sitemanagement.users.index', ['filter_user_id' => $allAqars_val->user->id]) }}" target="_blank" title="عرض المستخدم في صفحة المستخدمين">
-                            {{ $allAqars_val->user->name }}
+                            @foreach(preg_split('/\s+/u', trim((string) $allAqars_val->user->name), -1, PREG_SPLIT_NO_EMPTY) as $ownerNameWord)
+                                {{ $ownerNameWord }}@if(!$loop->last)<br>@endif
+                            @endforeach
                         </a>
                     @else
                         N/A
