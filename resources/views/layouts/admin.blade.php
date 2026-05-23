@@ -599,7 +599,83 @@
 
 <script>
     $(function () {
-        bsCustomFileInput.init();
+        if (window.bsCustomFileInput) {
+            bsCustomFileInput.init();
+        }
+
+        var $adminSidebar = $('.main-sidebar .sidebar');
+        var $adminSidebarMenu = $adminSidebar.find('.nav-sidebar');
+
+        function openActiveSidebarParents() {
+            $adminSidebarMenu.find('.nav-treeview .nav-link.active').each(function () {
+                $(this)
+                    .closest('.nav-treeview')
+                    .closest('.nav-item')
+                    .addClass('menu-open')
+                    .children('.nav-link')
+                    .addClass('active');
+            });
+        }
+
+        function getActiveSidebarLink($context) {
+            openActiveSidebarParents();
+
+            var $searchRoot = $context && $context.length ? $context : $adminSidebarMenu;
+            var $activeLinks = $searchRoot.find('.nav-link.active:visible');
+
+            if (!$activeLinks.length) {
+                $activeLinks = $searchRoot.find('.nav-link.active');
+            }
+
+            if (!$activeLinks.length) {
+                return $();
+            }
+
+            var $activeChildLink = $activeLinks.filter(function () {
+                return $(this).closest('.nav-treeview').length > 0;
+            }).last();
+
+            return $activeChildLink.length ? $activeChildLink : $activeLinks.last();
+        }
+
+        function scrollSidebarToLink($link, smooth) {
+            if (!$adminSidebar.length || !$link || !$link.length) {
+                return;
+            }
+
+            var sidebarOffset = $adminSidebar.offset();
+            var linkOffset = $link.offset();
+
+            if (!sidebarOffset || !linkOffset) {
+                return;
+            }
+
+            var targetScrollTop = $adminSidebar.scrollTop()
+                + (linkOffset.top - sidebarOffset.top)
+                - (($adminSidebar.innerHeight() - $link.outerHeight()) / 2);
+
+            targetScrollTop = Math.max(targetScrollTop, 0);
+
+            if (smooth) {
+                $adminSidebar.stop(true).animate({ scrollTop: targetScrollTop }, 300);
+                return;
+            }
+
+            $adminSidebar.scrollTop(targetScrollTop);
+        }
+
+        setTimeout(function () {
+            scrollSidebarToLink(getActiveSidebarLink(), false);
+        }, 100);
+
+        $adminSidebarMenu.on('click', '.nav-link', function () {
+            var $clickedLink = $(this);
+
+            setTimeout(function () {
+                var $activeLink = getActiveSidebarLink($clickedLink.closest('.nav-item'));
+                scrollSidebarToLink($activeLink.length ? $activeLink : $clickedLink, true);
+            }, 250);
+        });
     });
 </script>
 
