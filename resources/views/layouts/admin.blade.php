@@ -76,7 +76,7 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
 
-                    <li class="nav-item {{ request()->is('sitemanagement/aqars*') ? 'menu-open' : '' }}">
+                    <li class=" aqars_aqars nav-item {{ request()->is('sitemanagement/aqars*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-home"></i>
                             <p>
@@ -114,7 +114,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
+
+                    <li class=" users_users nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -184,19 +185,98 @@
                             </li>
                         </ul>
                     </li>
+
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.accountDeleteRequests.index') }}" class="nav-link {{ request()->is('sitemanagement/accountDeleteRequests*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-times"></i>
+                            <p>طلبات حذف الحسابات
+                                @php $pendingCount = \App\Models\AccountDeleteRequest::where('status','pending')->count(); @endphp
+                                @if($pendingCount > 0)
+                                    <span class="badge badge-danger badge-pill mr-1">{{ $pendingCount }}</span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                    <li class=" reports_reports nav-item">
                         <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-chart-line"></i>
                             <p>{{ __('admin.reports') }}</p>
                         </a>
                     </li>
 
+                    <li class="complaints_complaints nav-item">
+                        <a href="{{ route('sitemanagement.complaints.index') }}" class="nav-link {{ request()->is('sitemanagement/complaints*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-exclamation-circle"></i>
+                            <p>{{ __('admin.complaints') }}</p>
+                        </a>
+                    </li>
+
+
+                    <li class=" price_vip_price_vip nav-item">
+                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-gem"></i>
+                            <p>{{ __('admin.price_vip') }}</p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
+                        <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-envelope"></i>
+                            <p>{{ __('admin.contact_forms') }}</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>{{ __('admin.pricing_sales') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>{{ __('admin.companies') }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.adminServices.index') }}" class="nav-link {{ request()->is('sitemanagement/adminServices*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-concierge-bell"></i>
+                            <p>{{ __('admin.services') }}</p>
+                        </a>
+                    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <li class="blogs_blogs nav-item">
                         <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-blog"></i>
                             <p>{{ __('admin.blogs') }}</p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.sliders.index') }}" class="nav-link {{ request()->is('sitemanagement/sliders*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-images"></i>
@@ -218,7 +298,7 @@
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.meta-conversions.index') }}" class="nav-link {{ request()->is('sitemanagement/meta-conversions*') ? 'active' : '' }}">
                             <i class="nav-icon fab fa-facebook-square"></i>
-                            <p>Meta Conversions API</p>
+                            <p> جوجل Meta  API</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -227,12 +307,7 @@
                             <p>{{ __('admin.photo_sessions') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-gem"></i>
-                            <p>{{ __('admin.price_vip') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.images.index') }}"
                            class="nav-link {{ request()->is('sitemanagement/images*') ? 'active' : '' }}">
@@ -246,42 +321,22 @@
                             <p>{{ __('admin.pages') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-building"></i>
-                            <p>{{ __('admin.companies') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.mzayas.index') }}" class="nav-link {{ request()->is('sitemanagement/mzayas*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-star"></i>
                             <p>{{ __('admin.mzaya') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tags"></i>
-                            <p>{{ __('admin.pricing_sales') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.adminServices.index') }}" class="nav-link {{ request()->is('sitemanagement/adminServices*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-concierge-bell"></i>
-                            <p>{{ __('admin.services') }}</p>
-                        </a>
-                    </li>
+
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.jobTitles.index') }}" class="nav-link {{ request()->is('sitemanagement/jobTitles*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-tie"></i>
                             <p>{{ __('admin.job_titles') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-map-marker-alt"></i>
-                            <p>{{ __('admin.sub_areas') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.licenseTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/licenseTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-id-card"></i>
@@ -300,18 +355,28 @@
                             <p>{{ __('admin.finish_types') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.districts.index') }}" class="nav-link {{ request()->is('sitemanagement/districts*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-map"></i>
-                            <p>{{ __('admin.districts') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.governrates.index') }}" class="nav-link {{ request()->is('sitemanagement/governrates*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-flag"></i>
                             <p>{{ __('admin.governrates') }}</p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.districts.index') }}" class="nav-link {{ request()->is('sitemanagement/districts*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map"></i>
+                            <p>{{ __('admin.districts') }}</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.subareas.index') }}" class="nav-link {{ request()->is('sitemanagement/subareas*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                            <p>{{ __('admin.sub_areas') }}</p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.compounds.index') }}" class="nav-link {{ request()->is('sitemanagement/compounds*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-city"></i>
@@ -449,36 +514,16 @@
                             <p>تبليغات المحادثات</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-envelope"></i>
-                            <p>{{ __('admin.contact_forms') }}</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.propertyTypes.index') }}" class="nav-link {{ request()->is('sitemanagement/propertyTypes*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-building"></i>
                             <p>{{ __('admin.property_types') }}</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.complaints.index') }}" class="nav-link {{ request()->is('sitemanagement/complaints*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-exclamation-circle"></i>
-                            <p>{{ __('admin.complaints') }}</p>
-                        </a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.accountDeleteRequests.index') }}" class="nav-link {{ request()->is('sitemanagement/accountDeleteRequests*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-times"></i>
-                            <p>طلبات حذف الحسابات
-                                @php $pendingCount = \App\Models\AccountDeleteRequest::where('status','pending')->count(); @endphp
-                                @if($pendingCount > 0)
-                                    <span class="badge badge-danger badge-pill mr-1">{{ $pendingCount }}</span>
-                                @endif
-                            </p>
-                        </a>
-                    </li>
+
+
 
                     {{-- ── Error Logs (admin only) ────────────────────── --}}
                     @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())

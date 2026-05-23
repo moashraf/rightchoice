@@ -15,7 +15,7 @@ return [
     'pages'              => 'الصفحات',
     'companies'          => 'الشركات',
     'mzaya'              => 'المزايا',
-    'pricing_sales'      => 'أسعار المبيعات',
+    'pricing_sales'      => 'أسعار الباقة ',
     'services'           => 'الخدمات',
     'job_titles'         => 'المسميات الوظيفية',
     'sub_areas'          => 'المناطق الفرعية',
