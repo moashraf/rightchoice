@@ -27,6 +27,7 @@ class UpdateCompanyRequest extends FormRequest
     {
         return [
             'Name' => 'required',
+            'Job_title' => 'nullable|integer|exists:jobTitles,id',
         ];
     }
 }

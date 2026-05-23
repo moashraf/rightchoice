@@ -121,8 +121,13 @@ class Company extends Model
     public function subArea(){
         return $this->belongsTo(SubArea::class, 'area_id');
     }
+
+    public function jobTitle(){
+        return $this->belongsTo(JobTitles::class, 'Job_title', 'id');
+    }
+
     public function jobTitles(){
-        return $this->belongsTo(JobTitles::class, 'job_title');
+        return $this->jobTitle();
     }
 
 

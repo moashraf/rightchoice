@@ -12,6 +12,7 @@ use App\Models\Service;
 use App\Models\OfferTypes;
 use App\Models\SettingSite;
 use App\Models\Notification;
+use App\Models\JobTitles;
 
 use Auth;
 
@@ -55,10 +56,19 @@ class AppServiceProvider extends ServiceProvider
             $serviceInHeader = Service::all();
             $offersTypeForCashAndInstallment = OfferTypes::whereIn('id', [1, 2])->get();
             $offersTypeForRents = OfferTypes::whereIn('id', [3, 4])->get();
+            static $jobTitles = null;
+            $jobTitles = $jobTitles ?: JobTitles::orderBy('id')->get();
+            $jobTitlesOptions = $jobTitles->mapWithKeys(function ($jobTitle) {
+                $title = App::isLocale('en') ? ($jobTitle->Job_title_en ?: $jobTitle->Job_title) : $jobTitle->Job_title;
+
+                return [$jobTitle->id => $title];
+            })->toArray();
 
             $view->with('serviceInHeader', $serviceInHeader);
             $view->with('offersTypeForCashAndInstallment', $offersTypeForCashAndInstallment);
             $view->with('offersTypeForRents', $offersTypeForRents);
+            $view->with('jobs', $jobTitles);
+            $view->with('jobTitlesOptions', $jobTitlesOptions);
 
             if (Auth::check()) {
                 $name = Auth::user()->name;

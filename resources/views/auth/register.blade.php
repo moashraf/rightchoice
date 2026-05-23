@@ -176,9 +176,15 @@
                                     <label for="employe-type">المسمى الوظيفي<span class="text-danger">*</span></label>
                                     <select class="myselect" name="Job_title" id="employe-type">
                                         <option value="">اختر</option>
-                                        <option value="1">صاحب عمل</option>
-                                         <option value="3">مدير تسويق</option>
-                                         <option value="5">اخرى</option>
+                                        @foreach($jobs ?? [] as $job)
+                                            <option value="{{ $job->id }}" {{ old('Job_title') == $job->id ? 'selected' : '' }}>
+                                                @if(App::isLocale('en'))
+                                                    {{ $job->Job_title_en ?: $job->Job_title }}
+                                                @else
+                                                    {{ $job->Job_title }}
+                                                @endif
+                                            </option>
+                                        @endforeach
                                     </select>
                                     <small class="text-danger">{{ $errors->first('Job_title') }}</small>
                                 </div>

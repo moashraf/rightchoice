@@ -31,7 +31,7 @@ class UpdateProfileUserController extends Controller
                 'AGE'                   => ( $request->AGE != null ? 'required|integer' : ''),
                 'TYPE'                  => ( $request->TYPE != null ? 'required|integer' : ''),
                 'Employee_Name'         => ($request->TYPE != null && $request->TYPE  == 3 ? 'required' : ''),
-                'Job_title'             => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required' : ''),
+                'Job_title'             => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required|integer|exists:jobTitles,id' : ($request->Job_title != null ? 'integer|exists:jobTitles,id' : '')),
                 'Tax_card'              => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required' : ''),
                 'Commercial_Register'   => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required' : ''),
             ];

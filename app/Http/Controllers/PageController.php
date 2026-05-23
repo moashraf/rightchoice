@@ -156,6 +156,7 @@ class PageController extends Controller
             'MOP'  => ['required', 'min:11', 'max:11', 'unique:users', 'regex:/^01[0-9]{9}$/'],
             'password' => 'required|confirmed|max:255',
             'email' => 'required|email|max:90|unique:users',
+            'Job_title' => 'nullable|integer|exists:jobTitles,id',
         ], [
             'MOP.regex' => 'رقم الهاتف يجب أن يبدأ بـ 01 ويكون مكوناً من 11 رقم.',
             'MOP.min'   => 'رقم الهاتف يجب أن يكون 11 رقم.',

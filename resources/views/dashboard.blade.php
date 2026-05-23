@@ -227,30 +227,15 @@
 
                                                         <option value="">اختر</option>
 
-                                                        <option
-                                                            value="1" {{ Auth::user()->Job_title == 1 ? 'selected' : '' }}>
-                                                            صاحب عمل
-                                                        </option>
-
-                                                        <option
-                                                            value="2" {{ Auth::user()->Job_title == 2 ? 'selected' : '' }}>
-                                                            مدير عام
-                                                        </option>
-
-                                                        <option
-                                                            value="3" {{ Auth::user()->Job_title == 3 ? 'selected' : '' }}>
-                                                            مدير تسويق
-                                                        </option>
-
-                                                        <option
-                                                            value="4" {{ Auth::user()->Job_title == 4 ? 'selected' : '' }}>
-                                                            مدير فرع
-                                                        </option>
-
-                                                        <option
-                                                            value="5" {{ Auth::user()->Job_title == 5 ? 'selected' : '' }}>
-                                                            اخرى
-                                                        </option>
+                                                        @foreach($jobs ?? [] as $job)
+                                                            <option value="{{ $job->id }}" {{ old('Job_title', Auth::user()->Job_title) == $job->id ? 'selected' : '' }}>
+                                                                @if(App::isLocale('en'))
+                                                                    {{ $job->Job_title_en ?: $job->Job_title }}
+                                                                @else
+                                                                    {{ $job->Job_title }}
+                                                                @endif
+                                                            </option>
+                                                        @endforeach
 
                                                     </select>
 

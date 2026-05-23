@@ -41,7 +41,17 @@
 <!-- Job Title Field -->
 <div class="col-sm-6">
     {!! Form::label('Job_title', 'Job Title:') !!}
-    <p>{{ $company->Job_title }}</p>
+    <p>
+        @if($company->jobTitle)
+            @if(App::isLocale('en'))
+                {{ $company->jobTitle->Job_title_en ?: $company->jobTitle->Job_title }}
+            @else
+                {{ $company->jobTitle->Job_title }}
+            @endif
+        @else
+            {{ $company->Job_title }}
+        @endif
+    </p>
 </div>
 
 <!-- Building Number Field -->

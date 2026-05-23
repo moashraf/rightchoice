@@ -169,6 +169,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(priceing_sale::class, 'users_priceing_sale', 'user_id', 'pricing_id');
     }
 
+    public function jobTitle()
+    {
+        return $this->belongsTo(JobTitles::class, 'Job_title', 'id');
+    }
+
     public function getUserType()
     {
         if($this->TYPE == 1)
