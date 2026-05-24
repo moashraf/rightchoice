@@ -25,7 +25,14 @@ class DeveloperController extends Controller
                       ->orWhere('email', 'like', "%{$q}%");
                 });
             })
-
+            ->withCount(['aqars' => function ($qb) {
+                $qb->where('status', 1);
+            }])
+            // عرض المطورين الذين لديهم عقار واحد على الأقل (نشِط)
+            ->whereHas('aqars', function ($qb) {
+                $qb->where('status', 1);
+            })
+            ->orderByDesc('aqars_count')
             ->orderByDesc('id')
             ->paginate(12)
             ->appends($request->except('page'));
