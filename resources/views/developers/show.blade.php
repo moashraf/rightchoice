@@ -19,14 +19,11 @@
                                          style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #f5f5f5;"
                                          loading="lazy">
                                 @else
-                                    <img src="{{ asset('assets/img/avatar.png') }}"
-                                         alt="{{ $user->name }}"
-                                         onerror="this.src='https://rightchoice-co.com/images/FBO.png'"
-                                         style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #f5f5f5;"
-                                         loading="lazy">
+                                    <div aria-label="{{ $user->name }}"
+                                         style="width:140px;height:140px;border-radius:50%;background:#fff;border:3px solid #f5f5f5;margin:0 auto;"></div>
                                 @endif
 
-                                <h4 class="headingTitle2 mt-3">{{ $user->name }}</h4>
+                                <h4 class="headingTitle2 mt-3">{{ $user->Commercial_Register }}</h4>
 
                                 <div style="color:#666;margin-top:6px;">
                                     <i class="fas fa-building"></i>

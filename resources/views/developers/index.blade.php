@@ -53,14 +53,11 @@
                                          style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #f5f5f5;"
                                          loading="lazy">
                                 @else
-                                    <img src="{{ asset('assets/img/avatar.png') }}"
-                                         alt="{{ $dev->name }}"
-                                         onerror="this.src='https://rightchoice-co.com/images/FBO.png'"
-                                         style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #f5f5f5;"
-                                         loading="lazy">
+                                    <div aria-label="{{ $dev->name }}"
+                                         style="width:120px;height:120px;border-radius:50%;background:#fff;border:3px solid #f5f5f5;margin:0 auto;"></div>
                                 @endif
 
-                                <h3 style="margin-top:15px;font-size:18px;">{{ $dev->name }}</h3>
+                                <h3 style="margin-top:15px;font-size:18px;">{{ $dev->Commercial_Register }}</h3>
 
                                 <div style="color:#888;font-size:13px;margin-top:6px;">
                                     <i class="fas fa-building"></i>

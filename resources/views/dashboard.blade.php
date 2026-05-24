@@ -28,13 +28,12 @@
 
 
                                 <form action="{{ URL::to('updatedProfileUser') }}" enctype="multipart/form-data"
-                                      method="POST" files="true">
+                                      method="POST">
 
                                     @csrf
 
 
                                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-
 
                                         <label for="exampleInputEmail1">الاسم كاملا <span
 
@@ -45,7 +44,7 @@
 
                                                aria-describedby="emailHelp" VALUE="{{ Auth::user()->name }}"
 
-                                               placeholder="علي حسن">
+                                               placeholder=" الاسم  ">
 
 
                                         <small class="text-danger">{{ $errors->first('name') }}</small>
@@ -85,7 +84,8 @@
 
                                                aria-describedby="emailHelp" VALUE="{{ Auth::user()->MOP }}">
 
-                                        <small class="text-muted d-block mt-1">لا يمكن تغيير رقم الهاتف من لوحة التحكم.</small>
+                                        <small class="text-muted d-block mt-1">لا يمكن تغيير رقم الهاتف من لوحة
+                                            التحكم.</small>
 
 
                                         <small class="text-danger">{{ $errors->first('MOP') }}</small>
@@ -228,7 +228,8 @@
                                                         <option value="">اختر</option>
 
                                                         @foreach($jobs ?? [] as $job)
-                                                            <option value="{{ $job->id }}" {{ old('Job_title', Auth::user()->Job_title) == $job->id ? 'selected' : '' }}>
+                                                            <option
+                                                                value="{{ $job->id }}" {{ old('Job_title', Auth::user()->Job_title) == $job->id ? 'selected' : '' }}>
                                                                 @if(App::isLocale('en'))
                                                                     {{ $job->Job_title_en ?: $job->Job_title }}
                                                                 @else
@@ -332,7 +333,7 @@
                                                     aria-controls="collapseOne">
 
 
-                                                <h5>لتغيير كلمه المرور</h5>
+                                                <span class="h5 mb-0">لتغيير كلمه المرور</span>
 
 
                                             </button>
@@ -348,14 +349,30 @@
                                                     class="form-group {{ $errors->has('old_password') ? ' has-error' : '' }}">
 
 
-                                                    <label for="password">ادخل كلمه المرور الحاليه </label>
+                                                    <label for="old_password">ادخل كلمه المرور الحاليه </label>
 
 
-                                                    <input type="password" name="old_password" class="myselect"
+                                                    <div style="position:relative;">
+                                                        <input type="password" name="old_password" class="myselect"
 
-                                                           id="password" aria-describedby="password"
+                                                               id="old_password" aria-describedby="old_password"  style="padding-left:45px;">
 
-                                                           placeholder="***********">
+                                                        <button type="button" class="password-visibility-toggle"
+                                                                data-target="old_password"
+                                                                aria-label="إظهار كلمة المرور"
+                                                                style="position:absolute;left:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#777;cursor:pointer;padding:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;">
+                                                            <svg data-eye-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                            <svg data-eye-off-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;">
+                                                                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a20.29 20.29 0 0 1 5.06-5.94"></path>
+                                                                <path d="M9.9 4.24A10.67 10.67 0 0 1 12 4c7 0 11 8 11 8a20.49 20.49 0 0 1-2.16 3.19"></path>
+                                                                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+                                                                <path d="M1 1l22 22"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
 
 
                                                     <small
@@ -374,11 +391,27 @@
                                                     <label for="password">ادخل كلمه المرور الجديده </label>
 
 
-                                                    <input type="password" name="password" class="myselect"
+                                                    <div style="position:relative;">
+                                                        <input type="password" name="password" class="myselect"
 
-                                                           id="password" aria-describedby="password"
+                                                               id="password" aria-describedby="password"  style="padding-left:45px;">
 
-                                                           placeholder="***********">
+                                                        <button type="button" class="password-visibility-toggle"
+                                                                data-target="password"
+                                                                aria-label="إظهار كلمة المرور"
+                                                                style="position:absolute;left:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#777;cursor:pointer;padding:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;">
+                                                            <svg data-eye-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                            <svg data-eye-off-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;">
+                                                                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a20.29 20.29 0 0 1 5.06-5.94"></path>
+                                                                <path d="M9.9 4.24A10.67 10.67 0 0 1 12 4c7 0 11 8 11 8a20.49 20.49 0 0 1-2.16 3.19"></path>
+                                                                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+                                                                <path d="M1 1l22 22"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
 
 
                                                     <small class="text-danger">{{ $errors->first('password') }}</small>
@@ -390,14 +423,32 @@
                                                 <div class="form-group">
 
 
-                                                    <label for="password">اعد ادخال كامه المرور الجديده</label>
+                                                    <label for="password-confirm">اعد ادخال كامه المرور الجديده</label>
 
 
-                                                    <input type="password" name="password_confirmation"
+                                                    <div style="position:relative;">
+                                                        <input type="password" name="password_confirmation"
 
-                                                           class="myselect" id="password-confirm"
+                                                               class="myselect" id="password-confirm"
 
-                                                           aria-describedby="password" placeholder="Confirm Password">
+                                                               aria-describedby="password-confirm" placeholder="Confirm Password" style="padding-left:45px;">
+
+                                                        <button type="button" class="password-visibility-toggle"
+                                                                data-target="password-confirm"
+                                                                aria-label="إظهار كلمة المرور"
+                                                                style="position:absolute;left:12px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#777;cursor:pointer;padding:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;">
+                                                            <svg data-eye-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                            <svg data-eye-off-icon xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;">
+                                                                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a20.29 20.29 0 0 1 5.06-5.94"></path>
+                                                                <path d="M9.9 4.24A10.67 10.67 0 0 1 12 4c7 0 11 8 11 8a20.49 20.49 0 0 1-2.16 3.19"></path>
+                                                                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+                                                                <path d="M1 1l22 22"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
 
 
                                                 </div>
@@ -414,17 +465,12 @@
 
                                     </div>
 
-
                                     <button type="submit" class="btn our-btn mt-5">تعديل</button>
-
-
                                     <!-- <button type="submit"
 
                                          class="btn btn-sm btn-primary btn-round btn-block waves-effect waves-light mt-5">تعديل</button>-->
 
-
                                 </form>
-
 
                                 <div class="links">
 
@@ -442,10 +488,8 @@
                     @include('components.profile-sidebar')
 
 
-                    </div>
-
-
                 </div>
+
 
             </div>
 
@@ -453,6 +497,34 @@
         </div>
 
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toggleButtons = document.querySelectorAll('.password-visibility-toggle');
+
+            toggleButtons.forEach(function (toggleButton) {
+                toggleButton.addEventListener('click', function () {
+                var passwordInput = document.getElementById(toggleButton.getAttribute('data-target'));
+
+                if (!passwordInput) {
+                    return;
+                }
+
+                var eyeIcon = toggleButton.querySelector('[data-eye-icon]');
+                var eyeOffIcon = toggleButton.querySelector('[data-eye-off-icon]');
+                var shouldShowPassword = passwordInput.type === 'password';
+
+                passwordInput.type = shouldShowPassword ? 'text' : 'password';
+                toggleButton.setAttribute('aria-label', shouldShowPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور');
+
+                if (eyeIcon && eyeOffIcon) {
+                    eyeIcon.style.display = shouldShowPassword ? 'none' : 'block';
+                    eyeOffIcon.style.display = shouldShowPassword ? 'block' : 'none';
+                }
+                });
+            });
+        });
+    </script>
 
 
 </x-layout>

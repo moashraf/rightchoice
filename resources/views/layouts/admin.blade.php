@@ -26,6 +26,53 @@
           integrity="sha512-8vq2g5nHE062j3xor4XxPeZiPjmRDh6wlufQlfC6pdQ/9urJkU07NM0tEREeymP++NczacJ/Q59ul+/K2eYvcg=="
           crossorigin="anonymous"/>
 
+    <style>
+        .main-sidebar .nav-sidebar > .nav-item.menu-open > .nav-link {
+            background-color: rgba(255, 255, 255, .12);
+            border-radius: .35rem;
+        }
+
+        .main-sidebar .nav-sidebar .nav-treeview {
+            margin: .25rem .35rem .55rem;
+            padding: .35rem .25rem;
+            background: rgba(0, 0, 0, .18);
+            border-radius: .45rem;
+            border-inline-start: 3px solid rgba(0, 123, 255, .65);
+        }
+
+        .main-sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link {
+            margin: .12rem .2rem;
+            padding-inline-start: 1.45rem;
+            padding-inline-end: .65rem;
+            color: rgba(255, 255, 255, .72);
+            font-size: .92rem;
+            border-radius: .35rem;
+            background-color: transparent;
+            transition: background-color .2s ease, color .2s ease, transform .2s ease;
+        }
+
+        .main-sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link .nav-icon {
+            width: 1rem;
+            margin-inline-end: .35rem;
+            font-size: .72rem;
+            opacity: .85;
+        }
+
+        .main-sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link:hover,
+        .main-sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link:focus {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            transform: translateX(-2px);
+        }
+
+        .main-sidebar .nav-sidebar .nav-treeview > .nav-item > .nav-link.active {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(0, 123, 255, .95), rgba(0, 123, 255, .6));
+            box-shadow: inset 3px 0 0 rgba(255, 255, 255, .45);
+            font-weight: 600;
+        }
+    </style>
+
     @yield('third_party_stylesheets')
 
     @stack('page_css')
