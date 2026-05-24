@@ -274,20 +274,23 @@
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="call-times">الاوقات المتاحه للاتصال <span
+                                    <label id="call-times-label">الاوقات المتاحه للاتصال <span
                                             class="text-danger">*</span></label>
-                                    <Select oninvalid="this.setCustomValidity('{{ trans('validation.callTimeError')}}')"
-                                            oninput="this.setCustomValidity('')" required class="myselect"
-                                            name="call_id">
-                                        <option selected disabled value="">اختر الوقت المناسب</option>
-
+                                    <div class="call-times-radio-group" role="radiogroup" aria-labelledby="call-times-label">
                                         @foreach ($calls as $call)
-                                            <option value="{{ $call->id }}"
-                                                {{ old('call_id') == $call->id ? 'selected' : '' }}>{{ $call->call_time }}
-                                            </option>
+                                            <div class="call-time-option">
+                                                <input oninvalid="this.setCustomValidity('{{ trans('validation.callTimeError')}}')"
+                                                       onchange="document.querySelectorAll('input[name=call_id]').forEach(function(input) { input.setCustomValidity(''); });"
+                                                       required class="form-check-input" type="radio"
+                                                       name="call_id" id="call-time-{{ $call->id }}"
+                                                       value="{{ $call->id }}"
+                                                    {{ old('call_id') == $call->id ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="call-time-{{ $call->id }}">
+                                                    {{ $call->call_time }}
+                                                </label>
+                                            </div>
                                         @endforeach
-
-                                    </Select>
+                                    </div>
                                     @error('call_id')
                                     <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                     @enderror
@@ -694,6 +697,44 @@
 
         .suggestion-item:hover {
             background: #f7f7f7;
+        }
+
+        .call-times-radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            padding-top: 8px;
+        }
+
+        .call-time-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .call-time-option .form-check-input,
+        .call-time-option .form-check-label {
+            cursor: pointer;
+        }
+
+        .call-time-option input[type="radio"][name="call_id"] {
+            position: static !important;
+            float: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: inline-block !important;
+            width: 18px;
+            height: 18px;
+            margin: 0 !important;
+            appearance: auto;
+            -webkit-appearance: radio;
+            accent-color: #0d6efd;
+        }
+
+        .call-time-option input[type="radio"][name="call_id"]:checked + .form-check-label {
+            color: #0d6efd;
+            font-weight: 700;
         }
     </style>
 
