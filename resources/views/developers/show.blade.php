@@ -26,7 +26,7 @@
                                          loading="lazy">
                                 @endif
 
-                                <h4 class="headingTitle2 mt-3">{{ $user->name }}</h4>
+                                <h4 class="headingTitle2 mt-3">{{ $user->Commercial_Register }}</h4>
 
                                 <div style="color:#666;margin-top:6px;">
                                     <i class="fas fa-building"></i>

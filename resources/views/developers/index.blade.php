@@ -60,7 +60,7 @@
                                          loading="lazy">
                                 @endif
 
-                                <h3 style="margin-top:15px;font-size:18px;">{{ $dev->name }}</h3>
+                                <h3 style="margin-top:15px;font-size:18px;">{{ $dev->Commercial_Register }}</h3>
 
                                 <div style="color:#888;font-size:13px;margin-top:6px;">
                                     <i class="fas fa-building"></i>
