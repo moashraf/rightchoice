@@ -123,6 +123,13 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
 
+                    <li class=" reports_reports nav-item">
+                        <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>{{ __('admin.reports') }}</p>
+                        </a>
+                    </li>
+
                     <li class=" aqars_aqars nav-item {{ request()->is('sitemanagement/aqars*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/aqars*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-home"></i>
@@ -244,12 +251,8 @@
                             </p>
                         </a>
                     </li>
-                    <li class=" reports_reports nav-item">
-                        <a href="{{ route('sitemanagement.reports.index') }}" class="nav-link {{ request()->is('sitemanagement/reports*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-chart-line"></i>
-                            <p>{{ __('admin.reports') }}</p>
-                        </a>
-                    </li>
+
+
 
                     <li class="complaints_complaints nav-item">
                         <a href="{{ route('sitemanagement.complaints.index') }}" class="nav-link {{ request()->is('sitemanagement/complaints*') ? 'active' : '' }}">
