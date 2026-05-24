@@ -202,6 +202,62 @@ class AdminReportController extends Controller
         ))->with('notInvitedFilterValue', self::NOT_INVITED_FILTER);
     }
 
+    public function subscriptions(Request $request)
+    {
+        $fromDate  = $request->input('from_date');
+        $toDate    = $request->input('to_date');
+        $search    = $request->input('search');
+        $status    = $request->input('status');
+        $pricingId = $request->input('pricing_id');
+
+        $baseQuery = UserPriceing::with(['user', 'pricing'])
+            ->when($fromDate, function ($query) use ($fromDate) {
+                $query->whereDate('created_at', '>=', $fromDate);
+            })
+            ->when($toDate, function ($query) use ($toDate) {
+                $query->whereDate('created_at', '<=', $toDate);
+            })
+            ->when($status !== null && $status !== '', function ($query) use ($status) {
+                $query->where('statues', $status);
+            })
+            ->when($pricingId, function ($query) use ($pricingId) {
+                $query->where('pricing_id', $pricingId);
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%')
+                            ->orWhere('MOP', 'like', '%' . $search . '%');
+                    })->orWhereHas('pricing', function ($pricingQuery) use ($search) {
+                        $pricingQuery->where('type', 'like', '%' . $search . '%')
+                            ->orWhere('type_en', 'like', '%' . $search . '%');
+                    });
+                });
+            });
+
+        $summaryQuery = clone $baseQuery;
+
+        $subscriptions = $baseQuery
+            ->orderByDesc('id')
+            ->paginate(25)
+            ->appends($request->all());
+
+        $summary = [
+            'total'          => (clone $summaryQuery)->count(),
+            'active'         => (clone $summaryQuery)->where('statues', 1)->count(),
+            'inactive'       => (clone $summaryQuery)->where('statues', 0)->count(),
+            'unique_users'   => (clone $summaryQuery)->distinct('user_id')->count('user_id'),
+            'current_points' => (clone $summaryQuery)->sum('current_points'),
+        ];
+
+        $packages = Pricing::orderBy('id')->get();
+
+        return view('admin_reports.subscriptions', compact(
+            'subscriptions', 'summary', 'packages', 'fromDate', 'toDate', 'search', 'status', 'pricingId'
+        ));
+    }
+
     public function invitedByDetails(Request $request)
     {
         $invitedBy = $request->input('invited_by');
