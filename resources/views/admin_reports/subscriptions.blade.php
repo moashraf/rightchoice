@@ -42,16 +42,7 @@
                     </select>
                 </div>
 
-                <div class="form-group ml-3 mb-2">
-                    <label class="ml-2 font-weight-bold" style="white-space:nowrap;">
-                        <i class="fas fa-toggle-on text-info ml-1"></i> الحالة:
-                    </label>
-                    <select name="status" class="form-control form-control-sm">
-                        <option value="">كل الحالات</option>
-                        <option value="1" {{ (string)($status ?? '') === '1' ? 'selected' : '' }}>نشط</option>
-                        <option value="0" {{ (string)($status ?? '') === '0' ? 'selected' : '' }}>غير نشط</option>
-                    </select>
-                </div>
+
 
                 <div class="form-group ml-3 mb-2">
                     <label class="ml-2 font-weight-bold" style="white-space:nowrap;">
@@ -136,8 +127,7 @@
                             <th>نقاط البداية</th>
                             <th>النقاط الحالية</th>
                             <th>النقاط المستخدمة</th>
-                            <th>الحالة</th>
-                            <th>تاريخ الاشتراك</th>
+                             <th>تاريخ الاشتراك</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,13 +157,7 @@
                                 <td>{{ number_format($subscription->start_points ?? 0) }}</td>
                                 <td>{{ number_format($subscription->current_points ?? 0) }}</td>
                                 <td>{{ number_format($subscription->sub_points ?? 0) }}</td>
-                                <td>
-                                    @if((int)$subscription->statues === 1)
-                                        <span class="badge badge-success">نشط</span>
-                                    @else
-                                        <span class="badge badge-secondary">غير نشط</span>
-                                    @endif
-                                </td>
+
                                 <td>
                                     @if($subscription->created_at)
                                         {{ $subscription->created_at->format('Y-m-d H:i') }}
