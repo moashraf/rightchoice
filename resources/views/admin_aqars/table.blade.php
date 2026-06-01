@@ -284,7 +284,9 @@
                     </div>
 
                     {{-- جدول من فتح رقم العميل --}}
-                    <h6 class="font-weight-bold mb-2"><i class="fas fa-users ml-1"></i>تفاصيل من فتح رقم العميل</h6>
+                    <h6 class="font-weight-bold mb-2"><i class="fas fa-users ml-1"></i>
+                        تفاصيل من فتح رقم العميل
+                    </h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="thead-light">

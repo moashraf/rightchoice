@@ -65,19 +65,19 @@
                 </div>
                 <div class="col-sm-6">
                     @if($canCreate)
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('sitemanagement.users.create') }}">
-                        اضف جديد
-                    </a>
+                        <a class="btn btn-primary float-right"
+                           href="{{ route('sitemanagement.users.create') }}">
+                            اضف جديد
+                        </a>
                     @endif
 
                     @if($canExport)
-                    <a id="export-users-btn" class="btn btn-success float-right mr-2"
-                       href="{{ route('sitemanagement.users.exportUsers', $exportUsersParams) }}">
-                        <i class="fa fa-file-excel ml-1"></i>
-                        <span id="export-users-text">تصدير نتائج البحث</span>
-                        <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
-                    </a>
+                        <a id="export-users-btn" class="btn btn-success float-right mr-2"
+                           href="{{ route('sitemanagement.users.exportUsers', $exportUsersParams) }}">
+                            <i class="fa fa-file-excel ml-1"></i>
+                            <span id="export-users-text">تصدير نتائج البحث</span>
+                            <span id="export-users-spinner" style="display:none"><i class="fa fa-spinner fa-spin"></i> جاري التصدير...</span>
+                        </a>
                     @endif
                 </div>
             </div>
@@ -88,16 +88,18 @@
 
         @include('flash::message')
 
+        <div id="ajax-message"></div>
+
         @if(request()->filled('filter_user_id'))
-        <div class="alert alert-info d-flex justify-content-between align-items-center">
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
             <span>
                 <i class="fas fa-filter ml-1"></i>
                 عرض المستخدم رقم: <strong>#{{ request('filter_user_id') }}</strong>
             </span>
-            <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-secondary">
-                <i class="fas fa-times ml-1"></i> إلغاء الفلتر
-            </a>
-        </div>
+                <a href="{{ route('sitemanagement.users.index') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-times ml-1"></i> إلغاء الفلتر
+                </a>
+            </div>
         @endif
 
         @if($errors->any())
@@ -237,7 +239,7 @@
                             <th>ID</th>
                             <th>اسم</th>
                             <th>نوع</th>
-                             <th>التليفون المحمول</th>
+                            <th>التليفون المحمول</th>
                             <th>عدد العقارات</th>
                             <th>مصدر الدعوة</th>
                             <th>الاشتراك</th>
@@ -248,8 +250,8 @@
                         </thead>
                         <tbody>
                         @foreach($users as $user)
-                            <tr>
-                                <td>{{ $users->total() - ($users->currentPage() - 1) * $users->perPage() - $loop->index }}</td>
+                            <tr id="user-row-{{ $user->id }}">
+                                <td class="serial-cell">{{ $users->total() - ($users->currentPage() - 1) * $users->perPage() - $loop->index }}</td>
                                 <td>{{ $user->id }}</td>
 
                                 <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
@@ -348,10 +350,12 @@
                                     @endif
 
                                     @if($canDelete)
-                                        <a onclick="return confirm('هل انت متأكد من حذف هذا السجل؟')"
-                                           data-toggle="tooltip" title="حذف"
-                                           href="{{ route('sitemanagement.users.delete', $user->id) }}"
-                                           class="btn btn-sm btn-outline-danger ml-2">
+                                        <a href="javascript:void(0)"
+                                           data-toggle="tooltip"
+                                           title="حذف"
+                                           data-url="{{ route('sitemanagement.users.delete', $user->id) }}"
+                                           data-user-id="{{ $user->id }}"
+                                           class="btn btn-sm btn-outline-danger ml-2 js-delete-user">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     @endif
@@ -407,4 +411,81 @@
 
 @section('third_party_scripts')
     @include('admin_users.partials.add_points_scripts')
+
+    <script>
+        $(document).on('click', '.js-delete-user', function (e) {
+            e.preventDefault();
+
+            if (!confirm('هل انت متأكد من حذف هذا السجل؟')) {
+                return;
+            }
+
+            var button = $(this);
+            var url = button.data('url');
+            var userId = button.data('user-id');
+            var row = $('#user-row-' + userId);
+            var oldButtonHtml = button.html();
+
+            button.addClass('disabled');
+            button.css('pointer-events', 'none');
+            button.html('<i class="fa fa-spinner fa-spin"></i>');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                success: function (response) {
+                    var message = 'تم حذف المستخدم بنجاح.';
+
+                    if (response && typeof response === 'object' && response.message) {
+                        message = response.message;
+                    }
+
+                    $('#ajax-message').html(
+                        '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                        message +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
+                        '</div>'
+                    );
+
+                    row.fadeOut(350, function () {
+                        $(this).remove();
+
+                        $('.serial-cell').each(function () {
+                            var currentSerial = parseInt($(this).text().trim(), 10);
+
+                            if (!isNaN(currentSerial) && currentSerial > 0) {
+                                $(this).text(currentSerial - 1);
+                            }
+                        });
+                    });
+                },
+                error: function (xhr) {
+                    var message = 'حدث خطأ أثناء حذف المستخدم.';
+
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+
+                    $('#ajax-message').html(
+                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                        message +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
+                        '</div>'
+                    );
+
+                    button.removeClass('disabled');
+                    button.css('pointer-events', '');
+                    button.html(oldButtonHtml);
+                }
+            });
+        });
+    </script>
 @endsection

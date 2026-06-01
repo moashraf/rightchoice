@@ -221,16 +221,31 @@ class AdminUserController extends Controller
         return redirect(route('sitemanagement.users.index') . ($page > 1 ? '?page=' . $page : ''));
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $user = User::find($id);
 
         if (empty($user)) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'المستخدم غير موجود.'
+                ], 404);
+            }
+
             flash('المستخدم غير موجود.')->error();
             return redirect(route('sitemanagement.users.index'));
         }
 
         $user->delete();
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'تم حذف المستخدم بنجاح.',
+                'user_id' => $id
+            ]);
+        }
 
         flash('تم حذف المستخدم بنجاح.')->success();
 

@@ -472,8 +472,9 @@ class AdminAqarController extends AppBaseController
             'contacts'      => $contacts->map(function ($c) {
                 return [
                     'user_id'   => $c->user_id,
-                    'name'      => $c->user->name  ?? 'مجهول',
+                    'name'      => $c->user->name  ?? 'مستخدم تم مسحه او حظره ',
                     'phone'     => $c->user->MOP   ?? '-',
+
                     'via_whats' => $c->contact_via_whats_app,
                     'date'      => $c->created_at ? $c->created_at->format('Y-m-d H:i') : '',
                 ];
