@@ -31,11 +31,14 @@
                 <span class="text-2xl mb-1">🏠</span>
                 <span class="text-sm font-semibold text-blue-700">الصفحة الرئيسية</span>
             </a>
-            <a href="{{ url(app()->getLocale() . '/dashboard') }}"
-               class="flex flex-col items-center justify-center bg-purple-50 border border-purple-200 rounded-lg p-3 hover:bg-purple-100 transition">
-                <span class="text-2xl mb-1">👤</span>
-                <span class="text-sm font-semibold text-purple-700">الملف الشخصي</span>
+            <a href="{{ url(app()->getLocale() . '/aqars/create') }}"
+               class="flex flex-col items-center justify-center bg-orange-50 border border-orange-200 rounded-lg p-3 hover:bg-orange-100 transition">
+                <span class="text-2xl mb-1">➕</span>
+                <span class="text-sm font-semibold text-orange-700">
+                اضف عقار مجانا
+                </span>
             </a>
+
             <a href="{{ url(app()->getLocale() . '/all_aqar_for_sale') }}"
                class="flex flex-col items-center justify-center bg-green-50 border border-green-200 rounded-lg p-3 hover:bg-green-100 transition">
                 <span class="text-2xl mb-1">🏢</span>
@@ -46,6 +49,22 @@
                 <span class="text-2xl mb-1">🔑</span>
                 <span class="text-sm font-semibold text-orange-700">عقارات للإيجار</span>
             </a>
+            <a href="{{ url(app()->getLocale() . '/dashboard') }}"
+               class="flex flex-col items-center justify-center bg-purple-50 border border-purple-200 rounded-lg p-3 hover:bg-purple-100 transition">
+                <span class="text-2xl mb-1">👤</span>
+                <span class="text-sm font-semibold text-purple-700">الملف الشخصي</span>
+            </a>
+
+            <a href="{{ url(app()->getLocale() . '/contact-us') }}"
+               class="flex flex-col items-center justify-center bg-orange-50 border border-orange-200 rounded-lg p-3 hover:bg-orange-100 transition">
+                <span class="text-2xl mb-1">  📞</span>
+                <span class="text-sm font-semibold text-orange-700">
+                تواصل معنا
+
+                </span>
+            </a>
+
+
         </div>
     </x-jet-authentication-card>
 
