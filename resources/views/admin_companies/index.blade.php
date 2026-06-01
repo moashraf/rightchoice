@@ -40,7 +40,8 @@
                             <select id="filter_governrate" name="filter_governrate" class="form-control form-control-sm">
                                 <option value="">الكل</option>
                                 @foreach($governrates as $id => $name)
-                                    <option value="{{ $id }}" {{ request('filter_governrate') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                    <option value="{{ $id }}" {{ request('filter_governrate') == $id ? 'selected' : '' }}>
+                                        {{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>

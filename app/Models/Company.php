@@ -111,12 +111,9 @@ class Company extends Model
         return $this->belongsTo(District::class, 'district_id');
     }
 
-
     public function governrateq(){
         return $this->belongsTo(Governrate::class, 'governrate_id');
     }
-
-
 
     public function subArea(){
         return $this->belongsTo(SubArea::class, 'area_id');

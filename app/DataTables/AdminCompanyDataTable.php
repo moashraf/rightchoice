@@ -19,7 +19,7 @@ class AdminCompanyDataTable extends DataTable
                     : '<span class="badge badge-danger">غير نشطة</span>';
             })
             ->addColumn('governrate', function ($row) {
-                return $row->governrateq ? $row->governrateq->governrate : '-';
+                return $row->governrateq ? $row->governrateq->governrate." ". $row->district_data->district : '-';
             })
             ->addColumn('service', function ($row) {
                 return $row->serv ? $row->serv->Service : '-';
