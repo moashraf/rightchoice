@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Contracts\SuccessfulPasswordResetLinkRequestResponse;
-
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 class CustomPasswordResetLinkController extends Controller
 {
     public function store(Request $request): Responsable
