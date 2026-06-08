@@ -13,7 +13,7 @@ class SmsService
      * @param int    $otpCode      The OTP verification code
      * @return string|false        The API response or false on failure
      */
-    public static function sendOtp(string $phoneNumber, int $otpCode)
+    public static function sendOtp(string $phoneNumber, $otpCode)
     {
         $phoneNumber = $phoneNumber;
 
