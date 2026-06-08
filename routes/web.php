@@ -4,6 +4,7 @@ use App\Models\aqar;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\CustomPasswordResetLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -555,23 +556,33 @@ Route::group(['prefix' => '{locale?}'], function () {
             $limiter ? 'throttle:' . $limiter : null,
         ]))->middleware('setLocale');
 
-    Route::post('/customLoginManual', 'App\Http\Controllers\PageController@customLoginManual')->name('customLoginManual')->middleware('setLocale');
-    Route::get('/register', 'App\Http\Controllers\PageController@register')->name('user.register')->middleware('setLocale');
-    Route::get('/verify-your-phone', 'App\Http\Controllers\PageController@otbPage')->name('otbPage')->middleware('setLocale');
-    Route::get('/reset-your-password', 'App\Http\Controllers\PageController@otbReset')->name('otbReset')->middleware('setLocale');
-    Route::get('/donePhoneVerf', 'App\Http\Controllers\PageController@donePhoneVerf')->name('donePhoneVerf')->middleware('setLocale');
-    Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register')->middleware('setLocale');
+    Route::post('/customLoginManual', 'App\Http\Controllers\PageController@customLoginManual')
+        ->name('customLoginManual')->middleware('setLocale');
+    Route::get('/register', 'App\Http\Controllers\PageController@register')->name('user.register')
+        ->middleware('setLocale');
+    Route::get('/verify-your-phone', 'App\Http\Controllers\PageController@otbPage')->name('otbPage')
+        ->middleware('setLocale');
+    Route::get('/reset-your-password', 'App\Http\Controllers\PageController@otbReset')->name('otbReset')
+        ->middleware('setLocale');
+    Route::get('/donePhoneVerf', 'App\Http\Controllers\PageController@donePhoneVerf')->name('donePhoneVerf')
+        ->middleware('setLocale');
+    Route::post('/custom_register', 'App\Http\Controllers\PageController@custom_register')->name('custom_register')
+        ->middleware('setLocale');
     Route::get('/', 'App\Http\Controllers\SiteHomeController@home')->name('homeBlade')->middleware(['setLocale']);
     Route::get('/gcamp', 'App\Http\Controllers\SiteHomeController@home')->name('gcamp')->middleware(['setLocale']);
     Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar')->middleware('setLocale');
-    Route::get('/all_aqar_for_sale', 'App\Http\Controllers\AqarController@all_aqar_for_sale')->middleware('setLocale');
-    Route::get('/all_aqar_for_rent', 'App\Http\Controllers\AqarController@all_aqar_for_rent')->middleware('setLocale');
+    Route::get('/all_aqar_for_sale', 'App\Http\Controllers\AqarController@all_aqar_for_sale')
+        ->middleware('setLocale');
+    Route::get('/all_aqar_for_rent', 'App\Http\Controllers\AqarController@all_aqar_for_rent')
+        ->middleware('setLocale');
 
-    Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance')->name('aqar-finnance')->middleware('setLocale');
+    Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance')->name('aqar-finnance')
+        ->middleware('setLocale');
     Route::get('/aqars/update/{aqar}', 'App\Http\Controllers\AqarController@edit')->middleware('setLocale');
 
     Route::get('/aqars/{aqar}', 'App\Http\Controllers\AqarController@show')->middleware('setLocale');
-    Route::get('/compare', 'App\Http\Controllers\AqarController@compare')->name('compare')->middleware('setLocale');
+    Route::get('/compare', 'App\Http\Controllers\AqarController@compare')->name('compare')
+        ->middleware('setLocale');
 
 
     // Route::get('/pricing-vip/{aqarSingle}', 'App\Http\Controllers\PricController@vip')->middleware('setLocale');
@@ -661,8 +672,13 @@ Route::post('/phoneVerfication', 'App\Http\Controllers\PageController@verifyOtbP
 
 Route::post('/phoneVerficationReset', 'App\Http\Controllers\PageController@verifyOtbReset')->name('verficationReset');
 
-Route::post('/phoneResetPassword', 'App\Http\Controllers\PageController@phoneResetPassword')->name('phoneResetPassword');
+Route::post('/phoneResetPassword', 'App\Http\Controllers\PageController@phoneResetPassword')
+    ->name('phoneResetPassword');
 
+
+Route::post('/forgot-password-by-email-or-phone', [CustomPasswordResetLinkController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('password.email.custom');
 
 Route::group(['middleware' => 'CheackUser'], function () {
 
