@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\SmsService;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -17,33 +18,75 @@ class CustomPasswordResetLinkController extends Controller
     {
         $request->validate([
             'email' => ['required', 'string', 'max:255'],
-        ], [
-            'email.required' => 'Please enter your email address or phone number.',
         ]);
 
         $value = trim($request->input('email'));
 
         $user = $this->findUserByEmailOrPhone($value);
 
-        /*
-         * مهم أمنيًا:
-         * لا تظهر للمستخدم هل الإيميل/الموبايل موجود ولا لا.
-         * رجّع نفس رسالة النجاح لتجنب كشف الحسابات.
-         */
         if (!$user || empty($user->email)) {
-            return app(SuccessfulPasswordResetLinkRequestResponse::class, [
-                'status' => Password::RESET_LINK_SENT,
+            return app(FailedPasswordResetLinkRequestResponse::class, [
+                'status' => Password::INVALID_USER,
             ]);
         }
 
-        $status = Password::broker(config('fortify.passwords'))->sendResetLink([
+        $resetPasswordLink = null;
+
+        ResetPasswordNotification::createUrlUsing(function ($notifiable, string $token) use (&$resetPasswordLink ,$user) {
+            $resetPasswordLink = route('password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ]);
+            SmsService::sendOtp($user->MOP, $resetPasswordLink);
+
+            return $resetPasswordLink;
+        });
+
+        $status = $this->broker()->sendResetLink([
             'email' => $user->email,
         ]);
+
+        // هنا معاك لينك الريسيت في متغير
+        // استخدمه زي ما تحب
+        // logger($resetPasswordLink);
 
         return $status == Password::RESET_LINK_SENT
             ? app(SuccessfulPasswordResetLinkRequestResponse::class, ['status' => $status])
             : app(FailedPasswordResetLinkRequestResponse::class, ['status' => $status]);
     }
+
+//    public function store2(Request $request): Responsable
+//    {
+//        $request->validate([
+//            'email' => ['required', 'string', 'max:255'],
+//        ], [
+//            'email.required' => 'Please enter your email address or phone number.',
+//        ]);
+//
+//        $value = trim($request->input('email'));
+//
+//        $user = $this->findUserByEmailOrPhone($value);
+//
+//        /*
+//         * مهم أمنيًا:
+//         * لا تظهر للمستخدم هل الإيميل/الموبايل موجود ولا لا.
+//         * رجّع نفس رسالة النجاح لتجنب كشف الحسابات.
+//         */
+//        if (!$user || empty($user->email)) {
+//            return app(SuccessfulPasswordResetLinkRequestResponse::class, [
+//                'status' => Password::RESET_LINK_SENT,
+//            ]);
+//        }
+//
+//
+//        $status = Password::broker(config('fortify.passwords'))->sendResetLink([
+//            'email' => $user->email,
+//        ]);
+//
+//        return $status == Password::RESET_LINK_SENT
+//            ? app(SuccessfulPasswordResetLinkRequestResponse::class, ['status' => $status])
+//            : app(FailedPasswordResetLinkRequestResponse::class, ['status' => $status]);
+//    }
 
     private function findUserByEmailOrPhone(string $value): ?User
     {
@@ -58,16 +101,8 @@ class CustomPasswordResetLinkController extends Controller
          * phone / mobile / mobile1 / mobile2 / mobile3
          */
         return User::where(function ($query) use ($value, $phone) {
-            $query->where('phone', $value)
-                ->orWhere('phone', $phone)
-                ->orWhere('mobile', $value)
-                ->orWhere('mobile', $phone)
-                ->orWhere('mobile1', $value)
-                ->orWhere('mobile1', $phone)
-                ->orWhere('mobile2', $value)
-                ->orWhere('mobile2', $phone)
-                ->orWhere('mobile3', $value)
-                ->orWhere('mobile3', $phone);
+            $query->where('MOP', $value)
+                ->orWhere('MOP', $phone) ;
         })->first();
     }
 
