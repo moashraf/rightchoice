@@ -42,10 +42,9 @@ class CustomPasswordResetLinkController extends Controller
             return $resetPasswordLink;
         });
 
-        $status = $this->broker()->sendResetLink([
+        $status = Password::broker(config('fortify.passwords'))->sendResetLink([
             'email' => $user->email,
         ]);
-
         // هنا معاك لينك الريسيت في متغير
         // استخدمه زي ما تحب
         // logger($resetPasswordLink);
