@@ -168,8 +168,8 @@ class PageController extends Controller
         if ($validator->fails()) {
 
             return \Redirect::back()->withErrors($validator)->withInput($request->all());
-        } else {
-
+        }
+        else {
 
             $register_user_data = User::create([
 
