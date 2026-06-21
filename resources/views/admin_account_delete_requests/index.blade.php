@@ -92,7 +92,7 @@
                                 <td>{{ $req->user->MOP ?? '-' }}</td>
                                 <td>
                                     <span title="{{ $req->reason }}">
-                                        {{ \Str::limit($req->reason, 60) }}
+                                        {{ \Str::limit($req->reason, 600) }}
                                     </span>
                                 </td>
                                 <td>
