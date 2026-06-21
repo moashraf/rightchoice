@@ -171,6 +171,10 @@ class PageController extends Controller
         }
         else {
 
+            $invitedBy = $request['invited_by'] ?? session('invited_by');
+
+            $invitedBy = $invitedBy ? substr($invitedBy, 0, 20) : null;
+
             $register_user_data = User::create([
 
                 'Commercial_Register' => $request['Commercial_Register'],
@@ -184,7 +188,9 @@ class PageController extends Controller
                 'phone_sms_otp' => $random_mass_num,
                 'Employee_Name' => $request['Employee_Name'],
                 'Job_title' => $request['Job_title'],
-                'invited_by' => $request['invited_by'] ?? session('invited_by'),
+
+                // Max 20 characters only
+                'invited_by' => $invitedBy,
 
             ]);
             $userID = $register_user_data->id;
