@@ -33,22 +33,27 @@ class FawryPaymentGatewayService
         }
 
         $merchantRefNumber = (string) $payment->merchantRefNumber;
-        $signature = hash('sha256', $this->merchantCode . $merchantRefNumber . $this->secureKey);
 
-        $response = $this->client->request('GET', $this->statusUrl, [
+        $signature = hash(
+            'sha256',
+            $this->merchantCode . $merchantRefNumber . $this->secureKey
+        );
+
+        // مهم: لا تستخدم query array هنا لأن Guzzle هيعمل encode للـ + و =
+        $statusUrl = $this->statusUrl
+            . '?merchantCode=' . $this->merchantCode
+            . '&merchantRefNumber=' . $merchantRefNumber
+            . '&signature=' . $signature;
+
+        $response = $this->client->request('GET', $statusUrl, [
             'headers' => [
                 'Accept' => 'application/json',
-            ],
-            'query' => [
-                'merchantCode'      => $this->merchantCode,
-                'merchantRefNumber' => $merchantRefNumber,
-                'signature'         => $signature,
             ],
         ]);
 
         $rawBody = $response->getBody()->getContents();
         $rawResponse = json_decode($rawBody, true);
-
+dd($rawResponse);
         if (!is_array($rawResponse)) {
             throw new RuntimeException('رد فوري غير صالح أو غير قابل للقراءة.');
         }
@@ -62,7 +67,6 @@ class FawryPaymentGatewayService
             'raw_response'        => $rawResponse,
         ];
     }
-
     private function normalizeStatus(string $status): string
     {
         $status = strtoupper($status);
