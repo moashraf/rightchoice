@@ -53,8 +53,7 @@ class FawryPaymentGatewayService
 
         $rawBody = $response->getBody()->getContents();
         $rawResponse = json_decode($rawBody, true);
-dd($rawResponse);
-        if (!is_array($rawResponse)) {
+         if (!is_array($rawResponse)) {
             throw new RuntimeException('رد فوري غير صالح أو غير قابل للقراءة.');
         }
 
