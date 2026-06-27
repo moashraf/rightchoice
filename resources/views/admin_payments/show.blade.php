@@ -47,7 +47,7 @@
                             @endif
                         </td></tr>
                         <tr><th>المبلغ</th><td><strong class="text-success">{{ number_format($payment->paymentAmount, 2) }} {{ $payment->currency ?? 'ج.م' }}</strong></td></tr>
-                        <tr><th>حالة الدفع</th><td><span class="badge badge-{{ $payment->status_badge }}">{{ $payment->status_label }}</span></td></tr>
+                         <tr><th>حالة الدفع</th><td><span class="badge badge-{{ $payment->status_badge }}">{{ $payment->status_label }}</span></td></tr>
                         <tr><th>طريقة الدفع</th><td>{{ $payment->paymentMethod }}</td></tr>
                         <tr><th>نوع المعاملة</th><td>{{ $payment->transaction_type ?? 'purchase' }}</td></tr>
                         <tr><th>رقم المرجع (فوري)</th><td><code>{{ $payment->referenceNumber }}</code></td></tr>
@@ -157,6 +157,22 @@
 
         {{-- Sidebar Actions --}}
         <div class="col-md-4">
+            {{-- Verify Fawry Status --}}
+            @if($canManage && $payment->paymentMethod === 'PAYATFAWRY' && $payment->merchantRefNumber)
+            <div class="card card-outline card-warning">
+                <div class="card-header"><h3 class="card-title"><i class="fas fa-sync-alt"></i> التحقق من فوري</h3></div>
+                <div class="card-body">
+                    <p class="text-muted small mb-2">استعلم مباشرة من API فوري للتأكد هل العملية مدفوعة فعلاً أم لا، وسيتم تحديث الحالة محليًا إذا تغيرت.</p>
+                    <form action="{{ route('sitemanagement.payments.checkFawryStatus', $payment->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-sm btn-block" onclick="return confirm('هل تريد التحقق من حالة هذه العملية من فوري؟')">
+                            <i class="fas fa-sync-alt"></i> تحقق من حالة الدفع
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @endif
+
             {{-- Update Status --}}
             @if($canManage)
             <div class="card card-outline card-success">

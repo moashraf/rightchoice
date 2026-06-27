@@ -301,6 +301,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('payments/user/{userId}', [App\Http\Controllers\AdminPaymentController::class, 'userPayments'])
         ->name('payments.userPayments')
         ->middleware('permission:payments.view');
+    Route::post('payments/{id}/check-fawry-status', [App\Http\Controllers\AdminPaymentController::class, 'checkFawryStatus'])
+        ->name('payments.checkFawryStatus')
+        ->middleware('permission:payments.manage');
     Route::get('payments/{id}', [App\Http\Controllers\AdminPaymentController::class, 'show'])
         ->name('payments.show')
         ->middleware('permission:payments.view');

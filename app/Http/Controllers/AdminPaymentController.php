@@ -10,20 +10,26 @@ use App\Http\Requests\CreateRefundRequest;
 use App\Http\Requests\RefundActionRequest;
 use App\Http\Requests\UpdatePaymentStatusRequest;
 use App\Models\FawryPayment;
+use App\Services\FawryPaymentGatewayService;
 use App\Models\PaymentRefund;
 use App\Services\PaymentReportService;
 use App\Services\PaymentService;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminPaymentController extends Controller
 {
     private PaymentService $paymentService;
     private PaymentReportService $reportService;
+    private FawryPaymentGatewayService $fawryGatewayService;
 
-    public function __construct(PaymentService $paymentService, PaymentReportService $reportService)
+    public function __construct(PaymentService $paymentService, PaymentReportService $reportService, FawryPaymentGatewayService $fawryGatewayService)
     {
-        $this->paymentService = $paymentService;
-        $this->reportService  = $reportService;
+        $this->paymentService      = $paymentService;
+        $this->reportService       = $reportService;
+        $this->fawryGatewayService = $fawryGatewayService;
     }
 
     // ── Payments List ────────────────────────────────────────────────
@@ -65,6 +71,67 @@ class AdminPaymentController extends Controller
         return redirect()->back()->with('success', 'تم تحديث حالة الدفعة بنجاح.');
     }
 
+    public function checkFawryStatus(int $id)
+    {
+        $payment = FawryPayment::findOrFail($id);
+
+        if ($payment->paymentMethod !== 'PAYATFAWRY') {
+            return redirect()->back()->with('error', 'هذه العملية ليست عملية دفع فوري.');
+        }
+
+        try {
+            $result = $this->fawryGatewayService->checkPaymentStatus($payment);
+            $fawryStatus = $result['status'];
+
+            $payment->gateway_response = json_encode($result['raw_response'], JSON_UNESCAPED_UNICODE);
+            $payment->save();
+
+            if (!$fawryStatus) {
+                $payment->logStatusChange(
+                    'fawry_status_check',
+                    $payment->paymentStatus,
+                    $payment->paymentStatus,
+                    'تم الاتصال بفوري ولكن لم يتم إرجاع حالة دفع واضحة.',
+                    $result['raw_response'],
+                    Auth::guard('admin')->id()
+                );
+
+                return redirect()->back()->with('error', 'تم الاتصال بفوري ولكن لم يتم إرجاع حالة دفع واضحة.');
+            }
+
+            if ($fawryStatus !== $payment->paymentStatus) {
+                $this->paymentService->updateStatus(
+                    $payment,
+                    $fawryStatus,
+                    'تم تحديث الحالة بعد التحقق من API فوري. الحالة من فوري: ' . $fawryStatus,
+                    $result['raw_response']
+                );
+            } else {
+                $payment->logStatusChange(
+                    'fawry_status_check',
+                    $payment->paymentStatus,
+                    $payment->paymentStatus,
+                    'تم التحقق من API فوري. الحالة الحالية مؤكدة: ' . $fawryStatus,
+                    $result['raw_response'],
+                    Auth::guard('admin')->id()
+                );
+            }
+
+            $label = PaymentStatusEnum::label($fawryStatus);
+            $message = $fawryStatus === PaymentStatusEnum::PAID
+                ? 'أكدت فوري أن العملية مدفوعة، وتم تحديث السجل.'
+                : 'تم التحقق من فوري. حالة العملية الحالية: ' . $label;
+
+            return redirect()->back()->with('success', $message);
+        } catch (GuzzleException $e) {
+            Log::error('Admin Fawry status check HTTP error: ' . $e->getMessage(), ['payment_id' => $payment->id]);
+            return redirect()->back()->with('error', 'تعذر الاتصال بخدمة فوري حاليًا، حاول مرة أخرى لاحقًا.');
+        } catch (\Throwable $e) {
+            Log::error('Admin Fawry status check error: ' . $e->getMessage(), ['payment_id' => $payment->id]);
+            return redirect()->back()->with('error', $e->getMessage() ?: 'حدث خطأ أثناء التحقق من حالة الدفع من فوري.');
+        }
+    }
+
     // ── Add Note ─────────────────────────────────────────────────────
 
     public function addNote(Request $request, int $id)
@@ -92,7 +159,7 @@ class AdminPaymentController extends Controller
             return redirect()->back()->with('error', "الحد الأقصى للاسترداد هو {$maxRefundable} ج.م");
         }
 
-        $adminId = \Auth::guard('admin')->id();
+        $adminId = Auth::guard('admin')->id();
         $this->paymentService->createRefundRequest($payment, $request->refund_amount, $request->refund_reason, $adminId);
 
         return redirect()->back()->with('success', 'تم إنشاء طلب الاسترداد بنجاح.');
