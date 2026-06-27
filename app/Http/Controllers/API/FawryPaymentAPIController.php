@@ -8,6 +8,7 @@ use App\Models\Pricing;
 use App\Models\UserPriceing;
 use App\Models\User;
 use App\Models\aqar;
+use App\Services\FawryPaymentGatewayService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -214,7 +215,7 @@ class FawryPaymentAPIController extends AppBaseController
      *
      * يمكن الاستعلام بـ reference_number أو merchant_ref_number أو payment_id
      */
-    public function checkStatus(Request $request): JsonResponse
+    public function checkStatus(Request $request, FawryPaymentGatewayService $fawryGatewayService): JsonResponse
     {
         // ── Validation ───────────────────────────────────────────────────────
         $validator = Validator::make(
@@ -259,42 +260,32 @@ class FawryPaymentAPIController extends AppBaseController
 
         $payment = $query->first();
 
-        if (!$payment) {
+        if (!$payment instanceof FawryPayment) {
             return $this->sendError('لم يتم العثور على عملية الدفع', 404, [
                 'message' => ['لا توجد عملية دفع بهذا الرقم.'],
             ]);
         }
 
-        // ── الاستعلام من سيرفر فوري ──────────────────────────────────────────
-        $merchantRefNumber = (string) $payment->merchantRefNumber;
-        $signature         = hash('sha256', $this->merchantCode . $merchantRefNumber . $this->merchantSecKey);
-        $statusUrl         = 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/status'
-                             . '?merchantCode=' . $this->merchantCode
-                             . '&merchantRefNumber=' . $merchantRefNumber
-                             . '&signature=' . $signature;
+        /** @var FawryPayment $payment */
 
         try {
-            $client      = new \GuzzleHttp\Client();
-            $apiRequest  = $client->request('GET', $statusUrl, [
-                'headers' => [
-                    'Accept'       => 'application/json',
-                    'Content-Type' => 'application/json',
-                ],
-            ]);
-
-            $fawryResponse = json_decode($apiRequest->getBody()->getContents(), true);
-
-            $fawryStatus = $fawryResponse['paymentStatus'] ?? $fawryResponse['orderStatus'] ?? null;
+            $statusResult = $fawryGatewayService->checkPaymentStatus($payment);
+            $fawryResponse = $statusResult['raw_response'];
+            $fawryStatus = $statusResult['status'];
 
             // ── تحديث حالة الدفع في الداتابيز إذا تغيرت ─────────────────────
-            if ($fawryStatus && $fawryStatus !== $payment->paymentStatus) {
-                $updateData = ['paymentStatus' => $fawryStatus];
+            if ($fawryStatus) {
+                $updateData = ['gateway_response' => json_encode($fawryResponse, JSON_UNESCAPED_UNICODE)];
+                if ($fawryStatus !== $payment->paymentStatus) {
+                    $updateData['paymentStatus'] = $fawryStatus;
+                }
                 if ($fawryStatus === 'PAID' && !$payment->paid_at) {
-                    $updateData['paid_at']          = now();
-                    $updateData['gateway_response'] = json_encode($fawryResponse);
+                    $updateData['paid_at'] = now();
                 }
                 $payment->update($updateData);
                 $payment->refresh();
+            } else {
+                $payment->update(['gateway_response' => json_encode($fawryResponse, JSON_UNESCAPED_UNICODE)]);
             }
 
             return $this->sendResponse([

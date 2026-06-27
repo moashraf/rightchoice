@@ -16,11 +16,24 @@ class AdminPaymentDataTable extends DataTable
             ->addColumn('action', function ($payment) {
                 $user = \Illuminate\Support\Facades\Auth::guard('admin')->user();
                 $canView = $user && $user->hasPermission('payments.view');
+                $canManage = $user && $user->hasPermission('payments.manage');
 
-                if (!$canView) return '';
+                $actions = '';
 
-                $viewUrl = route('sitemanagement.payments.show', $payment->id);
-                return '<a href="' . $viewUrl . '" class="btn btn-sm btn-info" title="عرض التفاصيل"><i class="fas fa-eye"></i></a>';
+                if ($canView) {
+                    $viewUrl = route('sitemanagement.payments.show', $payment->id);
+                    $actions .= '<a href="' . $viewUrl . '" class="btn btn-sm btn-info" title="عرض التفاصيل"><i class="fas fa-eye"></i></a> ';
+                }
+
+                if ($canManage && $payment->paymentMethod === 'PAYATFAWRY' && $payment->merchantRefNumber) {
+                    $checkUrl = route('sitemanagement.payments.checkFawryStatus', $payment->id);
+                    $actions .= '<form action="' . $checkUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'هل تريد التحقق من حالة هذه العملية من فوري؟\')">'
+                        . csrf_field()
+                        . '<button type="submit" class="btn btn-sm btn-warning" title="التحقق من الدفع عبر فوري"><i class="fas fa-sync-alt"></i></button>'
+                        . '</form>';
+                }
+
+                return $actions;
             })
             ->editColumn('user_id', function ($payment) {
                 return $payment->user ? e($payment->user->name) : ('مستخدم #' . $payment->user_id);
@@ -98,7 +111,7 @@ class AdminPaymentDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->addAction(['width' => '60px', 'printable' => false, 'title' => 'إجراءات'])
+            ->addAction(['width' => '100px', 'printable' => false, 'title' => 'إجراءات'])
             ->parameters([
                 'dom'       => 'Bfrtip',
                 'stateSave' => true,

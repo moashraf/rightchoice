@@ -34,4 +34,11 @@ return [
         'key' => env('GOOGLE_MAPS_API_KEY', ''),
     ],
 
+    'fawry' => [
+        'merchant_code' => env('FAWRY_MERCHANT_CODE', 'TUDH+sU93QqTh4bRQqAadQ=='),
+        'secure_key'    => env('FAWRY_SECURE_KEY', '160224c0e40347318144da5efa284eda'),
+        'charge_url'    => env('FAWRY_CHARGE_URL', 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/charge'),
+        'status_url'    => env('FAWRY_STATUS_URL', 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/status'),
+    ],
+
 ];
