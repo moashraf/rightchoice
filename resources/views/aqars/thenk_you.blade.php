@@ -82,10 +82,10 @@
             @endif
 
             <p class="mt-3">
-              لديك مشكله ؟
-              <a href="{{ url(Config::get('app.locale').'/contact-us') }}">
-                 تواصل معنا
-              </a>
+                تم اضافه الاعلان بنجاح و جاري المراجعه
+<br>
+                <a href="{{ url(Config::get('app.locale').'/user_ads') }}">
+شاهد الاعلان الخاص بك               </a>
             </p>
 
             {{-- Quick Navigation Links --}}

@@ -435,12 +435,12 @@
                             <ul class=" momayezz nav-dropdown nav-submenu">
 
 
-{{--                                <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">--}}
-{{--                                    <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">--}}
-{{--                                        {{ trans('langsite.developers') }}--}}
-{{--                                    </a>--}}
-{{--                                </li>--}}
-                                {{-- Map Page Link --}}
+                                <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">
+                                        {{ trans('langsite.developers') }}
+                                    </a>
+                                </li>
+
                                 <li class="{{ Request::is('*/map') ? 'active' : '' }}">
                                     <a href="{{ URL::to(Config::get('app.locale').'/map') }}">
                                         <i class="fas fa-map-marked-alt" style="margin-left:4px; margin-right:4px;"></i>

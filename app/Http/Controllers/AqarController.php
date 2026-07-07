@@ -1248,7 +1248,6 @@ class AqarController extends Controller
 
             session()->flash('success', 'تم اضافه الاعلان بنجاح و جاري المراجعه');
             return Redirect()->to('ar/aqar-added')->with('message', $message)->with('id', $id);
-            //  view('th', compact('message', 'id'));
         }
 
         //        return redirect("aqars/$aqar->id")->with('status', '  تم الحفظ بنجاح!');
