@@ -547,19 +547,21 @@
                                                 class="text-danger">{{ $errors->first('Phone') }}</small>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div
-                                            class="form-group {{ $errors->has('Phone2') ? ' has-error' : '' }}">
-                                            <label for="company-phone2">
-                                                الهاتف الفرعي (اختياري)
-                                            </label>
 
-                                            <input value="{{ old('Phone2') }}"   type="number" name="Phone2" id="company-phone2"
-                                                   class="form-control" value="">
-                                            <small
-                                                class="text-danger">{{ $errors->first('Phone2') }}</small>
-                                        </div>
-                                    </div>
+{{--                                    <div class="col-lg-6">--}}
+{{--                                        <div--}}
+{{--                                            class="form-group {{ $errors->has('Phone2') ? ' has-error' : '' }}">--}}
+{{--                                            <label for="company-phone2">--}}
+{{--                                                الهاتف الفرعي (اختياري)--}}
+{{--                                            </label>--}}
+
+{{--                                            <input value="{{ old('Phone2') }}"   type="number" name="Phone2" id="company-phone2"--}}
+{{--                                                   class="form-control" value="">--}}
+{{--                                            <small--}}
+{{--                                                class="text-danger">{{ $errors->first('Phone2') }}</small>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                    --}}
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -704,17 +706,23 @@
                                                 class="text-danger">{{ $errors->first('Floor') }}</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div
-                                            class="form-group {{ $errors->has('unit_number') ? ' has-error' : '' }}">
-                                            <label
-                                                for="apartment-no">{{ trans('langsite.unit-no') }}</label>
-                                            <input  value="{{ old('unit_number') }}" type="number" name="unit_number" id="apartment-no"
-                                                    class="form-control" min="1">
-                                            <small
-                                                class="text-danger">{{ $errors->first('unit_number') }}</small>
-                                        </div>
-                                    </div>
+
+
+
+{{--                                    <div class="col-md-4">--}}
+{{--                                        <div--}}
+{{--                                            class="form-group {{ $errors->has('unit_number') ? ' has-error' : '' }}">--}}
+{{--                                            <label--}}
+{{--                                                for="apartment-no">{{ trans('langsite.unit-no') }}</label>--}}
+{{--                                            <input  value="{{ old('unit_number') }}" type="number" name="unit_number" id="apartment-no"--}}
+{{--                                                    class="form-control" min="1">--}}
+{{--                                            <small--}}
+{{--                                                class="text-danger">{{ $errors->first('unit_number') }}</small>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
+
+
                                     <div class="col-md-12">
                                         <div
                                             class="form-group {{ $errors->has('details') ? ' has-error' : '' }}">
