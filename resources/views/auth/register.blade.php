@@ -94,9 +94,7 @@
                                                         class="myselect rc-control">
                                                     <option value="1">أختار</option>
                                                     @foreach($getUserType as $name => $id)
-                                                        <option value="{{ $id }}" {{ old('TYPE') == $id ? 'selected' : '' }}>
-                                                            {{ $name }}
-                                                        </option>
+                                                        <option value="{{ $id }}" {{ old('TYPE') == $id ? 'selected' : '' }}>{{ $name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -263,8 +261,7 @@
                         <div class="rc-promo-card">
                             <div class="rc-promo-overlay"></div>
                             <div class="rc-logo-badge">
-                                <strong>RC</strong>
-                                <span>Right Choice</span>
+                                <img src="https://rightchoice-co.com/assets/img/rclogo.png" alt="Right Choice logo">
                             </div>
 
                             <div class="rc-promo-content">
@@ -726,18 +723,11 @@
             margin-bottom: 28px;
         }
 
-        .rc-logo-badge strong {
-            font-size: 58px;
-            line-height: .92;
-            font-weight: 900;
-            letter-spacing: -3px;
-        }
-
-        .rc-logo-badge span {
-            color: var(--rc-teal-dark);
-            font-weight: 800;
-            font-size: 18px;
-            margin-top: 4px;
+        .rc-logo-badge img {
+            width: 126px;
+            max-width: 78%;
+            height: auto;
+            display: block;
         }
 
         .rc-promo-content {
