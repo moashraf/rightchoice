@@ -132,9 +132,10 @@ class PageController extends Controller
             return redirect()->intended('/');
         }
         $getUserType = [
-            'مشتري او مستأجر' => 1,
-            'بائع او مؤجر' => 2,
+            ' حساب شخصي ' => 1,
             'مطور عقاري' => 3,
+//            'بائع او مؤجر' => 2,
+
 //            'شركة' => 4,
         ];
 
