@@ -145,6 +145,110 @@
             box-shadow: 0 16px 28px rgba(13, 130, 163, .30);
         }
 
+        .add-company-cta {
+            position: relative;
+            overflow: hidden;
+            margin: -14px auto 38px;
+            padding: 26px;
+            max-width: 960px;
+            border: 1px solid rgba(13, 130, 163, .18);
+            border-radius: 28px;
+            background: linear-gradient(135deg, #0d3153 0%, #0d82a3 55%, #12b3bc 100%);
+            box-shadow: 0 22px 62px rgba(13, 49, 83, .16);
+        }
+
+        .add-company-cta::before,
+        .add-company-cta::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .12);
+            pointer-events: none;
+        }
+
+        .add-company-cta::before {
+            width: 170px;
+            height: 170px;
+            top: -70px;
+            inset-inline-end: -45px;
+        }
+
+        .add-company-cta::after {
+            width: 120px;
+            height: 120px;
+            bottom: -58px;
+            inset-inline-start: 34%;
+        }
+
+        .add-company-cta-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+        }
+
+        .add-company-cta-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #fff;
+        }
+
+        .add-company-cta-icon {
+            display: inline-flex;
+            width: 58px;
+            height: 58px;
+            flex: 0 0 58px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            color: #0d3153;
+            font-size: 23px;
+            background: rgba(255, 255, 255, .92);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, .13);
+        }
+
+        .add-company-cta-title {
+            margin: 0 0 6px;
+            color: #fff;
+            font-size: 22px;
+            line-height: 1.35;
+            font-weight: 900;
+        }
+
+        .add-company-cta-text {
+            margin: 0;
+            max-width: 560px;
+            color: rgba(255, 255, 255, .88);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .add-company-cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 176px;
+            padding: 14px 20px;
+            border-radius: 999px;
+            color: #0d3153 !important;
+            font-size: 14px;
+            font-weight: 900;
+            text-decoration: none !important;
+            background: #fff;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, .14);
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        .add-company-cta-button:hover {
+            transform: translateY(-2px);
+            background: #f3fbff;
+            box-shadow: 0 18px 36px rgba(0, 0, 0, .18);
+        }
+
         .companies-grid {
             row-gap: 26px;
         }
@@ -185,7 +289,46 @@
             transition: transform .28s ease;
         }
 
-        .company-card:hover .company-image-wrap img {
+        .company-image-placeholder {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            min-height: 230px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 26px;
+            text-align: center;
+            color: #fff;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 255, 255, .22), transparent 28%),
+                linear-gradient(135deg, #075c91 0%, #0d82a3 56%, #12b3bc 100%);
+            transition: transform .28s ease;
+        }
+
+        .company-image-placeholder-icon {
+            display: inline-flex;
+            width: 72px;
+            height: 72px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            color: #0d3153;
+            font-size: 30px;
+            background: rgba(255, 255, 255, .94);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, .15);
+        }
+
+        .company-image-placeholder-title {
+            max-width: 220px;
+            font-size: 17px;
+            line-height: 1.6;
+            font-weight: 900;
+        }
+
+        .company-card:hover .company-image-wrap img,
+        .company-card:hover .company-image-placeholder {
             transform: scale(1.045);
         }
 
@@ -337,6 +480,27 @@
             .companies-search-box .btn.our-btn {
                 width: 100%;
             }
+            .add-company-cta {
+                margin-bottom: 28px;
+                padding: 22px 18px;
+                border-radius: 22px;
+            }
+
+            .add-company-cta-inner,
+            .add-company-cta-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .add-company-cta-icon {
+                margin: 0 auto;
+            }
+
+            .add-company-cta-button {
+                width: 100%;
+            }
+
         }
     </style>
 
@@ -415,6 +579,32 @@
                 </form>
             </div>
 
+            <div class="add-company-cta">
+                <div class="add-company-cta-inner">
+                    <div class="add-company-cta-content">
+                        <span class="add-company-cta-icon" aria-hidden="true">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <div>
+                            <h3 class="add-company-cta-title">
+                                {{ App::isLocale('ar') ? 'هل تريد إضافة شركتك؟' : 'Want to add your company?' }}
+                            </h3>
+                            <p class="add-company-cta-text">
+                                {{ App::isLocale('ar') ? 'اعرض خدمات شركتك داخل دليل الشركات وسهّل على العملاء الوصول إليك والتواصل معك.' : 'List your company in the directory and make it easier for customers to find and contact you.' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <a href="{{ URL::to('/ar/add_company') }}"
+                       class="add-company-cta-button"
+                       target="_blank"
+                       rel="noopener">
+                        {{ App::isLocale('ar') ? 'إضافة شركة جديدة' : 'Add new company' }}
+                        <i class="fa {{ App::isLocale('ar') ? 'fa-long-arrow-left' : 'fa-long-arrow-right' }}"></i>
+                    </a>
+                </div>
+            </div>
+
             <div class="row companies-grid">
                 @forelse ($companies as $company)
                     @php
@@ -428,9 +618,10 @@
                             ? ($company->description ?? $company->description_en ?? '')
                             : ($company->description_en ?? $company->description ?? '');
 
-                        $companyImage = !empty($company->photo)
+                        $companyHasImage = !empty($company->photo);
+                        $companyImage = $companyHasImage
                             ? URL::to('/').'/images/'.$company->photo
-                            : 'https://rightchoice-co.com/images/FBO.png';
+                            : null;
 
                         $companyDate = '';
                         if (!empty($company->created_at)) {
@@ -465,7 +656,18 @@
                            href="{{ URL::to(Config::get('app.locale').'/companies/' . $company->slug) }}">
 
                             <div class="company-image-wrap">
-                                <img src="{{ $companyImage }}" class="img-fluid" alt="{{ $companyName ?: 'company' }}">
+                                @if($companyHasImage)
+                                    <img src="{{ $companyImage }}" class="img-fluid" alt="{{ $companyName ?: 'company' }}">
+                                @else
+                                    <div class="company-image-placeholder">
+                                        <span class="company-image-placeholder-icon" aria-hidden="true">
+                                            <i class="fa fa-building-o"></i>
+                                        </span>
+                                        <span class="company-image-placeholder-title">
+                                            {{ $companyName ?: (App::isLocale('ar') ? 'شركة بدون صورة' : 'Company without image') }}
+                                        </span>
+                                    </div>
+                                @endif
 
                                 @if($companyDate)
                                     <span class="company-date-badge">
