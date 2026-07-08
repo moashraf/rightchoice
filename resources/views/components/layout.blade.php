@@ -257,7 +257,7 @@
                             <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}" class="mobile-register-btn"
                                id="mobileRegBtn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#fff"
-                                      viewBox="0 0 24 24">
+                                     viewBox="0 0 24 24">
                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                                 </svg>
                                 <span>أضف عقارك مجاناً</span>
@@ -938,167 +938,486 @@
    Footer -->
 
 
-    <footer class="mainfooter" style=" <?php  if (  App::getLocale()== 'ar' )
-    {  echo'background-image: url(https://rightchoice-co.com/public/assets/img/footerwith.jpg);background-size: cover;';}
-else{  echo'background-image: url(https://rightchoice-co.com/public/assets/img/footerwithen.jpg);background-size: cover;'; }
-?> "
-            role="contentinfo">
+    <footer class="rc-modern-footer" role="contentinfo" dir="{{ App::getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+        <div class="rc-footer-glow rc-footer-glow-one"></div>
+        <div class="rc-footer-glow rc-footer-glow-two"></div>
+        <div class="rc-footer-pattern" aria-hidden="true"></div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8" style="position:static;">
-                    <ul class="footer-links text-center">
+        <div class="container rc-footer-container">
+            <div class="rc-footer-main">
+                <div class="rc-footer-brand-col">
+                    <a href="{{ asset('/') }}" class="rc-footer-logo" aria-label="Right Choice">
+                        <img src="{{ asset('assets/img/footer-logo.png') }}" alt="Right Choice"/>
+                    </a>
 
-                        <li class="fw-bolder">
+                    <p class="rc-footer-about">
+                        {{ App::getLocale() == 'ar'
+                            ? 'رايت تشويز منصة عقارية متكاملة تساعدك على الوصول لأفضل الفرص العقارية والخدمات المرتبطة بها بسهولة واحترافية.'
+                            : 'Right Choice is a complete real estate platform that helps you reach better property opportunities and related services professionally.' }}
+                    </p>
 
-                            <a href="{{ asset('/') }}" class="text-white">
-                                {{ trans('langsite.Home')}}
+                    <ul class="rc-footer-social" aria-label="Social links">
+                        <li>
+                            <a target="_blank" href="https://www.facebook.com/right.choice.co" class="rc-social-link rc-social-facebook" aria-label="Facebook">
+                                <i class="ti-facebook"></i>
                             </a>
-
                         </li>
-
-                        <li class="text-white fw-bolder">
-
-                            <a href="{{ url(Config::get('app.locale').'/about-us') }}" class="text-white">
-                                {{ trans('langsite.About')}}
+                        <li>
+                            <a target="_blank" href="https://www.instagram.com/right.choice.co" class="rc-social-link rc-social-instagram" aria-label="Instagram">
+                                <i class="ti-instagram"></i>
                             </a>
-
                         </li>
-                        <li class="text-white fw-bolder">
-
-                            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}" class="text-white">
-                                {{ trans('langsite.Packages')}}
+                        <li>
+                            <a target="_blank" href="https://www.youtube.com/channel/UCuatA5ibPU-K_GHHqjK_6UA" class="rc-social-link rc-social-youtube" aria-label="YouTube">
+                                <i class="fab fa-youtube"></i>
                             </a>
-
                         </li>
-
-                        <li class="text-white fw-bolder">
-
-                            <a href="{{ url(Config::get('app.locale').'/contact-us') }}" class="text-white">
-                                {{ trans('langsite.Get_In')}}
-
-                            </a>
-
-                        </li>
-
-                        <li class="text-white fw-bolder">
-
-                            <a href="{{ URL::to(Config::get('app.locale').'/blogs')}}" class="text-white">
-                                {{ trans('langsite.blogs')}}
-                            </a>
-
-                        </li>
-
-                        <li class="text-white fw-bolder">
-
-                            <a href="{{ url(Config::get('app.locale').'/terms-conditions') }}"
-
-                               class="text-white">{{ trans('langsite.terms')}}</a>
-
-                        </li>
-                        @if(!Auth()->user())
-
-                            <li class="text-white fw-bolder d-block footer-add-company-item">
-
-                                <a href="{{ url(Config::get('app.locale').'/add_company') }}"
-
-                                   class="text-white footer-add-company-cta">{{ trans('langsite.add_company')}}</a>
-
-                            </li>
-                        @endif
-
                     </ul>
-
-                    <br>
-
-                    <ul class="footer-bottom-social text-center">
-
-                        <li><a target="_blank" href="https://www.facebook.com/right.choice.co"><i
-                                    style="background-color: #3b5998;" class="shadow ti-facebook"></i></a>
-
-                        </li>
-
-                        </li>
-
-
-                        <li><a target="_blank" href="https://www.instagram.com/right.choice.co"><i style=" background: #f09433;
-
-
-
-    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-
-
-
-    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-
-
-
-    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-
-
-
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
-
-
-
-     " class="instagram shadow ti-instagram"></i></a></li>
-
-
-                        <li><a target="_blank" href="https://www.youtube.com/channel/UCuatA5ibPU-K_GHHqjK_6UA"><i
-                                    style="background-color: #dd4b39;" class="shadow fab fa-youtube"></i></a>
-
-                        </li>
-
-
-                    </ul>
-
-                    <br>
-
                 </div>
 
-                <div style="position:static;" class="col-lg-4 footer-logo-col">
+                <div class="rc-footer-links-col">
+                    <h3 class="rc-footer-title">
+                        {{ App::getLocale() == 'ar' ? 'روابط مهمة' : 'Important Links' }}
+                    </h3>
 
+                    <ul class="rc-footer-links-list">
+                        <li>
+                            <a href="{{ asset('/') }}">{{ trans('langsite.Home') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url(Config::get('app.locale').'/about-us') }}">{{ trans('langsite.About') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}">{{ trans('langsite.Packages') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url(Config::get('app.locale').'/contact-us') }}">{{ trans('langsite.Get_In') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::to(Config::get('app.locale').'/blogs') }}">{{ trans('langsite.blogs') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url(Config::get('app.locale').'/terms-conditions') }}">{{ trans('langsite.terms') }}</a>
+                        </li>
+                    </ul>
+                </div>
 
-                    <br>
+                @if(!Auth()->user())
+                    <div class="rc-footer-cta-col">
+                        <div class="rc-add-company-card">
+                            <span class="rc-add-company-badge">
+                                <i class="fa fa-star"></i>
+                                {{ App::getLocale() == 'ar' ? 'مميز' : 'Featured' }}
+                            </span>
 
+                            <div class="rc-add-company-icon">
+                                <i class="fa fa-building"></i>
+                            </div>
 
-                    <div class="footer-logo">
-                        <?php if (App::getLocale() == 'en')
-                        {
+                            <h3>
+                                {{ trans('langsite.add_company') }}
+                            </h3>
 
-                            ?>
-                        <img src="{{ asset('assets/img/footer-logo.png') }}" alt=""/>
+                            <p>
+                                {{ App::getLocale() == 'ar'
+                                    ? 'سجل شركتك الخدمية الآن وابدأ في الوصول لعملاء جدد من الباحثين عن خدمات عقارية موثوقة.'
+                                    : 'Register your service company now and reach new customers looking for trusted real estate services.' }}
+                            </p>
 
-                            <?php
-                        }
-                        else{
-
-
-                            ?>
-
-                        <img src="{{ asset('assets/img/footer-logo.png') }}" alt=""/>
-
-                            <?php
-                        }
-                        ?>
-
-
+                            <a href="{{ url(Config::get('app.locale').'/add_company') }}" class="rc-add-company-btn">
+                                <span>{{ trans('langsite.add_company') }}</span>
+                                <i class="fa fa-arrow-left rc-arrow-rtl"></i>
+                                <i class="fa fa-arrow-right rc-arrow-ltr"></i>
+                            </a>
+                        </div>
                     </div>
-
-                </div>
-
+                @endif
             </div>
-
         </div>
 
-
-        <div class="text-center p-1 footer-bottom text-white">
-            جميع الحقوق كامله محفوظة لشركة رايت تشويز
-
+        <div class="rc-footer-bottom">
+            <div class="container">
+                <p>
+                    {{ App::getLocale() == 'ar' ? 'جميع الحقوق كاملة محفوظة لشركة رايت تشويز' : 'All rights reserved for Right Choice' }}
+                    <span>© {{ date('Y') }}</span>
+                </p>
+            </div>
         </div>
-
-
     </footer>
+
+    <style>
+        .rc-modern-footer {
+            --rc-footer-blue: #0B5F9F;
+            --rc-footer-blue-dark: #073F73;
+            --rc-footer-navy: #042C4E;
+            --rc-footer-green: #18C7A1;
+            --rc-footer-orange: #F47D35;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            padding: 72px 0 0;
+            background:
+                radial-gradient(circle at 12% 18%, rgba(24, 199, 161, .24), transparent 30%),
+                radial-gradient(circle at 88% 8%, rgba(244, 125, 53, .18), transparent 30%),
+                linear-gradient(135deg, var(--rc-footer-navy) 0%, var(--rc-footer-blue-dark) 45%, var(--rc-footer-blue) 100%);
+        }
+
+        .rc-modern-footer,
+        .rc-modern-footer * {
+            box-sizing: border-box;
+        }
+
+        .rc-footer-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: .055;
+            background-image:
+                linear-gradient(45deg, transparent 45%, #fff 46%, #fff 54%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, #fff 46%, #fff 54%, transparent 55%);
+            background-size: 42px 42px;
+            pointer-events: none;
+        }
+
+        .rc-footer-glow {
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        .rc-footer-glow-one {
+            width: 520px;
+            height: 520px;
+            top: -310px;
+            right: -150px;
+            background: rgba(24, 199, 161, .86);
+        }
+
+        .rc-footer-glow-two {
+            width: 360px;
+            height: 360px;
+            left: -170px;
+            bottom: -190px;
+            background: rgba(244, 125, 53, .20);
+        }
+
+        .rc-footer-container,
+        .rc-footer-bottom {
+            position: relative;
+            z-index: 2;
+        }
+
+        .rc-footer-main {
+            display: grid;
+            grid-template-columns: minmax(260px, 1.2fr) minmax(240px, .9fr) minmax(280px, .95fr);
+            gap: 38px;
+            align-items: stretch;
+            padding-bottom: 48px;
+        }
+
+        .rc-footer-brand-col,
+        .rc-footer-links-col,
+        .rc-add-company-card {
+            border: 1px solid rgba(255, 255, 255, .13);
+            background: rgba(255, 255, 255, .075);
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .13);
+            backdrop-filter: blur(12px);
+        }
+
+        .rc-footer-brand-col,
+        .rc-footer-links-col {
+            padding: 30px;
+        }
+
+        .rc-footer-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 158px;
+            min-height: 78px;
+            margin-bottom: 18px;
+            text-decoration: none !important;
+        }
+
+        .rc-footer-logo img {
+            max-width: 100%;
+            max-height: 78px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .rc-footer-about {
+            max-width: 460px;
+            margin: 0 0 24px;
+            color: rgba(255, 255, 255, .84);
+            font-size: 15px;
+            line-height: 1.95;
+            font-weight: 500;
+        }
+
+        .rc-footer-social {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .rc-social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff !important;
+            text-decoration: none !important;
+            font-size: 17px;
+            box-shadow: 0 15px 26px rgba(0, 0, 0, .22);
+            transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+        }
+
+        .rc-social-link:hover {
+            transform: translateY(-4px);
+            filter: brightness(1.05);
+            box-shadow: 0 18px 34px rgba(0, 0, 0, .27);
+        }
+
+        .rc-social-facebook { background: #3b5998; }
+        .rc-social-youtube { background: #dd4b39; }
+        .rc-social-instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .rc-footer-title {
+            position: relative;
+            margin: 0 0 23px;
+            padding-bottom: 14px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+
+        .rc-footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 58px;
+            height: 4px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--rc-footer-green), var(--rc-footer-orange));
+        }
+
+        .rc-modern-footer[dir="ltr"] .rc-footer-title:after {
+            right: auto;
+            left: 0;
+        }
+
+        .rc-footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px 18px;
+        }
+
+        .rc-footer-links-list a {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: rgba(255, 255, 255, .86) !important;
+            text-decoration: none !important;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.5;
+            transition: color .2s ease, transform .2s ease;
+        }
+
+        .rc-footer-links-list a:before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            min-width: 8px;
+            border-radius: 50%;
+            background: var(--rc-footer-green);
+            box-shadow: 0 0 0 4px rgba(24, 199, 161, .12);
+        }
+
+        .rc-footer-links-list a:hover {
+            color: #fff !important;
+            transform: translateX(-4px);
+        }
+
+        .rc-modern-footer[dir="ltr"] .rc-footer-links-list a:hover {
+            transform: translateX(4px);
+        }
+
+        .rc-add-company-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 100%;
+            padding: 30px;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .25), transparent 30%),
+                linear-gradient(135deg, rgba(244, 125, 53, .96), rgba(235, 95, 38, .96));
+            border-color: rgba(255, 255, 255, .24);
+        }
+
+        .rc-add-company-card:after {
+            content: '';
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            left: -85px;
+            bottom: -85px;
+            background: rgba(255, 255, 255, .13);
+        }
+
+        .rc-add-company-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 31px;
+            padding: 6px 13px;
+            margin-bottom: 17px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .rc-add-company-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .18);
+            font-size: 26px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14);
+            margin-bottom: 17px;
+        }
+
+        .rc-add-company-card h3 {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 11px;
+            color: #fff;
+            font-size: 23px;
+            font-weight: 900;
+            line-height: 1.35;
+        }
+
+        .rc-add-company-card p {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 22px;
+            color: rgba(255, 255, 255, .91);
+            font-size: 14px;
+            line-height: 1.9;
+            font-weight: 600;
+        }
+
+        .rc-add-company-btn {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 50px;
+            border-radius: 16px;
+            color: var(--rc-footer-blue-dark) !important;
+            background: #fff;
+            text-decoration: none !important;
+            font-size: 15px;
+            font-weight: 900;
+            box-shadow: 0 18px 34px rgba(0, 0, 0, .18);
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+
+        .rc-add-company-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 42px rgba(0, 0, 0, .24);
+        }
+
+        .rc-modern-footer[dir="rtl"] .rc-arrow-ltr,
+        .rc-modern-footer[dir="ltr"] .rc-arrow-rtl {
+            display: none;
+        }
+
+        .rc-footer-bottom {
+            padding: 14px 0;
+            background: rgba(2, 24, 43, .38);
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            backdrop-filter: blur(10px);
+        }
+
+        .rc-footer-bottom p {
+            margin: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, .88);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .rc-footer-bottom span {
+            color: var(--rc-footer-green);
+            font-weight: 900;
+        }
+
+        @media (max-width: 1199.98px) {
+            .rc-footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .rc-footer-cta-col {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .rc-modern-footer {
+                padding-top: 48px;
+            }
+
+            .rc-footer-main {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding-bottom: 34px;
+            }
+
+            .rc-footer-brand-col,
+            .rc-footer-links-col,
+            .rc-add-company-card {
+                padding: 24px;
+                border-radius: 22px;
+            }
+
+            .rc-footer-links-list {
+                grid-template-columns: 1fr;
+            }
+
+            .rc-footer-glow-one {
+                width: 390px;
+                height: 390px;
+                top: -260px;
+                right: -190px;
+            }
+        }
+    </style>
 
     <!-- Copyright -->
 
@@ -1697,10 +2016,10 @@ else{
             @auth
 
             @if(Auth::user()->isCompanyAccount())
-                toastr.info('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', '', {
-                    timeOut: 5000
-                });
-                return;
+            toastr.info('حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.', '', {
+                timeOut: 5000
+            });
+            return;
             @endif
 
             // show loading spinner
