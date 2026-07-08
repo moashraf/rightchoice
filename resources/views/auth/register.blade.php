@@ -11,7 +11,7 @@
         <div class="container rc-register-container">
             <div class="rc-register-wrapper">
                 <div class="row align-items-stretch no-gutters rc-register-row">
-                    <div class="col-lg-7 rc-form-column">
+                    <div class="col-lg-8 rc-form-column">
                         <div class="rc-form-card">
                             <div class="rc-form-header text-center">
                                 <span class="rc-form-badge">Right Choice</span>
@@ -31,7 +31,9 @@
                                 </div>
                             @endif
 
-                            <form method="POST" action="{{ route('custom_register', Config::get('app.locale')) }}" autocomplete="off" class="rc-register-form">
+
+
+                            <form method="POST" action="{{ route('custom_register', Config::get('app.locale')) }}" autocomplete="off" enctype="multipart/form-data" class="rc-register-form">
                                 @csrf
 
                                 @if(isset($invited_by) && $invited_by)
@@ -130,40 +132,40 @@
                                     </div>
 
                                     <div class="rc-extra-fields" id="motwar" style="display:none;">
-{{--                                        <div class="rc-field {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">--}}
-{{--                                            <label for="employe">--}}
-{{--                                                اسم الموظف المسئول--}}
-{{--                                                <span class="text-danger">*</span>--}}
-{{--                                            </label>--}}
-{{--                                            <div class="rc-input-wrap">--}}
-{{--                                                <i class="fa fa-id-badge rc-input-icon" aria-hidden="true"></i>--}}
-{{--                                                <input type="text" name="Employee_Name" id="employe" class="form-control rc-control" value="{{ old('Employee_Name') }}">--}}
-{{--                                            </div>--}}
-{{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Employee_Name') }}</small>--}}
-{{--                                        </div>--}}
+                                        {{--                                        <div class="rc-field {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">--}}
+                                        {{--                                            <label for="employe">--}}
+                                        {{--                                                اسم الموظف المسئول--}}
+                                        {{--                                                <span class="text-danger">*</span>--}}
+                                        {{--                                            </label>--}}
+                                        {{--                                            <div class="rc-input-wrap">--}}
+                                        {{--                                                <i class="fa fa-id-badge rc-input-icon" aria-hidden="true"></i>--}}
+                                        {{--                                                <input type="text" name="Employee_Name" id="employe" class="form-control rc-control" value="{{ old('Employee_Name') }}">--}}
+                                        {{--                                            </div>--}}
+                                        {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Employee_Name') }}</small>--}}
+                                        {{--                                        </div>--}}
 
-{{--                                        <div class="rc-field {{ $errors->has('Job_title') ? ' has-error' : '' }}">--}}
-{{--                                            <label for="employe-type">--}}
-{{--                                                المسمى الوظيفي--}}
-{{--                                                <span class="text-danger">*</span>--}}
-{{--                                            </label>--}}
-{{--                                            <div class="rc-input-wrap rc-select-wrap">--}}
-{{--                                                <i class="fa fa-briefcase rc-input-icon" aria-hidden="true"></i>--}}
-{{--                                                <select class="myselect rc-control" name="Job_title" id="employe-type">--}}
-{{--                                                    <option value="">اختر</option>--}}
-{{--                                                    @foreach($jobs ?? [] as $job)--}}
-{{--                                                        <option value="{{ $job->id }}" {{ old('Job_title') == $job->id ? 'selected' : '' }}>--}}
-{{--                                                            @if(App::isLocale('en'))--}}
-{{--                                                                {{ $job->Job_title_en ?: $job->Job_title }}--}}
-{{--                                                            @else--}}
-{{--                                                                {{ $job->Job_title }}--}}
-{{--                                                            @endif--}}
-{{--                                                        </option>--}}
-{{--                                                    @endforeach--}}
-{{--                                                </select>--}}
-{{--                                            </div>--}}
-{{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>--}}
-{{--                                        </div>--}}
+                                        {{--                                        <div class="rc-field {{ $errors->has('Job_title') ? ' has-error' : '' }}">--}}
+                                        {{--                                            <label for="employe-type">--}}
+                                        {{--                                                المسمى الوظيفي--}}
+                                        {{--                                                <span class="text-danger">*</span>--}}
+                                        {{--                                            </label>--}}
+                                        {{--                                            <div class="rc-input-wrap rc-select-wrap">--}}
+                                        {{--                                                <i class="fa fa-briefcase rc-input-icon" aria-hidden="true"></i>--}}
+                                        {{--                                                <select class="myselect rc-control" name="Job_title" id="employe-type">--}}
+                                        {{--                                                    <option value="">اختر</option>--}}
+                                        {{--                                                    @foreach($jobs ?? [] as $job)--}}
+                                        {{--                                                        <option value="{{ $job->id }}" {{ old('Job_title') == $job->id ? 'selected' : '' }}>--}}
+                                        {{--                                                            @if(App::isLocale('en'))--}}
+                                        {{--                                                                {{ $job->Job_title_en ?: $job->Job_title }}--}}
+                                        {{--                                                            @else--}}
+                                        {{--                                                                {{ $job->Job_title }}--}}
+                                        {{--                                                            @endif--}}
+                                        {{--                                                        </option>--}}
+                                        {{--                                                    @endforeach--}}
+                                        {{--                                                </select>--}}
+                                        {{--                                            </div>--}}
+                                        {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>--}}
+                                        {{--                                        </div>--}}
 
                                         <div class="rc-field">
                                             <label for="togary-id">
@@ -174,6 +176,25 @@
                                                 <i class="fa fa-building-o rc-input-icon" aria-hidden="true"></i>
                                                 <input type="text" autocomplete="off" name="Commercial_Register" id="togary-id" class="myselect rc-control" value="{{ old('Commercial_Register') }}">
                                             </div>
+                                        </div>
+
+                                        <div class="rc-field">
+                                            <label for="company-logo">
+                                                لوجو الشركة
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="rc-input-wrap rc-file-wrap">
+                                                <i class="fa fa-picture-o rc-input-icon" aria-hidden="true"></i>
+                                                <input type="file"
+                                                       autocomplete="off"
+                                                       name="company_logo"
+                                                       id="company-logo"
+                                                       class="myselect rc-control rc-file-control"
+                                                       accept="image/png,image/jpeg,image/jpg,image/webp">
+                                            </div>
+{{--                                            <small class="rc-help-text">--}}
+{{--                                                ارفع صورة بصيغة JPG أو PNG أو WEBP، ويفضل أن تكون بخلفية واضحة.--}}
+{{--                                            </small>--}}
                                         </div>
                                     </div>
 
@@ -257,11 +278,27 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5 rc-promo-column">
+                    <div class="col-lg-4 rc-promo-column">
                         <div >
                             <img src="https://rightchoice-co.com/images/03%20(1).jpg"   style="   width: 100%;  border-radius: 30px;"  >
 
                         </div>
+{{--                        <div class="rc-service-company-box">--}}
+{{--                            <div class="rc-service-company-content">--}}
+{{--                                    <span class="rc-service-company-icon">--}}
+{{--                                        <i class="fa fa-building" aria-hidden="true"></i>--}}
+{{--                                    </span>--}}
+{{--                                <div>--}}
+{{--                                    <strong>هل لديك شركة خدمية؟</strong>--}}
+{{--                                    <small>أضف شركتك الآن لعرض خدماتك والوصول إلى عملاء أكثر.</small>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+{{--                            <a href="https://rightchoice-co.com/ar/add_company" class="rc-service-company-link">--}}
+{{--                                إضافة شركة خدمية--}}
+{{--                                <i class="fa fa-arrow-left" aria-hidden="true"></i>--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -430,6 +467,82 @@
             padding-right: 20px;
         }
 
+        .rc-service-company-box {
+            margin-bottom: 26px;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(24, 199, 161, 0.22);
+            background:
+                linear-gradient(135deg, rgba(24, 199, 161, 0.10), rgba(11, 95, 159, 0.06)),
+                #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 14px 30px rgba(20, 74, 116, 0.07);
+        }
+
+        .rc-service-company-content {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+        }
+
+        .rc-service-company-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--rc-blue), var(--rc-teal));
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 44px;
+            box-shadow: 0 10px 22px rgba(11, 95, 159, 0.20);
+        }
+
+        .rc-service-company-content strong {
+            display: block;
+            color: var(--rc-blue-dark);
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .rc-service-company-content small {
+            display: block;
+            color: var(--rc-muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .rc-service-company-link {
+            min-height: 42px;
+            padding: 9px 15px;
+            border-radius: 12px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--rc-teal), var(--rc-teal-dark));
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 12px 22px rgba(24, 199, 161, 0.20);
+            transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+        }
+
+        .rc-service-company-link:hover {
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+            box-shadow: 0 16px 28px rgba(24, 199, 161, 0.28);
+        }
+
         .rc-form-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -467,7 +580,8 @@
             z-index: 2;
             pointer-events: none;
         }
-
+        #company-logo {
+            min-height: 40px !important;}
         .rc-control,
         .rc-field .myselect,
         .rc-field .form-control {
@@ -500,6 +614,29 @@
         .rc-select-wrap select.rc-control {
             appearance: auto;
             cursor: pointer;
+        }
+
+        .rc-file-control {
+            padding-top: 15px !important;
+            cursor: pointer;
+            color: var(--rc-muted) !important;
+        }
+
+        .rc-file-control::file-selector-button {
+            margin-left: 12px;
+            border: 0;
+            border-radius: 10px;
+            background: rgba(11, 95, 159, 0.10);
+            color: var(--rc-blue-dark);
+            padding: 8px 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background .2s ease, color .2s ease;
+        }
+
+        .rc-file-control:hover::file-selector-button {
+            background: var(--rc-blue);
+            color: #fff;
         }
 
         .rc-help-text {
@@ -797,6 +934,15 @@
             .rc-form-grid,
             .rc-extra-fields {
                 grid-template-columns: 1fr;
+            }
+
+            .rc-service-company-box {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .rc-service-company-link {
+                width: 100%;
             }
 
             .rc-form-header h2 {
