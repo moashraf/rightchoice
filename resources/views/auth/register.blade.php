@@ -130,40 +130,40 @@
                                     </div>
 
                                     <div class="rc-extra-fields" id="motwar" style="display:none;">
-                                        <div class="rc-field {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">
-                                            <label for="employe">
-                                                اسم الموظف المسئول
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="rc-input-wrap">
-                                                <i class="fa fa-id-badge rc-input-icon" aria-hidden="true"></i>
-                                                <input type="text" name="Employee_Name" id="employe" class="form-control rc-control" value="{{ old('Employee_Name') }}">
-                                            </div>
-                                            <small class="text-danger rc-help-text">{{ $errors->first('Employee_Name') }}</small>
-                                        </div>
+{{--                                        <div class="rc-field {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">--}}
+{{--                                            <label for="employe">--}}
+{{--                                                اسم الموظف المسئول--}}
+{{--                                                <span class="text-danger">*</span>--}}
+{{--                                            </label>--}}
+{{--                                            <div class="rc-input-wrap">--}}
+{{--                                                <i class="fa fa-id-badge rc-input-icon" aria-hidden="true"></i>--}}
+{{--                                                <input type="text" name="Employee_Name" id="employe" class="form-control rc-control" value="{{ old('Employee_Name') }}">--}}
+{{--                                            </div>--}}
+{{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Employee_Name') }}</small>--}}
+{{--                                        </div>--}}
 
-                                        <div class="rc-field {{ $errors->has('Job_title') ? ' has-error' : '' }}">
-                                            <label for="employe-type">
-                                                المسمى الوظيفي
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="rc-input-wrap rc-select-wrap">
-                                                <i class="fa fa-briefcase rc-input-icon" aria-hidden="true"></i>
-                                                <select class="myselect rc-control" name="Job_title" id="employe-type">
-                                                    <option value="">اختر</option>
-                                                    @foreach($jobs ?? [] as $job)
-                                                        <option value="{{ $job->id }}" {{ old('Job_title') == $job->id ? 'selected' : '' }}>
-                                                            @if(App::isLocale('en'))
-                                                                {{ $job->Job_title_en ?: $job->Job_title }}
-                                                            @else
-                                                                {{ $job->Job_title }}
-                                                            @endif
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>
-                                        </div>
+{{--                                        <div class="rc-field {{ $errors->has('Job_title') ? ' has-error' : '' }}">--}}
+{{--                                            <label for="employe-type">--}}
+{{--                                                المسمى الوظيفي--}}
+{{--                                                <span class="text-danger">*</span>--}}
+{{--                                            </label>--}}
+{{--                                            <div class="rc-input-wrap rc-select-wrap">--}}
+{{--                                                <i class="fa fa-briefcase rc-input-icon" aria-hidden="true"></i>--}}
+{{--                                                <select class="myselect rc-control" name="Job_title" id="employe-type">--}}
+{{--                                                    <option value="">اختر</option>--}}
+{{--                                                    @foreach($jobs ?? [] as $job)--}}
+{{--                                                        <option value="{{ $job->id }}" {{ old('Job_title') == $job->id ? 'selected' : '' }}>--}}
+{{--                                                            @if(App::isLocale('en'))--}}
+{{--                                                                {{ $job->Job_title_en ?: $job->Job_title }}--}}
+{{--                                                            @else--}}
+{{--                                                                {{ $job->Job_title }}--}}
+{{--                                                            @endif--}}
+{{--                                                        </option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>--}}
+{{--                                        </div>--}}
 
                                         <div class="rc-field">
                                             <label for="togary-id">
@@ -258,33 +258,9 @@
                     </div>
 
                     <div class="col-lg-5 rc-promo-column">
-                        <div class="rc-promo-card">
-                            <div class="rc-promo-overlay"></div>
-                            <div class="rc-logo-badge">
-                                <img src="https://rightchoice-co.com/assets/img/rclogo.png" alt="Right Choice logo">
-                            </div>
+                        <div >
+                            <img src="https://rightchoice-co.com/images/03%20(1).jpg"   style="   width: 100%;  border-radius: 30px;"  >
 
-                            <div class="rc-promo-content">
-                                <h3>
-                                    مرحباً بك في
-                                    <span>رايت تشويز</span>
-                                </h3>
-                                <span class="rc-promo-line"></span>
-                                <p>
-                                    رايت تشويز لإدارة الأصول العقارية، موقع متكامل يتيح التواصل المباشر بين البائع والمشتري بدون عمولة وبدون وسيط مع توفير مجموعة متميزة من أفضل الشركات لبيع الأثاث المنزلي والمكتبي وبيع الأجهزة الكهربائية والالكترونية وخدمات شركات نقل الأثاث.
-                                </p>
-                            </div>
-
-                            <div class="rc-promo-footer">
-                                <div>
-                                    <i class="fa fa-globe" aria-hidden="true"></i>
-                                    <span>www.rightchoice-co.com</span>
-                                </div>
-                                <div>
-                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
-                                    <span>info@rightchoice-co.com</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
