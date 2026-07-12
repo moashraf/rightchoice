@@ -188,109 +188,109 @@
 
                                     </div>
 
-                                    @if(Auth::user()->TYPE == 3)
 
-                                        <div id="motwar">
+{{--                                    @if(Auth::user()->TYPE == 3)--}}
 
-                                            <div>
+{{--                                        <div id="motwar">--}}
 
-
-                                                <div
-                                                    class="form-group {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">
-
-                                                    <label for="employe">اسم الموظف المسئول<span
-
-                                                            class="text-danger">*</span></label>
-
-                                                    <input type="text" name="Employee_Name" id="employe"
-
-                                                           class="myselect" value="{{ Auth::user()->Employee_Name }}">
-
-                                                    <small
-                                                        class="text-danger">{{ $errors->first('Employee_Name') }}</small>
-
-                                                </div>
+{{--                                            <div>--}}
 
 
-                                            </div>
+{{--                                                <div--}}
+{{--                                                    class="form-group {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">--}}
 
-                                            <div>
+{{--                                                    <label for="employe">اسم الموظف المسئول<span--}}
 
-                                                <div
-                                                    class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
+{{--                                                            class="text-danger">*</span></label>--}}
 
-                                                    <label for="employe-type">المسمى الوظيفي<span
+{{--                                                    <input type="text" name="Employee_Name" id="employe"--}}
 
-                                                            class="text-danger">*</span></label>
+{{--                                                           class="myselect" value="{{ Auth::user()->Employee_Name }}">--}}
 
-                                                    <select class="myselect" name="Job_title" id="employe-type">
+{{--                                                    <small--}}
+{{--                                                        class="text-danger">{{ $errors->first('Employee_Name') }}</small>--}}
 
-                                                        <option value="">اختر</option>
-
-                                                        @foreach($jobs ?? [] as $job)
-                                                            <option
-                                                                value="{{ $job->id }}" {{ old('Job_title', Auth::user()->Job_title) == $job->id ? 'selected' : '' }}>
-                                                                @if(App::isLocale('en'))
-                                                                    {{ $job->Job_title_en ?: $job->Job_title }}
-                                                                @else
-                                                                    {{ $job->Job_title }}
-                                                                @endif
-                                                            </option>
-                                                        @endforeach
-
-                                                    </select>
-
-                                                    <small class="text-danger">{{ $errors->first('Job_title') }}</small>
-
-                                                </div>
+{{--                                                </div>--}}
 
 
-                                            </div>
+{{--                                            </div>--}}
+
+{{--                                            <div class="555">--}}
+
+{{--                                                <div   class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">--}}
+
+{{--                                                    <label for="employe-type">المسمى الوظيفي<span--}}
+
+{{--                                                            class="text-danger">*</span></label>--}}
+
+{{--                                                    <select class="myselect" name="Job_title" id="employe-type">--}}
+
+{{--                                                        <option value="">اختر</option>--}}
+
+{{--                                                        @foreach($jobs ?? [] as $job)--}}
+{{--                                                            <option--}}
+{{--                                                                value="{{ $job->id }}" {{ old('Job_title', Auth::user()->Job_title) == $job->id ? 'selected' : '' }}>--}}
+{{--                                                                @if(App::isLocale('en'))--}}
+{{--                                                                    {{ $job->Job_title_en ?: $job->Job_title }}--}}
+{{--                                                                @else--}}
+{{--                                                                    {{ $job->Job_title }}--}}
+{{--                                                                @endif--}}
+{{--                                                            </option>--}}
+{{--                                                        @endforeach--}}
+
+{{--                                                    </select>--}}
+
+{{--                                                    <small class="text-danger">{{ $errors->first('Job_title') }}</small>--}}
+
+{{--                                                </div>--}}
 
 
-                                            <div>
-
-                                                <div
-                                                    class="form-group {{ $errors->has('Tax_card') ? ' has-error' : '' }}">
+{{--                                            </div>--}}
 
 
-                                                    <label for="tax-id">رقم البطاقه الضريبيه<span
-                                                            class="text-danger">*</span></label>
+{{--                                            <div>--}}
+
+{{--                                                <div--}}
+{{--                                                    class="form-group {{ $errors->has('Tax_card') ? ' has-error' : '' }}">--}}
 
 
-                                                    <input type="text" name="Tax_card" id="tax-id" class="myselect"
-
-                                                           placeholder="البطاقه الضريبيه"
-                                                           value="{{ Auth::user()->Tax_card }}">
-
-                                                    <small class="text-danger">{{ $errors->first('Tax_card') }}</small>
-
-                                                </div>
-
-                                            </div>
+{{--                                                    <label for="tax-id">رقم البطاقه الضريبيه<span--}}
+{{--                                                            class="text-danger">*</span></label>--}}
 
 
-                                            <div>
+{{--                                                    <input type="text" name="Tax_card" id="tax-id" class="myselect"--}}
 
-                                                <div class="form-group">
+{{--                                                           placeholder="البطاقه الضريبيه"--}}
+{{--                                                           value="{{ Auth::user()->Tax_card }}">--}}
 
+{{--                                                    <small class="text-danger">{{ $errors->first('Tax_card') }}</small>--}}
 
-                                                    <label for="togary-id">رقم السجل التجاري</label>
+{{--                                                </div>--}}
 
-
-                                                    <input type="text" name="Commercial_Register" id="togary-id"
-
-                                                           class="myselect" placeholder="السجل التجاري"
-                                                           value="{{ Auth::user()->Commercial_Register }}">
+{{--                                            </div>--}}
 
 
-                                                </div>
+{{--                                            <div>--}}
 
-                                            </div>
+{{--                                                <div class="form-group">--}}
 
-                                        </div>
 
-                                    @endIf
+{{--                                                    <label for="togary-id">رقم السجل التجاري</label>--}}
+
+
+{{--                                                    <input type="text" name="Commercial_Register" id="togary-id"--}}
+
+{{--                                                           class="myselect" placeholder="السجل التجاري"--}}
+{{--                                                           value="{{ Auth::user()->Commercial_Register }}">--}}
+
+
+{{--                                                </div>--}}
+
+{{--                                            </div>--}}
+
+{{--                                        </div>--}}
+
+{{--                                    @endIf--}}
 
                                     <div class="form-group {{ $errors->has('img') ? ' has-error' : '' }}">
 
