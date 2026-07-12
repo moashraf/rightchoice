@@ -264,7 +264,7 @@
 
         #profile-info .rc-profile-form .myselect {
             width: 100%;
-            min-height: 48px;
+            min-height: 48px!important;
             padding: 10px 14px;
             border: 1px solid var(--rc-border);
             border-radius: 13px;
