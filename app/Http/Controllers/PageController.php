@@ -187,7 +187,7 @@ class PageController extends Controller
                 'email' => $request['email'],
                 'password' => bcrypt($request->password),
                 'phone_sms_otp' => $random_mass_num,
-                'Employee_Name' => $request['Employee_Name'],
+                'name_of_real_estate_developer' => $request['name_of_real_estate_developer'],
                 'Job_title' => $request['Job_title'],
 
                 // Max 20 characters only

@@ -211,7 +211,7 @@ class CompanyController extends Controller
 
             $rules = [
 
-                'Employee_Name' => 'required|max:225',
+                'name_of_real_estate_developer' => 'required|max:225',
                 'details' => 'required|max:2500',
                 'Serv_id' => 'required|integer|exists:services,id',
                 'Job_title' => 'required|integer|exists:jobTitles,id',
@@ -297,9 +297,9 @@ class CompanyController extends Controller
                     $company->user_id = $userID;
 
                     if (App::isLocale('en')) {
-                        $company->Employee_Name = request('Employee_Name_en');
+                        $company->name_of_real_estate_developer = request('name_of_real_estate_developer_en');
                     } else {
-                        $company->Employee_Name = request('Employee_Name');
+                        $company->name_of_real_estate_developer = request('name_of_real_estate_developer');
                     }
 
                     $company->Job_title = request('Job_title');
@@ -370,7 +370,7 @@ class CompanyController extends Controller
         if ($request->isMethod('post')) {
             //   dd($request->all());
             $rules = [
-                'Employee_Name' => 'required|max:225',
+                'name_of_real_estate_developer' => 'required|max:225',
 
                 'details' => 'required|max:2500',
 

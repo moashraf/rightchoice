@@ -33,9 +33,9 @@
                                 <hr class="hr-add">
 
                                 <div class="fr-grid-deatil-flex details mt-3" style="justify-content:center;">
-                                    @if($user->Employee_Name)
+                                    @if($user->name_of_real_estate_developer)
                                         <div class="listing-card-info-icon">
-                                            {{ trans('langsite.employee_name') }}: {{ $user->Employee_Name }}
+                                            {{ trans('langsite.name_of_real_estate_developer') }}: {{ $user->name_of_real_estate_developer }}
                                         </div>
                                     @endif
 

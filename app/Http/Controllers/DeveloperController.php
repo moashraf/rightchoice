@@ -20,7 +20,7 @@ class DeveloperController extends Controller
             ->when($q !== '', function ($qb) use ($q) {
                 $qb->where(function ($w) use ($q) {
                     $w->where('name', 'like', "%{$q}%")
-                      ->orWhere('Employee_Name', 'like', "%{$q}%")
+                      ->orWhere('name_of_real_estate_developer', 'like', "%{$q}%")
                       ->orWhere('Commercial_Register', 'like', "%{$q}%")
                       ->orWhere('email', 'like', "%{$q}%");
                 });

@@ -23,7 +23,7 @@ class CompanyRepository extends BaseRepository
         'district_id',
         'governrate_id',
         'Serv_id',
-        'Employee_Name',
+        'name_of_real_estate_developer',
         'Job_title',
         'Phone',
         'building_number',

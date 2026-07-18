@@ -15,7 +15,7 @@ class Company extends Model
     protected $fillable = [
         'Name',
         'Company_activity',
-        'Employee_Name',
+        'name_of_real_estate_developer',
         'Job_title',
         'Phone',
         'phone2',
@@ -36,7 +36,7 @@ class Company extends Model
         'user_id',
         'name_en',
         'slug_en',
-        'Employee_Name_en',
+        'name_of_real_estate_developer_en',
         'Job_title_en',
         'details_en'
     ];
@@ -52,7 +52,7 @@ class Company extends Model
         'district_id'         => 'required|integer',
         'area_id'             => 'nullable|integer',
         'Serv_id'             => 'required|integer',
-        'Employee_Name'       => 'nullable|string|max:255',
+        'name_of_real_estate_developer'       => 'nullable|string|max:255',
         'Job_title'           => 'nullable|string|max:255',
         'Phone'               => 'nullable|string|max:255',
         'phone2'              => 'nullable|string|max:255',
@@ -68,7 +68,7 @@ class Company extends Model
         'status'              => 'nullable|integer',
         'name_en'             => 'nullable|string|max:255',
         'slug_en'             => 'nullable|string|max:255',
-        'Employee_Name_en'    => 'nullable|string|max:255',
+        'name_of_real_estate_developer_en'    => 'nullable|string|max:255',
         'Job_title_en'        => 'nullable|string|max:255',
         'details_en'          => 'nullable|string|max:255',
     ];

@@ -34,8 +34,8 @@
 
 <!-- Employee Name Field -->
 <div class="col-sm-6">
-    {!! Form::label('Employee_Name', 'Employee Name:') !!}
-    <p>{{ $company->Employee_Name }}</p>
+    {!! Form::label('name_of_real_estate_developer', 'Employee Name:') !!}
+    <p>{{ $company->name_of_real_estate_developer }}</p>
 </div>
 
 <!-- Job Title Field -->

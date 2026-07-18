@@ -555,14 +555,11 @@
                         @endif
                         @if(Auth::check())
 
-                            <li class="add-listing">
+                            <li class="add-listing 369852">
                                 <a href=""><span class=""></span>
                                     @if(Auth::check())
-                                        @if(Auth::user()->TYPE == 3)
-                                            {{\Illuminate\Support\Str::limit(Auth::user()->Employee_Name, 10, $ned='') }}
-                                        @else
-                                            {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
-                                        @endif
+                                        {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
+
                                     @else
                                         {{ trans('langsite.login')}}
                                     @endif
@@ -958,20 +955,33 @@
 
                     <ul class="rc-footer-social" aria-label="Social links">
                         <li>
-                            <a target="_blank" href="https://www.facebook.com/right.choice.co" class="rc-social-link rc-social-facebook" aria-label="Facebook">
+                            <a target="_blank" href="https://www.facebook.com/rightchoicepropertyapp/#"
+                               class="rc-social-link rc-social-facebook" aria-label="Facebook">
                                 <i class="ti-facebook"></i>
                             </a>
                         </li>
                         <li>
-                            <a target="_blank" href="https://www.instagram.com/right.choice.co" class="rc-social-link rc-social-instagram" aria-label="Instagram">
+                            <a target="_blank" href="https://www.instagram.com/right.choice.co"
+                               class="rc-social-link rc-social-instagram" aria-label="Instagram">
                                 <i class="ti-instagram"></i>
                             </a>
                         </li>
                         <li>
-                            <a target="_blank" href="https://www.youtube.com/channel/UCuatA5ibPU-K_GHHqjK_6UA" class="rc-social-link rc-social-youtube" aria-label="YouTube">
+                            <a target="_blank" href="https://www.youtube.com/@rightchoice4611"
+                               class="rc-social-link rc-social-youtube" aria-label="YouTube">
                                 <i class="fab fa-youtube"></i>
                             </a>
                         </li>
+
+                        <li>
+                            <a style="  background: #000000;"
+                               target="_blank" href="https://www.tiktok.com/@right.choice22"
+                               class="rc-social-link rc-social-youtube" aria-label="YouTube">
+                                <i class=" "></i>
+                            </a>
+                        </li>
+
+
                     </ul>
                 </div>
 

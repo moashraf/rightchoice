@@ -82,8 +82,8 @@
             </li>
         @endif
 
-        @if($user->Employee_Name)
-            <li class="list-group-item"><strong>Employee Name:</strong> {{ $user->Employee_Name }}</li>
+        @if($user->name_of_real_estate_developer)
+            <li class="list-group-item"><strong>   name_of_real_estate_developer :</strong> {{ $user->name_of_real_estate_developer }}</li>
         @endif
 
         @if($user->Job_title)

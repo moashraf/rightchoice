@@ -279,22 +279,32 @@
                             </div>
                             <div class="form-group create-page-form-group">
                                 <label for="listing-name"> عنوان الاعلان <span class="text-danger">*</span></label>
-                                <input oninvalid="this.setCustomValidity('{{ trans('validation.titleError')}}')"
-                                       oninput="this.setCustomValidity('')" placeholder="" required type="text"
+                                <input placeholder="" required type="text"
                                        name="title"
-                                       minlength="3" maxlength="55" id="listing-name" class="myselect create-page-control"
+                                       minlength="40" maxlength="250" id="listing-name"
+                                       class="myselect create-page-control"
+                                       aria-describedby="listing-name-validation"
                                        value="{{ old('title') }}">
+                                <div id="listing-name-validation"
+                                     class="create-page-validation-message"
+                                     role="alert"
+                                     aria-live="polite"></div>
                                 @error('title')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
                             </div>
                             <div class="form-group create-page-form-group">
                                 <label for="listing-desc"> وصف تفصيلي للاعلان <span class="text-danger">*</span></label>
-                                <textarea oninvalid="this.setCustomValidity('{{ trans('validation.descError')}}')"
-                                          oninput="this.setCustomValidity('')" maxlength="5000" minlength="10"
+                                <textarea maxlength="1200" minlength="50"
                                           placeholder="" required="required" name="description"
-                                          id="listing-desc" cols="30" class="myselect2 create-page-control create-page-textarea"
+                                          id="listing-desc" cols="30"
+                                          class="myselect2 create-page-control create-page-textarea"
+                                          aria-describedby="listing-desc-validation"
                                           rows="5">{{ old('description') }}</textarea>
+                                <div id="listing-desc-validation"
+                                     class="create-page-validation-message"
+                                     role="alert"
+                                     aria-live="polite"></div>
                                 @error('description')
                                 <p class="text-danger text-sm mt-1"> {{ $message }} </p>
                                 @enderror
@@ -2196,8 +2206,116 @@
         }
     </style>
 
+    <style>
+        .create-page-validation-message {
+            display: none;
+            margin-top: 7px;
+            padding: 8px 11px;
+            border-radius: 8px;
+            background: #fff3f3;
+            color: #c62828;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .create-page-validation-message.is-visible {
+            display: block;
+        }
+
+        .create-page-control.create-page-control-invalid {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, .12) !important;
+        }
+    </style>
+
     <script>
         (function () {
+            function setupAdvertisementTextValidation() {
+                var form = document.getElementById('form-1');
+                var titleInput = document.getElementById('listing-name');
+                var descriptionInput = document.getElementById('listing-desc');
+
+                if (!form || !titleInput || !descriptionInput) return;
+
+                var fields = [
+                    {
+                        element: titleInput,
+                        messageElement: document.getElementById('listing-name-validation'),
+                        label: 'عنوان الإعلان',
+                        min: 40,
+                        max: 250
+                    },
+                    {
+                        element: descriptionInput,
+                        messageElement: document.getElementById('listing-desc-validation'),
+                        label: 'وصف الإعلان',
+                        min: 50,
+                        max: 1200
+                    }
+                ];
+
+                function validateField(field, showMessage) {
+                    var valueLength = field.element.value.trim().length;
+                    var message = '';
+
+                    if (valueLength === 0) {
+                        message = field.label + ' مطلوب.';
+                    } else if (valueLength < field.min) {
+                        message = 'يجب ألا يقل ' + field.label + ' عن ' + field.min +
+                            ' حرفًا. المتبقي ' + (field.min - valueLength) + ' حرف.';
+                    } else if (valueLength > field.max) {
+                        message = 'يجب ألا يزيد ' + field.label + ' عن ' + field.max +
+                            ' حرفًا. احذف ' + (valueLength - field.max) + ' حرف.';
+                    }
+
+                    field.element.setCustomValidity(message);
+                    field.element.classList.toggle('create-page-control-invalid', Boolean(message) && showMessage);
+
+                    if (field.messageElement) {
+                        field.messageElement.textContent = showMessage ? message : '';
+                        field.messageElement.classList.toggle('is-visible', Boolean(message) && showMessage);
+                    }
+
+                    return !message;
+                }
+
+                fields.forEach(function (field) {
+                    field.element.addEventListener('input', function () {
+                        validateField(field, true);
+                    });
+
+                    field.element.addEventListener('blur', function () {
+                        validateField(field, true);
+                    });
+
+                    field.element.addEventListener('invalid', function (event) {
+                        event.preventDefault();
+                        validateField(field, true);
+                    });
+
+                    if (field.element.value.trim().length > 0) {
+                        validateField(field, true);
+                    }
+                });
+
+                form.addEventListener('submit', function (event) {
+                    var firstInvalidField = null;
+
+                    fields.forEach(function (field) {
+                        if (!validateField(field, true) && !firstInvalidField) {
+                            firstInvalidField = field.element;
+                        }
+                    });
+
+                    if (firstInvalidField) {
+                        event.preventDefault();
+                        firstInvalidField.focus();
+                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
+
             function createPageSyncSteps() {
                 var panels = [
                     document.querySelector('.content-1'),
@@ -2233,6 +2351,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', function () {
+                setupAdvertisementTextValidation();
                 createPageSyncSteps();
 
                 var wizard = document.querySelector('.create-page-wizard');
