@@ -20,14 +20,58 @@
                                 <p>ابدأ الآن وأنشئ حسابك للوصول إلى أفضل تجربة عقارية بسهولة وأمان.</p>
                             </div>
 
+                                @php
+                                /*
+                                 * نظهر زر تسجيل الدخول فقط عندما يكون الخطأ بسبب وجود
+                                 * البريد الإلكتروني أو رقم الهاتف في حساب مسجل من قبل.
+                                 */
+                                $emailRegistrationError = $errors->first('email');
+                                $phoneRegistrationError = $errors->first('MOP')
+                                    ?: $errors->first('phone')
+                                    ?: $errors->first('mobile');
+
+                                $existingAccountErrorPattern = '/(already|taken|exists|registered|مسجل|مسجلة|مستخدم|مستخدمة|موجود|موجودة|سبق\s+(?:له\s+)?التسجيل|تم\s+التسجيل)/iu';
+
+                                $hasExistingAccountError = collect([
+                                    $emailRegistrationError,
+                                    $phoneRegistrationError,
+                                ])->filter()->contains(function ($message) use ($existingAccountErrorPattern) {
+                                    return preg_match($existingAccountErrorPattern, $message) === 1;
+                                });
+                            @endphp
+
                             @if (count($errors) > 0)
-                                <div class="rc-error-box">
+                                <div class="rc-error-box" role="alert">
                                     <strong>برجاء مراجعة البيانات التالية:</strong>
                                     <ul>
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
+
+                                    @if ($hasExistingAccountError)
+                                        <div class="rc-existing-account-notice">
+                                            <div class="rc-existing-account-content">
+                                                <span class="rc-existing-account-icon" aria-hidden="true">
+                                                    <i class="fa fa-user-circle-o"></i>
+                                                </span>
+
+                                                <div>
+                                                    <strong>يبدو أن لديك حسابًا بالفعل</strong>
+                                                    <p>
+                                                        البريد الإلكتروني أو رقم الهاتف مسجل من قبل.
+                                                        يمكنك تسجيل الدخول بدلًا من إنشاء حساب جديد.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <a href="{{ url(Config::get('app.locale').'/login') }}"
+                                               class="rc-existing-account-login-btn">
+                                                <span>الذهاب إلى تسجيل الدخول</span>
+                                                <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             @endif
 
@@ -192,9 +236,9 @@
                                                        class="myselect rc-control rc-file-control"
                                                        accept="image/png,image/jpeg,image/jpg,image/webp">
                                             </div>
-{{--                                            <small class="rc-help-text">--}}
-{{--                                                ارفع صورة بصيغة JPG أو PNG أو WEBP، ويفضل أن تكون بخلفية واضحة.--}}
-{{--                                            </small>--}}
+                                            {{--                                            <small class="rc-help-text">--}}
+                                            {{--                                                ارفع صورة بصيغة JPG أو PNG أو WEBP، ويفضل أن تكون بخلفية واضحة.--}}
+                                            {{--                                            </small>--}}
                                         </div>
                                     </div>
 
@@ -283,22 +327,22 @@
                             <img src="https://rightchoice-co.com/images/03%20(1).jpg"   style="   width: 100%;  border-radius: 30px;"  >
 
                         </div>
-{{--                        <div class="rc-service-company-box">--}}
-{{--                            <div class="rc-service-company-content">--}}
-{{--                                    <span class="rc-service-company-icon">--}}
-{{--                                        <i class="fa fa-building" aria-hidden="true"></i>--}}
-{{--                                    </span>--}}
-{{--                                <div>--}}
-{{--                                    <strong>هل لديك شركة خدمية؟</strong>--}}
-{{--                                    <small>أضف شركتك الآن لعرض خدماتك والوصول إلى عملاء أكثر.</small>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                        {{--                        <div class="rc-service-company-box">--}}
+                        {{--                            <div class="rc-service-company-content">--}}
+                        {{--                                    <span class="rc-service-company-icon">--}}
+                        {{--                                        <i class="fa fa-building" aria-hidden="true"></i>--}}
+                        {{--                                    </span>--}}
+                        {{--                                <div>--}}
+                        {{--                                    <strong>هل لديك شركة خدمية؟</strong>--}}
+                        {{--                                    <small>أضف شركتك الآن لعرض خدماتك والوصول إلى عملاء أكثر.</small>--}}
+                        {{--                                </div>--}}
+                        {{--                            </div>--}}
 
-{{--                            <a href="https://rightchoice-co.com/ar/add_company" class="rc-service-company-link">--}}
-{{--                                إضافة شركة خدمية--}}
-{{--                                <i class="fa fa-arrow-left" aria-hidden="true"></i>--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
+                        {{--                            <a href="https://rightchoice-co.com/ar/add_company" class="rc-service-company-link">--}}
+                        {{--                                إضافة شركة خدمية--}}
+                        {{--                                <i class="fa fa-arrow-left" aria-hidden="true"></i>--}}
+                        {{--                            </a>--}}
+                        {{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -465,6 +509,91 @@
         .rc-error-box ul {
             margin: 8px 0 0;
             padding-right: 20px;
+        }
+
+        .rc-existing-account-notice {
+            margin-top: 16px;
+            padding: 15px;
+            border: 1px solid rgba(11, 95, 159, 0.18);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.86);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 10px 24px rgba(22, 58, 92, 0.07);
+        }
+
+        .rc-existing-account-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .rc-existing-account-icon {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            border-radius: 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--rc-blue), var(--rc-teal));
+            box-shadow: 0 9px 20px rgba(11, 95, 159, 0.20);
+        }
+
+        .rc-existing-account-content strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--rc-blue-dark);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .rc-existing-account-content p {
+            margin: 0;
+            color: #687c93;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .rc-existing-account-login-btn {
+            min-height: 43px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 0 0 auto;
+            color: #fff !important;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none !important;
+            background: linear-gradient(135deg, var(--rc-blue), var(--rc-blue-dark));
+            box-shadow: 0 10px 22px rgba(11, 95, 159, 0.22);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .rc-existing-account-login-btn:hover,
+        .rc-existing-account-login-btn:focus {
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 27px rgba(11, 95, 159, 0.28);
+        }
+
+        @media (max-width: 767px) {
+            .rc-existing-account-notice {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .rc-existing-account-login-btn {
+                width: 100%;
+            }
         }
 
         .rc-service-company-box {
