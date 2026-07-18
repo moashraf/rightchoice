@@ -843,10 +843,32 @@
                                                 </span>
                                                 <small class="text-danger">{{ $errors->first('TYPE') }}</small>
                                             </div>
+
+                                            @if(Auth::user()->TYPE == 3)
+
+                                            <div class="form-group rc-form-field {{ $errors->has('name_of_real_estate_developer') ? 'has-error' : '' }}">
+                                                <label for="profile-phone">
+                                                    اسم شركه التطوير العقاري
+                                                </label>
+                                                <input
+                                                       type="text"
+                                                       class="myselect"
+                                                       name="name_of_real_estate_developer"
+
+                                                       id="profile-name_of_real_estate_developer"
+                                                       value="{{ Auth::user()->name_of_real_estate_developer }}">
+
+                                                <small class="text-danger">{{ $errors->first('name_of_real_estate_developer') }}</small>
+                                            </div>
+
+                                            @endif
+
                                         </div>
                                     </div>
 
-                                    <div class="rc-form-section">
+
+
+                                    <div class="rc-form-section img_img2">
                                         <div class="rc-section-heading">
                                             <span class="rc-section-icon" aria-hidden="true">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -909,7 +931,78 @@
                                         </div>
                                     </div>
 
-                                    <div class="rc-form-section">
+
+
+                                    @if(Auth::user()->TYPE == 3)
+
+                                    <div class="rc-form-section img_img">
+                                        <div class="rc-section-heading">
+                                            <span class="rc-section-icon" aria-hidden="true">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <h3> لوجو شركه التطوير العقاري  </h3>
+                                                <p>استخدم صورة واضحة بجودة مناسبة.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group {{ $errors->has('logo_real_estate_development_company') ? 'has-error' : '' }}">
+                                            <div class="rc-upload-box">
+                                                <div class="rc-current-photo" id="profile-image-preview-wrap">
+                                                    @if(!empty(Auth::user()->logo_real_estate_development_company))
+                                                        <a href="{{ URL::to('/').'/'.Auth::user()->logo_real_estate_development_company }}"
+                                                           data-toggle="lightbox">
+                                                            <img id="profile-image-preview"
+                                                                 src="{{ URL::to('/').'/'.Auth::user()->logo_real_estate_development_company }}"
+                                                                 alt="الصورة الشخصية"
+                                                                 loading="lazy">
+                                                        </a>
+                                                    @else
+                                                        <div class="rc-photo-placeholder" id="profile-image-placeholder">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"
+                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                                                <circle cx="12" cy="13" r="4"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <div class="rc-upload-content">
+                                                    <h4>اختيار صورة جديدة</h4>
+                                                    <p>يفضل استخدام صورة مربعة بصيغة JPG أو PNG لتظهر بشكل أفضل داخل حسابك.</p>
+
+                                                    <div class="rc-file-control">
+                                                        <input type="file"
+                                                               id="upload_file"
+                                                               name="logo_real_estate_development_company"
+                                                               class="rc-file-input"
+                                                               accept="image/png,image/jpeg,image/jpg,image/webp">
+                                                        <label class="rc-file-label" for="upload_file">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17"
+                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                                <polyline points="17 8 12 3 7 8"></polyline>
+                                                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                                                            </svg>
+                                                            رفع صورة
+                                                        </label>
+                                                        <span class="rc-file-name" id="selected-file-name">لم يتم اختيار ملف</span>
+                                                    </div>
+
+                                                    <small class="text-danger">{{ $errors->first('logo_real_estate_development_company') }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="rc-form-section password_password">
                                         <div class="rc-section-heading">
                                             <span class="rc-section-icon" aria-hidden="true">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

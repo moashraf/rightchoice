@@ -16,7 +16,7 @@ return [
     'properties_count'       => 'عدد العقارات',
     'view_profile'           => 'عرض الملف',
     'back_to_developers'     => 'كل المطورين',
-    'employee_name'          => 'اسم المسؤول',
+    'name_of_real_estate_developer'          => 'اسم المسؤول',
     'commercial_register'    => 'السجل التجاري',
 
     'verficationverfication' => '  تم إرسال رمز التحقق إلى هاتفك المحمول من   يرجى كتابته  هنا ',

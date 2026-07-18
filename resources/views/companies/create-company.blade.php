@@ -475,14 +475,14 @@
                                     <div class="col-lg-12">
 
                                         <div
-                                            class="form-group {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('name_of_real_estate_developer') ? ' has-error' : '' }}">
                                             <label
                                                 for="employe">{{ trans('langsite.company-employee') }}<span
                                                     class="text-danger">*</span></label>
-                                            <input  value="{{ old('Employee_Name') }}" required type="text" name="Employee_Name" id="employe"
+                                            <input  value="{{ old('name_of_real_estate_developer') }}" required type="text" name="name_of_real_estate_developer" id="employe"
                                                     class="form-control" value="">
                                             <small
-                                                class="text-danger">{{ $errors->first('Employee_Name') }}</small>
+                                                class="text-danger">{{ $errors->first('name_of_real_estate_developer') }}</small>
                                         </div>
 
                                     </div>

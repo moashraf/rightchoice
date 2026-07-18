@@ -92,7 +92,7 @@
                                         </label>
                                         <div class="rc-input-wrap">
                                             <i class="fa fa-user-o rc-input-icon" aria-hidden="true"></i>
-                                            <input oninvalid="this.setCustomValidity('   برجاء ادخال    الاسم     ')"
+                                            <input oninvalid="this.setCustomValidity('   برجاء ادخال    الاسم  ')"
                                                    oninput="this.setCustomValidity('')"
                                                    name="name"
                                                    autocomplete="off"
@@ -176,16 +176,16 @@
                                     </div>
 
                                     <div class="rc-extra-fields" id="motwar" style="display:none;">
-                                        {{--                                        <div class="rc-field {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">--}}
+                                        {{--                                        <div class="rc-field {{ $errors->has('name_of_real_estate_developer') ? ' has-error' : '' }}">--}}
                                         {{--                                            <label for="employe">--}}
                                         {{--                                                اسم الموظف المسئول--}}
                                         {{--                                                <span class="text-danger">*</span>--}}
                                         {{--                                            </label>--}}
                                         {{--                                            <div class="rc-input-wrap">--}}
                                         {{--                                                <i class="fa fa-id-badge rc-input-icon" aria-hidden="true"></i>--}}
-                                        {{--                                                <input type="text" name="Employee_Name" id="employe" class="form-control rc-control" value="{{ old('Employee_Name') }}">--}}
+                                        {{--                                                <input type="text" name="name_of_real_estate_developer" id="employe" class="form-control rc-control" value="{{ old('name_of_real_estate_developer') }}">--}}
                                         {{--                                            </div>--}}
-                                        {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Employee_Name') }}</small>--}}
+                                        {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('name_of_real_estate_developer') }}</small>--}}
                                         {{--                                        </div>--}}
 
                                         {{--                                        <div class="rc-field {{ $errors->has('Job_title') ? ' has-error' : '' }}">--}}
@@ -211,20 +211,21 @@
                                         {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>--}}
                                         {{--                                        </div>--}}
 
-                                        <div class="rc-field">
-                                            <label for="togary-id">
-                                                {{ trans('langsite.company-name') }}
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="rc-input-wrap">
-                                                <i class="fa fa-building-o rc-input-icon" aria-hidden="true"></i>
-                                                <input type="text" autocomplete="off" name="Commercial_Register" id="togary-id" class="myselect rc-control" value="{{ old('Commercial_Register') }}">
-                                            </div>
-                                        </div>
+            <div class="rc-field">
+                <label for="togary-id">
+                    اسم شركه التطوير العقاري
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="rc-input-wrap">
+                    <i class="fa fa-building-o rc-input-icon" aria-hidden="true"></i>
+                    <input type="text" autocomplete="off" name="name_of_real_estate_developer" id="togary-id"
+                           class="myselect rc-control" value="{{ old('name_of_real_estate_developer') }}">
+                </div>
+            </div>
 
                                         <div class="rc-field">
                                             <label for="company-logo">
-                                                لوجو الشركة
+                                                لوجو شركه التطوير العقاري
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <div class="rc-input-wrap rc-file-wrap">
@@ -272,7 +273,7 @@
                                         </label>
                                         <div class="rc-input-wrap">
                                             <i class="fa fa-lock rc-input-icon" aria-hidden="true"></i>
-                                            <input oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف       ')"
+                                            <input oninvalid="this.setCustomValidity('   برجاء ادخال       كلمه  المرور مكونه من اكثر من 4 ارقام او احرف  ')"
                                                    oninput="this.setCustomValidity('')"
                                                    minlength="4"
                                                    autocomplete="off"

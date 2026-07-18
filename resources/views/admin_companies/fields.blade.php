@@ -37,8 +37,8 @@
 
 <!-- Employee Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Employee_Name', 'Employee Name:') !!}
-    {!! Form::text('Employee_Name', null, ['class' => 'form-control']) !!}
+    {!! Form::label('name_of_real_estate_developer', 'name_of_real_estate_developer Name:') !!}
+    {!! Form::text('name_of_real_estate_developer', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Job Title Field -->

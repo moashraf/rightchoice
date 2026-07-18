@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
          'Job_title',
         'Tax_card',
          'Commercial_Register',
-         'Employee_Name',
+         'name_of_real_estate_developer',
          'profile_image',
          'phone_verfied_sms_status',
          'phone_sms_otp',

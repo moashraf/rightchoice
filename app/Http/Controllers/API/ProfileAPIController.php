@@ -83,7 +83,7 @@ class ProfileAPIController extends AppBaseController
                 'status'              => $user->status,
                 'status_label'        => $user->getStatus(),
                 'job_title'           => $user->Job_title,
-                'employee_name'       => $user->Employee_Name,
+                'name_of_real_estate_developer'       => $user->name_of_real_estate_developer,
                 'tax_card'            => $user->Tax_card,
                 'commercial_register' => $user->Commercial_Register,
                 'profile_image'       => $user->profile_image_url,
@@ -114,7 +114,7 @@ class ProfileAPIController extends AppBaseController
             'age'                 => $user->AGE,
             'profile_image'       => $user->profile_image_url,
             'status'              => $user->status,
-            'Employee_Name'       => $user->Employee_Name,
+            'name_of_real_estate_developer'       => $user->name_of_real_estate_developer,
             'Job_title'           => $user->Job_title,
             'Tax_card'            => $user->Tax_card,
             'Commercial_Register' => $user->Commercial_Register,
@@ -139,7 +139,7 @@ class ProfileAPIController extends AppBaseController
             'email'               => "required|email|unique:users,email,{$user->id}",
             'AGE'                 => 'nullable|integer',
             'TYPE'                => 'nullable|integer',
-            'Employee_Name'       => ($request->TYPE == 3 ? 'required' : 'nullable'),
+            'name_of_real_estate_developer'       => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'Job_title'           => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'Tax_card'            => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'Commercial_Register' => ($request->TYPE == 3 ? 'required' : 'nullable'),
@@ -152,8 +152,7 @@ class ProfileAPIController extends AppBaseController
             'email.unique'                 => 'البريد الإلكتروني مستخدم مسبقًا.',
             'AGE.integer'                  => 'العمر يجب أن يكون رقمًا صحيحًا.',
             'TYPE.integer'                 => 'نوع المستخدم يجب أن يكون رقمًا صحيحًا.',
-            'Employee_Name.required'       => 'حقل اسم الموظف مطلوب.',
-            'Job_title.required'           => 'حقل المسمى الوظيفي مطلوب.',
+             'Job_title.required'           => 'حقل المسمى الوظيفي مطلوب.',
             'Tax_card.required'            => 'حقل البطاقة الضريبية مطلوب.',
             'Commercial_Register.required' => 'حقل السجل التجاري مطلوب.',
             'img.image'                    => 'الملف يجب أن يكون صورة.',
@@ -165,7 +164,7 @@ class ProfileAPIController extends AppBaseController
             return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
         }
 
-        $data = $request->only(['name', 'email', 'AGE', 'TYPE', 'Employee_Name', 'Job_title', 'Tax_card', 'Commercial_Register']);
+        $data = $request->only(['name', 'email', 'AGE', 'TYPE', 'name_of_real_estate_developer', 'Job_title', 'Tax_card', 'Commercial_Register']);
 
         if ($request->hasFile('img')) {
             $data['profile_image'] = _uploadFileWeb($request->img, 'user/');
@@ -175,7 +174,7 @@ class ProfileAPIController extends AppBaseController
 
         return $this->sendResponse($user->fresh()->only([
             'id', 'name', 'email', 'MOP', 'AGE', 'TYPE', 'profile_image',
-            'Employee_Name', 'Job_title', 'Tax_card', 'Commercial_Register',
+            'name_of_real_estate_developer', 'Job_title', 'Tax_card', 'Commercial_Register',
         ]), 'Profile updated successfully');
     }
 

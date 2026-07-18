@@ -16,7 +16,7 @@ return [
     'properties_count'       => 'Properties',
     'view_profile'           => 'View Profile',
     'back_to_developers'     => 'All Developers',
-    'employee_name'          => 'Contact Person',
+    'name_of_real_estate_developer'          => 'Contact Person',
     'commercial_register'    => 'Commercial Register',
 
     'verficationverfication' => ' A verfication code has been sent to your mobile from Rightchoice please type it below',

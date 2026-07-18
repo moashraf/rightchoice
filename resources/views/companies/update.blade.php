@@ -105,17 +105,17 @@
 
 
 
-                                        <div class="form-group {{ $errors->has('Employee_Name') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('name_of_real_estate_developer') ? ' has-error' : '' }}">
 
                                             <label for="employe">اسم الموظف المسئول<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input required type="text" name="Employee_Name" id="employe"
+                                            <input required type="text" name="name_of_real_estate_developer" id="employe"
 
-                                                class="form-control" value="{{  $company->Employee_Name }}">
+                                                class="form-control" value="{{  $company->name_of_real_estate_developer }}">
 
-                                            <small class="text-danger">{{ $errors->first('Employee_Name') }}</small>
+                                            <small class="text-danger">{{ $errors->first('name_of_real_estate_developer') }}</small>
 
                                         </div>
 

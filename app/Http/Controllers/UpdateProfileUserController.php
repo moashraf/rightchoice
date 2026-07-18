@@ -14,8 +14,7 @@ class UpdateProfileUserController extends Controller
     {
         $vendor = auth()->user();
 
-
-        if ($request->isMethod('post')) {
+         if ($request->isMethod('post')) {
             if ($request->has('MOP') && (string) $request->MOP !== (string) $vendor->MOP) {
                 return redirect()->back()
                     ->withErrors(['MOP' => 'لا يمكن تغيير رقم الهاتف من لوحة التحكم.'])
@@ -30,7 +29,7 @@ class UpdateProfileUserController extends Controller
                 'img'                   => ( $request->img != null ? 'required|image|mimes:jpeg,jpg,png,gif' : ''),
                 'AGE'                   => ( $request->AGE != null ? 'required|integer' : ''),
                 'TYPE'                  => ( $request->TYPE != null ? 'required|integer' : ''),
-                'Employee_Name'         => ($request->TYPE != null && $request->TYPE  == 3 ? 'required' : ''),
+                'name_of_real_estate_developer'         => ($request->TYPE != null && $request->TYPE  == 3 ? 'required' : ''),
                 'Job_title'             => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required|integer|exists:jobTitles,id' : ($request->Job_title != null ? 'integer|exists:jobTitles,id' : '')),
                 'Tax_card'              => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required' : ''),
                 'Commercial_Register'   => ($request->TYPE != null &&  $request->TYPE  == 3 ? 'required' : ''),
@@ -55,7 +54,7 @@ class UpdateProfileUserController extends Controller
                                    $request->merge(['password' =>  Hash::make($request->password)]);
 
                                    //update User
-                                    $vendor->update($request->only(['name','email','password','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
+                                    $vendor->update($request->only(['name','email','password','AGE','TYPE','profile_image','name_of_real_estate_developer','Job_title','Tax_card','Commercial_Register']));
 
                                     session()->flash('success', 'تم التعديل بنجاح');
                                      return redirect()->back();
@@ -67,7 +66,7 @@ class UpdateProfileUserController extends Controller
                         }else{
 
                             //update User
-                            $vendor->update($request->only(['name','email','AGE','TYPE','profile_image','Employee_Name','Job_title','Tax_card','Commercial_Register']));
+                            $vendor->update($request->only(['name','email','AGE','TYPE','profile_image','name_of_real_estate_developer','Job_title','Tax_card','Commercial_Register']));
 
                             session()->flash('success', 'تم التعديل بنجاح');
                             return redirect()->back();

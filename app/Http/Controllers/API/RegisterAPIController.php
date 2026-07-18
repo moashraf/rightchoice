@@ -31,8 +31,7 @@ class RegisterAPIController extends AppBaseController
      * @bodyParam AGE               string optional  العمر
      * @bodyParam Commercial_Register string optional اسم الشركة / السجل التجاري
      * @bodyParam Tax_card          string optional  البطاقة الضريبية
-     * @bodyParam Employee_Name     string optional  اسم الموظف المسؤول
-     * @bodyParam Job_title         string optional  المسمى الوظيفي
+      * @bodyParam Job_title         string optional  المسمى الوظيفي
      * @bodyParam invited_by        string optional  كود الدعوة
      */
     public function register(Request $request): JsonResponse
@@ -74,7 +73,7 @@ class RegisterAPIController extends AppBaseController
             'AGE'                 => $request->AGE,
             'Commercial_Register' => $request->Commercial_Register,
             'Tax_card'            => $request->Tax_card,
-            'Employee_Name'       => $request->Employee_Name,
+            'name_of_real_estate_developer'       => $request->name_of_real_estate_developer,
             'Job_title'           => $request->Job_title,
             'invited_by'          => $request->invited_by,
         ]);

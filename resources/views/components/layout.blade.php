@@ -555,14 +555,11 @@
                         @endif
                         @if(Auth::check())
 
-                            <li class="add-listing">
+                            <li class="add-listing 369852">
                                 <a href=""><span class=""></span>
                                     @if(Auth::check())
-                                        @if(Auth::user()->TYPE == 3)
-                                            {{\Illuminate\Support\Str::limit(Auth::user()->Employee_Name, 10, $ned='') }}
-                                        @else
-                                            {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
-                                        @endif
+                                        {{\Illuminate\Support\Str::limit(Auth::user()->name, 10, $ned='') }}
+
                                     @else
                                         {{ trans('langsite.login')}}
                                     @endif
