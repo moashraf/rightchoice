@@ -20,7 +20,23 @@
                                 <p>ابدأ الآن وأنشئ حسابك للوصول إلى أفضل تجربة عقارية بسهولة وأمان.</p>
                             </div>
 
-                                @php
+                            <div class="rc-login-prompt" role="note">
+                                <div class="rc-login-prompt-content">
+
+                                    <div>
+                                        <strong>هل أنت مسجل من قبل؟</strong>
+                                        <p>ادخل إلى حسابك مباشرة بدلًا من إنشاء حساب جديد.</p>
+                                    </div>
+                                </div>
+
+                                <a href="{{ url(Config::get('app.locale').'/login') }}"
+                                   class="rc-login-prompt-btn">
+                                    <span>تسجيل الدخول</span>
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                </a>
+                            </div>
+
+                            @php
                                 /*
                                  * نظهر زر تسجيل الدخول فقط عندما يكون الخطأ بسبب وجود
                                  * البريد الإلكتروني أو رقم الهاتف في حساب مسجل من قبل.
@@ -211,17 +227,17 @@
                                         {{--                                            <small class="text-danger rc-help-text">{{ $errors->first('Job_title') }}</small>--}}
                                         {{--                                        </div>--}}
 
-            <div class="rc-field">
-                <label for="togary-id">
-                    اسم شركه التطوير العقاري
-                    <span class="text-danger">*</span>
-                </label>
-                <div class="rc-input-wrap">
-                    <i class="fa fa-building-o rc-input-icon" aria-hidden="true"></i>
-                    <input type="text" autocomplete="off" name="name_of_real_estate_developer" id="togary-id"
-                           class="myselect rc-control" value="{{ old('name_of_real_estate_developer') }}">
-                </div>
-            </div>
+                                        <div class="rc-field">
+                                            <label for="togary-id">
+                                                اسم شركه التطوير العقاري
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="rc-input-wrap">
+                                                <i class="fa fa-building-o rc-input-icon" aria-hidden="true"></i>
+                                                <input type="text" autocomplete="off" name="name_of_real_estate_developer" id="togary-id"
+                                                       class="myselect rc-control" value="{{ old('name_of_real_estate_developer') }}">
+                                            </div>
+                                        </div>
 
                                         <div class="rc-field">
                                             <label for="company-logo">
@@ -497,6 +513,68 @@
             line-height: 1.8;
         }
 
+        .rc-login-prompt {
+            margin: -8px 0 28px;
+            padding: 14px 16px;
+            border: 1px solid rgba(11, 95, 159, 0.14);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(11, 95, 159, 0.055), rgba(24, 199, 161, 0.08));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 12px 28px rgba(20, 74, 116, 0.06);
+        }
+
+        .rc-login-prompt-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+
+
+        .rc-login-prompt-content strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--rc-blue-dark);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .rc-login-prompt-content p {
+            margin: 0;
+            color: #687c93;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .rc-login-prompt-btn {
+            min-height: 42px;
+            padding: 9px 17px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 0 0 auto;
+            color: #fff !important;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none !important;
+            background: linear-gradient(135deg, var(--rc-blue), var(--rc-blue-dark));
+            box-shadow: 0 10px 22px rgba(11, 95, 159, 0.20);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .rc-login-prompt-btn:hover,
+        .rc-login-prompt-btn:focus {
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 27px rgba(11, 95, 159, 0.27);
+        }
+
         .rc-error-box {
             background: rgba(255, 75, 95, 0.08);
             border: 1px solid rgba(255, 75, 95, 0.22);
@@ -587,11 +665,13 @@
         }
 
         @media (max-width: 767px) {
+            .rc-login-prompt,
             .rc-existing-account-notice {
                 align-items: stretch;
                 flex-direction: column;
             }
 
+            .rc-login-prompt-btn,
             .rc-existing-account-login-btn {
                 width: 100%;
             }
@@ -779,13 +859,22 @@
 
         .rc-extra-fields {
             grid-column: 1 / -1;
+            width: 100%;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+            gap: 20px 24px;
             padding: 20px;
             border-radius: 18px;
             border: 1px dashed rgba(11, 95, 159, 0.20);
             background: linear-gradient(135deg, rgba(11, 95, 159, 0.04), rgba(24, 199, 161, 0.05));
+        }
+
+        .rc-extra-fields > .rc-field,
+        .rc-extra-fields .rc-input-wrap,
+        .rc-extra-fields .rc-control {
+            width: 100%;
+            min-width: 0;
         }
 
         #motwar[style*="display:none"] {
