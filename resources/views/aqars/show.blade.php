@@ -29,19 +29,58 @@
     @if($aqarDesc)
         @section('og_description', $aqarDesc)
     @endif
-    <section id="inner-listing">
+    <section id="inner-listing" class="property-show-modern" dir="rtl">
         <div class="container">
-            <x-ads :randomAds="$random_ads ?? null"/>
-            <h3 class="show_show headingTitle2 hideTitle2" style=" margin-bottom: 28px;  font-size: 24px!important;">
-                {{ $aqar->title }}
-            </h3>
+{{--            <x-ads :randomAds="$random_ads ?? null"/>--}}
+            <div class="property-page-heading">
+                <div class="property-page-heading__content">
+                    <span class="property-kicker">
+                        <i class="fas fa-building"></i>
+                        تفاصيل العقار
+                    </span>
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="sticky">
+                    <h1 class="property-page-title">{{ $aqar->title }}</h1>
 
-                        <div class="card">
-                            <div class="card-body">
+                    <div class="property-page-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>
+                            @if ($aqar->governrateq)
+                                {{ $aqar->governrateq->governrate }}
+                            @endif
+                            @if ($aqar->districte)
+                                <span class="property-location-separator">،</span>
+                                {{ $aqar->districte->district }}
+                            @endif
+                            @if ($aqar->subAreaa)
+                                <span class="property-location-separator">،</span>
+                                {{ $aqar->subAreaa->area }}
+                            @endif
+                        </span>
+                    </div>
+                </div>
+
+                <div class="property-page-heading__badges">
+                    @if ($aqar->offerTypes)
+                        <span class="property-heading-badge property-heading-badge--primary">
+                            {{ $aqar->offerTypes->type_offer }}
+                        </span>
+                    @endif
+
+                    @if ($aqar->vip == 1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1)
+                        <span class="property-heading-badge property-heading-badge--accent">
+                            <i class="fas fa-star"></i>
+                            عقار مميز
+                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="row property-layout">
+                <div class="col-lg-4 property-sidebar-column">
+                    <div class="sticky property-sidebar-sticky">
+
+                        <div class="card property-summary-card">
+                            <div class="card-body property-summary-card__body">
                                 <h4 class="headingTitle2">{{ $aqar->title }}</h4>
 
                                 <div dir="rtl">
@@ -98,7 +137,7 @@
                                 </div>
                                 <hr class="hr-add">
 
-                                <div class="text-center">
+                                <div class="text-center property-action-grid">
 
                                     @if(Auth::user())
                                         @if(Auth::user()->isCompanyAccount())
@@ -107,71 +146,71 @@
                                                 حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.
                                             </div>
                                         @else
-                                            <?php if ($show && $aqar->user != null){ ?>
-                                        <div id="contMop">
-                                            @if($show2)
-                                                <a class="btn btn-success"
-                                                   href="tel:{{ $aqar->user->MOP }}">
-                                                    {{ $aqar->user->MOP }}
-                                                </a>
+                                                <?php if ($show && $aqar->user != null){ ?>
+                                            <div id="contMop">
+                                                @if($show2)
+                                                    <a class="btn btn-success"
+                                                       href="tel:{{ $aqar->user->MOP }}">
+                                                        {{ $aqar->user->MOP }}
+                                                    </a>
 
-                                                @php
-                                                    $whatsappPhone = preg_replace('/[^0-9]/', '', $aqar->user->MOP ?? '');
-                                                    if (!str_starts_with($whatsappPhone, '20')) {
-                                                        $whatsappPhone = '20' . ltrim($whatsappPhone, '0');
-                                                    }
-                                                    $whatsappMsg = urlencode(
-                                                        "السلام عليكم، أنا مهتم بالعقار التالي:\n" .
-                                                        "العنوان: " . ($aqar->title ?? '') . "\n" .
-                                                        "المساحة: " . ($aqar->total_area ?? '') . " م²\n" .
-                                                        "الغرف: " . ($aqar->rooms ?? '') . "\n" .
-                                                        "السعر: " . ($aqar->total_price ?? $aqar->monthly_rent ?? '') . " جنيه\n" .
-                                                        "رابط العقار: " . url()->current()
-                                                    );
-                                                @endphp
-                                                <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
-                                                   target="_blank"
-                                                   class=" normal_normal btn btn-success  "
-                                                   style="background-color:#25D366; border-color:#25D366;"
-                                                   onclick="trackWhatsappContact({{ $aqar->id }})">
-                                                    <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png"
-                                                         width="20" height="20"/>
-                                                    واتساب
-                                                </a>
+                                                    @php
+                                                        $whatsappPhone = preg_replace('/[^0-9]/', '', $aqar->user->MOP ?? '');
+                                                        if (!str_starts_with($whatsappPhone, '20')) {
+                                                            $whatsappPhone = '20' . ltrim($whatsappPhone, '0');
+                                                        }
+                                                        $whatsappMsg = urlencode(
+                                                            "السلام عليكم، أنا مهتم بالعقار التالي:\n" .
+                                                            "العنوان: " . ($aqar->title ?? '') . "\n" .
+                                                            "المساحة: " . ($aqar->total_area ?? '') . " م²\n" .
+                                                            "الغرف: " . ($aqar->rooms ?? '') . "\n" .
+                                                            "السعر: " . ($aqar->total_price ?? $aqar->monthly_rent ?? '') . " جنيه\n" .
+                                                            "رابط العقار: " . url()->current()
+                                                        );
+                                                    @endphp
+                                                    <a href="https://wa.me/{{ $whatsappPhone }}?text={{ $whatsappMsg }}"
+                                                       target="_blank"
+                                                       class=" normal_normal btn btn-success  "
+                                                       style="background-color:#25D366; border-color:#25D366;"
+                                                       onclick="trackWhatsappContact({{ $aqar->id }})">
+                                                        <img src="https://img.icons8.com/color/20/000000/whatsapp--v1.png"
+                                                             width="20" height="20"/>
+                                                        واتساب
+                                                    </a>
 
-                                                <script>
-                                                function trackWhatsappContact(aqarId) {
-                                                    fetch('{{ route("track-whatsapp-contact") }}', {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'Content-Type': 'application/json',
-                                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                        },
-                                                        body: JSON.stringify({ aqar_id: aqarId })
-                                                    }).catch(function(){});
-                                                }
-                                                </script>
+                                                    <script>
+                                                        function trackWhatsappContact(aqarId) {
+                                                            fetch('{{ route("track-whatsapp-contact") }}', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                },
+                                                                body: JSON.stringify({ aqar_id: aqarId })
+                                                            }).catch(function(){});
+                                                        }
+                                                    </script>
 
-                                            @else
+                                                @else
 
-                                                <button
-                                                    onclick="document.getElementById('myModal').style.display = 'block'"
-                                                    class="btn btn-success">اظهر الرقم
-                                                </button>
-                                            @endif
-                                        </div>
+                                                    <button
+                                                        onclick="document.getElementById('myModal').style.display = 'block'"
+                                                        class="btn btn-success">اظهر الرقم
+                                                    </button>
+                                                @endif
+                                            </div>
 
-                                        <?php }else{ ?>
+                                            <?php }else{ ?>
 
-                                        <a id="notShow" href="#"
-                                           onclick="document.getElementById('myModal2').style.display = 'block'"
-                                           class="btn btn-success mt-3"><img
-                                                src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20"
-                                                height="20"/>اتصال</a>
+                                            <a id="notShow" href="#"
+                                               onclick="document.getElementById('myModal2').style.display = 'block'"
+                                               class="btn btn-success mt-3"><img
+                                                    src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20"
+                                                    height="20"/>اتصال</a>
 
 
 
-                                        <?php } ?>
+                                            <?php } ?>
 
                                         @endif
 
@@ -230,8 +269,8 @@
 
 
                 </div>
-                <div class="col-lg-8">
-                    <div class="images" dir="ltr">
+                <div class="col-lg-8 property-content-column">
+                    <div class="images property-gallery-card" dir="ltr">
 
 
                         @if($aqar->mainImage)
@@ -648,7 +687,7 @@
                     </div>
                     <?php if ($aqar->user != null){ ?>
 
-                    <div class="same-owner mt-5">
+                    <div class="same-owner property-owner-card mt-5">
 
                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
                              width="80">
@@ -668,7 +707,7 @@
 
     </section>
 
-    <section class="" dir="ltr">
+    <section class="property-similar-modern" dir="ltr">
         <div class="container">
 
             <div class="row justify-content-center">
@@ -689,7 +728,7 @@
 
                         @foreach ($allAqars as $aqarSim)
                             <div class="single-items">
-                                <div class="property-listing shadow-none property-2 border">
+                                <div class="property-listing shadow-none property-2 border property-similar-card">
 
                                     <div class="listing-img-wrapper">
 
@@ -830,6 +869,700 @@
 
         </div>
     </section>
+
+
+    <style>
+        /* =========================================================
+           Modern property page — Right Choice brand colors
+           Primary: #196aa2 | Accent: #0fca98
+           ========================================================= */
+        :root {
+            --rc-primary: #196aa2;
+            --rc-primary-dark: #0f4f7d;
+            --rc-primary-soft: #eaf5fc;
+            --rc-accent: #0fca98;
+            --rc-accent-dark: #08a77d;
+            --rc-accent-soft: #e9fbf6;
+            --rc-ink: #132238;
+            --rc-muted: #68778b;
+            --rc-border: #e5edf4;
+            --rc-surface: #ffffff;
+            --rc-page: #f5f9fc;
+            --rc-shadow-sm: 0 10px 30px rgba(25, 106, 162, 0.08);
+            --rc-shadow-lg: 0 22px 60px rgba(25, 106, 162, 0.14);
+            --rc-radius-sm: 12px;
+            --rc-radius-md: 18px;
+            --rc-radius-lg: 26px;
+        }
+
+        .property-show-modern {
+            position: relative;
+            padding: 34px 0 62px;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(15, 202, 152, 0.09), transparent 28%),
+                radial-gradient(circle at 92% 2%, rgba(25, 106, 162, 0.11), transparent 32%),
+                var(--rc-page);
+            overflow: hidden;
+        }
+
+        .property-show-modern::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--rc-primary), var(--rc-accent));
+        }
+
+        .property-show-modern > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .property-page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin: 24px 0 30px;
+            padding: 24px 28px;
+            border: 1px solid rgba(25, 106, 162, 0.11);
+            border-radius: var(--rc-radius-lg);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--rc-shadow-sm);
+            backdrop-filter: blur(12px);
+        }
+
+        .property-page-heading__content {
+            min-width: 0;
+        }
+
+        .property-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--rc-primary);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .property-kicker i {
+            color: var(--rc-accent);
+        }
+
+        .property-page-title {
+            margin: 0;
+            color: var(--rc-ink);
+            font-size: clamp(25px, 3vw, 39px);
+            font-weight: 800;
+            line-height: 1.35;
+            letter-spacing: -0.5px;
+        }
+
+        .property-page-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            color: var(--rc-muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .property-page-location i {
+            color: var(--rc-accent);
+        }
+
+        .property-location-separator {
+            color: #a0acb9;
+        }
+
+        .property-page-heading__badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 9px;
+            flex-shrink: 0;
+        }
+
+        .property-heading-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .property-heading-badge--primary {
+            color: var(--rc-primary-dark);
+            background: var(--rc-primary-soft);
+            border: 1px solid rgba(25, 106, 162, 0.14);
+        }
+
+        .property-heading-badge--accent {
+            color: #057657;
+            background: var(--rc-accent-soft);
+            border: 1px solid rgba(15, 202, 152, 0.2);
+        }
+
+        .property-layout {
+            align-items: flex-start;
+        }
+
+        .property-sidebar-sticky {
+            position: sticky;
+            top: 95px;
+            z-index: 10;
+        }
+
+        .property-summary-card {
+            overflow: hidden;
+            border: 0 !important;
+            border-radius: var(--rc-radius-lg) !important;
+            background: var(--rc-surface);
+            box-shadow: var(--rc-shadow-lg);
+        }
+
+        .property-summary-card::before {
+            content: "";
+            display: block;
+            height: 6px;
+            background: linear-gradient(90deg, var(--rc-primary), var(--rc-accent));
+        }
+
+        .property-summary-card__body {
+            padding: 26px !important;
+        }
+
+        .property-summary-card .headingTitle2 {
+            margin: 0 0 16px;
+            color: var(--rc-ink);
+            font-size: 21px;
+            font-weight: 800;
+            line-height: 1.5;
+        }
+
+        .property-summary-card h5 {
+            margin: 0 0 5px;
+            color: var(--rc-primary);
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .property-summary-card h6 {
+            margin-top: 8px;
+            color: var(--rc-muted) !important;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .property-show-modern .hr-add {
+            margin: 22px 0;
+            border: 0;
+            border-top: 1px solid var(--rc-border);
+        }
+
+        .property-show-modern .fr-grid-deatil-flex {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .property-show-modern .fr-grid-deatil-flex > br {
+            display: none;
+        }
+
+        .property-show-modern .listing-card-info-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 52px;
+            padding: 11px 48px 11px 13px;
+            border: 1px solid var(--rc-border);
+            border-radius: var(--rc-radius-sm);
+            background: #fbfdff;
+            color: #34455b;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.5;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .property-show-modern .listing-card-info-icon:hover {
+            transform: translateY(-2px);
+            border-color: rgba(25, 106, 162, 0.24);
+            box-shadow: 0 9px 22px rgba(25, 106, 162, 0.08);
+        }
+
+        .property-show-modern .listing-card-info-icon .inc-fleat-icon,
+        .property-show-modern .listing-card-info-icon > .fa {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 27px;
+            height: 27px;
+            margin: 0;
+            border-radius: 9px;
+            background: linear-gradient(145deg, var(--rc-primary-soft), var(--rc-accent-soft));
+            color: var(--rc-primary);
+            transform: translateY(-50%);
+        }
+
+        .property-show-modern .listing-card-info-icon img {
+            width: 15px !important;
+            height: 15px;
+            object-fit: contain;
+        }
+
+        .property-action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            text-align: initial !important;
+        }
+
+        .property-action-grid > form,
+        .property-action-grid > #contMop,
+        .property-action-grid > .alert {
+            grid-column: 1 / -1;
+            width: 100%;
+            margin: 0;
+        }
+
+        .property-action-grid > form,
+        .property-action-grid > #contMop {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .property-action-grid > #contMop .btn {
+            width: 100% !important;
+        }
+
+        .property-action-grid .btn,
+        .property-action-grid input[type="submit"] {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            width: 100% !important;
+            min-height: 44px;
+            margin: 0 !important;
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            box-shadow: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .property-action-grid .btn:hover,
+        .property-action-grid input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(25, 106, 162, 0.13);
+        }
+
+        .property-action-grid .btn-success,
+        .property-action-grid input.btn-success {
+            color: #fff;
+            background: linear-gradient(135deg, var(--rc-accent), var(--rc-accent-dark));
+        }
+
+        .property-action-grid .our-btn,
+        .property-action-grid .btn-compare-toggle {
+            color: #fff !important;
+            background: linear-gradient(135deg, var(--rc-primary), var(--rc-primary-dark)) !important;
+        }
+
+        .property-action-grid .btn-light {
+            color: var(--rc-primary-dark);
+            background: var(--rc-primary-soft);
+            border: 1px solid rgba(25, 106, 162, 0.14);
+        }
+
+        .property-gallery-card {
+            position: relative;
+            padding: 12px;
+            border: 1px solid rgba(25, 106, 162, 0.09);
+            border-radius: var(--rc-radius-lg);
+            background: var(--rc-surface);
+            box-shadow: var(--rc-shadow-sm);
+        }
+
+        .property-gallery-card .main-img {
+            display: block;
+            width: 100%;
+            min-height: 430px;
+            max-height: 610px;
+            border-radius: 20px;
+            object-fit: cover;
+            background: #eaf0f5;
+        }
+
+        .property-gallery-card .watermarked {
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .property-gallery-card .lazy {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 11px;
+        }
+
+        .property-gallery-card .lazy a {
+            display: block;
+            min-width: 0;
+        }
+
+        .property-gallery-card .lazy .watermarked {
+            border-radius: 12px;
+        }
+
+        .property-gallery-card .lazy .img-thumbnail {
+            width: 100%;
+            height: 86px;
+            padding: 0;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            object-fit: cover;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .property-gallery-card .lazy a:hover .img-thumbnail {
+            transform: translateY(-2px);
+            border-color: var(--rc-accent);
+        }
+
+        .property-gallery-card .lightbtn {
+            position: absolute;
+            left: 26px;
+            top: 392px;
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 12px;
+            color: var(--rc-ink);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.13);
+            backdrop-filter: blur(10px);
+        }
+
+        .property-gallery-card .views {
+            top: 25px !important;
+            left: 25px !important;
+            z-index: 6;
+        }
+
+        .property-gallery-card .views-1,
+        .property-gallery-card .viewsRed {
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 900;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .property-gallery-card .views-1 {
+            background: linear-gradient(135deg, var(--rc-accent), var(--rc-accent-dark));
+        }
+
+        .property-gallery-card .viewsRed {
+            background: linear-gradient(135deg, #ef5666, #c82333);
+        }
+
+        .property-content-column > .details,
+        .property-gallery-card > .details {
+            margin-top: 22px !important;
+            padding: 26px;
+            border: 1px solid var(--rc-border);
+            border-radius: var(--rc-radius-md);
+            background: var(--rc-surface);
+            box-shadow: 0 10px 28px rgba(18, 49, 75, 0.05);
+        }
+
+        .property-show-modern .headingTitle2 {
+            position: relative;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            color: var(--rc-ink);
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .property-show-modern .headingTitle2::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 58px;
+            height: 4px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--rc-primary), var(--rc-accent));
+        }
+
+        .property-content-column > .details p {
+            color: #4c5d71;
+            font-size: 15px;
+            line-height: 2;
+        }
+
+        .property-content-column > .details p[style] {
+            padding: 14px 17px !important;
+            border: 1px solid rgba(25, 106, 162, 0.12);
+            border-radius: 13px;
+            color: var(--rc-primary-dark);
+            background: linear-gradient(135deg, var(--rc-primary-soft), #f7fcff) !important;
+        }
+
+        .btnMore {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            color: var(--rc-primary) !important;
+            background: var(--rc-primary-soft);
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .property-owner-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 22px;
+            border: 1px solid var(--rc-border);
+            border-radius: var(--rc-radius-md);
+            background: linear-gradient(135deg, #fff, var(--rc-accent-soft));
+            box-shadow: var(--rc-shadow-sm);
+        }
+
+        .property-owner-card img {
+            width: 64px;
+            height: 64px;
+            border: 4px solid #fff;
+            box-shadow: 0 7px 18px rgba(25, 106, 162, 0.14);
+        }
+
+        .property-owner-card span {
+            color: var(--rc-ink);
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .property-similar-modern {
+            padding: 66px 0 76px;
+            background: #fff;
+        }
+
+        .property-similar-modern .sec-heading {
+            margin-bottom: 32px !important;
+        }
+
+        .property-similar-modern .headingTitle {
+            color: var(--rc-ink);
+            font-weight: 900;
+        }
+
+        .property-similar-modern .sec-heading p {
+            color: var(--rc-muted);
+        }
+
+        .property-similar-card {
+            overflow: hidden;
+            border: 1px solid var(--rc-border) !important;
+            border-radius: 20px !important;
+            background: #fff;
+            box-shadow: 0 12px 35px rgba(25, 106, 162, 0.08) !important;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .property-similar-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(25, 106, 162, 0.14) !important;
+        }
+
+        .property-similar-card .listing-img-wrapper img {
+            transition: transform 0.35s ease;
+        }
+
+        .property-similar-card:hover .listing-img-wrapper img {
+            transform: scale(1.04);
+        }
+
+        .property-similar-card .prt-view {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 78px;
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--rc-primary), var(--rc-primary-dark));
+            font-weight: 800;
+        }
+
+        .modal .modal-content {
+            max-width: 520px;
+            margin: 8vh auto 0;
+            padding: 28px !important;
+            border: 0 !important;
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+        }
+
+        @media (max-width: 1199.98px) {
+            .property-gallery-card .main-img {
+                min-height: 380px;
+            }
+
+            .property-gallery-card .lightbtn {
+                top: 342px;
+            }
+
+            .property-show-modern .fr-grid-deatil-flex {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .property-page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .property-page-heading__badges {
+                justify-content: flex-start;
+            }
+
+            .property-sidebar-column {
+                order: 2;
+                margin-top: 24px;
+            }
+
+            .property-content-column {
+                order: 1;
+            }
+
+            .property-sidebar-sticky {
+                position: static;
+            }
+
+            .property-show-modern .fr-grid-deatil-flex {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .property-show-modern {
+                padding: 16px 0 42px;
+            }
+
+            .property-page-heading {
+                margin: 16px 0 20px;
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .property-page-title {
+                font-size: 25px;
+            }
+
+            .property-summary-card__body,
+            .property-content-column > .details,
+            .property-gallery-card > .details {
+                padding: 20px !important;
+            }
+
+            .property-gallery-card {
+                padding: 8px;
+                border-radius: 20px;
+            }
+
+            .property-gallery-card .main-img {
+                min-height: 300px;
+                max-height: 420px;
+                border-radius: 16px;
+            }
+
+            .property-gallery-card .watermarked {
+                border-radius: 16px;
+            }
+
+            .property-gallery-card .lazy {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 7px;
+            }
+
+            .property-gallery-card .lazy .img-thumbnail {
+                height: 67px;
+            }
+
+            .property-gallery-card .lightbtn {
+                top: 255px;
+                left: 18px;
+                padding: 8px 11px;
+                font-size: 11px;
+            }
+
+            .property-show-modern .fr-grid-deatil-flex,
+            .property-action-grid,
+            .property-action-grid > form {
+                grid-template-columns: 1fr;
+            }
+
+            .property-action-grid > * {
+                grid-column: 1 / -1;
+            }
+
+            .property-similar-modern {
+                padding: 48px 0 58px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .property-page-heading__badges {
+                width: 100%;
+            }
+
+            .property-heading-badge {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .property-gallery-card .lazy {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .property-gallery-card .main-img {
+                min-height: 255px;
+            }
+
+            .property-gallery-card .lightbtn {
+                position: static;
+                margin: 10px 4px 2px;
+            }
+        }
+    </style>
 
     {{-- ===== Report Popup ===== --}}
     <div id="overlay"
@@ -1318,19 +2051,51 @@
         $metaSetting = \App\Models\SettingSite::first();
     @endphp
     @if($metaSetting && $metaSetting->fb_conversions_api_enabled && $metaSetting->fb_pixel_id)
-    <script>
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'ViewContent', {
-                content_ids: ['{{ $aqar->id }}'],
-                content_type: 'product',
-                content_name: '{{ addslashes($aqar->title ?? '') }}',
-                currency: 'EGP',
-                value: {{ $aqar->price ?? 0 }}
-            });
-        }
-    </script>
+        <script>
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'ViewContent', {
+                    content_ids: ['{{ $aqar->id }}'],
+                    content_type: 'product',
+                    content_name: '{{ addslashes($aqar->title ?? '') }}',
+                    currency: 'EGP',
+                    value: {{ $aqar->price ?? 0 }}
+                });
+            }
+        </script>
     @endif
     {{-- ─────────────────────────────────────────────────────────────────── --}}
 
+
+
+    <style>
+        /* Final overrides placed after legacy page styles */
+        .modal {
+            padding: 20px !important;
+            background: rgba(7, 28, 44, 0.66) !important;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal .modal-content {
+            width: min(520px, 100%) !important;
+            max-width: 520px;
+            margin: 8vh auto 0 !important;
+            padding: 28px !important;
+            border: 0 !important;
+            border-radius: 22px !important;
+            background: #fff;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+        }
+
+        @media (max-width: 767.98px) {
+            .property-action-grid > #contMop {
+                grid-template-columns: 1fr;
+            }
+
+            .modal .modal-content {
+                margin-top: 4vh !important;
+                padding: 22px !important;
+            }
+        }
+    </style>
 
 </x-layout>
