@@ -16767,25 +16767,16 @@ ul.list-gallery-inline li a {
 
 
 #overlay,#overlay-2,#overlay-3 {
-
+    z-index: 9999999;
     position: fixed;
-
     height: 100%;
-
     width: 100%;
-
     top: 0;
-
     right: 0;
-
     bottom: 0;
-
     left: 0;
-
     background: rgba(0,0,0,0.8);
-
     display: none;
-
  }
 
 
