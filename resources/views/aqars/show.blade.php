@@ -114,8 +114,10 @@
 
                                     <div class="listing-card-info-icon">
                                         {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
-                                        <div class="inc-fleat-icon"><img src="{{asset('images/icons/bath.png')}}"
-                                                                         width="13" alt=""/></div>
+                                        <div class="inc-fleat-icon">
+                                            <img src="{{asset('images/icons/bath.png')}}"
+                                                                         width="13" alt=""/>
+                                        </div>
                                     </div>
                                     <br/> <br/>
                                     <div class="listing-card-info-icon">
@@ -384,11 +386,11 @@
                                                     <div class="listing-card-info-icon">
                                                         <small class="text-muted"
                                                                style="font-size:11px; display:block;">
-                                                            &nbsp; رقم مرجعي &nbsp;
+                                                                &nbsp; رقم مرجعي &nbsp;
                                                         </small>
                                                         <span>
-                                        {{ $aqar->ref_code }}
-                                        </span>
+                                                            {{ $aqar->ref_code }}
+                                                            </span>
 
                                                         <div class="inc-fleat-icon"><img
                                                                 src="{{asset('images/icons/counter.png')}}"
