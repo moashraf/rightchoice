@@ -8,14 +8,14 @@
 		<div class="row">
 			<div class="col-lg-4">
 					<div class="sticky">
-						
+
 						<div class="card">
 							<div class="card-body">
 								<h4>عقار للبيع - التجمع الخامس</h4>
 
 								<h5>6,000,000 EGP</h5>
 								<div class="details mt-3">
-									
+
 								</div>
 								<hr class="hr-add">
 								<a href="#" class="btn btn-success"> اتصل <img src="https://img.icons8.com/carbon-copy/50/000000/phone.png" width="20" height="20" loading="lazy" /></a>
@@ -28,7 +28,7 @@
 								<hr class="hr-add">
 								  <p>للتواصل و الاشتراك باحدى الباقات</p>
 								  <a class="btn btn-primary-light" href="./pricing.html">الباقات</a>
-						
+
 							</div>
 						</div>
 					</div>
@@ -73,10 +73,11 @@
 							</div>
 						</a>
 					</div>
-					<a href="./assets/img/real-estate/test-11.jpeg" data-lightbox="roadtrip" class="btn btn-light"> اظهر كل الصور <img src="https://img.icons8.com/carbon-copy/100/000000/camera--v1.png" width="20" height="20" loading="lazy" /></a>
+					<a href="./assets/img/real-estate/test-11.jpeg" data-lightbox="roadtrip" class="btn btn-light">
+                        اظهر كل الصور <img src="https://img.icons8.com/carbon-copy/100/000000/camera--v1.png" width="20" height="20" loading="lazy" /></a>
 
 				</div>
-			
+
 				<div class="details mt-3">
 					<h3>المواصفات</h3>
 					<div class="fr-grid-deatil-flex">
@@ -86,15 +87,15 @@
 						<div class="listing-card-info-icon">
 							<div class="inc-fleat-icon"><img src="assets/img/bed.svg" width="13" alt="" loading="lazy" /></div>3 غرف
 						</div>
-					
+
 						<div class="listing-card-info-icon">
 							<div class="inc-fleat-icon"><img src="assets/img/bathtub.svg" width="13" alt="" loading="lazy" /></div>1 حمام
 						</div>
 						<div class="listing-card-info-icon">
 							<div class="inc-fleat-icon"><img src="assets/img/move.svg" width="13" alt="" loading="lazy" /></div>800 مساحه
 						</div>
-					
-						
+
+
 					</div>
 				</div>
 				<hr class="hr-add">
@@ -120,7 +121,7 @@
 					<div class="listing-card-info-icon">
 						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> امن
 					</div>
-					
+
 					<div class="listing-card-info-icon">
 						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> جراج
 					</div>
@@ -148,7 +149,7 @@
 					<div class="listing-card-info-icon">
 						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> تكييفات
 							</div>
-							
+
 							<div class="listing-card-info-icon">
 								<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> مطبخ
 							</div>
@@ -158,10 +159,10 @@
 					<div class="listing-card-info-icon">
 						<div class="inc-fleat-icon"><img src="assets/img/city.svg" width="13" alt="" loading="lazy" /></div> اخرى
 					</div>
-					
+
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 </section>
