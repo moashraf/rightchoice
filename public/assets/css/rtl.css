@@ -8644,7 +8644,7 @@ ul:last-child {
 }
 
 .hero-banner p{
-
+    text-align: right;
 	font-size:18px;
 
 }
