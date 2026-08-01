@@ -316,29 +316,17 @@
                                 </li>
 
 
-                                <!-- <li><a href="{{ asset('aqars-cash') }}">{{ trans('langsite.Nav-Aqars-Cash')}}</a>
+                                <li>
+                                    <a href="{{ URL::to(Config::get('app.locale').'/filter?licat=2&saletype=ALL1' ) }}">
+                                        {{ App::isLocale('en') ? 'Commercial Properties' : 'عقارات تجارية' }}
+                                    </a>
+                                </li>
 
-                                    </li>
-
-
-
-                                    <li><a href="{{ asset('aqars-installment') }}">{{ trans('langsite.Nav-Aqars-Installment')}}</a>
-
-                                    </li>
-
-
-
-                                    <li><a
-
-                                            href="{{ asset('aqars-finnance') }}">{{ trans('langsite.Nav-Aqars-Bank')}}</a>
-
-                                    </li>
-
-
-                                  	<li><a href="{{ asset('') }}"> عقارات تصلح تمويل عقاري </a></li>
-
-                                  	-->
-
+                                <li>
+                                    <a href="{{ URL::to(Config::get('app.locale').'/filter?licat=3&saletype=ALL1') }}">
+                                        {{ App::isLocale('en') ? 'Administrative Properties' : 'عقارات إدارية' }}
+                                    </a>
+                                </li>
 
                             </ul>
 
@@ -371,18 +359,17 @@
                                 @endif
 
 
-                                <!--          <li><a href="{{ asset('aqars-rent-new') }}">{{ trans('langsite.Nav-Rent-New')}}</a>
+                                <li>
+                                    <a href="{{ URL::to(Config::get('app.locale').'/filter?licat=2&saletype=ALL2' ) }}">
+                                        {{ App::isLocale('en') ? 'Commercial Properties' : 'عقارات تجارية' }}
+                                    </a>
+                                </li>
 
-                                    </li>
-
-
-
-                                    <li><a
-
-                                            href="{{ asset('aqars-rent-finish') }}">{{ trans('langsite.Nav-Rent-Finish')}}</a>
-
-                                    </li>-->
-
+                                <li>
+                                    <a href="{{ URL::to(Config::get('app.locale').'/filter?licat=3&saletype=ALL2') }}">
+                                        {{ App::isLocale('en') ? 'Administrative Properties' : 'عقارات إدارية' }}
+                                    </a>
+                                </li>
 
                             </ul>
 
@@ -391,9 +378,7 @@
 
 
                         @if(count($serviceInHeader) > 0)
-                            <li
-
-                                class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
+                            <li   class="{{ Request::is('companies-furnitures') || Request::is('companies-finish') || Request::is('companies-home-sale') || Request::is('companies-electronics') ? 'active' : '' }}">
 
                                 <a href=""><span class="submenu-indicator"></span>
                                     {{ trans('langsite.services')}}
