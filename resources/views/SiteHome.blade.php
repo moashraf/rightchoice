@@ -536,6 +536,7 @@
         }
 
         .rc-search-card {
+            text-align: right;
             position: relative;
             padding: 28px;
             color: #fff;
