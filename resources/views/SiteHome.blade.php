@@ -288,8 +288,7 @@
             background: var(--rc-navy);
             overflow: hidden;
             padding: 0px 0 0px 0px;
-            margin-bottom: 27px;
-        }
+         }
 
         .rc-hero-slider,
         .rc-hero-slider .slick-list,
@@ -1100,12 +1099,20 @@
     </style>
     <!-- ============================ Hero Banner End ================================== -->
     <!-- ============================ Featured Properties Start ================================== -->
-    <section class="featured-properties" dir="{{ App::isLocale('en') ? 'ltr' : 'rtl' }}">
+    <section class="featured-properties" dir="ltr">
         <div class="featured-properties__decoration featured-properties__decoration--one" aria-hidden="true"></div>
         <div class="featured-properties__decoration featured-properties__decoration--two" aria-hidden="true"></div>
 
         <div class="container featured-properties__container">
             <header class="featured-properties__header">
+
+                <a class="featured-properties__all-link"
+                   href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">
+                    <span>{{ App::isLocale('en') ? 'View all properties' : 'عرض كل العقارات' }}</span>
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                </a>
+
+
                 <div>
                     <span class="featured-properties__eyebrow">
                         <i class="fas fa-star" aria-hidden="true"></i>
@@ -1119,11 +1126,7 @@
                     </p>
                 </div>
 
-                <a class="featured-properties__all-link"
-                   href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">
-                    <span>{{ App::isLocale('en') ? 'View all properties' : 'عرض كل العقارات' }}</span>
-                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                </a>
+
             </header>
 
             <div class="property-slide featured-properties__slider">
@@ -1281,7 +1284,7 @@
             --featured-ink: #10243e;
             --featured-muted: #6f7d8f;
             position: relative;
-            padding: 88px 0;
+            padding: 22px 0;
             overflow: hidden;
             background:
                 radial-gradient(circle at 10% 0%, rgba(24, 185, 139, .09), transparent 28%),
@@ -1317,6 +1320,7 @@
         }
 
         .featured-properties__header {
+            text-align: right;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -1500,6 +1504,7 @@
         }
 
         .featured-property__body {
+            text-align: right;
             padding: 20px;
         }
 
