@@ -1646,8 +1646,8 @@
             box-shadow: 0 8px 24px rgba(16, 36, 62, .16);
         }
 
-        .featured-properties__slider .slick-prev { left: -12px; }
-        .featured-properties__slider .slick-next { right: -12px; }
+        .featured-properties__slider .slick-prev { background: #196aa2; left: -12px; }
+        .featured-properties__slider .slick-next { background: #196aa2; right: -12px; }
 
         @media (max-width: 767.98px) {
             .featured-properties {
