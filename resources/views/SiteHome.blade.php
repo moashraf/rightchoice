@@ -288,8 +288,7 @@
             background: var(--rc-navy);
             overflow: hidden;
             padding: 0px 0 0px 0px;
-            margin-bottom: 27px;
-        }
+         }
 
         .rc-hero-slider,
         .rc-hero-slider .slick-list,
@@ -1099,170 +1098,607 @@
         }
     </style>
     <!-- ============================ Hero Banner End ================================== -->
-    <!-- ============================ Latest Property للبيع Start ================================== -->
-    <section class="" dir="ltr">
-        <div class="container">
+    <!-- ============================ Featured Properties Start ================================== -->
+    <section class="featured-properties" dir="ltr">
+        <div class="featured-properties__decoration featured-properties__decoration--one" aria-hidden="true"></div>
+        <div class="featured-properties__decoration featured-properties__decoration--two" aria-hidden="true"></div>
 
-            <div class="row justify-content-center">
-                <div class="col-lg-7 col-md-10 text-center">
-                    <div class="sec-heading center mb-4">
-                        <h2 class="headingTitle">  {{ trans('langsite.Special_ads')}}</h2>
+        <div class="container featured-properties__container">
+            <header class="featured-properties__header">
 
-                    </div>
+                <a class="featured-properties__all-link"
+                   href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}">
+                    <span>{{ App::isLocale('en') ? 'View all properties' : 'عرض كل العقارات' }}</span>
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                </a>
+
+
+                <div>
+                    <span class="featured-properties__eyebrow">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                        {{ App::isLocale('en') ? 'Hand-picked opportunities' : 'فرص مختارة بعناية' }}
+                    </span>
+                    <h2>{{ trans('langsite.Special_ads') }}</h2>
+                    <p>
+                        {{ App::isLocale('en')
+                            ? 'Explore distinctive properties and contact owners directly without intermediaries.'
+                            : 'اكتشف عقارات مميزة بتفاصيل واضحة وتواصل مباشرة مع المالك بدون وسيط.' }}
+                    </p>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="property-slide">
-
-                        @foreach ($vipAqars as $aqarVip)
-                            <!-- Single Property -->
-                            <div class="single-items">
-                                <div class="property-listing shadow-none property-2 border">
-
-                                    <div class="listing-img-wrapper">
-
-                                        <div class="list-img-slide">
-                                            <div class="click">
-
-                                                <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarVip->slug) }}">
-
-                                                        @if($aqarVip->mainImage)
-                                                            <img src="{{ URL::to('/').'/images/'.$aqarVip->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
-
-                                                        @else
-
-                                                            @if($aqarVip->firstImage)
-                                                                <img
-                                                                    src="{{ URL::to('/').'/images/'.$aqarVip->firstImage->img_url}}"
-                                                                    class="img-fluid mx-auto" alt="" loading="lazy" />
-                                                            @else
-                                                                <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                                                     alt="main" loading="lazy" >
-                                                            @endif	@endif
-                                                    </a></div>
 
 
-                                            </div>
-                                        </div>
+            </header>
 
-                                            <?php  if($aqarVip->vip ==1 && \Carbon\Carbon::now()->diffInYears($aqarVip->created_at) < 1 ){   ?>
+            <div class="property-slide featured-properties__slider">
+                @forelse ($vipAqars as $aqarVip)
+                    @php
+                        $propertyUrl = URL::to(Config::get('app.locale').'/aqars/'.$aqarVip->slug);
+                        $isExpired = \Carbon\Carbon::now()->diffInYears($aqarVip->created_at) >= 1;
+                        $isForRent = in_array((int) $aqarVip->offer_type, [3, 4], true);
+                        $price = $isForRent ? $aqarVip->monthly_rent : $aqarVip->total_price;
+                        $isInstallment = !$isForRent && (
+                            (float) $aqarVip->downpayment > 0
+                            || (int) $aqarVip->installment_time > 0
+                            || (float) $aqarVip->installment_value > 0
+                        );
 
-                                        <div class="views"  >
-                                            <div class="views-1">مميز</div>
-                                        </div>
-                                        <?php }  ?>
-                                            <?php if(\Carbon\Carbon::now()->diffInYears($aqarVip->created_at) >= 1){ ?>
-                                        <div class="views " style="left: 13px;">
-                                            <div class="viewsRed">غير متاح</div>
-                                        </div>
-                                        <?php } ?>
+                        $offerLabel = optional($aqarVip->offerTypes)->type_offer
+                            ?: ($isForRent ? 'إيجار' : 'بيع');
+                        $categoryLabel = optional($aqarVip->categoryRel)->category_name;
+                        $propertyTypeLabel = optional($aqarVip->propertyType)->property_type;
 
+                        if ($aqarVip->mainImage) {
+                            $propertyImage = URL::to('/').'/images/'.$aqarVip->mainImage->img_url;
+                        } elseif ($aqarVip->firstImage) {
+                            $propertyImage = URL::to('/').'/images/'.$aqarVip->firstImage->img_url;
+                        } else {
+                            $propertyImage = URL::to('/').'/images/FBO.png';
+                        }
+                    @endphp
 
+                    <article class="single-items featured-property">
+                        <div class="featured-property__card">
+                            <a class="featured-property__media"
+                               href="{{ $propertyUrl }}"
+                               target="_blank"
+                               rel="noopener"
+                               aria-label="{{ $aqarVip->title }}">
+                                <img src="{{ $propertyImage }}"
+                                     alt="{{ $aqarVip->title }}"
+                                     loading="lazy">
 
-                                        <div class="views">
+                                <span class="featured-property__image-overlay" aria-hidden="true"></span>
 
-                                            <div class="views-2">
-                                                <i class="fa fa-eye"></i>
-                                                <span>{{ $aqarVip->views }}</span>
+                                <div class="featured-property__top-badges">
+                                    @if ($isExpired)
+                                        <span class="featured-property__badge featured-property__badge--unavailable">
+                                            {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
+                                        </span>
+                                    @else
+                                        <span class="featured-property__badge featured-property__badge--featured">
+                                            <i class="fas fa-star" aria-hidden="true"></i>
+                                            {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
+                                        </span>
+                                    @endif
 
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="listing-detail-wrapper">
-                                        <div class="listing-short-detail-wrap">
-                                            <div class="listing-short-detail">
-                                                <h4  class="listing-name verified center-name" ><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarVip->slug) }}"
-                                                                                                   class="">{{ \Illuminate\Support\Str::limit($aqarVip->title, $limit = 29, $end = '...')  }}</a></h4>
-                                                <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="listing-short-detail-flex">
-
-
-
-                                        @if ($aqarVip->offer_type == 1 || $aqarVip->offer_type == 2 || $aqarVip->offer_type == 5)
-
-                                            <h6 class="listing-card-info-price"> {{ $aqarVip->total_price }} {{ trans('langsite.egyptian_pound') }} </h6>
-
-                                        @endif
-                                        @if ($aqarVip->offer_type == 3 || $aqarVip->offer_type == 4 )
-
-                                            <h6 class="listing-card-info-price"> {{ $aqarVip->monthly_rent }} {{ trans('langsite.egyptian_pound') }} </h6>
-
-
-                                        @endif
-
-
-
-
-                                    </div>
-                                    <div class="price-features-wrapper" >
-                                        <div class="list-fx-features" >
-
-
-
-
-
-                                            <div class="listing-card-info-icon">
-                                                {{ $aqarVip->baths }} حمام
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-                                                                                 alt="" loading="lazy" /></div>
-                                            </div>
-                                            <div class="listing-card-info-icon">
-                                                {{ $aqarVip->rooms }} غرف
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-                                                                                 alt=""  loading="lazy" /></div>
-                                            </div>
-
-                                            <div class="listing-card-info-icon">
-                                                {{ $aqarVip->total_area }}  م²
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-                                                                                 alt="" loading="lazy" /></div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="listing-detail-footer bg-light">
-                                        <div class="footer-first">
-                                            <div class="foot-location">
-                                                @if ($aqarVip->governrateq)
-                                                    {{ $aqarVip->governrateq->governrate }}
-                                                @endif
-                                                @if ($aqarVip->districte)
-                                                    {{ $aqarVip->districte->district }}
-                                                @endif
-
-
-                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
-                                            </div>
-                                        </div>
-                                        <div class="footer-flex">
-                                            <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqarVip->slug) }}" class="prt-view">عرض</a>
-                                            <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
-                                        </div>
-                                    </div>
-
+                                    <span class="featured-property__views">
+                                        <i class="far fa-eye" aria-hidden="true"></i>
+                                        {{ number_format((int) $aqarVip->views) }}
+                                    </span>
                                 </div>
+
+                                <div class="featured-property__classification">
+                                    <span class="featured-property__type featured-property__type--offer">
+                                        {{ $offerLabel }}
+                                    </span>
+
+                                    @unless ($isForRent)
+                                        <span class="featured-property__type featured-property__type--payment">
+                                            {{ $isInstallment
+                                                ? (App::isLocale('en') ? 'Installments' : 'تقسيط')
+                                                : (App::isLocale('en') ? 'Cash' : 'كاش') }}
+                                        </span>
+                                    @endunless
+
+                                    @if ($categoryLabel)
+                                        <span class="featured-property__type">{{ $categoryLabel }}</span>
+                                    @endif
+                                </div>
+                            </a>
+
+                            <div class="featured-property__body">
+                                @if ($propertyTypeLabel)
+                                    <span class="featured-property__property-type">
+                                        <i class="far fa-building" aria-hidden="true"></i>
+                                        {{ $propertyTypeLabel }}
+                                    </span>
+                                @endif
+
+                                <h3 class="featured-property__title">
+                                    <a href="{{ $propertyUrl }}" target="_blank" rel="noopener">
+                                        {{ \Illuminate\Support\Str::limit($aqarVip->title, 54, '...') }}
+                                    </a>
+                                </h3>
+
+                                <div class="featured-property__location">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                    <span>
+                                        @if ($aqarVip->governrateq)
+                                            {{ $aqarVip->governrateq->governrate }}
+                                        @endif
+                                        @if ($aqarVip->districte)
+                                            <span class="featured-property__separator">،</span>
+                                            {{ $aqarVip->districte->district }}
+                                        @endif
+                                    </span>
+                                </div>
+
+                                <div class="featured-property__price">
+                                    <strong>{{ number_format((float) $price) }}</strong>
+                                    <span>{{ trans('langsite.egyptian_pound') }}</span>
+                                    @if ($isForRent)
+                                        <small>/ {{ App::isLocale('en') ? 'month' : 'شهرياً' }}</small>
+                                    @endif
+                                </div>
+
+                                <div class="featured-property__features">
+                                    <div class="featured-property__feature">
+                                        <img src="{{ asset('images/icons/area.png') }}" alt="" loading="lazy">
+                                        <span>{{ $aqarVip->total_area ?: '—' }} م²</span>
+                                    </div>
+                                    <div class="featured-property__feature">
+                                        <img src="{{ asset('images/icons/room.png') }}" alt="" loading="lazy">
+                                        <span>{{ $aqarVip->rooms ?: '—' }} {{ App::isLocale('en') ? 'rooms' : 'غرف' }}</span>
+                                    </div>
+                                    <div class="featured-property__feature">
+                                        <img src="{{ asset('images/icons/bath.png') }}" alt="" loading="lazy">
+                                        <span>{{ $aqarVip->baths ?: '—' }} {{ App::isLocale('en') ? 'baths' : 'حمام' }}</span>
+                                    </div>
+                                </div>
+
+                                <a class="featured-property__details"
+                                   href="{{ $propertyUrl }}"
+                                   target="_blank"
+                                   rel="noopener">
+                                    <span>{{ App::isLocale('en') ? 'Property details' : 'تفاصيل العقار' }}</span>
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                </a>
                             </div>
-                        @endforeach
-
-
+                        </div>
+                    </article>
+                @empty
+                    <div class="featured-properties__empty">
+                        <i class="far fa-building" aria-hidden="true"></i>
+                        <p>{{ App::isLocale('en') ? 'No featured properties are available now.' : 'لا توجد عقارات مميزة متاحة حالياً.' }}</p>
                     </div>
-                </div>
+                @endforelse
             </div>
-
         </div>
     </section>
-    <!-- ============================ Latest Property للبيع End ================================== -->
 
+    <style>
+        .featured-properties {
+            --featured-primary: #0f6ea8;
+            --featured-primary-dark: #084d78;
+            --featured-accent: #18b98b;
+            --featured-ink: #10243e;
+            --featured-muted: #6f7d8f;
+            position: relative;
+            padding: 22px 0;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(24, 185, 139, .09), transparent 28%),
+                linear-gradient(180deg, #f7fbfe 0%, #ffffff 100%);
+        }
+
+        .featured-properties__container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .featured-properties__decoration {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        .featured-properties__decoration--one {
+            width: 260px;
+            height: 260px;
+            top: -150px;
+            inset-inline-end: -80px;
+            background: rgba(15, 110, 168, .07);
+        }
+
+        .featured-properties__decoration--two {
+            width: 180px;
+            height: 180px;
+            bottom: -100px;
+            inset-inline-start: 3%;
+            border: 36px solid rgba(24, 185, 139, .06);
+        }
+
+        .featured-properties__header {
+            text-align: right;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 38px;
+        }
+
+        .featured-properties__header > div {
+            max-width: 670px;
+        }
+
+        .featured-properties__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--featured-primary);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .featured-properties__eyebrow i {
+            color: #f6b914;
+        }
+
+        .featured-properties__header h2 {
+            margin: 0 0 12px;
+            color: var(--featured-ink);
+            font-family: 'Cairo', sans-serif;
+            font-size: clamp(30px, 3.2vw, 44px);
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .featured-properties__header p {
+            margin: 0;
+            color: var(--featured-muted);
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        .featured-properties__all-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex: 0 0 auto;
+            padding: 13px 20px;
+            color: var(--featured-primary) !important;
+            border: 1px solid rgba(15, 110, 168, .22);
+            border-radius: 12px;
+            background: #fff;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(16, 36, 62, .06);
+            transition: color .25s ease, background .25s ease, transform .25s ease;
+        }
+
+        .featured-properties__all-link:hover {
+            color: #fff !important;
+            background: var(--featured-primary);
+            transform: translateY(-2px);
+        }
+
+        /*
+         * Slick is initialized globally without rtl: true.
+         * Keep its track LTR so slides stay visible, then restore the
+         * language direction inside each property card.
+         */
+        .featured-properties__slider,
+        .featured-properties__slider .slick-list,
+        .featured-properties__slider .slick-track {
+            direction: ltr;
+        }
+
+        .featured-properties__slider {
+            margin: 0 -10px;
+        }
+
+        .featured-property {
+            padding: 10px;
+        }
+
+        .featured-property__card {
+            direction: rtl;
+            opacity: 1;
+            height: 100%;
+            overflow: hidden;
+            border: 1px solid #e6edf3;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 14px 40px rgba(16, 36, 62, .08);
+            transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease;
+        }
+
+        [dir="ltr"] .featured-property__card {
+            direction: ltr;
+        }
+
+        .featured-property__card:hover {
+            border-color: rgba(15, 110, 168, .28);
+            box-shadow: 0 24px 55px rgba(16, 36, 62, .15);
+            transform: translateY(-8px);
+        }
+
+        .featured-property__media {
+            position: relative;
+            display: block;
+            height: 235px;
+            overflow: hidden;
+            background: #eaf0f5;
+        }
+
+        .featured-property__media > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .65s cubic-bezier(.2, .7, .2, 1);
+        }
+
+        .featured-property__card:hover .featured-property__media > img {
+            transform: scale(1.075);
+        }
+
+        .featured-property__image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(5, 23, 40, .08) 30%, rgba(5, 23, 40, .72) 100%);
+        }
+
+        .featured-property__top-badges,
+        .featured-property__classification {
+            position: absolute;
+            inset-inline: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .featured-property__top-badges {
+            top: 14px;
+        }
+
+        .featured-property__classification {
+            bottom: 14px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .featured-property__badge,
+        .featured-property__views,
+        .featured-property__type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 30px;
+            padding: 5px 10px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 999px;
+            background: rgba(7, 27, 47, .72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .featured-property__badge--featured {
+            background: linear-gradient(135deg, #f5bd22, #e59a00);
+        }
+
+        .featured-property__badge--unavailable {
+            background: rgba(188, 43, 55, .9);
+        }
+
+        .featured-property__type--offer {
+            background: var(--featured-primary);
+        }
+
+        .featured-property__type--payment {
+            background: var(--featured-accent);
+        }
+
+        .featured-property__body {
+            text-align: right;
+            padding: 20px;
+        }
+
+        .featured-property__property-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 9px;
+            color: var(--featured-primary);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .featured-property__title {
+            min-height: 58px;
+            margin: 0 0 8px;
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.55;
+        }
+
+        .featured-property__title a {
+            color: var(--featured-ink);
+            transition: color .2s ease;
+        }
+
+        .featured-property__title a:hover {
+            color: var(--featured-primary);
+        }
+
+        .featured-property__location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 25px;
+            margin-bottom: 15px;
+            color: var(--featured-muted);
+            font-size: 12px;
+        }
+
+        .featured-property__location i {
+            color: var(--featured-accent);
+        }
+
+        .featured-property__price {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            margin-bottom: 17px;
+            color: var(--featured-primary);
+        }
+
+        .featured-property__price strong {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -.4px;
+        }
+
+        .featured-property__price span {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .featured-property__price small {
+            color: var(--featured-muted);
+            font-size: 10px;
+        }
+
+        .featured-property__features {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            padding: 14px 0;
+            border-top: 1px solid #edf1f5;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .featured-property__feature {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 0;
+            color: #526174;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .featured-property__feature + .featured-property__feature {
+            border-inline-start: 1px solid #edf1f5;
+        }
+
+        .featured-property__feature img {
+            width: 15px;
+            height: 15px;
+            object-fit: contain;
+        }
+
+        .featured-property__details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding: 12px 15px;
+            color: #fff !important;
+            border-radius: 11px;
+            background: linear-gradient(135deg, var(--featured-primary), var(--featured-primary-dark));
+            font-size: 13px;
+            font-weight: 800;
+            transition: box-shadow .25s ease, transform .25s ease;
+        }
+
+        .featured-property__details:hover {
+            box-shadow: 0 10px 24px rgba(15, 110, 168, .25);
+            transform: translateY(-2px);
+        }
+
+        .featured-properties__empty {
+            padding: 55px 20px;
+            text-align: center;
+            color: var(--featured-muted);
+        }
+
+        .featured-properties__empty i {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--featured-primary);
+            font-size: 38px;
+        }
+
+        .featured-properties__slider .slick-arrow {
+            width: 42px;
+            height: 42px;
+            z-index: 5;
+            border: 0;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(16, 36, 62, .16);
+        }
+
+        .featured-properties__slider .slick-prev { left: -12px; }
+        .featured-properties__slider .slick-next { right: -12px; }
+
+        @media (max-width: 767.98px) {
+            .featured-properties {
+                padding: 64px 0;
+            }
+
+            .featured-properties__header {
+                display: block;
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .featured-properties__header p {
+                font-size: 13px;
+            }
+
+            .featured-properties__all-link {
+                margin-top: 18px;
+            }
+
+            .featured-property__media {
+                height: 220px;
+            }
+
+            .featured-properties__slider .slick-arrow {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .featured-property__body {
+                padding: 17px;
+            }
+
+            .featured-property__features {
+                gap: 4px;
+            }
+
+            .featured-property__feature {
+                font-size: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .featured-property__card,
+            .featured-property__media > img {
+                transition: none !important;
+            }
+        }
+    </style>
+    <!-- ============================ Featured Properties End ================================== -->
 
 
     <!-- ============================ Register CTA Section (Guest Only) ================================== -->
