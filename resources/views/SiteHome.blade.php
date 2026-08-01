@@ -1379,6 +1379,17 @@
             transform: translateY(-2px);
         }
 
+        /*
+         * Slick is initialized globally without rtl: true.
+         * Keep its track LTR so slides stay visible, then restore the
+         * language direction inside each property card.
+         */
+        .featured-properties__slider,
+        .featured-properties__slider .slick-list,
+        .featured-properties__slider .slick-track {
+            direction: ltr;
+        }
+
         .featured-properties__slider {
             margin: 0 -10px;
         }
@@ -1388,6 +1399,8 @@
         }
 
         .featured-property__card {
+            direction: rtl;
+            opacity: 1;
             height: 100%;
             overflow: hidden;
             border: 1px solid #e6edf3;
@@ -1395,12 +1408,11 @@
             background: #fff;
             box-shadow: 0 14px 40px rgba(16, 36, 62, .08);
             transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease;
-            animation: featuredCardReveal .65s ease both;
         }
 
-        .featured-property:nth-child(2) .featured-property__card { animation-delay: .08s; }
-        .featured-property:nth-child(3) .featured-property__card { animation-delay: .16s; }
-        .featured-property:nth-child(4) .featured-property__card { animation-delay: .24s; }
+        [dir="ltr"] .featured-property__card {
+            direction: ltr;
+        }
 
         .featured-property__card:hover {
             border-color: rgba(15, 110, 168, .28);
@@ -1632,17 +1644,6 @@
         .featured-properties__slider .slick-prev { left: -12px; }
         .featured-properties__slider .slick-next { right: -12px; }
 
-        @keyframes featuredCardReveal {
-            from {
-                opacity: 0;
-                transform: translateY(28px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         @media (max-width: 767.98px) {
             .featured-properties {
                 padding: 64px 0;
@@ -1688,7 +1689,6 @@
         @media (prefers-reduced-motion: reduce) {
             .featured-property__card,
             .featured-property__media > img {
-                animation: none !important;
                 transition: none !important;
             }
         }
