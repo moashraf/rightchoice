@@ -31,7 +31,7 @@
     @endif
     <section id="inner-listing" class="property-show-modern" dir="rtl">
         <div class="container">
-{{--            <x-ads :randomAds="$random_ads ?? null"/>--}}
+            {{--            <x-ads :randomAds="$random_ads ?? null"/>--}}
             <div class="property-page-heading">
                 <div class="property-page-heading__content">
                     <span class="property-kicker">
@@ -116,7 +116,7 @@
                                         {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
                                         <div class="inc-fleat-icon">
                                             <img src="{{asset('images/icons/bath.png')}}"
-                                                                         width="13" alt=""/>
+                                                 width="13" alt=""/>
                                         </div>
                                     </div>
                                     <br/> <br/>
@@ -320,24 +320,23 @@
                                         <?php } ?>
 
 
-                                        <div class="lazy" dir="ltr">
-                                            @foreach( $aqar->images as $images_url)
+                                        {{-- كلاس مستقل حتى لا يتم تشغيل Slick Slider على الصور المصغرة --}}
+                                        <div class="property-gallery-thumbnails" dir="ltr">
+                                            @foreach($aqar->images as $images_url)
                                                 @if($images_url)
-
-                                                    <a href="{{ URL::to('/').'/images/'.$images_url->img_url}}"
+                                                    <a href="{{ URL::to('/').'/images/'.$images_url->img_url }}"
                                                        data-lightbox="roadtrip">
                                                         <div class="watermarked">
-                                                            <img src="{{ URL::to('/').'/images/'.$images_url->img_url}}"
-                                                                 class="img-thumbnail">
-
+                                                            <img
+                                                                src="{{ URL::to('/').'/images/'.$images_url->img_url }}"
+                                                                class="img-thumbnail"
+                                                                alt="صورة العقار"
+                                                                loading="lazy"
+                                                            >
                                                         </div>
                                                     </a>
-                                                        <?php //$image_info = exif_read_data("https://rightchoice-co.com/images/$images_url->img_url"); print_r( $image_info);  ?>
-
                                                 @endif
                                             @endforeach
-
-
                                         </div>
 
 
@@ -386,7 +385,7 @@
                                                     <div class="listing-card-info-icon">
                                                         <small class="text-muted"
                                                                style="font-size:11px; display:block;">
-                                                                &nbsp; رقم مرجعي &nbsp;
+                                                            &nbsp; رقم مرجعي &nbsp;
                                                         </small>
                                                         <span>
                                                             {{ $aqar->ref_code }}
@@ -1218,45 +1217,59 @@
             border-radius: 20px;
         }
 
-        .property-gallery-card .lazy {
+        .property-gallery-card .property-gallery-thumbnails {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
             gap: 10px;
-            margin-top: 11px;
+            width: 100%;
+            margin-top: 12px;
+            direction: ltr;
         }
 
-        .property-gallery-card .lazy a {
+        .property-gallery-card .property-gallery-thumbnails a {
             display: block;
             min-width: 0;
+            text-decoration: none;
         }
 
-        .property-gallery-card .lazy .watermarked {
-            border-radius: 12px;
-        }
-
-        .property-gallery-card .lazy .img-thumbnail {
+        .property-gallery-card .property-gallery-thumbnails .watermarked {
+            position: relative;
             width: 100%;
-            height: 86px;
+            height: 90px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #f1f6f8;
+        }
+
+        .property-gallery-card .property-gallery-thumbnails .img-thumbnail {
+            display: block;
+            width: 100%;
+            height: 100%;
             padding: 0;
+            margin: 0;
             border: 2px solid transparent;
             border-radius: 12px;
             object-fit: cover;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            object-position: center;
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
         }
 
-        .property-gallery-card .lazy a:hover .img-thumbnail {
-            transform: translateY(-2px);
+        .property-gallery-card .property-gallery-thumbnails a:hover .img-thumbnail {
+            transform: scale(1.04);
             border-color: var(--rc-accent);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
         }
 
         .property-gallery-card .lightbtn {
-            position: absolute;
-            left: 26px;
-            top: 392px;
-            z-index: 5;
+            position: static;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 7px;
+            margin: 12px 0 0;
             padding: 10px 15px;
             border: 1px solid rgba(255, 255, 255, 0.72);
             border-radius: 12px;
@@ -1264,6 +1277,10 @@
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.13);
             backdrop-filter: blur(10px);
+        }
+
+        .property-gallery-card .lightbtn img {
+            flex-shrink: 0;
         }
 
         .property-gallery-card .views {
@@ -1437,10 +1454,6 @@
                 min-height: 380px;
             }
 
-            .property-gallery-card .lightbtn {
-                top: 342px;
-            }
-
             .property-show-modern .fr-grid-deatil-flex {
                 grid-template-columns: 1fr;
             }
@@ -1510,18 +1523,16 @@
                 border-radius: 16px;
             }
 
-            .property-gallery-card .lazy {
+            .property-gallery-card .property-gallery-thumbnails {
                 grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 7px;
+                gap: 8px;
             }
 
-            .property-gallery-card .lazy .img-thumbnail {
-                height: 67px;
+            .property-gallery-card .property-gallery-thumbnails .watermarked {
+                height: 80px;
             }
 
             .property-gallery-card .lightbtn {
-                top: 255px;
-                left: 18px;
                 padding: 8px 11px;
                 font-size: 11px;
             }
@@ -1551,8 +1562,13 @@
                 justify-content: center;
             }
 
-            .property-gallery-card .lazy {
+            .property-gallery-card .property-gallery-thumbnails {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 7px;
+            }
+
+            .property-gallery-card .property-gallery-thumbnails .watermarked {
+                height: 72px;
             }
 
             .property-gallery-card .main-img {
@@ -1560,8 +1576,8 @@
             }
 
             .property-gallery-card .lightbtn {
-                position: static;
-                margin: 10px 4px 2px;
+                width: 100%;
+                margin: 10px 0 2px;
             }
         }
     </style>
