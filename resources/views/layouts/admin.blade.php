@@ -646,6 +646,16 @@
                         </a>
                     </li>
                     @endif
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.prize-draw.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/prize-draw*') ? 'active' : '' }}"
+                           style="{{ request()->is('sitemanagement/prize-draw*') ? '' : '' }}">
+                            <i class="nav-icon fas fa-shield-alt text-warning"></i>
+                            <p>
+                                المسابقات والاشتراكات
+                            </p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="{{ url('/') }}" class="nav-link">
