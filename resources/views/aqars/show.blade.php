@@ -1552,6 +1552,7 @@
                 font-size: 11px;
             }
 
+
             .property-show-modern .fr-grid-deatil-flex,
             .property-action-grid,
             .property-action-grid > form {
