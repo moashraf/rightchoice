@@ -12,13 +12,12 @@ use App;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to the "home" route for your application.
+     * The path to the "home" route for the application.
      *
      * This is used by Laravel authentication to redirect users after login.
      *
      * @var string
      */
-     
     public const HOME = '/dashboard';
 
     /**
@@ -37,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-            $locale = App::currentLocale();
+        $locale = App::currentLocale();
 
         $this->configureRateLimiting();
 
@@ -50,6 +49,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/promotions.php'));
         });
     }
 
