@@ -168,9 +168,10 @@
                 height: 38px;
                 flex-basis: 38px;
                 border-radius: 12px;
+                display: none;
             }
 
-            .rc-sell-faster-float__copy strong { font-size: 13px; }
+            .rc-sell-faster-float__copy strong {  display: none; font-size: 13px; }
             .rc-sell-faster-float__copy small { font-size: 10px; }
             .rc-sell-faster-float__badge { min-width: 38px; height: 29px; }
         }
