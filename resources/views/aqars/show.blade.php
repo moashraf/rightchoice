@@ -97,8 +97,22 @@
                                         @endif
                                     @endif
                                 </div>
+                                <div class="fr-grid-deatil-flex details mt-3 property-summary-details">
 
-                                <div class="fr-grid-deatil-flex details mt-3">
+                                    <div class="listing-card-info-icon property-summary-location">
+                                        @if ($aqar->governrateq)
+                                            {{ $aqar->governrateq->governrate }}
+                                        @endif
+
+                                        @if ($aqar->districte)
+                                            ,
+                                            {{ $aqar->districte->district }}
+                                        @endif
+
+                                        <div class="inc-fleat-icon">
+                                            <img src="{{asset('images/icons/location.png')}}" width="13" alt=""/>
+                                        </div>
+                                    </div>
 
                                     <div class="listing-card-info-icon">
                                         {{ $aqar->total_area }}{{ trans('langsite.meterS')}}
@@ -117,22 +131,6 @@
                                         <div class="inc-fleat-icon">
                                             <img src="{{asset('images/icons/bath.png')}}"
                                                  width="13" alt=""/>
-                                        </div>
-                                    </div>
-                                    <br/> <br/>
-                                    <div class="listing-card-info-icon">
-                                        @if ($aqar->governrateq)
-                                            {{ $aqar->governrateq->governrate }}
-                                        @endif
-
-                                        @if ($aqar->districte)
-                                            ,
-                                            {{ $aqar->districte->district }}
-                                        @endif
-
-
-                                        <div class="inc-fleat-icon">
-                                            <img src="{{asset('images/icons/location.png')}}" width="13" alt=""/>
                                         </div>
                                     </div>
 
@@ -1080,6 +1078,15 @@
             display: none;
         }
 
+        .property-show-modern .property-summary-details {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .property-show-modern .property-summary-details .property-summary-location {
+            grid-column: 1 / -1;
+            direction: ltr !important;
+        }
+
         .property-show-modern .listing-card-info-icon {
             position: relative;
             display: flex;
@@ -1457,6 +1464,10 @@
             .property-show-modern .fr-grid-deatil-flex {
                 grid-template-columns: 1fr;
             }
+
+            .property-show-modern .property-summary-details {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
         }
 
         @media (max-width: 991.98px) {
@@ -1484,6 +1495,10 @@
 
             .property-show-modern .fr-grid-deatil-flex {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .property-show-modern .property-summary-details {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
         }
 
@@ -1541,6 +1556,17 @@
             .property-action-grid,
             .property-action-grid > form {
                 grid-template-columns: 1fr;
+            }
+
+            .property-show-modern .property-summary-details {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 7px;
+            }
+
+            .property-show-modern .property-summary-details .listing-card-info-icon {
+                min-height: 46px;
+                padding: 9px 38px 9px 7px;
+                font-size: 11px;
             }
 
             .property-action-grid > * {
