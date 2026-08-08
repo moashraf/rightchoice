@@ -363,8 +363,8 @@
                                         <div class="details mt-3">
                                             <h3 class="headingTitle2">{{ trans('langsite.details')}}</h3>
 
-                                            <div class="row property-details-cols">
-                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                            <div class="row property-details-cols 11 ">
+                                                <div class="col-lg-6 col-md-6 col-12 mb-3">
                                                     <div class="listing-card-info-icon h-100">
                                                         @if ($aqar->governrateq)
                                                             {{ $aqar->governrateq->governrate }}
@@ -388,9 +388,30 @@
                                                 </div>
 
 
+                                                <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+
+                                                        تاريخ الاعلان
+
+
+                                                        {{ date('d/m/Y', strtotime($aqar->created_at))  }}
+
+                                                        <div class="inc-fleat-icon"><img
+                                                                src="{{asset('images/icons/calnder.png')}}"
+                                                                width="13" alt=""/></div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row property-details-cols">
+
+
                                                 @if($aqar->ref_code)
 
-                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="col-lg-4 col-md-6 col-12 mb-3">
                                                         <div class="listing-card-info-icon h-100">
                                                             <small class="text-muted"
                                                                    style="font-size:11px; display:block;">
@@ -409,7 +430,7 @@
 
                                                 @endif
 
-                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                <div class="col-lg-4 col-md-6 col-12 mb-3">
                                                     <div class="listing-card-info-icon h-100">
                                                         عدد المشاهدات
 
@@ -421,22 +442,13 @@
                                                 </div>
 
 
-                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                                    <div class="listing-card-info-icon h-100">
-
-                                                        تاريخ الاعلان
-
-
-                                                        {{ date('d/m/Y', strtotime($aqar->created_at))  }}
-
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('images/icons/calnder.png')}}"
-                                                                width="13" alt=""/></div>
-
-                                                    </div>
-                                                </div>
-
                                             </div>
+
+
+
+
+
+
                                             <div class="row property-details-row">
 
                                                 @if ($aqar->offer_type == 1 || $aqar->offer_type == 1 || $aqar->offer_type == 5 ||
