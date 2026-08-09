@@ -230,45 +230,45 @@
                                 </div>
                             </div>
 
-                            <div class="rc-benefits-bar">
-                                <div class="rc-benefit">
-                                        <span class="rc-benefit-icon">
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M12 21s7-3.5 7-10V6l-7-3-7 3v5c0 6.5 7 10 7 10Z" stroke="currentColor" stroke-width="1.7"/>
-                                                <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </span>
-                                    <span><strong>{{ App::isLocale('en') ? 'Easy and secure' : 'سهولة وأمان' }}</strong><small>{{ App::isLocale('en') ? 'A clear property experience' : 'تجربة عقارية واضحة' }}</small></span>
-                                </div>
-                                <div class="rc-benefit">
-                                        <span class="rc-benefit-icon">
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7"/>
-                                                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.7"/>
-                                                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                                            </svg>
-                                        </span>
-                                    <span><strong>{{ App::isLocale('en') ? 'Buyer meets seller' : 'البائع يقابل المشتري' }}</strong><small>{{ App::isLocale('en') ? 'Without an intermediary' : 'بدون طرف وسيط' }}</small></span>
-                                </div>
-                                <div class="rc-benefit">
-                                        <span class="rc-benefit-icon">
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M4 21h16M6 21V7l6-4 6 4v14" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                                                <path d="M9 10h1M14 10h1M9 14h1M14 14h1M9 18h1M14 18h1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                            </svg>
-                                        </span>
-                                    <span><strong>{{ App::isLocale('en') ? 'Various properties' : 'عقارات متنوعة' }}</strong><small>{{ App::isLocale('en') ? 'Sale and rent listings' : 'للبيع وللإيجار' }}</small></span>
-                                </div>
-                                <div class="rc-benefit">
-                                        <span class="rc-benefit-icon">
-                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.7"/>
-                                                <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>
-                                            </svg>
-                                        </span>
-                                    <span><strong>{{ App::isLocale('en') ? 'Across Egypt' : 'كل محافظات مصر' }}</strong><small>{{ App::isLocale('en') ? 'Search by your location' : 'ابحث حسب موقعك' }}</small></span>
-                                </div>
-                            </div>
+{{--                            <div class="rc-benefits-bar">--}}
+{{--                                <div class="rc-benefit">--}}
+{{--                                        <span class="rc-benefit-icon">--}}
+{{--                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                <path d="M12 21s7-3.5 7-10V6l-7-3-7 3v5c0 6.5 7 10 7 10Z" stroke="currentColor" stroke-width="1.7"/>--}}
+{{--                                                <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>--}}
+{{--                                            </svg>--}}
+{{--                                        </span>--}}
+{{--                                    <span><strong>{{ App::isLocale('en') ? 'Easy and secure' : 'سهولة وأمان' }}</strong><small>{{ App::isLocale('en') ? 'A clear property experience' : 'تجربة عقارية واضحة' }}</small></span>--}}
+{{--                                </div>--}}
+{{--                                <div class="rc-benefit">--}}
+{{--                                        <span class="rc-benefit-icon">--}}
+{{--                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7"/>--}}
+{{--                                                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.7"/>--}}
+{{--                                                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>--}}
+{{--                                            </svg>--}}
+{{--                                        </span>--}}
+{{--                                    <span><strong>{{ App::isLocale('en') ? 'Buyer meets seller' : 'البائع يقابل المشتري' }}</strong><small>{{ App::isLocale('en') ? 'Without an intermediary' : 'بدون طرف وسيط' }}</small></span>--}}
+{{--                                </div>--}}
+{{--                                <div class="rc-benefit">--}}
+{{--                                        <span class="rc-benefit-icon">--}}
+{{--                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                <path d="M4 21h16M6 21V7l6-4 6 4v14" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>--}}
+{{--                                                <path d="M9 10h1M14 10h1M9 14h1M14 14h1M9 18h1M14 18h1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>--}}
+{{--                                            </svg>--}}
+{{--                                        </span>--}}
+{{--                                    <span><strong>{{ App::isLocale('en') ? 'Various properties' : 'عقارات متنوعة' }}</strong><small>{{ App::isLocale('en') ? 'Sale and rent listings' : 'للبيع وللإيجار' }}</small></span>--}}
+{{--                                </div>--}}
+{{--                                <div class="rc-benefit">--}}
+{{--                                        <span class="rc-benefit-icon">--}}
+{{--                                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.7"/>--}}
+{{--                                                <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/>--}}
+{{--                                            </svg>--}}
+{{--                                        </span>--}}
+{{--                                    <span><strong>{{ App::isLocale('en') ? 'Across Egypt' : 'كل محافظات مصر' }}</strong><small>{{ App::isLocale('en') ? 'Search by your location' : 'ابحث حسب موقعك' }}</small></span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                         </div>
                     </div>
                 @endforeach
@@ -293,7 +293,7 @@
         .rc-hero-slider,
         .rc-hero-slider .slick-list,
         .rc-hero-slider .slick-track {
-            min-height: 760px;
+            min-height: 635px;
         }
 
         .rc-hero-slide {
@@ -875,7 +875,7 @@
             .rc-hero-slider .slick-list,
             .rc-hero-slider .slick-track,
             .rc-hero-slide {
-                min-height: 720px;
+                min-height: 635px;
             }
 
             .rc-hero-slide {
@@ -2625,7 +2625,7 @@
 
 
     <!-- ============================ Call To Action ================================== -->
-    <x-call-to-action />
+{{--    <x-call-to-action />--}}
 
     <!-- ============================ Call To Action End ================================== -->
 
