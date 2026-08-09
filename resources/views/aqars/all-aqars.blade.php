@@ -668,7 +668,7 @@
                             </div>
 
                             <div class="rc-featured-grid">
-                                @foreach ($vipAqars->take(2) as $featuredAqar)
+                                @foreach ($vipAqars->take(3) as $featuredAqar)
                                     @php
                                         $featuredOffer = $featuredAqar->offerTypes;
                                         $featuredOfferId = (int) optional($featuredOffer)->id;
@@ -2345,15 +2345,15 @@
 
         #sale-props .rc-featured-properties,
         #sale-props .rc-all-properties {
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         #sale-props .rc-results-heading {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 17px;
+            gap: 16px;
+            margin-bottom: 12px;
             padding: 0 3px;
         }
 
@@ -2365,9 +2365,9 @@
         }
 
         #sale-props .rc-results-heading__icon {
-            width: 46px;
-            height: 46px;
-            flex: 0 0 46px;
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -2397,7 +2397,7 @@
         #sale-props .rc-results-heading h2 {
             margin: 0;
             color: var(--rc-ink);
-            font-size: 21px;
+            font-size: 19px;
             font-weight: 900;
             line-height: 1.35;
         }
@@ -2414,13 +2414,13 @@
 
         #sale-props .rc-featured-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
         }
 
         #sale-props .rc-properties-stack {
             display: grid;
-            gap: 18px;
+            gap: 14px;
         }
 
         #sale-props .rc-property-card {
@@ -2464,8 +2464,8 @@
 
         #sale-props .rc-property-card--list {
             display: grid;
-            grid-template-columns: minmax(250px, 36%) minmax(0, 1fr);
-            min-height: 302px;
+            grid-template-columns: minmax(190px, 30%) minmax(0, 1fr);
+            min-height: 230px;
         }
 
         #sale-props .rc-property-card--inline-featured {
@@ -2475,13 +2475,15 @@
 
         #sale-props .rc-property-card__media {
             position: relative;
-            min-height: 228px;
+            height: 128px;
+            min-height: 128px;
             overflow: hidden;
             background: linear-gradient(145deg, #edf3fa, #f7f9fc);
         }
 
         #sale-props .rc-property-card--list .rc-property-card__media {
-            min-height: 302px;
+            height: 230px;
+            min-height: 230px;
         }
 
         #sale-props .rc-property-card__media > a {
@@ -2502,7 +2504,7 @@
         }
 
         #sale-props .rc-property-card__image--placeholder {
-            padding: 42px;
+            padding: 18px;
             object-fit: contain;
             background:
                 radial-gradient(circle at 20% 20%, rgba(243, 165, 31, .14), transparent 34%),
@@ -2520,9 +2522,9 @@
         #sale-props .rc-property-card__badges {
             position: absolute;
             z-index: 3;
-            top: 14px;
-            right: 14px;
-            left: 14px;
+            top: 9px;
+            right: 9px;
+            left: 9px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -2531,12 +2533,12 @@
         }
 
         #sale-props .rc-property-badge {
-            min-height: 30px;
+            min-height: 26px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
-            padding: 6px 10px;
+            padding: 5px 8px;
             border: 1px solid rgba(255, 255, 255, .50);
             border-radius: 999px;
             background: rgba(255, 255, 255, .93);
@@ -2571,10 +2573,10 @@
         #sale-props .rc-property-card__views {
             position: absolute;
             z-index: 3;
-            bottom: 13px;
-            left: 13px;
-            min-width: 58px;
-            height: 31px;
+            bottom: 8px;
+            left: 8px;
+            min-width: 52px;
+            height: 27px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -2595,11 +2597,11 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
-            padding: 21px 22px 22px;
+            padding: 13px 14px 14px;
         }
 
         #sale-props .rc-property-card--list .rc-property-card__content {
-            padding: 25px 27px;
+            padding: 15px 18px;
         }
 
         #sale-props .rc-property-card__reference {
@@ -2607,9 +2609,9 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             color: var(--rc-muted);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
         }
 
@@ -2626,11 +2628,11 @@
         }
 
         #sale-props .rc-property-card__title {
-            min-height: 59px;
-            margin: 0 0 13px;
-            font-size: 19px;
+            min-height: 47px;
+            margin: 0 0 7px;
+            font-size: 16px;
             font-weight: 900;
-            line-height: 1.55;
+            line-height: 1.45;
         }
 
         #sale-props .rc-property-card__title a {
@@ -2650,8 +2652,8 @@
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 16px;
+            gap: 5px;
+            margin-bottom: 8px;
             color: var(--rc-accent-dark);
         }
 
@@ -2662,7 +2664,7 @@
         }
 
         #sale-props .rc-property-card__price strong {
-            font-size: 23px;
+            font-size: 20px;
             font-weight: 900;
             line-height: 1.1;
             direction: ltr;
@@ -2681,17 +2683,17 @@
         #sale-props .rc-property-card__meta {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            margin-bottom: 18px;
+            gap: 5px;
+            margin-bottom: 9px;
         }
 
         #sale-props .rc-property-card__meta > div {
             min-width: 0;
             display: grid;
-            grid-template-columns: 27px minmax(0, 1fr);
+            grid-template-columns: 24px minmax(0, 1fr);
             grid-template-rows: auto auto;
-            column-gap: 7px;
-            padding: 9px;
+            column-gap: 5px;
+            padding: 6px;
             border: 1px solid #e7edf5;
             border-radius: 11px;
             background: #f8fafc;
@@ -2699,8 +2701,8 @@
 
         #sale-props .rc-property-card__meta-icon {
             grid-row: 1 / 3;
-            width: 27px;
-            height: 27px;
+            width: 24px;
+            height: 24px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -2739,9 +2741,9 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 13px;
+            gap: 8px;
             margin-top: auto;
-            padding-top: 16px;
+            padding-top: 9px;
             border-top: 1px solid var(--rc-line);
         }
 
@@ -2750,9 +2752,9 @@
             flex: 1 1 130px;
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 5px;
             color: var(--rc-muted);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
         }
 
@@ -2763,9 +2765,9 @@
         }
 
         #sale-props .rc-property-card__location-icon {
-            width: 30px;
-            height: 30px;
-            flex: 0 0 30px;
+            width: 27px;
+            height: 27px;
+            flex: 0 0 27px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -2778,19 +2780,19 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 7px;
+            gap: 5px;
         }
 
         #sale-props .rc-property-action {
-            min-height: 39px;
+            min-height: 35px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
             margin: 0 !important;
-            padding: 7px 11px;
-            border-radius: 10px;
-            font-size: 11px;
+            padding: 6px 8px;
+            border-radius: 9px;
+            font-size: 10px;
             font-weight: 900;
             line-height: 1.1;
             box-shadow: none;
@@ -2893,13 +2895,32 @@
             }
         }
 
+        @media (min-width: 1200px) {
+            #sale-props .rc-property-card--featured .rc-property-card__footer,
+            #sale-props .rc-property-card--featured .rc-property-card__actions {
+                flex-wrap: nowrap;
+            }
+
+            #sale-props .rc-property-card--featured .rc-property-card__location {
+                flex: 0 0 27px;
+            }
+
+            #sale-props .rc-property-card--featured .rc-property-card__location > span:last-child {
+                display: none;
+            }
+        }
+
         @media (max-width: 1199.98px) {
+            #sale-props .rc-featured-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             #sale-props .rc-property-card--list {
-                grid-template-columns: minmax(220px, 38%) minmax(0, 1fr);
+                grid-template-columns: minmax(200px, 32%) minmax(0, 1fr);
             }
 
             #sale-props .rc-property-card--list .rc-property-card__content {
-                padding: 22px;
+                padding: 15px 17px;
             }
 
             #sale-props .rc-property-card__footer {
@@ -2940,17 +2961,17 @@
             }
 
             #sale-props .rc-property-card--list .rc-property-card__media {
-                min-height: 235px;
-                height: 235px;
+                min-height: 190px;
+                height: 190px;
             }
 
             #sale-props .rc-property-card__content,
             #sale-props .rc-property-card--list .rc-property-card__content {
-                padding: 20px 18px;
+                padding: 16px 15px;
             }
 
             #sale-props .rc-property-card__title {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             #sale-props .rc-property-card__footer {
