@@ -57,7 +57,7 @@ class RegisterAPIController extends AppBaseController
             'email'    => 'required|email|max:90|unique:users',
             'MOP'      => 'required|min:10|max:11|unique:users',
             'password' => 'required|confirmed|min:6|max:255',
-            'TYPE'      => 'required|integer|in:1,3',
+//            'TYPE'      => 'required|integer|in:1,3',
             'name_of_real_estate_developer' => 'required_if:TYPE,3|string|max:255',
             'company_logo' => 'required_if:TYPE,3|image|mimes:jpeg,jpg,png,webp|max:5120',
         ], [
