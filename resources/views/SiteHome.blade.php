@@ -131,14 +131,14 @@
                                 <!-- Hero content -->
                                 <div class="col-xl-7 col-lg-7 col-md-12 order-1 order-lg-2">
                                     <div class="rc-hero-content">
-                                            <span class="rc-hero-badge">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M5.5 10.5V20h13v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                                    <path d="M9.5 20v-6h5v6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                                </svg>
-                                                {{ App::isLocale('en') ? 'Property deals without intermediaries' : 'بيع وشراء العقارات بدون وسيط' }}
-                                            </span>
+{{--                                            <span class="rc-hero-badge">--}}
+{{--                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                    <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>--}}
+{{--                                                    <path d="M5.5 10.5V20h13v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>--}}
+{{--                                                    <path d="M9.5 20v-6h5v6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>--}}
+{{--                                                </svg>--}}
+{{--                                                {{ App::isLocale('en') ? 'Property deals without intermediaries' : 'بيع وشراء العقارات بدون وسيط' }}--}}
+{{--                                            </span>--}}
 
                                         <h3 class="rc-hero-title">
                                             @if(App::isLocale('en'))
@@ -407,7 +407,7 @@
         }
 
         .rc-hero-title span {
-            display: block;
+            /*display: block;*/
             color: var(--rc-green);
             text-shadow: 0 8px 28px rgba(19, 200, 155, .14);
         }
