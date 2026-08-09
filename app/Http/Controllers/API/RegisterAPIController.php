@@ -19,6 +19,20 @@ use App\Services\SmsService;
 class RegisterAPIController extends AppBaseController
 {
     /**
+     * Return the user account types available during registration.
+     * GET /api/user-types
+     */
+    public function userTypes(): JsonResponse
+    {
+        $userTypes = [
+            'حساب شخصي' => 1,
+            'مطور عقاري' => 3,
+        ];
+
+        return $this->sendResponse($userTypes, 'User types retrieved successfully.');
+    }
+
+    /**
      * Register a new user and send OTP to their phone.
      * POST /api/register
      *

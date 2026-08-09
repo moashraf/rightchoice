@@ -27,6 +27,7 @@ Route::post('login',  [App\Http\Controllers\API\AuthAPIController::class, 'login
 Route::post('logout', [App\Http\Controllers\API\AuthAPIController::class, 'logout']);
 
 // Registration
+Route::get('user-types', [App\Http\Controllers\API\RegisterAPIController::class, 'userTypes']);
 Route::post('register',   [App\Http\Controllers\API\RegisterAPIController::class, 'register']);
 Route::post('verify-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'verifyOtp']);
 Route::post('resend-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'resendOtp']);
