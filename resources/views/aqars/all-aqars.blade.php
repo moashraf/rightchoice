@@ -2345,7 +2345,7 @@
 
         #sale-props .rc-featured-properties,
         #sale-props .rc-all-properties {
-            margin-bottom: 24px;
+            margin-bottom: 2px;
         }
 
         #sale-props .rc-results-heading {
