@@ -140,14 +140,14 @@
                                                 {{ App::isLocale('en') ? 'Property deals without intermediaries' : 'بيع وشراء العقارات بدون وسيط' }}
                                             </span>
 
-                                        <h1 class="rc-hero-title">
+                                        <h3 class="rc-hero-title">
                                             @if(App::isLocale('en'))
                                                 {{ !empty($slid->title_en) ? $slid->title_en : 'Buy and sell property directly' }}
                                             @else
                                                 {{ !empty($slid->title) ? $slid->title : 'بيع واشتري عقارك مباشرة' }}
                                             @endif
                                             <span>{{ App::isLocale('en') ? 'without commission' : 'بدون وسيط' }}</span>
-                                        </h1>
+                                        </h3>
 
                                         <p class="rc-hero-subtitle">
                                             @if(App::isLocale('en'))
@@ -288,7 +288,7 @@
             background: var(--rc-navy);
             overflow: hidden;
             padding: 0px 0 0px 0px;
-         }
+        }
 
         .rc-hero-slider,
         .rc-hero-slider .slick-list,
@@ -398,7 +398,9 @@
             color: #fff;
             font-family: 'Cairo', sans-serif;
             font-size: clamp(42px, 4.35vw, 72px);
-            font-weight: 800;
+            font-weight: 900;
+            font-size: 36px;
+            text-align: right;
             line-height: 1.22;
             letter-spacing: -.8px;
             text-shadow: 0 7px 30px rgba(0, 0, 0, .32);
@@ -1216,7 +1218,7 @@
 
                                 <h3 class="featured-property__title">
                                     <a href="{{ $propertyUrl }}" target="_blank" rel="noopener">
-                                        {{ \Illuminate\Support\Str::limit($aqarVip->title, 54, '...') }}
+                                        {{ $aqarVip->title }}
                                     </a>
                                 </h3>
 
@@ -1519,7 +1521,8 @@
         }
 
         .featured-property__title {
-            min-height: 58px;
+            height: 3.1em;
+            overflow: hidden;
             margin: 0 0 8px;
             font-size: 19px;
             font-weight: 800;
@@ -1527,7 +1530,12 @@
         }
 
         .featured-property__title a {
+            display: -webkit-box;
+            overflow: hidden;
             color: var(--featured-ink);
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             transition: color .2s ease;
         }
 

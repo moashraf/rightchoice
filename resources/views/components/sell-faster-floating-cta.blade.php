@@ -9,13 +9,7 @@
         class="rc-sell-faster-float"
         aria-label="{{ App::isLocale('en') ? 'Sell your property faster - 80% off packages' : 'بيع عقارك أسرع - خصم 80% على الباقات' }}"
     >
-        <span class="rc-sell-faster-float__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-                <path d="M3 11.2 12 4l9 7.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M5.5 10.5V20h13v-9.5M9.5 20v-5.8h5V20" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>
-                <path d="m15.4 3.2-2.1 4h2.5l-2.4 4.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </span>
+
 
         <span class="rc-sell-faster-float__copy">
             <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
@@ -76,24 +70,7 @@
             outline: none;
         }
 
-        .rc-sell-faster-float__icon {
-            width: 42px;
-            height: 42px;
-            flex: 0 0 42px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            color: #fff;
-            background: rgba(255,255,255,.16);
-            border: 1px solid rgba(255,255,255,.2);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
-        }
 
-        .rc-sell-faster-float__icon svg {
-            width: 25px;
-            height: 25px;
-        }
 
         .rc-sell-faster-float__copy {
             display: flex;
@@ -161,14 +138,6 @@
             .rc-sell-faster-float:hover,
             .rc-sell-faster-float:focus {
                 transform: translateY(-4px);
-            }
-
-            .rc-sell-faster-float__icon {
-                width: 38px;
-                height: 38px;
-                flex-basis: 38px;
-                border-radius: 12px;
-                display: none;
             }
 
             .rc-sell-faster-float__copy strong {  display: none; font-size: 13px; }
