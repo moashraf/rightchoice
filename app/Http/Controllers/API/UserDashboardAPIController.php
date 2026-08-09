@@ -810,4 +810,54 @@ public function addToWishlistByUserId(Request $request): JsonResponse
             'message'        => $message,
         ], 'معاينة بيانات التواصل.');
     }
+    /**
+     * POST /api/aqars/whatsapp-contact
+     *
+     * Marks an existing property contact record as contacted through WhatsApp.
+     * Contact data must be unlocked first so this endpoint cannot bypass points.
+     */
+    public function trackWhatsappContact(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'aqar_id' => 'required|integer|exists:aqar,id',
+        ], [
+            'aqar_id.required' => 'حقل معرف العقار مطلوب.',
+            'aqar_id.integer' => 'معرف العقار يجب أن يكون رقمًا صحيحًا.',
+            'aqar_id.exists' => 'العقار غير موجود في النظام.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors());
+        }
+
+        $user = $request->user();
+
+        if ($user->isCompanyAccount()) {
+            return $this->sendError(
+                'حسابات الشركات غير مسموح لها بالتواصل مع العقارات.',
+                403
+            );
+        }
+
+        $contact = UserContactAqar::where('aqars_id', $request->aqar_id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$contact) {
+            return $this->sendError(
+                'يجب عرض بيانات التواصل للعقار أولًا قبل تسجيل ضغطة WhatsApp.',
+                422
+            );
+        }
+
+        if ((int) $contact->contact_via_whats_app !== 1) {
+            $contact->update(['contact_via_whats_app' => 1]);
+        }
+
+        return $this->sendResponse([
+            'aqar_id' => (int) $request->aqar_id,
+            'contact_via_whats_app' => true,
+        ], 'تم تسجيل ضغطة التواصل عبر WhatsApp بنجاح.');
+    }
+
 }
