@@ -2558,6 +2558,7 @@
         }
 
         .rent-magazine__header {
+            text-align: right;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
