@@ -119,18 +119,22 @@
                                     <div class="col-4 mb-2">
                                         <div class="listing-card-info-icon h-100">
                                             {{ $aqar->total_area }}{{ trans('langsite.meterS')}}
-                                            <div class="inc-fleat-icon"><img src="{{asset('images/icons/area.png')}}"
-                                                                             width="13" alt=""/></div>
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/area.png')}}"   width="13" alt=""/></div>
                                         </div>
                                     </div>
+                                    @if ($aqar->rooms)
 
                                     <div class="col-4 mb-2">
                                         <div class="listing-card-info-icon h-100">
                                             {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
-                                            <div class="inc-fleat-icon"><img src="{{asset('images/icons/room.png')}}"
-                                                                             width="13" alt=""/></div>
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/room.png')}}"     width="13" alt=""/></div>
                                         </div>
                                     </div>
+                                    @endif
+
+                                    @if ($aqar->baths)
 
                                     <div class="col-4 mb-2">
                                         <div class="listing-card-info-icon h-100">
@@ -141,6 +145,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
 
                                 </div>
                                 <hr class="hr-add">
@@ -1134,9 +1139,9 @@
             border-top: 1px solid var(--rc-border);
         }
 
-        .property-show-modern .property-summary-details .property-summary-location {
-            direction: ltr !important;
-        }
+        /*.property-show-modern .property-summary-details .property-summary-location {*/
+        /*    direction: ltr !important;*/
+        /*}*/
 
         .property-show-modern .listing-card-info-icon {
             position: relative;
@@ -1152,6 +1157,7 @@
             font-weight: 700;
             line-height: 1.5;
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            flex-direction: row;
         }
 
         .property-show-modern .listing-card-info-icon:hover {

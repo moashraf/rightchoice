@@ -28,9 +28,7 @@
                                         </div>
 
                                         <div class="rc-field rc-field-keyword">
-                                            <label for="hero-keywords-{{ $loop->index }}">
-                                                {{ App::isLocale('en') ? 'Keyword or location' : 'الكلمة المفتاحية أو الموقع' }}
-                                            </label>
+
                                             <div class="rc-input-wrap">
                                                 <input id="hero-keywords-{{ $loop->index }}"
                                                        name="keywords"
@@ -2232,7 +2230,7 @@
     </section>
     <!-- ============================ All Featured Property ================================== -->
     <!-- ============================ Free Plan CTA ================================== -->
-    <x-free-plan-cta />
+{{--    <x-free-plan-cta />--}}
     <!-- ============================ Free Plan CTA End ================================== -->
 
     <!-- ============================ Latest Property للبيع Start ================================== -->
