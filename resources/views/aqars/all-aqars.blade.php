@@ -737,8 +737,7 @@
                                             </h3>
 
                                             <div class="rc-property-card__price">
-                                                <span>السعر</span>
-                                                @if ($featuredHasPrice)
+                                                 @if ($featuredHasPrice)
                                                     <strong>{{ number_format((float) $featuredPrice) }}</strong>
                                                     <small>جنيه مصري</small>
                                                 @else
@@ -2655,7 +2654,7 @@
             flex-wrap: wrap;
             gap: 5px;
             margin-bottom: 8px;
-            color: var(--rc-accent-dark);
+            color:  #40b991;
         }
 
         #sale-props .rc-property-card__price > span {
