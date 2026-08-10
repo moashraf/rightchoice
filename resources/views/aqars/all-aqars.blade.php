@@ -2636,6 +2636,7 @@
         }
 
         #sale-props .rc-property-card__title a {
+            text-align: right;
             display: -webkit-box;
             overflow: hidden;
             color: var(--rc-ink);

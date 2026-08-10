@@ -1150,6 +1150,7 @@
             font-weight: 700;
             line-height: 1.5;
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            flex-direction: row;
         }
 
         .property-show-modern .listing-card-info-icon:hover {
