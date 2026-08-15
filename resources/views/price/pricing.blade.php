@@ -111,7 +111,143 @@
                     <p>ابدأ بالباقة المجانية أو اختر إحدى الباقات المدفوعة للحصول على نقاط إضافية.</p>
                 </div>
 
-                <div class="row rc-pricing-grid justify-content-center">
+                <div class="rc-audience-tabs" role="tablist" aria-label="اختر نوع الباقة">
+                    <button
+                        type="button"
+                        class="rc-audience-tab is-active"
+                        data-pricing-tab="seller"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="seller-plans"
+                    >
+                        <span class="rc-audience-tab__icon">🏠</span>
+                        <span>
+                            <strong>هتبيع؟</strong>
+                            <small>باقات البائع وتمييز إعلانك</small>
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="rc-audience-tab"
+                        data-pricing-tab="buyer"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="buyer-plans"
+                    >
+                        <span class="rc-audience-tab__icon">🔑</span>
+                        <span>
+                            <strong>هتشتري؟</strong>
+                            <small>باقات المشتري والتواصل مع الملاك</small>
+                        </span>
+                    </button>
+                </div>
+
+                <div
+                    id="seller-plans"
+                    class="rc-pricing-panel is-active"
+                    data-pricing-panel="seller"
+                    role="tabpanel"
+                >
+                    <div class="rc-panel-intro">
+                        <span>للبائع</span>
+                        <h3>خلّي إعلانك يظهر بشكل أقوى ويصل لمشترين أكثر</h3>
+                        <p>اختر باقة التمييز المناسبة، ثم حدّد الإعلان الذي تريد تمييزه من صفحة إعلاناتك.</p>
+                    </div>
+
+                    <div class="row rc-pricing-grid justify-content-center">
+                        @forelse ($sellerPricing as $sellerPlan)
+                            @php
+                                $sellerPlanName = Config::get('app.locale') === 'en' && !empty($sellerPlan->name_en)
+                                    ? $sellerPlan->name_en
+                                    : $sellerPlan->name;
+                                $sellerPlanDescription = Config::get('app.locale') === 'en' && !empty($sellerPlan->description_en)
+                                    ? $sellerPlan->description_en
+                                    : $sellerPlan->description;
+                            @endphp
+
+                            <div class="col-xl-4 col-lg-4 col-md-6 mb-5 d-flex">
+                                <article
+                                    class="rc-plan-card rc-plan-card--seller"
+                                    style="--seller-accent: {{ $sellerPlan->bgColor ?: '#e53945' }}"
+                                >
+                                    <div class="rc-plan-audience-badge">باقة بائع</div>
+
+                                    <div class="rc-plan-card__header">
+                                        <div class="rc-plan-icon rc-plan-icon--seller">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-7h6v7M8 11h.01M16 11h.01"/>
+                                            </svg>
+                                        </div>
+
+                                        <h3>{{ $sellerPlanName }}</h3>
+
+                                        <div class="rc-price">
+                                            <strong>{{ number_format((float) $sellerPlan->price, 0) }}</strong>
+                                            <span>ج.م</span>
+                                        </div>
+
+                                        <p class="rc-plan-summary">{{ $sellerPlanDescription }}</p>
+                                    </div>
+
+                                    <div class="rc-plan-card__body">
+                                        <ul class="rc-plan-features">
+                                            <li>
+                                                <span class="rc-check">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                                </span>
+                                                تمييز إعلانك العقاري
+                                            </li>
+                                            <li>
+                                                <span class="rc-check">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                                </span>
+                                                {{ $sellerPlan->views }} مشاهدة مستهدفة
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="rc-plan-card__footer">
+                                        @if($isCompanyAccount)
+                                            <button type="button" class="rc-btn rc-btn--disabled" disabled>
+                                                غير متاح لحسابات الشركات
+                                            </button>
+                                        @else
+                                            <a
+                                                href="{{ route('user_ads', ['locale' => Config::get('app.locale')]) }}"
+                                                class="rc-btn rc-btn--seller"
+                                            >
+                                                اختر إعلانك وابدأ التمييز
+                                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M5 12h14M13 6l6 6-6 6"/>
+                                                </svg>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </article>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="rc-empty-plans">لا توجد باقات بائع متاحة حاليًا.</div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div
+                    id="buyer-plans"
+                    class="rc-pricing-panel"
+                    data-pricing-panel="buyer"
+                    role="tabpanel"
+                    hidden
+                >
+                    <div class="rc-panel-intro">
+                        <span>للمشتري</span>
+                        <h3>افتح بيانات العقارات وتواصل مع الملاك مباشرة</h3>
+                        <p>اختر باقة النقاط المناسبة لاحتياجك وابدأ التواصل بدون وسيط أو عمولات.</p>
+                    </div>
+
+                    <div class="row rc-pricing-grid justify-content-center">
                     @foreach ($allPricing as $single)
                         @php $isFree = ((float) $single->price === 0.0); @endphp
 
@@ -226,6 +362,7 @@
                             </article>
                         </div>
                     @endforeach
+                    </div>
                 </div>
             </div>
         </section>
@@ -402,7 +539,7 @@
         }
 
         .rc-section {
-            padding: 88px 0;
+            padding: 8px 0;
         }
 
         .rc-pricing-hero {
@@ -810,7 +947,7 @@
         }
 
         .rc-plan-summary {
-            min-height: 55px;
+            min-height: 5px;
             margin: 0;
             color: var(--rc-muted);
             line-height: 1.8;
@@ -988,7 +1125,164 @@
             font-weight: 700;
         }
 
-        .rc-how-section {
+        .rc-audience-tabs {
+            max-width: 820px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin: 0 auto 42px;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(12px);
+        }
+
+        .rc-audience-tab {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 17px 20px;
+            color: rgba(255, 255, 255, .7);
+            text-align: right;
+            border: 1px solid transparent;
+            border-radius: 16px;
+            background: transparent;
+            cursor: pointer;
+            transition: all .25s ease;
+        }
+
+        .rc-audience-tab:hover {
+            color: var(--rc-white);
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .rc-audience-tab.is-active {
+            color: var(--rc-navy-dark);
+            border-color: rgba(255, 255, 255, .75);
+            background: var(--rc-white);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, .18);
+        }
+
+        .rc-audience-tab__icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .12);
+            font-size: 1.35rem;
+        }
+
+        .rc-audience-tab.is-active .rc-audience-tab__icon {
+            background: #eef6fb;
+        }
+
+        .rc-audience-tab strong,
+        .rc-audience-tab small {
+            display: block;
+        }
+
+        .rc-audience-tab strong {
+            margin-bottom: 4px;
+            font-size: 1.03rem;
+            font-weight: 950;
+        }
+
+        .rc-audience-tab small {
+            font-size: .76rem;
+            font-weight: 700;
+            opacity: .78;
+        }
+
+        .rc-pricing-panel[hidden] {
+            display: none !important;
+        }
+
+        .rc-panel-intro {
+            max-width: 720px;
+            margin: 0 auto 34px;
+            color: var(--rc-white);
+            text-align: center;
+        }
+
+        .rc-panel-intro span {
+            display: inline-flex;
+            margin-bottom: 8px;
+            padding: 6px 13px;
+            color: #dcefff;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            font-size: .75rem;
+            font-weight: 900;
+        }
+
+        .rc-panel-intro h3 {
+            margin: 0 0 10px;
+            color: var(--rc-white);
+            font-size: 1.45rem;
+            font-weight: 950;
+        }
+
+        .rc-panel-intro p {
+            margin: 0;
+            color: rgba(255, 255, 255, .66);
+            line-height: 1.8;
+        }
+
+        .rc-plan-card--seller {
+            border-top: 5px solid var(--seller-accent);
+        }
+
+        .rc-plan-card--seller:hover {
+            border-color: var(--seller-accent);
+        }
+
+        .rc-plan-audience-badge {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            padding: 6px 11px;
+            color: var(--seller-accent);
+            border: 1px solid color-mix(in srgb, var(--seller-accent) 25%, white);
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--seller-accent) 9%, white);
+            font-size: .72rem;
+            font-weight: 900;
+        }
+
+        .rc-plan-icon--seller {
+            color: var(--seller-accent);
+            background: color-mix(in srgb, var(--seller-accent) 10%, white);
+        }
+
+        .rc-plan-card--seller .rc-check {
+            background: var(--seller-accent);
+        }
+
+        .rc-btn--seller {
+            color: var(--rc-white) !important;
+            background: #4abc96;
+            box-shadow: 0 11px 24px rgba(18, 59, 99, .22);
+        }
+
+        .rc-btn--seller:hover {
+            color: var(--rc-white) !important;
+            box-shadow: 0 15px 30px rgba(18, 59, 99, .30);
+        }
+
+        .rc-empty-plans {
+            padding: 30px;
+            color: rgba(255, 255, 255, .8);
+            text-align: center;
+            border: 1px dashed rgba(255, 255, 255, .25);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .06);
+        }
+
+                .rc-how-section {
             background:
                 linear-gradient(180deg, #f7fbfe, #eef5fa);
         }
@@ -1203,7 +1497,7 @@
 
         @media (max-width: 991.98px) {
             .rc-section {
-                padding: 70px 0;
+                padding: 7px 0;
             }
 
             .rc-pricing-hero {
@@ -1225,6 +1519,19 @@
         }
 
         @media (max-width: 767.98px) {
+            .rc-audience-tabs {
+                grid-template-columns: 1fr;
+                margin-bottom: 32px;
+            }
+
+            .rc-audience-tab {
+                padding: 14px 16px;
+            }
+
+            .rc-panel-intro h3 {
+                font-size: 1.2rem;
+            }
+
             .rc-pricing-hero {
                 min-height: 400px;
                 background-position: 58% center;
@@ -1252,7 +1559,7 @@
             }
 
             .rc-section {
-                padding: 58px 0;
+                padding: 5px 0;
             }
 
             .rc-section-heading {
@@ -1312,6 +1619,31 @@
             }
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('[data-pricing-tab]');
+            const panels = document.querySelectorAll('[data-pricing-panel]');
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    const selectedAudience = tab.getAttribute('data-pricing-tab');
+
+                    tabs.forEach(function (currentTab) {
+                        const isSelected = currentTab === tab;
+                        currentTab.classList.toggle('is-active', isSelected);
+                        currentTab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                    });
+
+                    panels.forEach(function (panel) {
+                        const isSelected = panel.getAttribute('data-pricing-panel') === selectedAudience;
+                        panel.classList.toggle('is-active', isSelected);
+                        panel.hidden = !isSelected;
+                    });
+                });
+            });
+        });
+    </script>
 
     <link rel="stylesheet" href="https://rightchoice-co.com/public/assets/css/mof.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
