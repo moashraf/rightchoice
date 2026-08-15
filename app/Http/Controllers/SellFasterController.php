@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PriceVip;
+use App\Models\Pricing;
 use Illuminate\Http\Request;
 
 class SellFasterController extends Controller
