@@ -44,7 +44,7 @@ class AdminPaymentDataTable extends DataTable
 
                 $editUrl = route('sitemanagement.users.edit', $payment->user_id);
 
-                return '<a href="' . e($editUrl) . '" title="تعديل المستخدم">' . e($userName) . '</a>';
+                return '<a target="_blank" href="' . e($editUrl) . '" title="تعديل المستخدم">' . e($userName) . '</a>';
             })
             ->editColumn('paymentAmount', function ($payment) {
                 return number_format($payment->paymentAmount, 2) . ' ج.م';
@@ -80,7 +80,7 @@ class AdminPaymentDataTable extends DataTable
                     return e($packageName);
                 }
 
-                return '<a href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>';
+                return '<a  target="_blank" href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>';
             })
             ->editColumn('paid_at', function ($payment) {
                 return $payment->paid_at ? $payment->paid_at->format('Y-m-d H:i') : '-';
