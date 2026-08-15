@@ -647,424 +647,372 @@
 
                 </div>
 
-                <div class="col-lg-9 col-cards-2">
+                <div class="col-lg-9 col-cards-2 rc-results-column">
 
-                    <div class="row">
+                    @if ($vipAqars->isNotEmpty())
+                        <section class="rc-featured-properties" aria-labelledby="featured-properties-title">
+                            <div class="rc-results-heading rc-results-heading--featured">
+                                <div class="rc-results-heading__title">
+                                    <span class="rc-results-heading__icon" aria-hidden="true">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                            <path d="m12 3 2.4 5.1L20 9l-4 4 .95 5.7L12 16l-4.95 2.7L8 13 4 9l5.6-.9L12 3Z"
+                                                  stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <span class="rc-results-heading__eyebrow">اختيارات مميزة</span>
+                                        <h2 id="featured-properties-title">عقارات تستحق اهتمامك</h2>
+                                    </div>
+                                </div>
+                                <p>إعلانات مميزة تظهر لك أولًا لتسهيل الوصول إلى أفضل الفرص.</p>
+                            </div>
 
-                        <div class="col-lg-12" dir="ltr">
-                            <div class="vip-slide">
+                            <div class="rc-featured-grid">
+                                @foreach ($vipAqars->take(3) as $featuredAqar)
+                                    @php
+                                        $featuredOffer = $featuredAqar->offerTypes;
+                                        $featuredOfferId = (int) optional($featuredOffer)->id;
+                                        $featuredPrice = in_array($featuredOfferId, [3, 4], true)
+                                            ? $featuredAqar->monthly_rent
+                                            : $featuredAqar->total_price;
+                                        $featuredHasPrice = is_numeric($featuredPrice) && (float) $featuredPrice > 0;
+                                        $featuredHasImage = (bool) ($featuredAqar->mainImage || $featuredAqar->firstImage);
+                                        $featuredImage = $featuredAqar->mainImage
+                                            ? URL::to('/') . '/images/' . $featuredAqar->mainImage->img_url
+                                            : ($featuredAqar->firstImage
+                                                ? URL::to('/') . '/images/' . $featuredAqar->firstImage->img_url
+                                                : asset('images/FBO.png'));
+                                        $featuredUrl = URL::to(Config::get('app.locale') . '/aqars/' . $featuredAqar->slug);
+                                        $featuredTitle = $featuredAqar->title ?: 'تفاصيل العقار';
+                                        $featuredOfferName = optional($featuredOffer)->type_offer ?: 'عقار مميز';
+                                        $featuredUnavailable = $featuredAqar->created_at
+                                            && \Carbon\Carbon::now()->diffInYears($featuredAqar->created_at) >= 1;
+                                    @endphp
 
-                                @foreach ($vipAqars as $vip)
-                                    <!-- Single Property -->
-                                    <div class="single-items">
-                                        <div class="card vip vip-property-card">
-                                            @if ($vip->mainImage)
-                                                <img class="card-img"
-                                                     src="{{ URL::to('/') . '/images/' . $vip->mainImage->img_url }}"
-                                                     alt="{{ $vip->title }} loading=" lazy"">
-                                            @elseif($vip->firstImage)
-                                                <img class="card-img"
-                                                     src="{{ URL::to('/') . '/images/' . $vip->firstImage->img_url }}"
-                                                     alt="{{ $vip->title }}" loading="lazy">
+                                    <article class="rc-property-card rc-property-card--featured">
+                                        <div class="rc-property-card__media">
+                                            <a href="{{ $featuredUrl }}" target="_blank"
+                                               aria-label="عرض {{ $featuredTitle }}">
+                                                <img
+                                                    class="rc-property-card__image {{ $featuredHasImage ? '' : 'rc-property-card__image--placeholder' }}"
+                                                    src="{{ $featuredImage }}"
+                                                    alt="{{ $featuredTitle }}"
+                                                    width="640"
+                                                    height="420"
+                                                    loading="lazy">
+                                            </a>
 
-                                            @else
-
-                                                <img src="https://rightchoice-co.com/images/FBO.png"
-                                                     class="img-fluid main-img" alt="main" loading="lazy">
-
-                                            @endif
-
-                                            @if ($vip->vip ==1 && \Carbon\Carbon::now()->diffInYears($vip->created_at) < 1)
-
-                                                <div class="views">
-                                                    <div class="views-1">مميز</div>
-                                                </div>
-                                            @endif
-
-                                                <?php if (\Carbon\Carbon::now()->diffInYears($vip->created_at) >= 1){ ?>
-                                            <div class="views " style="left: 13px;">
-                                                <div class="viewsRed">غير متاح</div>
+                                            <div class="rc-property-card__badges">
+                                                <span class="rc-property-badge rc-property-badge--featured">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                                        <path d="m12 2.8 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 2.8Z"/>
+                                                    </svg>
+                                                    مميز
+                                                </span>
+                                                <span class="rc-property-badge rc-property-badge--offer">
+                                                    {{ $featuredOfferName }}
+                                                </span>
+                                                @if ($featuredUnavailable)
+                                                    <span class="rc-property-badge rc-property-badge--unavailable">غير متاح</span>
+                                                @endif
                                             </div>
-                                            <?php } ?>
 
-                                            <div class="views-3 property-views-badge" aria-label="عدد المشاهدات">
+                                            <span class="rc-property-card__views" aria-label="عدد المشاهدات">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
-                                                <span>{{ $vip->views }}</span>
+                                                {{ number_format((int) $featuredAqar->views) }}
+                                            </span>
+                                        </div>
+
+                                        <div class="rc-property-card__content">
+                                            <div class="rc-property-card__reference">
+                                                <span>فرصة عقارية مميزة</span>
+                                                <small>#{{ $featuredAqar->id }}</small>
                                             </div>
 
+                                            <h3 class="rc-property-card__title">
+                                                <a href="{{ $featuredUrl }}" target="_blank"
+                                                   title="{{ $featuredTitle }}">
+                                                    {{ $featuredTitle }}
+                                                </a>
+                                            </h3>
 
-                                            <div
-                                                class="card-img-overlay text-white d-flex flex-column justify-content-end align-content-end">
+                                            <div class="rc-property-card__price">
+                                                 @if ($featuredHasPrice)
+                                                    <strong>{{ number_format((float) $featuredPrice) }}</strong>
+                                                    <small>جنيه مصري</small>
+                                                @else
+                                                    <strong class="rc-property-card__price-contact">عند التواصل</strong>
+                                                @endif
+                                            </div>
 
-                                                <div class="all-aqars_all-aqars">
-                                                    <a dir="rtl"
-                                                       href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vip->slug) }}"
-                                                       target="_blank">
-                                                        <h5 class="card-title">
-                                                            {{ \Illuminate\Support\Str::limit($vip->title, 35) }}
-                                                        </h5>
+                                            <div class="rc-property-card__meta">
+                                                <div>
+                                                    <span class="rc-property-card__meta-icon">
+                                                        <img src="{{ asset('images/icons/area.png') }}" width="16" height="16" alt="">
+                                                    </span>
+                                                    <small>المساحة</small>
+                                                    <strong>{{ number_format((float) $featuredAqar->total_area) }} م²</strong>
+                                                </div>
+                                                <div>
+                                                    <span class="rc-property-card__meta-icon">
+                                                        <img src="{{ asset('images/icons/room.png') }}" width="16" height="16" alt="">
+                                                    </span>
+                                                    <small>الغرف</small>
+                                                    <strong>{{ (int) $featuredAqar->rooms }}</strong>
+                                                </div>
+                                                <div>
+                                                    <span class="rc-property-card__meta-icon">
+                                                        <img src="{{ asset('images/icons/bath.png') }}" width="16" height="16" alt="">
+                                                    </span>
+                                                    <small>الحمامات</small>
+                                                    <strong>{{ (int) $featuredAqar->baths }}</strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="rc-property-card__footer">
+                                                <div class="rc-property-card__location">
+                                                    <span class="rc-property-card__location-icon" aria-hidden="true">
+                                                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                                                            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
+                                                                  stroke="currentColor" stroke-width="1.8"/>
+                                                            <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span>
+                                                        @if ($featuredAqar->governrateq)
+                                                            {{ $featuredAqar->governrateq->governrate }}
+                                                        @endif
+                                                        @if ($featuredAqar->districte)
+                                                            <bdi>، {{ $featuredAqar->districte->district }}</bdi>
+                                                        @endif
+                                                    </span>
+                                                </div>
+
+                                                <div class="rc-property-card__actions">
+                                                    <button type="button"
+                                                            class="btn rc-property-action rc-property-action--save addToCart"
+                                                            data-id="{{ $featuredAqar['id'] }}">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.4 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                                                                  stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                                        </svg>
+                                                        حفظ
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn rc-property-action rc-property-action--compare btn-compare-toggle"
+                                                            data-compare-id="{{ $featuredAqar->id }}">
+                                                        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                                                        قارن
+                                                    </button>
+                                                    <a href="{{ $featuredUrl }}" target="_blank"
+                                                       class="btn rc-property-action rc-property-action--primary">
+                                                        عرض التفاصيل
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                            <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2"
+                                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
                                                     </a>
-                                                </div>
-
-                                                <div class="card-text">
-
-                                                    <h6>
-
-                                                        @if ($vip->offerTypes->id == 1 || $vip->offerTypes->id == 2)
-                                                            {{ $vip->total_price }}
-                                                        @endif
-                                                        @if ($vip->offerTypes->id == 3 || $vip->offerTypes->id == 4)
-                                                            {{ $vip->monthly_rent }}
-                                                        @endif
-                                                        جنيه مصري
-                                                    </h6>
-
-                                                </div>
-                                                <div class="">
-                                                    <div class="list-fx-features">
-                                                        <div class="listing-card-info-icon text-white">
-                                                            {{ $vip->baths }}
-                                                            حمام
-                                                            <div class="inc-fleat-icon">
-                                                                <img    src="{{ asset('images/icons/bath.png') }}"
-                                                                        width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="listing-card-info-icon text-white">
-                                                            {{ $vip->rooms }}
-                                                            غرف
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{ asset('images/icons/room.png') }}"
-                                                                    width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="listing-card-info-icon text-white">
-                                                            {{ $vip->total_area }}
-                                                            م²
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{ asset('images/icons/area.png') }}"
-                                                                    width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h6 class="card-subtitle  fw-bold">
-                                                        <div class="foot-location2 text-white">
-
-                                                            @if ($vip->governrateq)
-                                                                {{ $vip->governrateq->governrate }}
-                                                            @endif,
-                                                            @if ($vip->districte)
-                                                                {{ $vip->districte->district }}
-                                                            @endif
-
-                                                            <img src="{{ asset('assets/img/pin.svg') }}"
-                                                                 width="18" alt="" loading="lazy"/>
-                                                        </div>
-                                                    </h6>
-
-                                                    <div class="footer-flex d-flex link mt-2">
-                                                        <a target="_blank"
-                                                           href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vip->slug) }}"
-                                                           class="btn btn-success ">عرض</a>
-                                                        <a class="btn btn-light  ml-2 addToCart"
-                                                           data-id="{{ $vip['id'] }}"> حفظ
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                height="16" fill="currentColor"
-                                                                class="bi bi-heart" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                                            </svg>
-                                                        </a>
-
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </article>
                                 @endforeach
-
-
                             </div>
+                        </section>
+                    @endif
+
+                    <section class="rc-all-properties" aria-labelledby="all-properties-title">
+                        <div class="rc-results-heading">
+                            <div class="rc-results-heading__title">
+                                <span class="rc-results-heading__icon" aria-hidden="true">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                        <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8"
+                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M5.5 10.5V20h13v-9.5M9.5 20v-5h5v5"
+                                              stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                                <div>
+                                    <span class="rc-results-heading__eyebrow">نتائج البحث</span>
+                                    <h2 id="all-properties-title">كل العقارات المتاحة</h2>
+                                </div>
+                            </div>
+                            <p>
+                                يتم عرض {{ number_format($allAqars->count()) }} عقار في هذه الصفحة
+                                من إجمالي {{ number_format($allAqars->total()) }} عقار.
+                            </p>
                         </div>
 
+                        <div class="rc-properties-stack">
+                            @forelse ($allAqars as $aqar)
+                                @php
+                                    $cardOffer = $aqar->offerTypes;
+                                    $cardOfferId = (int) optional($cardOffer)->id;
+                                    $cardPrice = in_array($cardOfferId, [3, 4], true)
+                                        ? $aqar->monthly_rent
+                                        : $aqar->total_price;
+                                    $cardHasPrice = is_numeric($cardPrice) && (float) $cardPrice > 0;
+                                    $cardHasImage = (bool) ($aqar->mainImage || $aqar->firstImage);
+                                    $cardImage = $aqar->mainImage
+                                        ? URL::to('/') . '/images/' . $aqar->mainImage->img_url
+                                        : ($aqar->firstImage
+                                            ? URL::to('/') . '/images/' . $aqar->firstImage->img_url
+                                            : asset('images/FBO.png'));
+                                    $cardUrl = URL::to(Config::get('app.locale') . '/aqars/' . $aqar->slug);
+                                    $cardTitle = $aqar->title ?: 'تفاصيل العقار';
+                                    $cardOfferName = optional($cardOffer)->type_offer ?: 'عقار';
+                                    $cardIsFeatured = (int) $aqar->vip === 1
+                                        && $aqar->created_at
+                                        && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1;
+                                @endphp
 
-                        @foreach ($vipAqars->shuffle()->take(2) as $vipCard)
-                            <div class="col-lg-12">
-                                <div class="card mt-3 property-list-card featured-property-card">
-                                    <div class="row no-gutters">
-                                        <div class="col-sm-5 col-card-imgs">
-                                            <div class="click">
-                                                <div>
-                                                    <a target="_blank"
-                                                       href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}">
-                                                        @if ($vipCard->mainImage)
-                                                            <img src="{{ URL::to('/') . '/images/' . $vipCard->mainImage->img_url }}"
-                                                                 class="img-fluid mx-auto" alt="main" loading="lazy">
-                                                        @elseif($vipCard->firstImage)
-                                                            <img src="{{ URL::to('/') . '/images/' . $vipCard->firstImage->img_url }}"
-                                                                 class="img-fluid mx-auto" alt="" loading="lazy"/>
-                                                        @else
-                                                            <img src="https://rightchoice-co.com/images/FBO.png"
-                                                                 class="img-fluid main-img" alt="main" loading="lazy">
-                                                        @endif
-                                                    </a>
-                                                </div>
+                                <article class="rc-property-card rc-property-card--list {{ $cardIsFeatured ? 'rc-property-card--inline-featured' : '' }}">
+                                    <div class="rc-property-card__media">
+                                        <a href="{{ $cardUrl }}" target="_blank"
+                                           aria-label="عرض {{ $cardTitle }}">
+                                            <img
+                                                class="rc-property-card__image {{ $cardHasImage ? '' : 'rc-property-card__image--placeholder' }}"
+                                                src="{{ $cardImage }}"
+                                                alt="{{ $cardTitle }}"
+                                                width="640"
+                                                height="420"
+                                                loading="lazy">
+                                        </a>
+
+                                        <div class="rc-property-card__badges">
+                                            @if ($cardIsFeatured)
+                                                <span class="rc-property-badge rc-property-badge--featured">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                                        <path d="m12 2.8 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 2.8Z"/>
+                                                    </svg>
+                                                    مميز
+                                                </span>
+                                            @endif
+                                            <span class="rc-property-badge rc-property-badge--offer">
+                                                {{ $cardOfferName }}
+                                            </span>
+                                            @if ((int) $aqar->finannce_bank === 1)
+                                                <span class="rc-property-badge rc-property-badge--finance">تمويل عقاري</span>
+                                            @endif
+                                        </div>
+
+                                        <span class="rc-property-card__views" aria-label="عدد المشاهدات">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            {{ number_format((int) $aqar->views) }}
+                                        </span>
+                                    </div>
+
+                                    <div class="rc-property-card__content">
+                                        <div class="rc-property-card__reference">
+                                            <span>{{ $cardOfferName }}</span>
+                                            <small>#{{ $aqar->id }}</small>
+                                        </div>
+
+                                        <h3 class="rc-property-card__title">
+                                            <a href="{{ $cardUrl }}" target="_blank"
+                                               title="{{ $cardTitle }}">
+                                                {{ $cardTitle }}
+                                            </a>
+                                        </h3>
+
+                                        <div class="rc-property-card__price">
+                                            <span>السعر</span>
+                                            @if ($cardHasPrice)
+                                                <strong>{{ number_format((float) $cardPrice) }}</strong>
+                                                <small>جنيه مصري</small>
+                                            @else
+                                                <strong class="rc-property-card__price-contact">عند التواصل</strong>
+                                            @endif
+                                        </div>
+
+                                        <div class="rc-property-card__meta">
+                                            <div>
+                                                <span class="rc-property-card__meta-icon">
+                                                    <img src="{{ asset('images/icons/area.png') }}" width="16" height="16" alt="">
+                                                </span>
+                                                <small>المساحة</small>
+                                                <strong>{{ number_format((float) $aqar->total_area) }} م²</strong>
                                             </div>
-                                            <div class="views">
-                                                <div class="views-1" style="background:#f0ad4e; color:#fff;">
-                                                    ⭐ مميز
-                                                </div>
+                                            <div>
+                                                <span class="rc-property-card__meta-icon">
+                                                    <img src="{{ asset('images/icons/room.png') }}" width="16" height="16" alt="">
+                                                </span>
+                                                <small>الغرف</small>
+                                                <strong>{{ (int) $aqar->rooms }}</strong>
                                             </div>
-                                            <div class="views-2 property-views-badge" aria-label="عدد المشاهدات">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                <span>{{ $vipCard->views }}</span>
+                                            <div>
+                                                <span class="rc-property-card__meta-icon">
+                                                    <img src="{{ asset('images/icons/bath.png') }}" width="16" height="16" alt="">
+                                                </span>
+                                                <small>الحمامات</small>
+                                                <strong>{{ (int) $aqar->baths }}</strong>
                                             </div>
                                         </div>
-                                        <div class="col-sm-7 order-lg-first col-card-details">
-                                            <div class="card-body">
-                                                <div class="listing-detail-wrapper">
-                                                    <div class="listing-short-detail-wrap">
-                                                        <div class="listing-short-detail">
-                                                            <h4 class="listing-name verified">
-                                                                <a href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}"
-                                                                   target="_blank">{{ $vipCard->title }}</a>
-                                                            </h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="listing-short-detail-flex">
-                                                        <h6 class="listing-card-info-price2">
-                                                            @if ($vipCard->offerTypes->id == 1 || $vipCard->offerTypes->id == 2)
-                                                                {{ $vipCard->total_price }}
-                                                            @endif
-                                                            @if ($vipCard->offerTypes->id == 3 || $vipCard->offerTypes->id == 4)
-                                                                {{ $vipCard->monthly_rent }}
-                                                            @endif جنيه مصري
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                                <div class="list-rap">
-                                                    <div class="list-fx-features2">
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $vipCard->total_area }} م²
-                                                            <div class="inc-fleat-icon">
-                                                                <img src="{{ asset('images/icons/area.png') }}" width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $vipCard->rooms }} غرف
-                                                            <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="13" alt="" loading="lazy"/></div>
-                                                        </div>
+                                        <div class="rc-property-card__footer">
+                                            <div class="rc-property-card__location">
+                                                <span class="rc-property-card__location-icon" aria-hidden="true">
+                                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                                                        <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"
+                                                              stroke="currentColor" stroke-width="1.8"/>
+                                                        <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                                                    </svg>
+                                                </span>
+                                                <span>
+                                                    @if ($aqar->governrateq)
+                                                        {{ $aqar->governrateq->governrate }}
+                                                    @endif
+                                                    @if ($aqar->districte)
+                                                        <bdi>، {{ $aqar->districte->district }}</bdi>
+                                                    @endif
+                                                </span>
+                                            </div>
 
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $vipCard->baths }} حمام
-                                                            <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="13" alt="" loading="lazy"/></div>
-                                                        </div>
-
-
-
-
-                                                        <div class="footer-first">
-                                                            <div class="foot-location   222">
-                                                                @if ($vipCard->governrateq)
-                                                                    {{ $vipCard->governrateq->governrate }}
-                                                                @endif
-                                                                @if ($vipCard->districte)
-                                                                    , {{ $vipCard->districte->district }}
-                                                                @endif
-                                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="btnAdds listing-detail-footer">
-
-                                                    <a class="btn btn-light ml-2 addToCart" data-id="{{ $vipCard['id'] }}"> حفظ
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                                            <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                                        </svg>
-                                                    </a>
-                                                    <button type="button" class="btn btn-compare-toggle ml-2" data-compare-id="{{ $vipCard->id }}">
-                                                        <i class="fas fa-balance-scale"></i> قارن
-                                                    </button>
-                                                    <a href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $vipCard->slug) }}"
-                                                       class="btn property-view-btn" target="_blank">عرض</a>
-                                                </div>
+                                            <div class="rc-property-card__actions">
+                                                <button type="button"
+                                                        class="btn rc-property-action rc-property-action--save addToCart"
+                                                        data-id="{{ $aqar['id'] }}">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                        <path d="M20.8 4.7a5.5 5.5 0 0 0-7.8 0L12 5.8l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.4 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"
+                                                              stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                                    </svg>
+                                                    حفظ
+                                                </button>
+                                                <button type="button"
+                                                        class="btn rc-property-action rc-property-action--compare btn-compare-toggle"
+                                                        data-compare-id="{{ $aqar->id }}">
+                                                    <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                                                    قارن
+                                                </button>
+                                                <a href="{{ $cardUrl }}" target="_blank"
+                                                   class="btn rc-property-action rc-property-action--primary">
+                                                    عرض التفاصيل
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                        <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2"
+                                                              stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
+                                </article>
+                            @empty
+                                <div class="rc-properties-empty">
+                                    <span class="rc-properties-empty__icon" aria-hidden="true">
+                                        <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+                                            <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.6"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M5.5 10.5V20h13v-9.5M9.5 20v-5h5v5"
+                                                  stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <h3>لا توجد عقارات مطابقة حاليًا</h3>
+                                    <p>جرّب تعديل خيارات البحث أو إزالة بعض الفلاتر لعرض نتائج أكثر.</p>
+                                    <a href="{{ url()->current() }}" class="btn">إعادة ضبط البحث</a>
                                 </div>
-                            </div>
-                        @endforeach
-
-                        @foreach ($allAqars as $aqar)
-                            <div class="col-lg-12">
-                                <div class="card mt-3 property-list-card">
-                                    <div class="row no-gutters">
-
-
-                                        <div class="col-sm-5 col-card-imgs">
-                                            <div class="click">
-
-                                                <div>
-                                                    <a target="_blank"
-                                                       href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $aqar->slug) }}"
-                                                       target="_blank">
-
-
-                                                        @if ($aqar->mainImage)
-                                                            <img
-                                                                src="{{ URL::to('/') . '/images/' . $aqar->mainImage->img_url }}"
-                                                                class="img-fluid mx-auto" alt="main" loading="lazy">
-
-                                                        @elseif($aqar->firstImage)
-                                                            <img
-                                                                src="{{ URL::to('/') . '/images/' . $aqar->firstImage->img_url }}"
-                                                                class="img-fluid mx-auto" alt="" loading="lazy"/>
-                                                        @else
-                                                            <img src="https://rightchoice-co.com/images/FBO.png"
-                                                                 class="img-fluid main-img" alt="main"
-                                                                 loading="lazy">
-                                                        @endif
-
-
-                                                    </a>
-                                                </div>
-
-
-                                            </div>
-
-
-                                                <?php if ($aqar->vip == 1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1){ ?>
-                                            <div class="views">
-                                                <div class="views-1">مميز</div>
-                                            </div>
-
-                                            <?php } ?>
-
-
-                                            <div class="views-2 property-views-badge" aria-label="عدد المشاهدات">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                                <span>{{ $aqar->views }}
-
-
-
-
-
-                                                    </span>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-7 order-lg-first col-card-details">
-                                            <div class="card-body">
-                                                <div class="listing-detail-wrapper">
-                                                    <div class="listing-short-detail-wrap">
-                                                        <div class="listing-short-detail">
-                                                            <h4 class="listing-name verified"><a
-                                                                    href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $aqar->slug) }}"
-                                                                    target="_blank">
-
-                                                                    {{ $aqar->title }}
-                                                                </a></h4>
-                                                            <!-- <h4 class="listing-name verified"><a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-
-
-                                                        </div>
-
-
-                                                    </div>
-                                                    <div class="listing-short-detail-flex">
-                                                        <h6 class="listing-card-info-price2">
-                                                            @if ($aqar->offerTypes->id == 1 || $aqar->offerTypes->id == 2)
-                                                                {{ $aqar->total_price }}
-                                                            @endif
-                                                            @if ($aqar->offerTypes->id == 3 || $aqar->offerTypes->id == 4)
-                                                                {{ $aqar->monthly_rent }}
-                                                            @endif جنيه مصري
-                                                        </h6>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="list-rap">
-                                                    <div class="list-fx-features2">
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $aqar->baths }}
-                                                            حمام
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{ asset('images/icons/area.png') }}"
-                                                                    width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $aqar->rooms }}
-                                                            غرف
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{ asset('images/icons/room.png') }}"
-                                                                    width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $aqar->total_area }}
-                                                            م²
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{ asset('images/icons/area.png') }}"
-                                                                    width="13" alt="" loading="lazy"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="btnAdds listing-detail-footer">
-                                                    <div class="footer-first">
-                                                        <div class="foot-location 33">
-                                                            @if ($aqar->governrateq)
-                                                                {{ $aqar->governrateq->governrate }}
-                                                            @endif
-                                                            @if ($aqar->districte)
-                                                                ,
-                                                                {{ $aqar->districte->district }}
-                                                            @endif
-
-
-                                                            <img src="{{ asset('assets/img/pin.svg') }}"
-                                                                 width="18" alt="" loading="lazy"/>
-
-                                                        </div>
-                                                    </div>
-                                                    <a class="btn btn-light  ml-2 addToCart"
-                                                       data-id="{{ $aqar['id'] }}"> حفظ
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" fill="currentColor" class="bi bi-heart"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                                        </svg>
-                                                    </a>
-                                                    <button type="button" class="btn btn-compare-toggle ml-2" data-compare-id="{{ $aqar->id }}">
-                                                        <i class="fas fa-balance-scale"></i> قارن
-                                                    </button>
-                                                    <a href="{{ URL::to(Config::get('app.locale') . '/aqars/' . $aqar->slug) }}"
-                                                       class="btn property-view-btn" target="_blank">عرض</a>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-
-
-                    </div>
+                            @endforelse
+                        </div>
+                    </section>
 
                 </div>
 
@@ -2386,6 +2334,705 @@
                 flex-basis: calc(50% - 6px);
             }
         }
+
+        /* ─────────────────────────────────────────────────────────────
+         * Results cards — RTL-first, responsive and isolated
+         * ───────────────────────────────────────────────────────────── */
+        #sale-props .rc-results-column {
+            direction: rtl;
+        }
+
+        #sale-props .rc-featured-properties,
+        #sale-props .rc-all-properties {
+            margin-bottom: 2px;
+        }
+
+        #sale-props .rc-results-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 12px;
+            padding: 0 3px;
+        }
+
+        #sale-props .rc-results-heading__title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        #sale-props .rc-results-heading__icon {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: var(--rc-primary-soft);
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-results-heading--featured .rc-results-heading__icon {
+            background: linear-gradient(135deg, #fff4d5, #ffe1a0);
+            color: #b86b00;
+            box-shadow: inset 0 0 0 1px rgba(216, 134, 0, .16);
+        }
+
+        #sale-props .rc-results-heading__eyebrow {
+            display: block;
+            margin-bottom: 2px;
+            color: var(--rc-muted);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        #sale-props .rc-results-heading--featured .rc-results-heading__eyebrow {
+            color: #b86b00;
+        }
+
+        #sale-props .rc-results-heading h2 {
+            margin: 0;
+            color: var(--rc-ink);
+            font-size: 19px;
+            font-weight: 900;
+            line-height: 1.35;
+        }
+
+        #sale-props .rc-results-heading p {
+            max-width: 430px;
+            margin: 0;
+            color: var(--rc-muted);
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.75;
+            text-align: left;
+        }
+
+        #sale-props .rc-featured-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        #sale-props .rc-properties-stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        #sale-props .rc-property-card {
+            position: relative;
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--rc-line);
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 9px 28px rgba(31, 54, 88, .075);
+            direction: rtl;
+            animation: rc-property-card-enter .5s ease both;
+            transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+        }
+
+        #sale-props .rc-property-card:hover {
+            border-color: #c7d7ea;
+            transform: translateY(-4px);
+            box-shadow: 0 18px 42px rgba(31, 54, 88, .13);
+        }
+
+        #sale-props .rc-property-card--featured {
+            border-color: rgba(226, 145, 16, .55);
+            background:
+                linear-gradient(145deg, rgba(255, 249, 235, .92), #fff 42%),
+                #fff;
+            box-shadow: 0 12px 34px rgba(188, 112, 0, .13);
+        }
+
+        #sale-props .rc-property-card--featured::before,
+        #sale-props .rc-property-card--inline-featured::before {
+            content: "";
+            position: absolute;
+            z-index: 7;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffca55, #e28b10, #ffe19a);
+        }
+
+        #sale-props .rc-property-card--list {
+            display: grid;
+            grid-template-columns: minmax(190px, 30%) minmax(0, 1fr);
+            min-height: 230px;
+        }
+
+        #sale-props .rc-property-card--inline-featured {
+            border-color: rgba(226, 145, 16, .48);
+            background: linear-gradient(100deg, #fffdf7, #fff);
+        }
+
+        #sale-props .rc-property-card__media {
+            position: relative;
+            height: 128px;
+            min-height: 128px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #edf3fa, #f7f9fc);
+        }
+
+        #sale-props .rc-property-card--list .rc-property-card__media {
+            height: 230px;
+            min-height: 230px;
+        }
+
+        #sale-props .rc-property-card__media > a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #sale-props .rc-property-card__image {
+            width: 100%;
+            height: 100%;
+            min-height: inherit;
+            display: block;
+            object-fit: cover;
+            box-shadow: none !important;
+            filter: none !important;
+            transition: transform .55s ease;
+        }
+
+        #sale-props .rc-property-card__image--placeholder {
+            padding: 18px;
+            object-fit: contain;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(243, 165, 31, .14), transparent 34%),
+                linear-gradient(145deg, #f3f7fc, #fff);
+        }
+
+        #sale-props .rc-property-card:hover .rc-property-card__image {
+            transform: scale(1.045);
+        }
+
+        #sale-props .rc-property-card:hover .rc-property-card__image--placeholder {
+            transform: scale(1.025);
+        }
+
+        #sale-props .rc-property-card__badges {
+            position: absolute;
+            z-index: 3;
+            top: 9px;
+            right: 9px;
+            left: 9px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+            pointer-events: none;
+        }
+
+        #sale-props .rc-property-badge {
+            min-height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border: 1px solid rgba(255, 255, 255, .50);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .93);
+            color: var(--rc-primary-dark);
+            box-shadow: 0 7px 18px rgba(8, 40, 77, .13);
+            font-size: 11px;
+            font-weight: 900;
+            line-height: 1;
+            backdrop-filter: blur(9px);
+        }
+
+        #sale-props .rc-property-badge--featured {
+            border-color: rgba(255, 226, 157, .72);
+            background: linear-gradient(135deg, #ffcc5b, #e99017);
+            color: #412800;
+        }
+
+        #sale-props .rc-property-badge--offer {
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-property-badge--finance {
+            background: rgba(21, 139, 97, .93);
+            color: #fff;
+        }
+
+        #sale-props .rc-property-badge--unavailable {
+            background: rgba(185, 52, 68, .94);
+            color: #fff;
+        }
+
+        #sale-props .rc-property-card__views {
+            position: absolute;
+            z-index: 3;
+            bottom: 8px;
+            left: 8px;
+            min-width: 52px;
+            height: 27px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 10px;
+            border: 1px solid rgba(255, 255, 255, .24);
+            border-radius: 999px;
+            background: rgba(8, 40, 77, .82);
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(8, 40, 77, .18);
+            direction: ltr;
+            font-size: 11px;
+            font-weight: 800;
+            backdrop-filter: blur(8px);
+        }
+
+        #sale-props .rc-property-card__content {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 13px 14px 14px;
+        }
+
+        #sale-props .rc-property-card--list .rc-property-card__content {
+            padding: 15px 18px;
+        }
+
+        #sale-props .rc-property-card__reference {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 4px;
+            color: var(--rc-muted);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        #sale-props .rc-property-card__reference > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #sale-props .rc-property-card__reference small {
+            flex: 0 0 auto;
+            color: #9aa6b6;
+            direction: ltr;
+        }
+
+        #sale-props .rc-property-card__title {
+            min-height: 47px;
+            margin: 0 0 7px;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1.45;
+        }
+
+        #sale-props .rc-property-card__title a {
+            text-align: right;
+            display: -webkit-box;
+            overflow: hidden;
+            color: var(--rc-ink);
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            transition: color .2s ease;
+        }
+
+        #sale-props .rc-property-card__title a:hover {
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-property-card__price {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+            color:  #40b991;
+        }
+
+        #sale-props .rc-property-card__price > span {
+            color: var(--rc-muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        #sale-props .rc-property-card__price strong {
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.1;
+            direction: ltr;
+        }
+
+        #sale-props .rc-property-card__price small {
+            color: #9a6a17;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        #sale-props .rc-property-card__price-contact {
+            font-size: 17px !important;
+        }
+
+        #sale-props .rc-property-card__meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 5px;
+            margin-bottom: 9px;
+        }
+
+        #sale-props .rc-property-card__meta > div {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: 24px minmax(0, 1fr);
+            grid-template-rows: auto auto;
+            column-gap: 5px;
+            padding: 6px;
+            border: 1px solid #e7edf5;
+            border-radius: 11px;
+            background: #f8fafc;
+        }
+
+        #sale-props .rc-property-card__meta-icon {
+            grid-row: 1 / 3;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            border-radius: 8px;
+            background: var(--rc-primary-soft);
+        }
+
+        #sale-props .rc-property-card__meta-icon img {
+            width: 15px;
+            height: 15px;
+            object-fit: contain;
+        }
+
+        #sale-props .rc-property-card__meta small,
+        #sale-props .rc-property-card__meta strong {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #sale-props .rc-property-card__meta small {
+            color: var(--rc-muted);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        #sale-props .rc-property-card__meta strong {
+            color: #40536b;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        #sale-props .rc-property-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 9px;
+            border-top: 1px solid var(--rc-line);
+        }
+
+        #sale-props .rc-property-card__location {
+            min-width: 0;
+            flex: 1 1 130px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--rc-muted);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        #sale-props .rc-property-card__location > span:last-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #sale-props .rc-property-card__location-icon {
+            width: 27px;
+            height: 27px;
+            flex: 0 0 27px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: var(--rc-primary-soft);
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-property-card__actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        #sale-props .rc-property-action {
+            min-height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 !important;
+            padding: 6px 8px;
+            border-radius: 9px;
+            font-size: 10px;
+            font-weight: 900;
+            line-height: 1.1;
+            box-shadow: none;
+            transition: transform .2s ease, color .2s ease, background .2s ease, border-color .2s ease;
+        }
+
+        #sale-props .rc-property-action:hover {
+            transform: translateY(-2px);
+        }
+
+        #sale-props .rc-property-action--save {
+            border: 1px solid #f0d7da;
+            background: #fff7f8;
+            color: #c53648;
+        }
+
+        #sale-props .rc-property-action--save:hover {
+            border-color: #c53648;
+            background: #c53648;
+            color: #fff;
+        }
+
+        #sale-props .rc-property-action--compare {
+            border: 1px solid #cfe0f3;
+            background: var(--rc-primary-soft);
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-property-action--compare:hover,
+        #sale-props .rc-property-action--compare.is-selected {
+            border-color: var(--rc-primary);
+            background: var(--rc-primary);
+            color: #fff;
+        }
+
+        #sale-props .rc-property-action--primary {
+            border: 1px solid var(--rc-primary);
+            background: linear-gradient(135deg, var(--rc-primary), #245f9d);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(18, 61, 114, .16);
+        }
+
+        #sale-props .rc-property-card--featured .rc-property-action--primary {
+            border-color: #d88600;
+            background: linear-gradient(135deg, #f3a51f, #e58a0c);
+            color: #2e2108;
+            box-shadow: 0 8px 18px rgba(216, 134, 0, .18);
+        }
+
+        #sale-props .rc-properties-empty {
+            padding: 55px 24px;
+            border: 1px dashed #cbd7e5;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, .72);
+            text-align: center;
+        }
+
+        #sale-props .rc-properties-empty__icon {
+            width: 70px;
+            height: 70px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            border-radius: 20px;
+            background: var(--rc-primary-soft);
+            color: var(--rc-primary);
+        }
+
+        #sale-props .rc-properties-empty h3 {
+            margin: 0 0 8px;
+            color: var(--rc-ink);
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        #sale-props .rc-properties-empty p {
+            margin: 0 auto 18px;
+            color: var(--rc-muted);
+            font-size: 13px;
+        }
+
+        #sale-props .rc-properties-empty .btn {
+            min-height: 42px;
+            padding: 9px 17px;
+            border-radius: 11px;
+            background: var(--rc-primary);
+            color: #fff;
+            font-weight: 800;
+        }
+
+        @keyframes rc-property-card-enter {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            #sale-props .rc-property-card--featured .rc-property-card__footer,
+            #sale-props .rc-property-card--featured .rc-property-card__actions {
+                flex-wrap: nowrap;
+            }
+
+            #sale-props .rc-property-card--featured .rc-property-card__location {
+                flex: 0 0 27px;
+            }
+
+            #sale-props .rc-property-card--featured .rc-property-card__location > span:last-child {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1199.98px) {
+            #sale-props .rc-featured-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #sale-props .rc-property-card--list {
+                grid-template-columns: minmax(200px, 32%) minmax(0, 1fr);
+            }
+
+            #sale-props .rc-property-card--list .rc-property-card__content {
+                padding: 15px 17px;
+            }
+
+            #sale-props .rc-property-card__footer {
+                align-items: stretch;
+            }
+
+            #sale-props .rc-property-card__actions {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            #sale-props .rc-results-column {
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            #sale-props .rc-results-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 9px;
+            }
+
+            #sale-props .rc-results-heading p {
+                max-width: none;
+                padding-right: 58px;
+                text-align: right;
+            }
+
+            #sale-props .rc-featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #sale-props .rc-property-card--list {
+                display: block;
+                min-height: 0;
+            }
+
+            #sale-props .rc-property-card--list .rc-property-card__media {
+                min-height: 190px;
+                height: 190px;
+            }
+
+            #sale-props .rc-property-card__content,
+            #sale-props .rc-property-card--list .rc-property-card__content {
+                padding: 16px 15px;
+            }
+
+            #sale-props .rc-property-card__title {
+                font-size: 16px;
+            }
+
+            #sale-props .rc-property-card__footer {
+                display: block;
+            }
+
+            #sale-props .rc-property-card__location {
+                margin-bottom: 13px;
+            }
+
+            #sale-props .rc-property-card__actions {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #sale-props .rc-property-action--primary {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #sale-props .rc-results-heading h2 {
+                font-size: 18px;
+            }
+
+            #sale-props .rc-results-heading p {
+                padding-right: 0;
+            }
+
+            #sale-props .rc-property-card {
+                border-radius: 18px;
+            }
+
+            #sale-props .rc-property-card__meta {
+                gap: 5px;
+            }
+
+            #sale-props .rc-property-card__meta > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+                padding: 8px 4px;
+                text-align: center;
+            }
+
+            #sale-props .rc-property-card__meta-icon {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #sale-props .rc-property-card,
+            #sale-props .rc-property-card__image,
+            #sale-props .rc-property-action {
+                animation: none;
+                transition: none;
+            }
+        }
+
     </style>
 
     <script>
