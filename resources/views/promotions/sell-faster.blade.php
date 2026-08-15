@@ -5,8 +5,8 @@
 
     @section('og_description')
         {{ App::isLocale('en')
-            ? 'Promote your property with Right Choice and get 80% off paid packages.'
-            : 'بيع عقارك أسرع مع رايت تشويز واستفد من خصم 80% على الباقات المدفوعة.' }}
+            ? 'Promote your property with Right Choice, reach more interested buyers, and sell faster.'
+            : 'خلّي ناس أكتر تشوف عقارك، ووصل لمشترين مهتمين، وزوّد فرص البيع بشكل أسرع مع رايت تشويز.' }}
     @endsection
 
     @php
@@ -38,8 +38,8 @@
 
                             <p class="rc-promo-hero__lead">
                                 {{ $isEnglish
-                                    ? 'Put your listing in front of serious buyers, communicate directly, and get more value from your package for a fraction of the regular price.'
-                                    : 'خلّي إعلانك يوصل لعملاء جادين بشكل أسرع، وتواصل مباشرة مع المهتمين، واستفد من الباقات بسعر استثنائي.' }}
+                                    ? 'Put your property in front of more interested buyers. Promotion packages increase your listing exposure, attract faster attention, and improve its chance of selling.'
+                                    : 'باقات التمييز بتخلي ناس أكتر تشوف عقارك، وتوصّل إعلانك لمشترين مهتمين بشكل أسرع، وده يزود فرص البيع.' }}
                             </p>
 
                             <div class="rc-promo-hero__actions">
@@ -57,7 +57,7 @@
                             <div class="rc-promo-trust-row">
                                 <span><i class="fas fa-check-circle"></i>{{ $isEnglish ? 'Direct contact' : 'تواصل مباشر' }}</span>
                                 <span><i class="fas fa-check-circle"></i>{{ $isEnglish ? 'No broker commission' : 'بدون عمولة وسيط' }}</span>
-                                <span><i class="fas fa-check-circle"></i>{{ $isEnglish ? 'Secure package checkout' : 'اشتراك آمن في الباقة' }}</span>
+                                <span><i class="fas fa-check-circle"></i>{{ $isEnglish ? 'More property views' : 'مشاهدات أكتر لعقارك' }}</span>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                 <div class="rc-promo-section-heading">
                     <span>{{ $isEnglish ? 'WHY SUBSCRIBE?' : 'ليه تشترك؟' }}</span>
                     <h2>{{ $isEnglish ? 'Give your property a stronger chance to sell' : 'خلّي فرص بيع عقارك أقوى' }}</h2>
-                    <p>{{ $isEnglish ? 'A simple package can help you reach the right people and communicate with them directly.' : 'الباقة بتديك قيمة أكبر داخل المنصة وتساعدك توصل للأشخاص المناسبين وتتواصل معاهم مباشرة.' }}</p>
+                    <p>{{ $isEnglish ? 'Promotion packages improve your property visibility, help more interested buyers discover it, and increase your chances of receiving serious enquiries faster.' : 'باقات التمييز بتزود ظهور عقارك، وتساعد مشترين مهتمين أكتر يكتشفوا إعلانك، وتزيد فرص وصول استفسارات جادة بشكل أسرع.' }}</p>
                 </div>
 
                 <div class="row">
@@ -98,14 +98,14 @@
                         <article class="rc-promo-benefit-card">
                             <div class="rc-promo-benefit-card__icon"><i class="fas fa-bullhorn"></i></div>
                             <h3>{{ $isEnglish ? 'More exposure' : 'وصول أكبر' }}</h3>
-                            <p>{{ $isEnglish ? 'Make better use of the platform to get your listing in front of interested users.' : 'استفد من المنصة بشكل أكبر علشان إعلانك يوصل لمستخدمين مهتمين.' }}</p>
+                            <p>{{ $isEnglish ? 'Show your property to more users who are actively searching for a suitable property.' : 'خلّي عقارك يظهر لعدد أكبر من المستخدمين اللي بيدوروا فعلًا على عقار مناسب.' }}</p>
                         </article>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-4">
                         <article class="rc-promo-benefit-card">
                             <div class="rc-promo-benefit-card__icon"><i class="fas fa-bolt"></i></div>
                             <h3>{{ $isEnglish ? 'Faster action' : 'فرصة أسرع' }}</h3>
-                            <p>{{ $isEnglish ? 'Reduce friction between listing your property and receiving serious interest.' : 'قلّل الوقت بين عرض عقارك ووصول اهتمام حقيقي من المشترين.' }}</p>
+                            <p>{{ $isEnglish ? 'Extra exposure helps your listing receive attention and serious enquiries sooner.' : 'الظهور الإضافي يساعد إعلانك يلفت الانتباه ويوصل لاستفسارات جادة في وقت أقصر.' }}</p>
                         </article>
                     </div>
                     <div class="col-lg-3 col-md-6 mb-4">
@@ -118,8 +118,8 @@
                     <div class="col-lg-3 col-md-6 mb-4">
                         <article class="rc-promo-benefit-card">
                             <div class="rc-promo-benefit-card__icon"><i class="fas fa-coins"></i></div>
-                            <h3>{{ $isEnglish ? 'Package points' : 'نقاط الباقة' }}</h3>
-                            <p>{{ $isEnglish ? 'Use your package points across the supported communication experience on the platform.' : 'استفد من نقاط الباقة في تجربة التواصل المتاحة داخل المنصة.' }}</p>
+                            <h3>{{ $isEnglish ? 'More views' : 'مشاهدات أكتر' }}</h3>
+                            <p>{{ $isEnglish ? 'Each package shows the expected number of views so you can choose the right exposure for your property.' : 'كل باقة بتوضح عدد المشاهدات المتوقع علشان تختار مستوى الظهور المناسب لعقارك.' }}</p>
                         </article>
                     </div>
                 </div>
@@ -130,8 +130,8 @@
             <div class="container">
                 <div class="rc-promo-section-heading rc-promo-section-heading--light">
                     <span>{{ $isEnglish ? '80% OFF PACKAGES' : 'خصم 80% على الباقات' }}</span>
-                    <h2>{{ $isEnglish ? 'Choose the package that suits you' : 'اختار الباقة المناسبة ليك' }}</h2>
-                    <p>{{ $isEnglish ? 'The promotional price below is calculated from the current package price in the system.' : 'السعر بعد الخصم بيتحسب من السعر الحالي للباقة المسجل في النظام.' }}</p>
+                    <h2>{{ $isEnglish ? 'Choose how many people see your property' : 'اختار مستوى الظهور المناسب لعقارك' }}</h2>
+                    <p>{{ $isEnglish ? 'Every package is designed to increase your property exposure. Compare the expected views and choose the package that helps you reach more buyers faster.' : 'كل باقة مصممة علشان تزود ظهور عقارك. قارن عدد المشاهدات المتوقع واختار الباقة اللي تساعدك توصل لمشترين أكتر وأسرع.' }}</p>
                 </div>
 
                 @if($packages->isEmpty())
@@ -146,7 +146,7 @@
                             @php
                                 $originalPrice = (float) $package->price;
                                 $promoPrice = round($originalPrice * $discountMultiplier, 2);
-                                $packageTitle = trim(strip_tags($isEnglish && !empty($package->type_en) ? $package->type_en : $package->type));
+                                $packageTitle = trim(strip_tags($isEnglish && !empty($package->name_en) ? $package->name_en : $package->name));
                                 $packageDescription = trim(strip_tags($isEnglish && !empty($package->description_en) ? $package->description_en : $package->description));
                             @endphp
 
@@ -172,10 +172,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="rc-promo-package-card__points">
-                                        <i class="fas fa-coins"></i>
-                                        <span>{{ number_format((float) $package->points) }} {{ $isEnglish ? 'points' : 'نقطة' }}</span>
+                                    <div class="rc-promo-package-card__reach">
+                                        <div class="rc-promo-package-card__reach-icon">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                        <div>
+                                            <small>{{ $isEnglish ? 'Expected property exposure' : 'الظهور المتوقع لعقارك' }}</small>
+                                            <strong>
+                                                {{ number_format((int) $package->views) }}
+                                                {{ $isEnglish ? 'views' : 'مشاهدة' }}
+                                            </strong>
+                                        </div>
                                     </div>
+
+                                    <ul class="rc-promo-package-card__benefits">
+                                        <li><i class="fas fa-check"></i>{{ $isEnglish ? 'More people discover your property' : 'ناس أكتر تكتشف عقارك' }}</li>
+                                        <li><i class="fas fa-check"></i>{{ $isEnglish ? 'Faster reach to interested buyers' : 'وصول أسرع لمشترين مهتمين' }}</li>
+                                        <li><i class="fas fa-check"></i>{{ $isEnglish ? 'A stronger chance to receive serious enquiries' : 'فرصة أقوى لوصول استفسارات جادة' }}</li>
+                                    </ul>
 
                                     <div class="rc-promo-package-card__action">
                                         @if($isCompanyAccount)
@@ -186,7 +200,7 @@
                                             <form method="POST" action="{{ url($locale . '/sell-faster/subscribe/' . $package->id) }}">
                                                 @csrf
                                                 <button class="rc-promo-package-btn" type="submit">
-                                                    <span>{{ $isEnglish ? 'Subscribe with 80% off' : 'اشترك الآن بخصم 80%' }}</span>
+                                                    <span>{{ $isEnglish ? 'Promote my property with 80% off' : 'ميّز عقاري الآن بخصم 80%' }}</span>
                                                     <i class="fas fa-arrow-left rc-promo-arrow-rtl"></i>
                                                     <i class="fas fa-arrow-right rc-promo-arrow-ltr"></i>
                                                 </button>
@@ -220,8 +234,8 @@
                 <div class="rc-promo-final-cta__card">
                     <div>
                         <span>{{ $isEnglish ? 'Need help choosing?' : 'محتاج مساعدة في الاختيار؟' }}</span>
-                        <h2>{{ $isEnglish ? 'Talk to Right Choice and start selling faster' : 'تواصل مع Right Choice وابدأ بيع عقارك أسرع' }}</h2>
-                        <p>{{ $isEnglish ? 'We can help you understand the available options before subscribing.' : 'نقدر نساعدك تفهم الاختيارات المتاحة قبل ما تشترك.' }}</p>
+                        <h2>{{ $isEnglish ? 'Get more eyes on your property and sell faster' : 'خلّي ناس أكتر تشوف عقارك وبيع أسرع' }}</h2>
+                        <p>{{ $isEnglish ? 'Choose the right exposure package or contact us to understand which option best suits your property.' : 'اختار باقة الظهور المناسبة، أو تواصل معانا علشان نساعدك تحدد أنسب اختيار لعقارك.' }}</p>
                     </div>
                     <a href="{{ url($locale . '/contact-us') }}" class="rc-promo-btn rc-promo-btn--white">
                         <i class="far fa-comments"></i>
@@ -485,8 +499,8 @@
         .rc-promo-package-card__badge { position: absolute; top: 17px; left: 17px; padding: 7px 11px; border-radius: 999px; color: #fff; background: linear-gradient(135deg, var(--rc-orange), var(--rc-orange-dark)); font-size: 12px; font-weight: 950; box-shadow: 0 9px 22px rgba(244,125,53,.25); }
         .rc-promo-page[dir="ltr"] .rc-promo-package-card__badge { left: auto; right: 17px; }
         .rc-promo-package-card__icon { width: 55px; height: 55px; margin-bottom: 18px; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(135deg, var(--rc-blue), var(--rc-blue-dark)); box-shadow: 0 14px 25px rgba(11,95,159,.2); font-size: 21px; }
-        .rc-promo-package-card h3 { margin: 0 0 9px; padding-inline-end: 50px; color: var(--rc-navy); font-size: 21px; line-height: 1.4; font-weight: 950; }
-        .rc-promo-package-card__description { min-height: 48px; margin: 0 0 17px; color: var(--rc-muted); line-height: 1.8; font-size: 13px; font-weight: 600; }
+        .rc-promo-package-card h3 { text-align: right; margin: 0 0 9px; padding-inline-end: 50px; color: var(--rc-navy); font-size: 21px; line-height: 1.4; font-weight: 950; }
+        .rc-promo-package-card__description {text-align: right; min-height: 48px; margin: 0 0 17px; color: var(--rc-muted); line-height: 1.8; font-size: 13px; font-weight: 600; }
 
         .rc-promo-package-card__pricing { margin: 4px 0 16px; padding: 16px; border-radius: 19px; background: #f5f8fa; }
         .rc-promo-old-price { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; color: #8a9aa7; font-size: 12px; font-weight: 700; }
@@ -496,8 +510,36 @@
         .rc-promo-new-price strong { font-size: 34px; line-height: 1; font-weight: 950; letter-spacing: -1px; }
         .rc-promo-new-price small { color: var(--rc-orange); font-size: 12px; font-weight: 900; }
 
-        .rc-promo-package-card__points { display: flex; align-items: center; gap: 9px; margin-bottom: 22px; padding: 11px 13px; border-radius: 14px; color: #08765f; background: rgba(24,199,161,.09); font-size: 13px; font-weight: 900; }
-        .rc-promo-package-card__points i { color: var(--rc-green); }
+        .rc-promo-package-card__reach {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 14px;
+            border-radius: 16px;
+            color: #08765f;
+            background: rgba(24,199,161,.09);
+            border: 1px solid rgba(24,199,161,.18);
+        }
+        .rc-promo-package-card__reach-icon {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--rc-green), #0da889);
+            box-shadow: 0 10px 20px rgba(24,199,161,.2);
+        }
+        .rc-promo-package-card__reach small,
+        .rc-promo-package-card__reach strong { display: block; }
+        .rc-promo-package-card__reach small { margin-bottom: 2px; color: #548076; font-size: 11px; font-weight: 800; }
+        .rc-promo-package-card__reach strong { color: #08765f; font-size: 16px; font-weight: 950; }
+        .rc-promo-package-card__benefits { list-style: none; margin: 0 0 22px; padding: 0; }
+        .rc-promo-package-card__benefits li { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; color: var(--rc-text); font-size: 12px; font-weight: 750; }
+        .rc-promo-package-card__benefits i { width: 21px; height: 21px; flex: 0 0 21px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #08765f; background: rgba(24,199,161,.12); font-size: 9px; }
         .rc-promo-package-card__action { margin-top: auto; }
         .rc-promo-package-card__action form { margin: 0; }
 
