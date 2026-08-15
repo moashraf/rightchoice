@@ -539,7 +539,7 @@
         }
 
         .rc-section {
-            padding: 88px 0;
+            padding: 8px 0;
         }
 
         .rc-pricing-hero {
@@ -1264,7 +1264,7 @@
 
         .rc-btn--seller {
             color: var(--rc-white) !important;
-            background: linear-gradient(135deg, var(--seller-accent), var(--rc-navy));
+            background: #4abc96;
             box-shadow: 0 11px 24px rgba(18, 59, 99, .22);
         }
 
@@ -1497,7 +1497,7 @@
 
         @media (max-width: 991.98px) {
             .rc-section {
-                padding: 70px 0;
+                padding: 7px 0;
             }
 
             .rc-pricing-hero {
@@ -1559,7 +1559,7 @@
             }
 
             .rc-section {
-                padding: 58px 0;
+                padding: 5px 0;
             }
 
             .rc-section-heading {
