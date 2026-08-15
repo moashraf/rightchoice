@@ -947,7 +947,7 @@
         }
 
         .rc-plan-summary {
-            min-height: 55px;
+            min-height: 5px;
             margin: 0;
             color: var(--rc-muted);
             line-height: 1.8;
