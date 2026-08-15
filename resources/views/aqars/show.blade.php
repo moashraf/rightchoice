@@ -97,44 +97,55 @@
                                         @endif
                                     @endif
                                 </div>
+                                <div class="row details mt-3 property-summary-details">
 
-                                <div class="fr-grid-deatil-flex details mt-3">
+                                    <div class="col-12 mb-2">
+                                        <div class="listing-card-info-icon h-100 property-summary-location">
+                                            @if ($aqar->governrateq)
+                                                {{ $aqar->governrateq->governrate }}
+                                            @endif
 
-                                    <div class="listing-card-info-icon">
-                                        {{ $aqar->total_area }}{{ trans('langsite.meterS')}}
-                                        <div class="inc-fleat-icon"><img src="{{asset('images/icons/area.png')}}"
-                                                                         width="13" alt=""/></div>
-                                    </div>
+                                            @if ($aqar->districte)
+                                                ,
+                                                {{ $aqar->districte->district }}
+                                            @endif
 
-                                    <div class="listing-card-info-icon">
-                                        {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
-                                        <div class="inc-fleat-icon"><img src="{{asset('images/icons/room.png')}}"
-                                                                         width="13" alt=""/></div>
-                                    </div>
-
-                                    <div class="listing-card-info-icon">
-                                        {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
-                                        <div class="inc-fleat-icon">
-                                            <img src="{{asset('images/icons/bath.png')}}"
-                                                 width="13" alt=""/>
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/location.png')}}" width="13" alt=""/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <br/> <br/>
-                                    <div class="listing-card-info-icon">
-                                        @if ($aqar->governrateq)
-                                            {{ $aqar->governrateq->governrate }}
-                                        @endif
 
-                                        @if ($aqar->districte)
-                                            ,
-                                            {{ $aqar->districte->district }}
-                                        @endif
-
-
-                                        <div class="inc-fleat-icon">
-                                            <img src="{{asset('images/icons/location.png')}}" width="13" alt=""/>
+                                    <div class="col-4 mb-2">
+                                        <div class="listing-card-info-icon h-100">
+                                            {{ $aqar->total_area }}{{ trans('langsite.meterS')}}
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/area.png')}}"   width="13" alt=""/></div>
                                         </div>
                                     </div>
+                                    @if ($aqar->rooms)
+
+                                    <div class="col-4 mb-2">
+                                        <div class="listing-card-info-icon h-100">
+                                            {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/room.png')}}"     width="13" alt=""/></div>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    @if ($aqar->baths)
+
+                                    <div class="col-4 mb-2">
+                                        <div class="listing-card-info-icon h-100">
+                                            {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
+                                            <div class="inc-fleat-icon">
+                                                <img src="{{asset('images/icons/bath.png')}}"
+                                                     width="13" alt=""/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
 
                                 </div>
                                 <hr class="hr-add">
@@ -357,136 +368,170 @@
                                         <div class="details mt-3">
                                             <h3 class="headingTitle2">{{ trans('langsite.details')}}</h3>
 
-                                            <div class="fr-grid-deatil-flex">
-                                                <div class="listing-card-info-icon">
-                                                    @if ($aqar->governrateq)
-                                                        {{ $aqar->governrateq->governrate }}
-                                                    @endif @if ($aqar->districte)
-                                                        ,
-                                                        {{ $aqar->districte->district }}
-                                                    @endif @if ($aqar->subAreaa)
-                                                        ,
-                                                        {{ $aqar->subAreaa->area }}
-                                                    @endif
+                                            <div class="row property-details-cols 11 ">
+                                                <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        @if ($aqar->governrateq)
+                                                            {{ $aqar->governrateq->governrate }}
+                                                        @endif @if ($aqar->districte)
+                                                            ,
+                                                            {{ $aqar->districte->district }}
+                                                        @endif @if ($aqar->subAreaa)
+                                                            ,
+                                                            {{ $aqar->subAreaa->area }}
+                                                        @endif
 
-                                                    @if ($aqar->compounds)
-                                                        ,
-                                                        {{ $aqar->compounds->compound }}
-                                                    @endif
+                                                        @if ($aqar->compounds)
+                                                            ,
+                                                            {{ $aqar->compounds->compound }}
+                                                        @endif
 
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/location.png')}}"
-                                                            width="13" alt=""/></div>
+                                                        <div class="inc-fleat-icon"><img
+                                                                src="{{asset('images/icons/location.png')}}"
+                                                                width="13" alt=""/></div>
+                                                    </div>
                                                 </div>
+
+
+                                                <div class="col-lg-6 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+
+                                                        تاريخ الاعلان
+
+
+                                                        {{ date('d/m/Y', strtotime($aqar->created_at))  }}
+
+                                                        <div class="inc-fleat-icon"><img
+                                                                src="{{asset('images/icons/calnder.png')}}"
+                                                                width="13" alt=""/></div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row property-details-cols">
 
 
                                                 @if($aqar->ref_code)
 
-                                                    <div class="listing-card-info-icon">
-                                                        <small class="text-muted"
-                                                               style="font-size:11px; display:block;">
-                                                            &nbsp; رقم مرجعي &nbsp;
-                                                        </small>
-                                                        <span>
-                                                            {{ $aqar->ref_code }}
-                                                            </span>
+                                                    <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            <small class="text-muted"
+                                                                   style="font-size:11px; display:block;">
+                                                                &nbsp; رقم مرجعي &nbsp;
+                                                            </small>
+                                                            <span>
+                                                                {{ $aqar->ref_code }}
+                                                                </span>
 
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('images/icons/counter.png')}}"
-                                                                width="13" alt=""/>
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('images/icons/counter.png')}}"
+                                                                    width="13" alt=""/>
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                 @endif
 
-                                                <div class="listing-card-info-icon">
-                                                    عدد المشاهدات
+                                                <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        عدد المشاهدات
 
-                                                    {{ $aqar->views }}
+                                                        {{ $aqar->views }}
 
-                                                    <div class="fa fa-eye"></div>
+                                                        <div class="fa fa-eye"></div>
 
+                                                    </div>
                                                 </div>
 
-
-                                                <div class="listing-card-info-icon">
-
-                                                    تاريخ الاعلان
-
-
-                                                    {{ date('d/m/Y', strtotime($aqar->created_at))  }}
-
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/calnder.png')}}"
-                                                            width="13" alt=""/></div>
-
-                                                </div>
 
                                             </div>
-                                            <div class="fr-grid-deatil-flex">
+
+
+
+
+
+
+                                            <div class="row property-details-row">
 
                                                 @if ($aqar->offer_type == 1 || $aqar->offer_type == 1 || $aqar->offer_type == 5 ||
                                                 $aqar->offer_type == 2)
                                                     @if ($aqar->total_price)
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $aqar->total_price }} {{ trans('langsite.egyptian_pound')}}
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{asset('images/icons/cash.png')}}"
-                                                                    width="13" alt=""/></div>
+                                                        <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                            <div class="listing-card-info-icon h-100">
+                                                                {{ $aqar->total_price }} {{ trans('langsite.egyptian_pound')}}
+                                                                <div class="inc-fleat-icon"><img
+                                                                        src="{{asset('images/icons/cash.png')}}"
+                                                                        width="13" alt=""/></div>
+                                                            </div>
                                                         </div>
                                                     @endif
                                                 @endif
                                                 @if ($aqar->offer_type == 3 || $aqar->offer_type == 4 )
                                                     @if ($aqar->monthly_rent)
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $aqar->monthly_rent }} {{ trans('langsite.egyptian_pound')}}
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{asset('images/icons/cash.png')}}"
-                                                                    width="13" alt=""/></div>
+                                                        <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                            <div class="listing-card-info-icon h-100">
+                                                                {{ $aqar->monthly_rent }} {{ trans('langsite.egyptian_pound')}}
+                                                                <div class="inc-fleat-icon"><img
+                                                                        src="{{asset('images/icons/cash.png')}}"
+                                                                        width="13" alt=""/></div>
+                                                            </div>
                                                         </div>
                                                     @endif
                                                     @if ($aqar->daily_rent)
-                                                        <div class="listing-card-info-icon">
-                                                            الايجار
-                                                            اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound')}}
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{asset('images/icons/cash.png')}}"
-                                                                    width="13" alt=""/></div>
+                                                        <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                            <div class="listing-card-info-icon h-100">
+                                                                الايجار
+                                                                اليومي: {{ $aqar->daily_rent }} {{ trans('langsite.egyptian_pound')}}
+                                                                <div class="inc-fleat-icon"><img
+                                                                        src="{{asset('images/icons/cash.png')}}"
+                                                                        width="13" alt=""/></div>
+                                                            </div>
                                                         </div>
                                                     @endif
                                                 @endif
 
 
-                                                <div class="listing-card-info-icon">
-                                                    {{ $aqar->offerTypes->type_offer }}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/cash.png')}}" width="13" alt=""/>
+                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        {{ $aqar->offerTypes->type_offer }}
+                                                        <div class="inc-fleat-icon"><img
+                                                                src="{{asset('images/icons/cash.png')}}" width="13" alt=""/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <?php if ($aqar->offer_type == 2){ ?>
 
-                                                <div class="listing-card-info-icon">
-                                                    {{ trans('langsite.offered')}} {{ $aqar->downpayment }}
-                                                    <div class="inc-fleat-icon">
-                                                        <img src="{{asset('images/icons/downpayment.png')}}"
-                                                             width="13" alt=""/></div>
+                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        {{ trans('langsite.offered')}} {{ $aqar->downpayment }}
+                                                        <div class="inc-fleat-icon">
+                                                            <img src="{{asset('images/icons/downpayment.png')}}"
+                                                                 width="13" alt=""/></div>
+                                                    </div>
                                                 </div>
 
-                                                <div class="listing-card-info-icon">
-                                                    مده التقسيط
-                                                    {{ $aqar->installment_time }} {{ trans('langsite.month')}}
-                                                    <div class="inc-fleat-icon">
-                                                        <img src="{{asset('images/icons/cash.png')}}"
-                                                             width="13" alt=""/></div>
+                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        مده التقسيط
+                                                        {{ $aqar->installment_time }} {{ trans('langsite.month')}}
+                                                        <div class="inc-fleat-icon">
+                                                            <img src="{{asset('images/icons/cash.png')}}"
+                                                                 width="13" alt=""/></div>
+                                                    </div>
                                                 </div>
 
                                                     <?php if ($aqar->rec_time){ ?>
-                                                <div class="rec_timerec_time listing-card-info-icon">
-                                                    {{ trans('langsite.Receipt_time')}}
-                                                    {{ $aqar->rec_time }}
-                                                    <div class="inc-fleat-icon">
-                                                        <img src="{{asset('images/icons/clock.png')}}" width="13"
-                                                             alt=""/>
+                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="rec_timerec_time listing-card-info-icon h-100">
+                                                        {{ trans('langsite.Receipt_time')}}
+                                                        {{ $aqar->rec_time }}
+                                                        <div class="inc-fleat-icon">
+                                                            <img src="{{asset('images/icons/clock.png')}}" width="13"
+                                                                 alt=""/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <?php } ?>
@@ -500,108 +545,132 @@
 
 
                                             </div>
-                                            <div class="propertyTypepropertyType fr-grid-deatil-flex">
+                                            <div class="row propertyTypepropertyType property-details-row">
                                                 @if ( $aqar->propertyType)
-                                                    <div class="propertyType_propertyType listing-card-info-icon">
-                                                        {{ $aqar->propertyType->property_type }}
-                                                        <div class="inc-fleat-icon">
-                                                            <img src="{{ asset('images/icons/room.png') }}" width="13"
-                                                                 alt=""/>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="propertyType_propertyType listing-card-info-icon h-100">
+                                                            {{ $aqar->propertyType->property_type }}
+                                                            <div class="inc-fleat-icon">
+                                                                <img src="{{ asset('images/icons/room.png') }}" width="13"
+                                                                     alt=""/>
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                 @endif
 
                                                 @if ($aqar->categoryRel)
-                                                    <div class="listing-card-info-icon">
-                                                        {{ app()->getLocale() === 'en' && $aqar->categoryRel->category_name_en
-                                                            ? $aqar->categoryRel->category_name_en
-                                                            : $aqar->categoryRel->category_name }}
-                                                        <div class="inc-fleat-icon">
-                                                            <img src="{{ asset('images/icons/category.png') }}"
-                                                                 width="13" alt=""/>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            {{ app()->getLocale() === 'en' && $aqar->categoryRel->category_name_en
+                                                                ? $aqar->categoryRel->category_name_en
+                                                                : $aqar->categoryRel->category_name }}
+                                                            <div class="inc-fleat-icon">
+                                                                <img src="{{ asset('images/icons/category.png') }}"
+                                                                     width="13" alt=""/>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 @endif
 
+                                                    @if ( $aqar->finishType)
+                                                        <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                            <div class="finishTypefinishType listing-card-info-icon h-100">
+                                                                {{ $aqar->finishType->finish_type }}
+                                                                <div class="inc-fleat-icon">
+                                                                    <img  src="{{asset('images/icons/finish.png')}}"  width="13" alt=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                 @if ($aqar->number_of_floors)
-                                                    <div class="listing-card-info-icon">
-                                                        {{ $aqar->number_of_floors }} {{ trans('langsite.number_floor')}}
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('assets/img/city.svg')}}"
-                                                                width="13" alt=""/></div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            {{ $aqar->number_of_floors }} {{ trans('langsite.number_floor')}}
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('assets/img/city.svg')}}"
+                                                                    width="13" alt=""/></div>
+                                                        </div>
                                                     </div>
                                                 @endif
-                                                <div class="listing-card-info-icon">
-                                                    {{ $aqar->total_area }} {{ trans('langsite.meterS')}}
-                                                    <div class="inc-fleat-icon"><img
-                                                            src="{{asset('images/icons/area.png')}}"
-                                                            width="13" alt=""/></div>
+                                                <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                    <div class="listing-card-info-icon h-100">
+                                                        {{ $aqar->total_area }} {{ trans('langsite.meterS')}}
+                                                        <div class="inc-fleat-icon"><img
+                                                                src="{{asset('images/icons/area.png')}}"
+                                                                width="13" alt=""/></div>
+                                                    </div>
                                                 </div>
 
                                                 @if ($aqar->floorNo)
-                                                    <div class="listing-card-info-icon">
-                                                        {{ trans('langsite.floor')}} {{ $aqar->floorNo->floor }}
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            {{ trans('langsite.floor')}} {{ $aqar->floorNo->floor }}
 
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('assets/img/city.svg')}}"
-                                                                width="13" alt=""/></div>
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('assets/img/city.svg')}}"
+                                                                    width="13" alt=""/></div>
+                                                        </div>
                                                     </div>
                                                 @endif
                                                 @if ($aqar->rooms)
-                                                    <div class="listing-card-info-icon">
-                                                        {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('images/icons/room.png')}}"
-                                                                width="13" alt=""/></div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            {{ $aqar->rooms }} {{ trans('langsite.rooms')}}
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('images/icons/room.png')}}"
+                                                                    width="13" alt=""/></div>
+                                                        </div>
                                                     </div>
 
                                                 @endif
                                                 @if ($aqar->baths)
-                                                    <div class="listing-card-info-icon">
-                                                        {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('images/icons/bath.png')}}"
-                                                                width="13" alt=""/></div>
+                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                        <div class="listing-card-info-icon h-100">
+                                                            {{ $aqar->baths }} {{ trans('langsite.bathroom')}}
+                                                            <div class="inc-fleat-icon"><img
+                                                                    src="{{asset('images/icons/bath.png')}}"
+                                                                    width="13" alt=""/></div>
+                                                        </div>
                                                     </div>
 
                                                 @endif
-                                                @if ( $aqar->finishType)
-                                                    <div class="finishTypefinishType listing-card-info-icon">
-                                                        {{ $aqar->finishType->finish_type }}
-                                                        <div class="inc-fleat-icon"><img
-                                                                src="{{asset('images/icons/finish.png')}}"
-                                                                width="13" alt=""/></div>
-                                                    </div>
-                                                @endif
+
 
                                             </div>
 
                                         </div>
 
-                                        <div class="fr-grid-deatil-flex">
+                                        <div class="row property-details-row">
                                             <?php if ($aqar->finannce_bank == 1){ ?>
-                                            <div class="listing-card-info-icon">
-                                                {{ trans('langsite.Suitable')}}
-                                                <div class="inc-fleat-icon"><img
-                                                        src="{{asset('images/icons/bank.png')}}" width="13"
-                                                        alt=""/></div>
+                                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                                <div class="listing-card-info-icon h-100">
+                                                    {{ trans('langsite.Suitable')}}
+                                                    <div class="inc-fleat-icon"><img
+                                                            src="{{asset('images/icons/bank.png')}}" width="13"
+                                                            alt=""/></div>
+                                                </div>
                                             </div>
                                             <?php } ?>
                                             <?php if ($aqar->trade == 1){ ?>
-                                            <div class="listing-card-info-icon">
-                                                {{ trans('langsite.suitable_sale')}}
-                                                <div class="inc-fleat-icon"><img
-                                                        src="{{asset('images/icons/trade.png')}}"
-                                                        width="13" alt=""/></div>
+                                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                                <div class="listing-card-info-icon h-100">
+                                                    {{ trans('langsite.suitable_sale')}}
+                                                    <div class="inc-fleat-icon"><img
+                                                            src="{{asset('images/icons/trade.png')}}"
+                                                            width="13" alt=""/></div>
+                                                </div>
                                             </div>
                                             <?php } ?>
                                             <?php if ($aqar->licensed == 1){ ?>
-                                            <div class="listing-card-info-icon">
-                                                {{ trans('langsite.Registered')}}
-                                                <div class="inc-fleat-icon"><img
-                                                        src="{{asset('images/icons/signed.png')}}"
-                                                        width="13" alt=""/></div>
+                                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                                <div class="listing-card-info-icon h-100">
+                                                    {{ trans('langsite.Registered')}}
+                                                    <div class="inc-fleat-icon"><img
+                                                            src="{{asset('images/icons/signed.png')}}"
+                                                            width="13" alt=""/></div>
+                                                </div>
                                             </div>
 
                                             <?php } ?>
@@ -611,17 +680,19 @@
 
                                         <h3 class="headingTitle2">{{ trans('langsite.Advantages')}}</h3>
                                         <div class="details">
-                                            <div class="fr-grid-deatil-flex">
+                                            <div class="row property-details-row">
 
 
                                                 @if ($aqar->mzaya)
                                                     @foreach ($aqar->mzaya as $maz)
-                                                        <div class="listing-card-info-icon">
-                                                            {{ $maz->mzaya_type }}
+                                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+                                                            <div class="listing-card-info-icon h-100">
+                                                                {{ $maz->mzaya_type }}
 
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{asset('images/icons').'/'.$maz->img_name}}"
-                                                                    width="13" alt=""/>
+                                                                <div class="inc-fleat-icon"><img
+                                                                        src="{{asset('images/icons').'/'.$maz->img_name}}"
+                                                                        width="13" alt=""/>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -1068,17 +1139,9 @@
             border-top: 1px solid var(--rc-border);
         }
 
-        .property-show-modern .fr-grid-deatil-flex {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 11px;
-            width: 100%;
-            margin-bottom: 12px;
-        }
-
-        .property-show-modern .fr-grid-deatil-flex > br {
-            display: none;
-        }
+        /*.property-show-modern .property-summary-details .property-summary-location {*/
+        /*    direction: ltr !important;*/
+        /*}*/
 
         .property-show-modern .listing-card-info-icon {
             position: relative;
@@ -1094,6 +1157,7 @@
             font-weight: 700;
             line-height: 1.5;
             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            flex-direction: row;
         }
 
         .property-show-modern .listing-card-info-icon:hover {
@@ -1453,10 +1517,6 @@
             .property-gallery-card .main-img {
                 min-height: 380px;
             }
-
-            .property-show-modern .fr-grid-deatil-flex {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 991.98px) {
@@ -1480,10 +1540,6 @@
 
             .property-sidebar-sticky {
                 position: static;
-            }
-
-            .property-show-modern .fr-grid-deatil-flex {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
@@ -1537,10 +1593,16 @@
                 font-size: 11px;
             }
 
-            .property-show-modern .fr-grid-deatil-flex,
+
             .property-action-grid,
             .property-action-grid > form {
                 grid-template-columns: 1fr;
+            }
+
+            .property-show-modern .property-summary-details .listing-card-info-icon {
+                min-height: 46px;
+                padding: 9px 38px 9px 7px;
+                font-size: 11px;
             }
 
             .property-action-grid > * {

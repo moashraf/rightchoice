@@ -9,21 +9,21 @@
     <div class="container fp-container">
 
         <!-- Section Header -->
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="fp-badge">
-                    <i class="fa fa-gift"></i>
-                    <span>عرض حصري مجاني</span>
-                </div>
-                <h2 class="fp-main-title">
-                    ابدأ رحلتك العقارية
-                    <span class="fp-highlight">مجاناً الآن</span>
-                </h2>
-                <p class="fp-subtitle">
-                    انضم إلى آلاف المستخدمين واستفد من الباقة المجانية — بدون أي رسوم، بدون بطاقة ائتمان
-                </p>
-            </div>
-        </div>
+{{--        <div class="row justify-content-center">--}}
+{{--            <div class="col-lg-8 text-center">--}}
+{{--                <div class="fp-badge">--}}
+{{--                    <i class="fa fa-gift"></i>--}}
+{{--                    <span>عرض حصري مجاني</span>--}}
+{{--                </div>--}}
+{{--                <h2 class="fp-main-title">--}}
+{{--                    ابدأ رحلتك العقارية--}}
+{{--                    <span class="fp-highlight">مجاناً الآن</span>--}}
+{{--                </h2>--}}
+{{--                <p class="fp-subtitle">--}}
+{{--                    انضم إلى آلاف المستخدمين واستفد من الباقة المجانية — بدون أي رسوم، بدون بطاقة ائتمان--}}
+{{--                </p>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <!-- Main Card -->
         <div class="row justify-content-center mt-5">
@@ -156,7 +156,7 @@
    ========================================= */
 .free-plan-section {
     position: relative;
-    padding: 90px 0 80px;
+    padding: 5px 0 40px;
     background: linear-gradient(135deg, #0f0c29 0%, #196aa2  40%, #24243e 100%);
     overflow: hidden;
 }

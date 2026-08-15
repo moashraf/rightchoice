@@ -27,6 +27,7 @@ Route::post('login',  [App\Http\Controllers\API\AuthAPIController::class, 'login
 Route::post('logout', [App\Http\Controllers\API\AuthAPIController::class, 'logout']);
 
 // Registration
+Route::get('user-types', [App\Http\Controllers\API\RegisterAPIController::class, 'userTypes']);
 Route::post('register',   [App\Http\Controllers\API\RegisterAPIController::class, 'register']);
 Route::post('verify-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'verifyOtp']);
 Route::post('resend-otp', [App\Http\Controllers\API\RegisterAPIController::class, 'resendOtp']);
@@ -61,6 +62,10 @@ Route::apiResource('services',                 App\Http\Controllers\API\services
 Route::apiResource('priceing_sales',           App\Http\Controllers\API\priceing_saleAPIController::class);
 Route::apiResource('mzayas',                   App\Http\Controllers\API\mzayaAPIController::class);
 Route::apiResource('pages',                    App\Http\Controllers\API\PagesAPIController::class);
+Route::get('developers',                      [App\Http\Controllers\API\DeveloperAPIController::class, 'index']);
+Route::get('developers/{id}',                 [App\Http\Controllers\API\DeveloperAPIController::class, 'show'])
+    ->where('id', '[0-9]+');
+Route::get('aqars/compare',                   [App\Http\Controllers\API\aqarAPIController::class, 'compare']);
 Route::apiResource('aqars',                    App\Http\Controllers\API\aqarAPIController::class);
 Route::apiResource('images',                   App\Http\Controllers\API\ImagesAPIController::class);
 Route::apiResource('aqar_mzayas',              App\Http\Controllers\API\aqar_mzayaAPIController::class);
@@ -175,6 +180,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // ── Points & Contact ─────────────────────────────────────────────
     Route::get('my-points',               [App\Http\Controllers\API\UserDashboardAPIController::class, 'myPoints']);
     Route::post('contact-aqar',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'contactAqar']);
+    Route::post('aqars/whatsapp-contact', [App\Http\Controllers\API\UserDashboardAPIController::class, 'trackWhatsappContact']);
 
     // ── Payments ─────────────────────────────────────────────────────
     Route::get('my-payments',             [App\Http\Controllers\API\UserPaymentAPIController::class, 'index']);

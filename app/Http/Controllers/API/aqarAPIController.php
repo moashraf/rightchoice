@@ -21,6 +21,72 @@ class aqarAPIController extends AppBaseController
     }
 
     /**
+     * GET /api/aqars/compare?ids=1,2,3
+     *
+     * Accepts two or three active property IDs. The ids parameter may be
+     * a comma-separated string or an array.
+     */
+    public function compare(Request $request)
+    {
+        $rawIds = $request->input('ids', []);
+
+        if (!is_array($rawIds)) {
+            $rawIds = explode(',', (string) $rawIds);
+        }
+
+        $ids = array_values(array_unique(array_filter(
+            array_map(function ($id) {
+                return (int) $id;
+            }, $rawIds),
+            function ($id) {
+                return $id > 0;
+            }
+        )));
+
+        if (count($ids) < 2) {
+            return $this->sendError('يجب اختيار عقارين على الأقل للمقارنة.', 422);
+        }
+
+        if (count($ids) > 3) {
+            return $this->sendError('يمكن مقارنة 3 عقارات كحد أقصى.', 422);
+        }
+
+        $order = array_flip($ids);
+
+        $aqars = aqar::with([
+                'governrateq',
+                'districte',
+                'subAreaa',
+                'images',
+                'mainImage',
+                'firstImage',
+                'finishType',
+                'propertyType',
+                'offerTypes',
+                'floorNo',
+                'categoryRel',
+                'mzaya',
+                'compounds',
+            ])
+            ->where('status', 1)
+            ->whereIn('id', $ids)
+            ->get()
+            ->sortBy(function ($aqar) use ($order) {
+                return $order[$aqar->id] ?? PHP_INT_MAX;
+            })
+            ->values();
+
+        if ($aqars->count() < 2) {
+            return $this->sendError('تعذر العثور على عقارين نشطين على الأقل للمقارنة.', 404);
+        }
+
+        return $this->sendResponse([
+            'count' => $aqars->count(),
+            'aqars' => $aqars->toArray(),
+        ], 'تم استرجاع مقارنة العقارات بنجاح.');
+    }
+
+    /**
      * GET /api/aqars
      *
      * Exact-match filters (passed as query params):
