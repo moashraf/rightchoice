@@ -458,6 +458,16 @@
                                     </a>
                                 </li>
 
+                                <li class="{{ Request::is('*/pricing-seller*') ? 'active' : '' }}">
+                                    <a href="{{ URL::to(Config::get('app.locale').'/pricing-seller') }}">
+                                        <i class=" fas fa-check" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ trans('langsite.Packages') }}
+                                    </a>
+                                </li>
+
+
+
+
                                 {{-- Community Link --}}
                                 {{--                                    @auth--}}
                                 {{--                                        <li class="{{ Request::is('*/community') ? 'active' : '' }}">--}}
