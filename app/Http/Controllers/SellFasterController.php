@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pricing;
+use App\Models\PriceVip;
 use Illuminate\Http\Request;
 
 class SellFasterController extends Controller
@@ -14,7 +14,7 @@ class SellFasterController extends Controller
      */
     public function index(string $locale)
     {
-        $packages = Pricing::query()
+        $packages = PriceVip::query()
             ->where('price', '>', 0)
             ->orderBy('price')
             ->get();
