@@ -36,7 +36,15 @@ class AdminPaymentDataTable extends DataTable
                 return $actions;
             })
             ->editColumn('user_id', function ($payment) {
-                return $payment->user ? e($payment->user->name) : ('مستخدم #' . $payment->user_id);
+                $userName = $payment->user ? $payment->user->name : ('مستخدم #' . $payment->user_id);
+
+                if (! $payment->user_id) {
+                    return e($userName);
+                }
+
+                $editUrl = route('sitemanagement.users.edit', $payment->user_id);
+
+                return '<a href="' . e($editUrl) . '" title="تعديل المستخدم">' . e($userName) . '</a>';
             })
             ->editColumn('paymentAmount', function ($payment) {
                 return number_format($payment->paymentAmount, 2) . ' ج.م';
@@ -59,7 +67,20 @@ class AdminPaymentDataTable extends DataTable
                 return number_format($payment->net_amount, 2) . ' ج.م';
             })
             ->addColumn('package', function ($payment) {
-                return e($payment->package_name);
+                $packageName = $payment->package_name;
+                $editUrl = null;
+
+                if ($payment->paqaat_priceing_sale_id) {
+                    $editUrl = route('sitemanagement.priceingSales.edit', $payment->paqaat_priceing_sale_id);
+                } elseif ($payment->tmyezz_price_vip_id) {
+                    $editUrl = route('sitemanagement.priceVips.edit', $payment->tmyezz_price_vip_id);
+                }
+
+                if (! $editUrl) {
+                    return e($packageName);
+                }
+
+                return '<a href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>';
             })
             ->editColumn('paid_at', function ($payment) {
                 return $payment->paid_at ? $payment->paid_at->format('Y-m-d H:i') : '-';
