@@ -403,7 +403,9 @@ $message ="  تم تميز اعلانك بنجاح ";
     {
         //
         $allPricing = Pricing::all();
-        return view('price.pricing', compact('allPricing'));
+        $sellerPricing = PriceVip::all();
+
+        return view('price.pricing', compact('allPricing', 'sellerPricing'));
     }
 
 
