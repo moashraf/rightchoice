@@ -262,12 +262,33 @@
                     </li>
 
 
-                    <li class=" price_vip_price_vip nav-item">
-                        <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-gem"></i>
-                            <p>{{ __('admin.price_vip') }}</p>
+
+                    <li class=" users_users nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p> كل الباقات
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
                         </a>
+                        <ul class="nav nav-treeview">
+
+
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-tags"></i>
+                                    <p>{{ __('admin.pricing_sales') }}</p>
+                                </a>
+                            </li>
+                            <li class=" price_vip_price_vip nav-item">
+                                <a href="{{ route('sitemanagement.priceVips.index') }}" class="nav-link {{ request()->is('sitemanagement/priceVips*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-gem"></i>
+                                    <p>{{ __('admin.price_vip') }}</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
+
 
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
@@ -276,12 +297,6 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tags"></i>
-                            <p>{{ __('admin.pricing_sales') }}</p>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.companies.index') }}" class="nav-link {{ request()->is('sitemanagement/companies*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-building"></i>

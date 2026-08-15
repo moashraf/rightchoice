@@ -573,6 +573,17 @@
                                                     </div>
                                                 @endif
 
+                                                    @if ( $aqar->finishType)
+                                                        <div class="col-lg-3 col-md-6 col-12 mb-3">
+                                                            <div class="finishTypefinishType listing-card-info-icon h-100">
+                                                                {{ $aqar->finishType->finish_type }}
+                                                                <div class="inc-fleat-icon">
+                                                                    <img  src="{{asset('images/icons/finish.png')}}"  width="13" alt=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                 @if ($aqar->number_of_floors)
                                                     <div class="col-lg-3 col-md-6 col-12 mb-3">
                                                         <div class="listing-card-info-icon h-100">
@@ -625,16 +636,7 @@
                                                     </div>
 
                                                 @endif
-                                                @if ( $aqar->finishType)
-                                                    <div class="col-lg-3 col-md-6 col-12 mb-3">
-                                                        <div class="finishTypefinishType listing-card-info-icon h-100">
-                                                            {{ $aqar->finishType->finish_type }}
-                                                            <div class="inc-fleat-icon"><img
-                                                                    src="{{asset('images/icons/finish.png')}}"
-                                                                    width="13" alt=""/></div>
-                                                        </div>
-                                                    </div>
-                                                @endif
+
 
                                             </div>
 
