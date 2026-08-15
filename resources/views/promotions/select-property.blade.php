@@ -215,7 +215,7 @@
         .rc-property-card:hover .rc-property-card__image img { transform: scale(1.04); }
         .rc-property-card__views { position: absolute; bottom: 12px; inset-inline-end: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; color: #fff; border-radius: 999px; background: rgba(4,44,78,.78); font-size: 11px; font-weight: 850; backdrop-filter: blur(7px); }
         .rc-property-card__body { flex: 1; display: flex; flex-direction: column; padding: 19px; }
-        .rc-property-card__body > strong { min-height: 48px; margin-bottom: 7px; color: var(--picker-navy); font-size: 17px; line-height: 1.5; font-weight: 950; }
+        .rc-property-card__body > strong {     text-align: right; min-height: 48px; margin-bottom: 7px; color: var(--picker-navy); font-size: 17px; line-height: 1.5; font-weight: 950; }
         .rc-property-card__body > small { display: flex; align-items: center; gap: 6px; margin-bottom: 15px; color: var(--picker-muted); font-size: 12px; }
         .rc-property-card__body > small i { color: var(--picker-orange); }
         .rc-property-card__meta { display: flex; gap: 8px; margin-bottom: 17px; }

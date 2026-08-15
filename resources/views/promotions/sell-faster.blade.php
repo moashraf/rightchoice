@@ -499,8 +499,8 @@
         .rc-promo-package-card__badge { position: absolute; top: 17px; left: 17px; padding: 7px 11px; border-radius: 999px; color: #fff; background: linear-gradient(135deg, var(--rc-orange), var(--rc-orange-dark)); font-size: 12px; font-weight: 950; box-shadow: 0 9px 22px rgba(244,125,53,.25); }
         .rc-promo-page[dir="ltr"] .rc-promo-package-card__badge { left: auto; right: 17px; }
         .rc-promo-package-card__icon { width: 55px; height: 55px; margin-bottom: 18px; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(135deg, var(--rc-blue), var(--rc-blue-dark)); box-shadow: 0 14px 25px rgba(11,95,159,.2); font-size: 21px; }
-        .rc-promo-package-card h3 { margin: 0 0 9px; padding-inline-end: 50px; color: var(--rc-navy); font-size: 21px; line-height: 1.4; font-weight: 950; }
-        .rc-promo-package-card__description { min-height: 48px; margin: 0 0 17px; color: var(--rc-muted); line-height: 1.8; font-size: 13px; font-weight: 600; }
+        .rc-promo-package-card h3 { text-align: right; margin: 0 0 9px; padding-inline-end: 50px; color: var(--rc-navy); font-size: 21px; line-height: 1.4; font-weight: 950; }
+        .rc-promo-package-card__description {text-align: right; min-height: 48px; margin: 0 0 17px; color: var(--rc-muted); line-height: 1.8; font-size: 13px; font-weight: 600; }
 
         .rc-promo-package-card__pricing { margin: 4px 0 16px; padding: 16px; border-radius: 19px; background: #f5f8fa; }
         .rc-promo-old-price { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; color: #8a9aa7; font-size: 12px; font-weight: 700; }
