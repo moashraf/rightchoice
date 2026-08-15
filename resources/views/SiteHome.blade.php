@@ -28,7 +28,9 @@
                                         </div>
 
                                         <div class="rc-field rc-field-keyword">
-
+                                            <label for="hero-keywords-{{ $loop->index }}">
+                                                {{ App::isLocale('en') ? 'Keyword or location' : 'الكلمة المفتاحية أو الموقع' }}
+                                            </label>
                                             <div class="rc-input-wrap">
                                                 <input id="hero-keywords-{{ $loop->index }}"
                                                        name="keywords"
@@ -1743,21 +1745,13 @@
 {{--                                    <div class="register-cta-feature-icon">--}}
 {{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>--}}
 {{--                                    </div>--}}
-{{--                                    <span>تواصل مباشر مع المالك</span>--}}
+{{--                                    <span>تواصل مباشر مع المُعلنين</span>--}}
 {{--                                </div>--}}
 {{--                            </div>--}}
-                            <div class="register-cta-action animate-fade-up-delay3">
-                                <a href="{{ route('register', ['locale' => Config::get('app.locale')]) }}" class="register-cta-btn">
-                                    <span>إنشاء حساب مجاني</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M5 12h14M13 6l6 6-6 6"/>
-                                    </svg>
-                                </a>
-                            </div>
-{{--                            <p class="register-cta-login-hint animate-fade-up-delay3">--}}
-{{--                                لديك حساب بالفعل؟--}}
-{{--                                <a href="{{ route('login', ['locale' => Config::get('app.locale')]) }}">تسجيل الدخول</a>--}}
-{{--                            </p>--}}
+                            <a href="{{ URL::to(Config::get('app.locale').'/register') }}{{ session('invited_by') ? '?invited_by=' . urlencode(session('invited_by')) : '' }}" class="register-cta-btn animate-fade-up-delay3">
+                                <span>سجّل الآن مجاناً</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 24 24" style="margin-right:8px;"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1765,206 +1759,245 @@
             <!-- Decorative shapes -->
             <div class="register-cta-shape register-cta-shape-1"></div>
             <div class="register-cta-shape register-cta-shape-2"></div>
-            <div class="register-cta-shape register-cta-shape-3"></div>
         </section>
-    @endguest
 
+
+    @else
+        <section class="register-cta-section" dir="rtl">
+            <div class="register-cta-overlay"></div>
+            <div class="container position-relative" style="z-index:2;">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-lg-8 col-md-10 text-center">
+                        <div class="register-cta-content">
+                            <div class="register-cta-icon-wrap animate-bounce-in">
+                                <div class="register-cta-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#ffffff" viewBox="0 0 24 24">
+                                        <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h2 class="register-cta-title animate-fade-up">
+                                أضف عقارك الآن وابدأ
+                                <span class="register-cta-highlight">
+                                       <br>
+                                استقبال العروض فوراً
+                                </span>
+                            </h2>
+                            <p class="register-cta-desc animate-fade-up-delay">
+                                حوّل عقارك إلى فرصة استثمارية اليوم
+                                <br>
+                                أنشئ إعلانك بخطوات بسيطة ودع العملاء يصلون إليك مباشرة.    </p>
+                            <div class="register-cta-features animate-fade-up-delay2">
+                                <div class="register-cta-feature">
+                                    <div class="register-cta-feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                    </div>
+                                    <span>إضافة إعلانات مجانية</span>
+                                </div>
+                                <div class="register-cta-feature">
+                                    <div class="register-cta-feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                    </div>
+                                    <span>
+                                    تحكم كامل في تفاصيل إعلانك
+                                    </span>
+                                </div>
+                                <div class="register-cta-feature">
+                                    <div class="register-cta-feature-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                    </div>
+                                    <span>تواصل مباشر مع المُعلنين</span>
+                                </div>
+                            </div>
+                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}" class="register-cta-btn animate-fade-up-delay3">
+                                <span> جرّب إضافة عقارك   مجاناً</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 24 24" style="margin-right:8px;">
+                                    <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative shapes -->
+            <div class="register-cta-shape register-cta-shape-1"></div>
+            <div class="register-cta-shape register-cta-shape-2"></div>
+        </section>
+
+
+    @endguest
     <style>
+        /* ===== Register CTA Section ===== */
         .register-cta-section {
             position: relative;
-            padding: 70px 0;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #196aa2 0%, #0d4a73 50%, #196aa2 100%);
+            background-size: 200% 200%;
+            animation: registerGradientShift 8s ease infinite;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f5f94 0%, #196aa2 45%, #1a7ab8 100%);
-            direction: rtl;
+        }
+        @keyframes registerGradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .register-cta-overlay {
             position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.10) 0%, transparent 35%),
-                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.08) 0%, transparent 30%);
-            pointer-events: none;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 1;
         }
+        /* Decorative floating shapes */
+        .register-cta-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        .register-cta-shape-1 {
+            width: 300px; height: 300px;
+            background: #ffffff;
+            top: -80px; left: -80px;
+            animation: registerFloat 6s ease-in-out infinite;
+        }
+        .register-cta-shape-2 {
+            width: 200px; height: 200px;
+            background: #ffffff;
+            bottom: -60px; right: -40px;
+            animation: registerFloat 8s ease-in-out infinite reverse;
+        }
+        @keyframes registerFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        /* Content */
         .register-cta-content {
             position: relative;
             z-index: 2;
         }
+        /* Icon */
         .register-cta-icon-wrap {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .register-cta-icon {
-            width: 86px;
-            height: 86px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.13);
-            border: 2px solid rgba(255,255,255,0.3);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            backdrop-filter: blur(6px);
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            margin: 0 auto;
         }
+        /* Title */
         .register-cta-title {
             font-family: 'Cairo', sans-serif;
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #ffffff;
-            margin: 0 0 14px;
-            line-height: 1.4;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            margin-bottom: 16px;
+            line-height: 1.3;
         }
         .register-cta-highlight {
-            color: #a8e6ff;
-            position: relative;
-            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .register-cta-highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            right: 0;
-            width: 100%;
-            height: 3px;
-            background: #a8e6ff;
-            border-radius: 2px;
-            opacity: 0.6;
-        }
+        /* Description */
         .register-cta-desc {
             font-family: 'Cairo', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 400;
-            color: rgba(255,255,255,0.88);
-            line-height: 1.9;
-            max-width: 650px;
-            margin: 0 auto 28px;
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.8;
         }
+        /* Features */
         .register-cta-features {
             display: flex;
             justify-content: center;
+            gap: 28px;
             flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
         }
         .register-cta-feature {
             display: flex;
             align-items: center;
-            gap: 9px;
-            padding: 10px 18px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 30px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 10px 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
         .register-cta-feature:hover {
+            background: rgba(255,255,255,0.22);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-        }
-        .register-cta-feature-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #e8f4fb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         .register-cta-feature span {
             font-family: 'Cairo', sans-serif;
+            color: #ffffff;
             font-size: 0.95rem;
             font-weight: 600;
-            color: #1a2e42;
-            white-space: nowrap;
         }
-        .register-cta-action {
-            margin-top: 8px;
+        .register-cta-feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: #ffffff;
+            flex-shrink: 0;
         }
+        /* Button */
         .register-cta-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 16px 44px;
-            background: #ffffff;
-            color: #196aa2 !important;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #0d4a73 !important;
             font-family: 'Cairo', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 800;
             border-radius: 50px;
             text-decoration: none !important;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.18);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 30px rgba(255,215,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
-        .register-cta-btn svg {
-            stroke: #196aa2;
-            transition: transform 0.3s ease;
+        .register-cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: 0; bottom: 0;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s ease;
+        }
+        .register-cta-btn:hover::before {
+            left: 100%;
         }
         .register-cta-btn:hover {
-            background: #f0f9ff;
-            color: #0f5f94 !important;
-            transform: translateY(-4px);
-            box-shadow: 0 14px 40px rgba(0,0,0,0.22);
-            border-color: rgba(255,255,255,0.6);
-        }
-        .register-cta-btn:hover svg {
-            transform: translateX(-5px);
-            stroke: #0f5f94;
-        }
-        .register-cta-login-hint {
-            margin-top: 18px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.75);
-        }
-        .register-cta-login-hint a {
-            color: #ffffff;
-            font-weight: 700;
-            text-decoration: underline;
-            margin-right: 4px;
-        }
-        /* Decorative shapes */
-        .register-cta-shape {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.12);
-            pointer-events: none;
-        }
-        .register-cta-shape-1 {
-            width: 300px;
-            height: 300px;
-            top: -150px;
-            right: -80px;
-            background: rgba(255,255,255,0.03);
-        }
-        .register-cta-shape-2 {
-            width: 200px;
-            height: 200px;
-            bottom: -100px;
-            left: 5%;
-            background: rgba(255,255,255,0.04);
-        }
-        .register-cta-shape-3 {
-            width: 120px;
-            height: 120px;
-            top: 20%;
-            left: -50px;
-            background: rgba(255,255,255,0.03);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 14px 40px rgba(255,215,0,0.45);
+            color: #0d4a73 !important;
+            text-decoration: none !important;
         }
         /* Animations */
-        @keyframes registerBounceIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            60% { opacity: 1; transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
         .animate-bounce-in {
-            animation: registerBounceIn 0.8s ease both;
+            animation: registerBounceIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) both;
         }
-        @keyframes registerFadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        @keyframes registerBounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         .animate-fade-up {
             animation: registerFadeUp 0.8s ease both;
@@ -2009,40 +2042,27 @@
     <!-- ============================ Register CTA Section End ================================== -->
 
     <!-- ============================ All Property ================================== -->
-    <section class="sale-wow-section">
+    <section class="bg-light">
         <div class="container">
 
             <div class="row justify-content-center">
-                <div class="col-xl-8 col-lg-9 col-md-11 text-center">
-                    <div class="sale-wow-heading">
-                        <span class="sale-wow-heading__eyebrow">
-                            <i class="fas fa-magic" aria-hidden="true"></i>
-                            {{ App::isLocale('en') ? 'Fresh opportunities worth discovering' : 'فرص تستحق الاكتشاف' }}
-                        </span>
+                <div class="col-lg-7 col-md-10 text-center">
+                    <div class="sec-heading center">
+                        <h2 class="headingTitle">	{{ trans('langsite.Properties_for_sale')}} </h2>
 
-                        <h2 class="headingTitle">{{ trans('langsite.Properties_for_sale') }}</h2>
-
-                        <p>
-                            {{ App::isLocale('en')
-                                ? 'Move your cursor over a property and discover the details in a more interactive way.'
-                                : 'مرّر الماوس على أي عقار واستكشف التفاصيل بتجربة تفاعلية مختلفة.' }}
-                        </p>
                     </div>
                 </div>
             </div>
 
 
-            <div class="row list-layout sale-wow-grid">
+            <div class="row list-layout">
                 @foreach ($saleAqars as $saleAqar)
 
                     <!-- Single Property Start -->
 
                     <div class="col-lg-6 col-md-12">
 
-                        <div class="property-listing property-1 sale-wow-card">
-                            <span class="sale-wow-orbit sale-wow-orbit--one" aria-hidden="true"></span>
-                            <span class="sale-wow-orbit sale-wow-orbit--two" aria-hidden="true"></span>
-                            <span class="sale-wow-scan" aria-hidden="true"></span>
+                        <div class="property-listing property-1">
 
                             <div class="listing-img-wrapper">
                                 <!-- <a target="_blank" href="single-property-2.html"> -->
@@ -2203,1849 +2223,171 @@
             <!-- Pagination -->
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                    <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}" class="btn btn-theme-light rounded sale-wow-more">اعرض المزيد</a>
+                    <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}" class="btn btn-theme-light rounded">اعرض المزيد</a>
                     <!-- <a target="_blank" href="listings-list-with-sidebar.html" class="btrn btn-theme-light rounded">Browse More Properties</a> -->
                 </div>
             </div>
 
         </div>
     </section>
-
-    <!-- ============================ Sale WOW Experience Start ================================== -->
-    <style>
-        .sale-wow-section {
-            --sale-primary: #176fa9;
-            --sale-primary-dark: #0b466e;
-            --sale-accent: #12c59a;
-            --sale-accent-soft: #dffff6;
-            --sale-ink: #102f47;
-            --sale-muted: #687f92;
-            position: relative;
-            isolation: isolate;
-            overflow: hidden;
-            padding: 72px 0 66px;
-            background:
-                radial-gradient(circle at 90% 6%, rgba(23, 111, 169, .14), transparent 24%),
-                radial-gradient(circle at 8% 94%, rgba(18, 197, 154, .14), transparent 27%),
-                linear-gradient(180deg, #f4f9fd 0%, #ffffff 48%, #f3f9fc 100%);
-        }
-
-        .sale-wow-section::before,
-        .sale-wow-section::after {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .sale-wow-section::before {
-            width: 440px;
-            height: 440px;
-            top: -270px;
-            left: -100px;
-            border-radius: 50%;
-            border: 80px solid rgba(23, 111, 169, .045);
-            animation: saleWowFloat 9s ease-in-out infinite;
-        }
-
-        .sale-wow-section::after {
-            inset: 0;
-            opacity: .28;
-            background-image:
-                linear-gradient(rgba(23, 111, 169, .035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(23, 111, 169, .035) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, transparent, #000 23%, #000 78%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, #000 23%, #000 78%, transparent);
-        }
-
-        .sale-wow-heading {
-            position: relative;
-            margin-bottom: 34px;
-        }
-
-        .sale-wow-heading__eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            margin-bottom: 9px;
-            padding: 8px 14px;
-            color: var(--sale-primary);
-            border: 1px solid rgba(23, 111, 169, .12);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .78);
-            box-shadow: 0 8px 28px rgba(16, 47, 71, .06);
-            font-size: 12px;
-            font-weight: 800;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .sale-wow-heading__eyebrow i {
-            color: #d7a416;
-            animation: saleWowWandPulse 1.7s ease-in-out infinite;
-        }
-
-        .sale-wow-heading .headingTitle {
-            position: relative;
-            display: inline-block;
-            margin: 0;
-            color: var(--sale-primary);
-            font-family: 'Cairo', sans-serif;
-            font-size: clamp(30px, 3vw, 43px);
-            font-weight: 900;
-            line-height: 1.35;
-        }
-
-        .sale-wow-heading .headingTitle::before,
-        .sale-wow-heading .headingTitle::after {
-            content: "";
-            position: absolute;
-            top: 52%;
-            width: 34px;
-            height: 2px;
-            border-radius: 999px;
-            background: var(--sale-accent);
-            box-shadow: 0 0 14px rgba(18, 197, 154, .35);
-        }
-
-        .sale-wow-heading .headingTitle::before {
-            right: calc(100% + 14px);
-        }
-
-        .sale-wow-heading .headingTitle::after {
-            left: calc(100% + 14px);
-        }
-
-        .sale-wow-heading p {
-            max-width: 650px;
-            margin: 13px auto 0;
-            color: var(--sale-muted);
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        .sale-wow-grid {
-            margin-right: -11px;
-            margin-left: -11px;
-        }
-
-        .sale-wow-grid > [class*="col-"] {
-            padding-right: 11px;
-            padding-left: 11px;
-            margin-bottom: 22px;
-            perspective: 1100px;
-        }
-
-        .sale-wow-card {
-            --mouse-x: 50%;
-            --mouse-y: 50%;
-            --tilt-x: 0deg;
-            --tilt-y: 0deg;
-            position: relative;
-            isolation: isolate;
-            min-height: 100%;
-            overflow: hidden;
-            border: 1px solid rgba(23, 111, 169, .10) !important;
-            border-radius: 24px !important;
-            background:
-                linear-gradient(#fff, #fff) padding-box,
-                linear-gradient(135deg, rgba(23,111,169,.15), rgba(18,197,154,.10)) border-box !important;
-            box-shadow:
-                0 16px 42px rgba(21, 65, 95, .09),
-                0 2px 8px rgba(21, 65, 95, .04);
-            transform: translateZ(0);
-            transform-style: preserve-3d;
-            will-change: transform;
-            transition:
-                transform .24s cubic-bezier(.2,.8,.2,1),
-                box-shadow .35s ease,
-                border-color .35s ease !important;
-            animation: saleWowCardEnter .68s both;
-        }
-
-        .sale-wow-grid > [class*="col-"]:nth-child(2n) .sale-wow-card {
-            animation-delay: .08s;
-        }
-
-        .sale-wow-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 8;
-            opacity: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(
-                    circle 190px at var(--mouse-x) var(--mouse-y),
-                    rgba(255,255,255,.48),
-                    rgba(18,197,154,.10) 37%,
-                    transparent 72%
-                );
-            mix-blend-mode: screen;
-            transition: opacity .25s ease;
-        }
-
-        .sale-wow-card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 9;
-            padding: 1px;
-            border-radius: inherit;
-            opacity: 0;
-            pointer-events: none;
-            background: linear-gradient(
-                120deg,
-                transparent 3%,
-                rgba(23, 111, 169, .78) 28%,
-                rgba(18, 197, 154, .88) 52%,
-                rgba(255, 215, 106, .80) 72%,
-                transparent 97%
-            );
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            transition: opacity .3s ease;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .sale-wow-card,
-            .sale-wow-card * {
-                cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4KPGcgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KPHBhdGggZD0iTTkgMzFMMjggMTIiIHN0cm9rZT0iIzEwMmY0NyIgc3Ryb2tlLXdpZHRoPSI1Ii8+CjxwYXRoIGQ9Ik05IDMxTDI4IDEyIiBzdHJva2U9IiMxY2M3YTUiIHN0cm9rZS13aWR0aD0iMi4yIi8+CjxwYXRoIGQ9Ik0yNy4zIDguMkwyOC44IDRsMS41IDQuMkwzNC41IDkuN2wtNC4yIDEuNS0xLjUgNC4yLTEuNS00LjItNC4yLTEuNSA0LjItMS41WiIgZmlsbD0iIzE5YThlZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiLz4KPHBhdGggZD0iTTE1IDdsLjktMi42LjkgMi42IDIuNi45LTIuNi45LS45IDIuNi0uOS0yLjYtMi42LS45TDE1IDdaIiBmaWxsPSIjZmZkNzZhIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iLjgiLz4KPHBhdGggZD0iTTM0IDIwbC43LTIgLjcgMiAyIC43LTIgLjctLjcgMi0uNy0yLTIuNy0uNyAyLS43WiIgZmlsbD0iIzFjYzdhNSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9Ii43Ii8+CjwvZz48L3N2Zz4=") 6 34, pointer !important;
-            }
-
-            .sale-wow-card:hover {
-                border-color: rgba(18, 197, 154, .38) !important;
-                box-shadow:
-                    0 30px 70px rgba(13, 70, 105, .18),
-                    0 0 0 7px rgba(18, 197, 154, .045),
-                    0 0 36px rgba(23, 111, 169, .08);
-                transform:
-                    perspective(1000px)
-                    rotateX(var(--tilt-x))
-                    rotateY(var(--tilt-y))
-                    translateY(-8px)
-                    scale(1.012);
-            }
-
-            .sale-wow-card:hover::before,
-            .sale-wow-card:hover::after {
-                opacity: 1;
-            }
-        }
-
-        .sale-wow-orbit {
-            position: absolute;
-            z-index: 7;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-            background: #fff;
-            box-shadow:
-                0 0 0 3px rgba(18, 197, 154, .18),
-                0 0 18px rgba(18, 197, 154, .9);
-        }
-
-        .sale-wow-orbit--one {
-            top: 16%;
-            left: 7%;
-        }
-
-        .sale-wow-orbit--two {
-            right: 8%;
-            bottom: 18%;
-            width: 6px;
-            height: 6px;
-            box-shadow:
-                0 0 0 3px rgba(23, 111, 169, .15),
-                0 0 18px rgba(23, 111, 169, .85);
-        }
-
-        .sale-wow-card:hover .sale-wow-orbit--one {
-            opacity: 1;
-            animation: saleWowOrbitOne 2.15s ease-in-out infinite;
-        }
-
-        .sale-wow-card:hover .sale-wow-orbit--two {
-            opacity: 1;
-            animation: saleWowOrbitTwo 2.6s ease-in-out infinite .18s;
-        }
-
-        .sale-wow-scan {
-            position: absolute;
-            z-index: 6;
-            top: -70%;
-            left: -25%;
-            width: 38%;
-            height: 230%;
-            opacity: 0;
-            pointer-events: none;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,.58),
-                rgba(18,197,154,.12),
-                transparent
-            );
-            transform: rotate(18deg);
-        }
-
-        .sale-wow-card:hover .sale-wow-scan {
-            opacity: 1;
-            animation: saleWowScan 1.15s ease;
-        }
-
-        .sale-wow-section .listing-img-wrapper {
-            position: relative;
-            overflow: hidden;
-            background: #e9f1f6;
-            transform: translateZ(16px);
-        }
-
-        .sale-wow-section .listing-img-wrapper::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            background:
-                linear-gradient(180deg, transparent 48%, rgba(6, 34, 52, .22) 100%),
-                linear-gradient(90deg, rgba(18,197,154,.05), transparent 45%);
-            transition: background .35s ease;
-        }
-
-        .sale-wow-section .listing-img-wrapper img {
-            transition:
-                transform .65s cubic-bezier(.2,.7,.2,1),
-                filter .45s ease !important;
-            will-change: transform;
-        }
-
-        .sale-wow-card:hover .listing-img-wrapper img {
-            transform: scale(1.075) rotate(.3deg);
-            filter: saturate(1.08) contrast(1.03);
-        }
-
-        .sale-wow-section .listing-content {
-            position: relative;
-            z-index: 3;
-            background:
-                radial-gradient(circle at 100% 0, rgba(18,197,154,.055), transparent 36%),
-                #fff;
-            transform: translateZ(10px);
-        }
-
-        .sale-wow-section .listing-name a {
-            color: var(--sale-ink) !important;
-            font-weight: 900 !important;
-            transition: color .25s ease, text-shadow .25s ease;
-        }
-
-        .sale-wow-card:hover .listing-name a {
-            color: var(--sale-primary) !important;
-            text-shadow: 0 5px 18px rgba(23,111,169,.09);
-        }
-
-        .sale-wow-section .list-price h6,
-        .sale-wow-section .listing-card-info-price {
-            color: var(--sale-accent) !important;
-            font-weight: 900 !important;
-            transition: transform .28s ease, text-shadow .28s ease;
-        }
-
-        .sale-wow-card:hover .list-price h6,
-        .sale-wow-card:hover .listing-card-info-price {
-            transform: translateY(-2px);
-            text-shadow: 0 7px 20px rgba(18,197,154,.18);
-        }
-
-        .sale-wow-section .list-fx-features {
-            gap: 7px;
-        }
-
-        .sale-wow-section .listing-card-info-icon {
-            position: relative;
-            border-radius: 12px;
-            transition:
-                color .25s ease,
-                background .25s ease,
-                transform .25s ease,
-                box-shadow .25s ease;
-        }
-
-        .sale-wow-card:hover .listing-card-info-icon {
-            color: var(--sale-primary);
-            background: rgba(244, 250, 253, .88);
-            box-shadow: 0 7px 20px rgba(23,111,169,.06);
-            transform: translateY(-2px);
-        }
-
-        .sale-wow-section .listing-card-info-icon img {
-            transition: transform .35s ease;
-        }
-
-        .sale-wow-card:hover .listing-card-info-icon img {
-            transform: rotate(-8deg) scale(1.14);
-        }
-
-        .sale-wow-section .listing-footer-wrapper {
-            position: relative;
-            z-index: 4;
-            border-top: 1px solid rgba(23,111,169,.08);
-            background:
-                linear-gradient(90deg, rgba(23,111,169,.035), rgba(18,197,154,.045)) !important;
-        }
-
-        .sale-wow-section .listing-location {
-            color: #5f7387 !important;
-            font-weight: 700;
-        }
-
-        .sale-wow-section .prt-view {
-            position: relative;
-            isolation: isolate;
-            overflow: hidden;
-            min-width: 76px;
-            border-radius: 999px !important;
-            color: #fff !important;
-            background: linear-gradient(135deg, var(--sale-primary), #1185bf) !important;
-            box-shadow: 0 9px 22px rgba(23,111,169,.22);
-            transition: transform .25s ease, box-shadow .25s ease !important;
-        }
-
-        .sale-wow-section .prt-view::before {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            inset: 0;
-            background: linear-gradient(135deg, var(--sale-accent), var(--sale-primary));
-            opacity: 0;
-            transition: opacity .25s ease;
-        }
-
-        .sale-wow-section .prt-view::after {
-            content: "";
-            position: absolute;
-            top: -40%;
-            left: -65%;
-            width: 45%;
-            height: 180%;
-            background: rgba(255,255,255,.42);
-            transform: rotate(18deg);
-            transition: left .55s ease;
-        }
-
-        .sale-wow-section .prt-view:hover {
-            box-shadow: 0 13px 28px rgba(18,197,154,.26);
-            transform: translateY(-2px) scale(1.04);
-        }
-
-        .sale-wow-section .prt-view:hover::before {
-            opacity: 1;
-        }
-
-        .sale-wow-section .prt-view:hover::after {
-            left: 125%;
-        }
-
-        .sale-wow-section .views-1,
-        .sale-wow-section .viewsRed,
-        .sale-wow-section .views-2 {
-            box-shadow: 0 8px 22px rgba(11, 54, 82, .13);
-            backdrop-filter: blur(9px);
-            -webkit-backdrop-filter: blur(9px);
-        }
-
-        .sale-wow-section .views-1 {
-            color: #fff !important;
-            background: linear-gradient(135deg, #12c59a, #0da77f) !important;
-        }
-
-        .sale-wow-section .viewsRed {
-            color: #fff !important;
-            background: linear-gradient(135deg, #ec4c61, #c92f45) !important;
-        }
-
-        .sale-wow-section .views-2 {
-            border: 1px solid rgba(255,255,255,.46);
-            background: rgba(255,255,255,.88) !important;
-        }
-
-        .sale-wow-more {
-            position: relative;
-            overflow: hidden;
-            min-width: 190px;
-            min-height: 54px;
-            margin-top: 8px;
-            padding: 0 28px !important;
-            color: var(--sale-primary) !important;
-            border: 1px solid rgba(23,111,169,.16) !important;
-            border-radius: 15px !important;
-            background: rgba(255,255,255,.82) !important;
-            box-shadow: 0 13px 32px rgba(16,47,71,.08);
-            font-weight: 900;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: color .3s ease, transform .3s ease, box-shadow .3s ease !important;
-        }
-
-        .sale-wow-more::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            opacity: 0;
-            background: linear-gradient(135deg, var(--sale-primary), var(--sale-accent));
-            transition: opacity .3s ease;
-        }
-
-        .sale-wow-more:hover {
-            color: #fff !important;
-            box-shadow: 0 17px 38px rgba(23,111,169,.18);
-            transform: translateY(-4px);
-        }
-
-        .sale-wow-more:hover::before {
-            opacity: 1;
-        }
-
-        .sale-wow-spark {
-            position: absolute;
-            z-index: 30;
-            width: var(--spark-size, 7px);
-            height: var(--spark-size, 7px);
-            border-radius: 2px;
-            pointer-events: none;
-            background: var(--spark-color, #12c59a);
-            box-shadow: 0 0 12px var(--spark-color, #12c59a);
-            transform: translate(-50%, -50%) rotate(45deg);
-            animation: saleWowSpark .72s ease-out forwards;
-        }
-
-        .sale-wow-spark::before,
-        .sale-wow-spark::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: inherit;
-        }
-
-        .sale-wow-spark::before {
-            transform: scaleX(.28) scaleY(1.9);
-        }
-
-        .sale-wow-spark::after {
-            transform: scaleX(1.9) scaleY(.28);
-        }
-
-        @keyframes saleWowCardEnter {
-            from { opacity: 0; transform: translateY(24px) scale(.985); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes saleWowFloat {
-            0%, 100% { transform: translate3d(0,0,0) rotate(0); }
-            50% { transform: translate3d(28px,18px,0) rotate(8deg); }
-        }
-
-        @keyframes saleWowWandPulse {
-            0%, 100% { transform: rotate(0) scale(1); }
-            45% { transform: rotate(-14deg) scale(1.1); }
-        }
-
-        @keyframes saleWowScan {
-            0% { left: -55%; }
-            100% { left: 145%; }
-        }
-
-        @keyframes saleWowOrbitOne {
-            0%,100% { transform: translate(0,0) scale(.7); opacity: 0; }
-            35% { opacity: 1; }
-            55% { transform: translate(36px,-28px) scale(1.25); opacity: 1; }
-            100% { transform: translate(72px,-55px) scale(.65); opacity: 0; }
-        }
-
-        @keyframes saleWowOrbitTwo {
-            0%,100% { transform: translate(0,0) scale(.7); opacity: 0; }
-            30% { opacity: 1; }
-            60% { transform: translate(-34px,-26px) scale(1.2); opacity: 1; }
-            100% { transform: translate(-68px,-52px) scale(.7); opacity: 0; }
-        }
-
-        @keyframes saleWowSpark {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) rotate(45deg) scale(.25);
-            }
-            18% { opacity: 1; }
-            100% {
-                opacity: 0;
-                transform:
-                    translate(
-                        calc(-50% + var(--spark-x, 0px)),
-                        calc(-50% + var(--spark-y, -34px))
-                    )
-                    rotate(135deg)
-                    scale(1.1);
-            }
-        }
-
-        @media (max-width: 767.98px) {
-            .sale-wow-section {
-                padding: 52px 0 46px;
-            }
-
-            .sale-wow-heading {
-                margin-bottom: 24px;
-            }
-
-            .sale-wow-heading .headingTitle::before,
-            .sale-wow-heading .headingTitle::after {
-                width: 22px;
-            }
-
-            .sale-wow-grid > [class*="col-"] {
-                margin-bottom: 16px;
-            }
-
-            .sale-wow-card {
-                border-radius: 19px !important;
-            }
-        }
-
-        @media (max-width: 420px) {
-            .sale-wow-heading__eyebrow {
-                font-size: 11px;
-            }
-
-            .sale-wow-heading p {
-                font-size: 12px;
-            }
-
-            .sale-wow-heading .headingTitle::before,
-            .sale-wow-heading .headingTitle::after {
-                display: none;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .sale-wow-section::before,
-            .sale-wow-heading__eyebrow i,
-            .sale-wow-card,
-            .sale-wow-card:hover .sale-wow-scan,
-            .sale-wow-card:hover .sale-wow-orbit {
-                animation: none !important;
-            }
-
-            .sale-wow-card,
-            .sale-wow-section .listing-img-wrapper img {
-                transition-duration: .01ms !important;
-            }
-
-            .sale-wow-card:hover {
-                transform: none !important;
-            }
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const cards = document.querySelectorAll('.sale-wow-card');
-            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            if (!finePointer || reducedMotion) {
-                return;
-            }
-
-            const sparkColors = ['#12c59a', '#19a8ee', '#ffd76a', '#ffffff'];
-
-            cards.forEach(function (card) {
-                let lastSparkAt = 0;
-
-                card.addEventListener('mousemove', function (event) {
-                    const rect = card.getBoundingClientRect();
-                    const x = event.clientX - rect.left;
-                    const y = event.clientY - rect.top;
-
-                    const px = Math.max(0, Math.min(100, (x / rect.width) * 100));
-                    const py = Math.max(0, Math.min(100, (y / rect.height) * 100));
-
-                    const rotateY = ((px - 50) / 50) * 2.2;
-                    const rotateX = ((50 - py) / 50) * 1.7;
-
-                    card.style.setProperty('--mouse-x', px + '%');
-                    card.style.setProperty('--mouse-y', py + '%');
-                    card.style.setProperty('--tilt-x', rotateX.toFixed(2) + 'deg');
-                    card.style.setProperty('--tilt-y', rotateY.toFixed(2) + 'deg');
-
-                    const now = performance.now();
-                    if (now - lastSparkAt < 70) {
-                        return;
-                    }
-                    lastSparkAt = now;
-
-                    const spark = document.createElement('span');
-                    spark.className = 'sale-wow-spark';
-                    spark.style.left = x + 'px';
-                    spark.style.top = y + 'px';
-                    spark.style.setProperty('--spark-size', (4 + Math.random() * 4).toFixed(1) + 'px');
-                    spark.style.setProperty('--spark-color', sparkColors[Math.floor(Math.random() * sparkColors.length)]);
-                    spark.style.setProperty('--spark-x', ((Math.random() - .5) * 38).toFixed(0) + 'px');
-                    spark.style.setProperty('--spark-y', (-24 - Math.random() * 34).toFixed(0) + 'px');
-
-                    card.appendChild(spark);
-                    spark.addEventListener('animationend', function () {
-                        spark.remove();
-                    }, { once: true });
-                });
-
-                card.addEventListener('mouseleave', function () {
-                    card.style.setProperty('--mouse-x', '50%');
-                    card.style.setProperty('--mouse-y', '50%');
-                    card.style.setProperty('--tilt-x', '0deg');
-                    card.style.setProperty('--tilt-y', '0deg');
-                    card.querySelectorAll('.sale-wow-spark').forEach(function (spark) {
-                        spark.remove();
-                    });
-                });
-            });
-        });
-    </script>
-    <!-- ============================ Sale WOW Experience End ================================== -->
-
     <!-- ============================ All Featured Property ================================== -->
     <!-- ============================ Free Plan CTA ================================== -->
-{{--    <x-free-plan-cta />--}}
+    <x-free-plan-cta />
     <!-- ============================ Free Plan CTA End ================================== -->
 
-    <!-- ============================ Rent Magazine Grid Start ================================== -->
-    @php
-        $rentMagazineAqars = collect($rentAqars)->values();
-        $rentMagazineMain = $rentMagazineAqars->first();
-        $rentMagazineSecondary = $rentMagazineAqars->slice(1, 2);
-    @endphp
+    <!-- ============================ Latest Property للبيع Start ================================== -->
+    <section class="" dir="ltr">
+        <div class="container">
 
-    <section class="rent-magazine" dir="{{ App::isLocale('en') ? 'ltr' : 'rtl' }}">
-        <div class="rent-magazine__glow rent-magazine__glow--one" aria-hidden="true"></div>
-        <div class="rent-magazine__glow rent-magazine__glow--two" aria-hidden="true"></div>
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10 text-center">
+                    <div class="sec-heading center mb-4">
+                        <h2 class="headingTitle"> 	{{ trans('langsite.Real_estate_for_rent')}} </h2>
 
-        <div class="container rent-magazine__container">
-            <header class="rent-magazine__header">
-                <div class="rent-magazine__heading">
-                    <span class="rent-magazine__eyebrow">
-                        <i class="fas fa-key" aria-hidden="true"></i>
-                        {{ App::isLocale('en') ? 'Selected rental opportunities' : 'فرص إيجار مختارة لك' }}
-                    </span>
-                    <h2>{{ trans('langsite.Real_estate_for_rent') }}</h2>
-                    <p>
-                        {{ App::isLocale('en')
-                            ? 'Discover clear rental opportunities and contact property owners directly without intermediaries.'
-                            : 'اكتشف فرص إيجار مميزة بتفاصيل واضحة وتواصل مباشرة مع المالك بدون وسيط.' }}
-                    </p>
-                </div>
-
-                <div class="rent-magazine__chips" aria-label="{{ App::isLocale('en') ? 'Rental benefits' : 'مميزات الإيجار' }}">
-                    <span class="rent-magazine__chip rent-magazine__chip--active">
-                        <i class="fas fa-user-check" aria-hidden="true"></i>
-                        {{ App::isLocale('en') ? 'Direct contact' : 'تواصل مباشر' }}
-                    </span>
-                    <span class="rent-magazine__chip">
-                        <i class="fas fa-handshake" aria-hidden="true"></i>
-                        {{ App::isLocale('en') ? 'No intermediary' : 'بدون وسيط' }}
-                    </span>
-                    <span class="rent-magazine__chip">
-                        <i class="fas fa-home" aria-hidden="true"></i>
-                        {{ App::isLocale('en') ? 'Rental choices' : 'خيارات متنوعة' }}
-                    </span>
-                </div>
-            </header>
-
-            @if ($rentMagazineMain)
-                @php
-                    $rentMainUrl = URL::to(Config::get('app.locale').'/aqars/'.$rentMagazineMain->slug);
-                    $rentMainExpired = \Carbon\Carbon::now()->diffInYears($rentMagazineMain->created_at) >= 1;
-                    $rentMainLocation = collect([
-                        optional($rentMagazineMain->governrateq)->governrate,
-                        optional($rentMagazineMain->districte)->district,
-                    ])->filter()->implode('، ');
-
-                    if ($rentMagazineMain->mainImage) {
-                        $rentMainImage = URL::to('/').'/images/'.$rentMagazineMain->mainImage->img_url;
-                    } elseif ($rentMagazineMain->firstImage) {
-                        $rentMainImage = URL::to('/').'/images/'.$rentMagazineMain->firstImage->img_url;
-                    } else {
-                        $rentMainImage = URL::to('/').'/images/FBO.png';
-                    }
-                @endphp
-
-                <div class="rent-magazine__grid">
-                    <article class="rent-magazine__hero-card">
-                        <a class="rent-magazine__hero-media"
-                           href="{{ $rentMainUrl }}"
-                           target="_blank"
-                           rel="noopener"
-                           aria-label="{{ $rentMagazineMain->title }}">
-                            <img src="{{ $rentMainImage }}"
-                                 alt="{{ $rentMagazineMain->title }}"
-                                 loading="lazy">
-                            <span class="rent-magazine__overlay" aria-hidden="true"></span>
-                        </a>
-
-                        <div class="rent-magazine__hero-top">
-                            <div class="rent-magazine__status-group">
-                                @if ($rentMainExpired)
-                                    <span class="rent-magazine__status rent-magazine__status--unavailable">
-                                        {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
-                                    </span>
-                                @else
-                                    <span class="rent-magazine__status rent-magazine__status--available">
-                                        <span class="rent-magazine__status-dot"></span>
-                                        {{ App::isLocale('en') ? 'Available now' : 'متاح الآن' }}
-                                    </span>
-                                @endif
-
-                                @if ((int) $rentMagazineMain->vip === 1 && !$rentMainExpired)
-                                    <span class="rent-magazine__status rent-magazine__status--featured">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <span class="rent-magazine__views">
-                                <i class="far fa-eye" aria-hidden="true"></i>
-                                {{ number_format((int) $rentMagazineMain->views) }}
-                            </span>
-                        </div>
-
-                        <div class="rent-magazine__hero-content">
-                            @if ($rentMainLocation)
-                                <div class="rent-magazine__location-pill">
-                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                                    <span>{{ $rentMainLocation }}</span>
-                                </div>
-                            @endif
-
-                            <h3>
-                                <a href="{{ $rentMainUrl }}" target="_blank" rel="noopener">
-                                    {{ \Illuminate\Support\Str::limit($rentMagazineMain->title, 60, '...') }}
-                                </a>
-                            </h3>
-
-                            <div class="rent-magazine__hero-bottom">
-                                <div>
-                                    <div class="rent-magazine__price-label">
-                                        {{ App::isLocale('en') ? 'Monthly rent' : 'الإيجار الشهري' }}
-                                    </div>
-                                    <div class="rent-magazine__price">
-                                        <strong>{{ number_format((float) $rentMagazineMain->monthly_rent) }}</strong>
-                                        <span>{{ trans('langsite.egyptian_pound') }}</span>
-                                    </div>
-
-                                    <div class="rent-magazine__features">
-                                        <span>
-                                            <img src="{{ asset('images/icons/area.png') }}" alt="" loading="lazy">
-                                            {{ $rentMagazineMain->total_area ?: '—' }} م²
-                                        </span>
-                                        <span>
-                                            <img src="{{ asset('images/icons/room.png') }}" alt="" loading="lazy">
-                                            {{ $rentMagazineMain->rooms ?: '—' }} {{ App::isLocale('en') ? 'rooms' : 'غرف' }}
-                                        </span>
-                                        <span>
-                                            <img src="{{ asset('images/icons/bath.png') }}" alt="" loading="lazy">
-                                            {{ $rentMagazineMain->baths ?: '—' }} {{ App::isLocale('en') ? 'baths' : 'حمام' }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <a class="rent-magazine__hero-cta"
-                                   href="{{ $rentMainUrl }}"
-                                   target="_blank"
-                                   rel="noopener">
-                                    <span>{{ App::isLocale('en') ? 'View property' : 'عرض العقار' }}</span>
-                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <div class="rent-magazine__side-grid">
-                        @foreach ($rentMagazineSecondary as $rentAqar)
-                            @php
-                                $rentPropertyUrl = URL::to(Config::get('app.locale').'/aqars/'.$rentAqar->slug);
-                                $rentPropertyExpired = \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1;
-                                $rentPropertyLocation = collect([
-                                    optional($rentAqar->governrateq)->governrate,
-                                    optional($rentAqar->districte)->district,
-                                ])->filter()->implode('، ');
-
-                                if ($rentAqar->mainImage) {
-                                    $rentPropertyImage = URL::to('/').'/images/'.$rentAqar->mainImage->img_url;
-                                } elseif ($rentAqar->firstImage) {
-                                    $rentPropertyImage = URL::to('/').'/images/'.$rentAqar->firstImage->img_url;
-                                } else {
-                                    $rentPropertyImage = URL::to('/').'/images/FBO.png';
-                                }
-                            @endphp
-
-                            <article class="rent-magazine__secondary-card">
-                                <a href="{{ $rentPropertyUrl }}"
-                                   target="_blank"
-                                   rel="noopener"
-                                   class="rent-magazine__secondary-media"
-                                   aria-label="{{ $rentAqar->title }}">
-                                    <img src="{{ $rentPropertyImage }}"
-                                         alt="{{ $rentAqar->title }}"
-                                         loading="lazy">
-                                    <span class="rent-magazine__secondary-overlay" aria-hidden="true"></span>
-                                </a>
-
-                                <div class="rent-magazine__secondary-top">
-                                    @if ($rentPropertyExpired)
-                                        <span class="rent-magazine__status rent-magazine__status--unavailable">
-                                            {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
-                                        </span>
-                                    @else
-                                        <span class="rent-magazine__status rent-magazine__status--available">
-                                            {{ App::isLocale('en') ? 'Available' : 'متاح' }}
-                                        </span>
-                                    @endif
-
-                                    <span class="rent-magazine__views">
-                                        <i class="far fa-eye" aria-hidden="true"></i>
-                                        {{ number_format((int) $rentAqar->views) }}
-                                    </span>
-                                </div>
-
-                                <div class="rent-magazine__secondary-content">
-                                    @if ($rentPropertyLocation)
-                                        <div class="rent-magazine__secondary-location">
-                                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                                            {{ $rentPropertyLocation }}
-                                        </div>
-                                    @endif
-
-                                    <h3>
-                                        <a href="{{ $rentPropertyUrl }}" target="_blank" rel="noopener">
-                                            {{ \Illuminate\Support\Str::limit($rentAqar->title, 34, '...') }}
-                                        </a>
-                                    </h3>
-
-                                    <div class="rent-magazine__secondary-footer">
-                                        <div class="rent-magazine__secondary-price">
-                                            <strong>{{ number_format((float) $rentAqar->monthly_rent) }}</strong>
-                                            <span>{{ trans('langsite.egyptian_pound') }}</span>
-                                        </div>
-                                        <span class="rent-magazine__secondary-arrow">
-                                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </article>
-                        @endforeach
-
-                        <article class="rent-magazine__browse-card">
-                            <div>
-                                <span class="rent-magazine__utility-label">
-                                    {{ App::isLocale('en') ? 'Browse easily' : 'تصفح بسهولة' }}
-                                </span>
-                                <h3>{{ App::isLocale('en') ? 'All rental properties' : 'كل عقارات الإيجار' }}</h3>
-                            </div>
-
-                            <div class="rent-magazine__browse-bottom">
-                                <div>
-                                    <strong>{{ number_format($rentMagazineAqars->count()) }}</strong>
-                                    <span>{{ App::isLocale('en') ? 'properties shown here' : 'عقار معروض هنا' }}</span>
-                                </div>
-
-                                <a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}"
-                                   target="_blank"
-                                   rel="noopener"
-                                   aria-label="{{ App::isLocale('en') ? 'View all rental properties' : 'عرض كل عقارات الإيجار' }}">
-                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </article>
-
-                        <article class="rent-magazine__add-card">
-                            <span class="rent-magazine__add-icon">
-                                <i class="fas fa-home" aria-hidden="true"></i>
-                                <i class="fas fa-plus" aria-hidden="true"></i>
-                            </span>
-
-                            <div>
-                                <h3>{{ App::isLocale('en') ? 'List your property for rent' : 'اعرض عقارك للإيجار' }}</h3>
-                                <p>
-                                    {{ App::isLocale('en')
-                                        ? 'Reach tenants directly without an intermediary.'
-                                        : 'وصل للمستأجر مباشرة بدون وسيط.' }}
-                                </p>
-                            </div>
-
-                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}">
-                                <span>{{ App::isLocale('en') ? 'Add your property free' : 'أضف عقارك مجاناً' }}</span>
-                                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-                            </a>
-                        </article>
                     </div>
                 </div>
-            @else
-                <div class="rent-magazine__empty">
-                    <i class="far fa-building" aria-hidden="true"></i>
-                    <h3>{{ App::isLocale('en') ? 'No rental properties yet' : 'لا توجد عقارات للإيجار حالياً' }}</h3>
-                    <p>{{ App::isLocale('en') ? 'New rental opportunities will appear here.' : 'ستظهر فرص الإيجار الجديدة هنا فور إضافتها.' }}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="property-slide">
+                        @foreach ($rentAqars as $rentAqar)
+                            <div class="single-items">
+                                <div class="property-listing shadow-none property-2 border">
+
+                                    <div class="listing-img-wrapper">
+
+                                        <div class="list-img-slide">
+                                            <div class="click">
+
+                                                <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}">
+
+                                                        @if($rentAqar->mainImage)
+                                                            <img src="{{ URL::to('/').'/images/'.$rentAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
+
+                                                        @else
+
+                                                            @if($rentAqar->firstImage)<img
+                                                                src="{{ URL::to('/').'/images/'.$rentAqar->firstImage->img_url}}"
+                                                                class="img-fluid mx-auto" alt="" loading="lazy" />
+                                                            @else
+                                                                <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
+                                                                     alt="main"loading="lazy" >
+                                                            @endif
+                                                        @endif
+
+                                                    </a></div>
+
+
+
+                                            </div>
+                                        </div>
+
+
+                                            <?php  if($rentAqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) < 1){   ?>
+                                        <div class="views">
+                                            <div class="views-1">مميز</div>
+                                        </div>
+
+                                        <?php }  ?>
+
+
+                                            <?php if(\Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1){ ?>
+                                        <div class="views " style="left: 13px;">
+                                            <div class="viewsRed">غير متاح</div>
+                                        </div>
+                                        <?php } ?>
+
+
+
+                                        <div class="views">
+
+                                            <div class="views-2">
+                                                <i class="fa fa-eye"></i>
+                                                <span>{{ $rentAqar->views }}</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="listing-detail-wrapper">
+                                        <div class="listing-short-detail-wrap">
+                                            <div class="listing-short-detail">
+                                                <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}"
+                                                                                                 class="">{{ \Illuminate\Support\Str::limit($rentAqar->title, $limit = 29, $end = '...')  }}</a></h4>
+                                                <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div  class="listing-short-detail-flex">
+                                        <h6 class="listing-card-info-price">{{ $rentAqar->monthly_rent }} جنيه مصري</h6>
+                                    </div>
+                                    <div class="price-features-wrapper" >
+                                        <div class="list-fx-features" >
+
+
+
+
+
+                                            <div class="listing-card-info-icon">
+                                                {{ $rentAqar->baths }} حمام
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+                                            <div class="listing-card-info-icon">
+                                                {{ $rentAqar->rooms }} غرف
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+
+                                            <div class="listing-card-info-icon">
+                                                {{ $rentAqar->total_area }} م²
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="listing-detail-footer bg-light">
+                                        <div class="footer-first">
+                                            <div class="foot-location">
+                                                @if ($rentAqar->governrateq)
+                                                    {{ $rentAqar->governrateq->governrate }}
+                                                @endif
+                                                @if ($rentAqar->districte)
+                                                    {{ $rentAqar->districte->district }}
+                                                @endif
+
+
+                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt=""  loading="lazy" />
+                                            </div>
+                                        </div>
+                                        <div class="footer-flex">
+                                            <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}" class="prt-view">عرض</a>
+                                            <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
-            @endif
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                    <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}" class="btn btn-theme-light rounded">اعرض المزيد</a>
+                    <!-- <a target="_blank" href="listings-list-with-sidebar.html" class="btrn btn-theme-light rounded">Browse More Properties</a> -->
+                </div>
+            </div>
         </div>
     </section>
-
-    <style>
-        .rent-magazine {
-            --rent-primary: #176fa9;
-            --rent-primary-dark: #0d476d;
-            --rent-accent: #1ac59c;
-            --rent-ink: #102f47;
-            --rent-muted: #708596;
-            --rent-surface: #ffffff;
-            position: relative;
-            padding: 76px 0;
-            overflow: hidden;
-            background:
-                radial-gradient(circle at 5% 12%, rgba(26, 197, 156, .10), transparent 25%),
-                radial-gradient(circle at 92% 88%, rgba(23, 111, 169, .11), transparent 26%),
-                linear-gradient(180deg, #f6fbfe 0%, #ffffff 100%);
-        }
-
-        .rent-magazine__container {
-            position: relative;
-            z-index: 2;
-        }
-
-        .rent-magazine__glow {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(2px);
-        }
-
-        .rent-magazine__glow--one {
-            width: 290px;
-            height: 290px;
-            top: -175px;
-            inset-inline-start: 9%;
-            border: 42px solid rgba(23, 111, 169, .045);
-        }
-
-        .rent-magazine__glow--two {
-            width: 210px;
-            height: 210px;
-            right: -110px;
-            bottom: -80px;
-            background: rgba(26, 197, 156, .055);
-        }
-
-        .rent-magazine__header {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 32px;
-            margin-bottom: 30px;
-        }
-
-        .rent-magazine__heading {
-            max-width: 680px;
-        }
-
-        .rent-magazine__eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            color: var(--rent-accent);
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .rent-magazine__eyebrow i {
-            color: var(--rent-primary);
-        }
-
-        .rent-magazine__heading h2 {
-            margin: 0 0 9px;
-            color: var(--rent-ink);
-            font-family: 'Cairo', sans-serif;
-            font-size: clamp(30px, 3vw, 44px);
-            font-weight: 900;
-            line-height: 1.35;
-        }
-
-        .rent-magazine__heading p {
-            max-width: 600px;
-            margin: 0;
-            color: var(--rent-muted);
-            font-size: 14px;
-            line-height: 1.9;
-        }
-
-        .rent-magazine__chips {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .rent-magazine__chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            min-height: 37px;
-            padding: 7px 13px;
-            color: #617687;
-            border: 1px solid #dce8ef;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .86);
-            font-size: 11px;
-            font-weight: 800;
-            box-shadow: 0 7px 20px rgba(16, 47, 71, .04);
-        }
-
-        .rent-magazine__chip i {
-            color: var(--rent-accent);
-        }
-
-        .rent-magazine__chip--active {
-            color: #fff;
-            border-color: var(--rent-primary);
-            background: var(--rent-primary);
-        }
-
-        .rent-magazine__chip--active i {
-            color: #fff;
-        }
-
-        .rent-magazine__grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.42fr) minmax(420px, .95fr);
-            gap: 18px;
-            align-items: stretch;
-        }
-
-        .rent-magazine__hero-card,
-        .rent-magazine__secondary-card {
-            position: relative;
-            isolation: isolate;
-            overflow: hidden;
-            background: #dbe7ee;
-            box-shadow: 0 22px 55px rgba(16, 47, 71, .14);
-        }
-
-        .rent-magazine__hero-card {
-            min-height: 520px;
-            border-radius: 27px;
-            animation: rentMagazineReveal .72s ease both;
-        }
-
-        .rent-magazine__hero-media,
-        .rent-magazine__secondary-media {
-            position: absolute;
-            inset: 0;
-            z-index: -2;
-            display: block;
-        }
-
-        .rent-magazine__hero-media img,
-        .rent-magazine__secondary-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform .75s cubic-bezier(.2, .7, .2, 1), filter .5s ease;
-        }
-
-        .rent-magazine__overlay,
-        .rent-magazine__secondary-overlay {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(4, 26, 41, .09) 25%, rgba(4, 26, 41, .28) 52%, rgba(4, 26, 41, .92) 100%),
-                linear-gradient(90deg, rgba(4, 26, 41, .06), rgba(4, 26, 41, .35));
-        }
-
-        .rent-magazine__hero-card:hover .rent-magazine__hero-media img,
-        .rent-magazine__secondary-card:hover .rent-magazine__secondary-media img {
-            transform: scale(1.055);
-            filter: saturate(1.06);
-        }
-
-        .rent-magazine__hero-top,
-        .rent-magazine__secondary-top {
-            position: absolute;
-            inset-inline: 20px;
-            top: 20px;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .rent-magazine__status-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .rent-magazine__status,
-        .rent-magazine__views {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            min-height: 31px;
-            padding: 5px 11px;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, .30);
-            border-radius: 999px;
-            background: rgba(5, 31, 48, .62);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .10);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            font-size: 10px;
-            font-weight: 900;
-        }
-
-        .rent-magazine__status--available {
-            color: #08765d;
-            border-color: rgba(255, 255, 255, .58);
-            background: rgba(223, 255, 247, .94);
-        }
-
-        .rent-magazine__status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--rent-accent);
-            box-shadow: 0 0 0 4px rgba(26, 197, 156, .14);
-        }
-
-        .rent-magazine__status--featured {
-            color: #715200;
-            background: rgba(255, 235, 164, .94);
-        }
-
-        .rent-magazine__status--unavailable {
-            color: #fff;
-            background: rgba(195, 43, 61, .90);
-        }
-
-        .rent-magazine__hero-content {
-            position: absolute;
-            inset-inline: 28px;
-            bottom: 28px;
-            z-index: 2;
-            color: #fff;
-        }
-
-        .rent-magazine__location-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            max-width: 100%;
-            margin-bottom: 11px;
-            padding: 7px 11px;
-            color: rgba(255, 255, 255, .91);
-            border: 1px solid rgba(255, 255, 255, .20);
-            border-radius: 10px;
-            background: rgba(4, 28, 44, .45);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            font-size: 11px;
-        }
-
-        .rent-magazine__location-pill i {
-            color: var(--rent-accent);
-        }
-
-        .rent-magazine__hero-content h3 {
-            max-width: 680px;
-            margin: 0 0 16px;
-            font-size: clamp(24px, 2.4vw, 35px);
-            font-weight: 900;
-            line-height: 1.45;
-            text-shadow: 0 5px 20px rgba(0, 0, 0, .24);
-        }
-
-        .rent-magazine__hero-content h3 a {
-            color: #fff !important;
-        }
-
-        .rent-magazine__hero-bottom {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 24px;
-        }
-
-        .rent-magazine__price-label {
-            margin-bottom: 2px;
-            color: rgba(255, 255, 255, .64);
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .rent-magazine__price {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            color: #59e1bf;
-        }
-
-        .rent-magazine__price strong {
-            font-size: clamp(26px, 2.5vw, 36px);
-            font-weight: 900;
-        }
-
-        .rent-magazine__price span {
-            color: rgba(255, 255, 255, .88);
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .rent-magazine__features {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 9px;
-        }
-
-        .rent-magazine__features span {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding-inline-end: 9px;
-            color: rgba(255, 255, 255, .85);
-            border-inline-end: 1px solid rgba(255, 255, 255, .17);
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .rent-magazine__features span:last-child {
-            padding-inline-end: 0;
-            border-inline-end: 0;
-        }
-
-        .rent-magazine__features img {
-            width: 14px;
-            height: 14px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-            opacity: .88;
-        }
-
-        .rent-magazine__hero-cta {
-            display: inline-flex;
-            min-width: 145px;
-            min-height: 48px;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            flex: 0 0 auto;
-            padding: 10px 18px;
-            color: #063b32 !important;
-            border-radius: 12px;
-            background: var(--rent-accent);
-            box-shadow: 0 12px 28px rgba(26, 197, 156, .22);
-            font-size: 12px;
-            font-weight: 900;
-            transition: transform .25s ease, box-shadow .25s ease;
-        }
-
-        .rent-magazine__hero-cta:hover {
-            box-shadow: 0 16px 34px rgba(26, 197, 156, .32);
-            transform: translateY(-3px);
-        }
-
-        .rent-magazine__side-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-rows: 1fr 1fr;
-            gap: 14px;
-            min-width: 0;
-        }
-
-        .rent-magazine__secondary-card,
-        .rent-magazine__browse-card,
-        .rent-magazine__add-card {
-            min-width: 0;
-            min-height: 250px;
-            border-radius: 21px;
-        }
-
-        .rent-magazine__secondary-card {
-            box-shadow: 0 15px 38px rgba(16, 47, 71, .11);
-            animation: rentMagazineReveal .72s .10s ease both;
-        }
-
-        .rent-magazine__secondary-card:nth-child(2) {
-            animation-delay: .17s;
-        }
-
-        .rent-magazine__secondary-overlay {
-            background: linear-gradient(180deg, rgba(4, 26, 41, .04) 26%, rgba(4, 26, 41, .82) 100%);
-        }
-
-        .rent-magazine__secondary-top {
-            inset-inline: 13px;
-            top: 13px;
-        }
-
-        .rent-magazine__secondary-top .rent-magazine__status,
-        .rent-magazine__secondary-top .rent-magazine__views {
-            min-height: 27px;
-            padding: 4px 8px;
-            font-size: 9px;
-        }
-
-        .rent-magazine__secondary-content {
-            position: absolute;
-            inset-inline: 15px;
-            bottom: 14px;
-            z-index: 2;
-            color: #fff;
-        }
-
-        .rent-magazine__secondary-location {
-            max-width: 100%;
-            overflow: hidden;
-            margin-bottom: 5px;
-            color: rgba(255, 255, 255, .70);
-            font-size: 9px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .rent-magazine__secondary-location i {
-            margin-inline-end: 4px;
-            color: var(--rent-accent);
-        }
-
-        .rent-magazine__secondary-content h3 {
-            height: 2.8em;
-            overflow: hidden;
-            margin: 0 0 7px;
-            font-size: 14px;
-            font-weight: 900;
-            line-height: 1.45;
-        }
-
-        .rent-magazine__secondary-content h3 a {
-            display: -webkit-box;
-            overflow: hidden;
-            color: #fff !important;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-        }
-
-        .rent-magazine__secondary-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 9px;
-        }
-
-        .rent-magazine__secondary-price {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-            min-width: 0;
-            color: #59e1bf;
-        }
-
-        .rent-magazine__secondary-price strong {
-            font-size: 17px;
-            font-weight: 900;
-        }
-
-        .rent-magazine__secondary-price span {
-            color: rgba(255, 255, 255, .78);
-            font-size: 8px;
-            font-weight: 800;
-        }
-
-        .rent-magazine__secondary-arrow {
-            display: inline-flex;
-            width: 30px;
-            height: 30px;
-            align-items: center;
-            justify-content: center;
-            flex: 0 0 30px;
-            color: var(--rent-primary);
-            border-radius: 9px;
-            background: rgba(255, 255, 255, .92);
-            font-size: 10px;
-        }
-
-        .rent-magazine__browse-card,
-        .rent-magazine__add-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 22px;
-            animation: rentMagazineReveal .72s .23s ease both;
-        }
-
-        .rent-magazine__browse-card {
-            color: #fff;
-            background:
-                radial-gradient(circle at 100% 0, rgba(26, 197, 156, .18), transparent 35%),
-                linear-gradient(145deg, #102f47, #0c415f);
-            box-shadow: 0 17px 40px rgba(16, 47, 71, .15);
-        }
-
-        .rent-magazine__utility-label {
-            display: block;
-            margin-bottom: 5px;
-            color: #89b8cc;
-            font-size: 9px;
-            font-weight: 800;
-        }
-
-        .rent-magazine__browse-card h3,
-        .rent-magazine__add-card h3 {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            line-height: 1.45;
-        }
-
-        .rent-magazine__browse-bottom {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .rent-magazine__browse-bottom > div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .rent-magazine__browse-bottom strong {
-            color: #59e1bf;
-            font-size: 31px;
-            font-weight: 900;
-            line-height: 1;
-        }
-
-        .rent-magazine__browse-bottom span {
-            margin-top: 4px;
-            color: rgba(255, 255, 255, .60);
-            font-size: 8px;
-        }
-
-        .rent-magazine__browse-bottom > a {
-            display: inline-flex;
-            width: 45px;
-            height: 45px;
-            align-items: center;
-            justify-content: center;
-            color: var(--rent-primary) !important;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 9px 22px rgba(0, 0, 0, .10);
-            transition: color .25s ease, background .25s ease, transform .25s ease;
-        }
-
-        .rent-magazine__browse-bottom > a:hover {
-            color: #073d34 !important;
-            background: var(--rent-accent);
-            transform: translateY(-3px);
-        }
-
-        .rent-magazine__add-card {
-            color: var(--rent-ink);
-            border: 1px solid #d9eee8;
-            background:
-                radial-gradient(circle at 100% 0, rgba(26, 197, 156, .15), transparent 42%),
-                linear-gradient(145deg, #edfff9, #f7fcff);
-            animation-delay: .30s;
-        }
-
-        .rent-magazine__add-icon {
-            position: relative;
-            display: inline-flex;
-            width: 45px;
-            height: 45px;
-            align-items: center;
-            justify-content: center;
-            color: #073e35;
-            border-radius: 13px;
-            background: var(--rent-accent);
-            box-shadow: 0 9px 22px rgba(26, 197, 156, .17);
-        }
-
-        .rent-magazine__add-icon .fa-plus {
-            position: absolute;
-            right: -3px;
-            bottom: -3px;
-            display: inline-flex;
-            width: 18px;
-            height: 18px;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            border: 2px solid #effffb;
-            border-radius: 50%;
-            background: var(--rent-primary);
-            font-size: 7px;
-        }
-
-        .rent-magazine__add-card p {
-            margin: 7px 0 0;
-            color: var(--rent-muted);
-            font-size: 10px;
-            line-height: 1.75;
-        }
-
-        .rent-magazine__add-card > a {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding-top: 10px;
-            color: var(--rent-primary) !important;
-            border-top: 1px solid rgba(23, 111, 169, .10);
-            font-size: 10px;
-            font-weight: 900;
-        }
-
-        .rent-magazine__add-card > a i {
-            transition: transform .25s ease;
-        }
-
-        .rent-magazine__add-card > a:hover i {
-            transform: translateX(-4px);
-        }
-
-        .rent-magazine__empty {
-            padding: 62px 20px;
-            text-align: center;
-            color: var(--rent-muted);
-            border: 1px dashed #cbdde7;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, .78);
-        }
-
-        .rent-magazine__empty i {
-            margin-bottom: 13px;
-            color: var(--rent-primary);
-            font-size: 40px;
-        }
-
-        .rent-magazine__empty h3 {
-            margin: 0 0 5px;
-            color: var(--rent-ink);
-            font-size: 19px;
-            font-weight: 900;
-        }
-
-        .rent-magazine__empty p {
-            margin: 0;
-            font-size: 12px;
-        }
-
-        @keyframes rentMagazineReveal {
-            from {
-                opacity: 0;
-                transform: translateY(22px) scale(.985);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @media (max-width: 1199.98px) {
-            .rent-magazine__grid {
-                grid-template-columns: minmax(0, 1.2fr) minmax(390px, 1fr);
-            }
-
-            .rent-magazine__hero-card {
-                min-height: 495px;
-            }
-
-            .rent-magazine__secondary-card,
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card {
-                min-height: 239px;
-            }
-        }
-
-        @media (max-width: 991.98px) {
-            .rent-magazine {
-                padding: 62px 0;
-            }
-
-            .rent-magazine__header {
-                display: block;
-                margin-bottom: 24px;
-            }
-
-            .rent-magazine__chips {
-                justify-content: flex-start;
-                margin-top: 17px;
-            }
-
-            .rent-magazine__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .rent-magazine__hero-card {
-                min-height: 455px;
-            }
-
-            .rent-magazine__side-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                grid-auto-rows: 235px;
-                grid-template-rows: none;
-            }
-
-            .rent-magazine__secondary-card,
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card {
-                min-height: 235px;
-            }
-        }
-
-        @media (max-width: 767.98px) {
-            .rent-magazine {
-                padding: 52px 0;
-            }
-
-            .rent-magazine__heading p {
-                font-size: 12px;
-            }
-
-            .rent-magazine__hero-card {
-                min-height: 440px;
-                border-radius: 21px;
-            }
-
-            .rent-magazine__hero-content {
-                inset-inline: 19px;
-                bottom: 20px;
-            }
-
-            .rent-magazine__hero-top {
-                inset-inline: 14px;
-                top: 14px;
-            }
-
-            .rent-magazine__hero-bottom {
-                display: block;
-            }
-
-            .rent-magazine__hero-cta {
-                min-width: 135px;
-                min-height: 43px;
-                margin-top: 15px;
-            }
-
-            .rent-magazine__side-grid {
-                grid-template-columns: 1fr 1fr;
-                grid-auto-rows: 220px;
-            }
-
-            .rent-magazine__secondary-card,
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card {
-                min-height: 220px;
-                border-radius: 18px;
-            }
-        }
-
-        @media (max-width: 575.98px) {
-            .rent-magazine__header {
-                text-align: center;
-            }
-
-            .rent-magazine__chips {
-                justify-content: center;
-            }
-
-            .rent-magazine__chip {
-                padding: 6px 10px;
-                font-size: 9px;
-            }
-
-            .rent-magazine__hero-card {
-                min-height: 475px;
-            }
-
-            .rent-magazine__hero-content h3 {
-                font-size: 23px;
-            }
-
-            .rent-magazine__side-grid {
-                grid-template-columns: 1fr;
-                grid-auto-rows: 245px;
-            }
-
-            .rent-magazine__secondary-card,
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card {
-                min-height: 245px;
-            }
-
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card {
-                padding: 24px;
-            }
-        }
-
-        @media (max-width: 390px) {
-            .rent-magazine__status-group {
-                gap: 5px;
-            }
-
-            .rent-magazine__status,
-            .rent-magazine__views {
-                padding: 4px 8px;
-                font-size: 9px;
-            }
-
-            .rent-magazine__features {
-                gap: 5px;
-            }
-
-            .rent-magazine__features span {
-                padding-inline-end: 6px;
-                font-size: 9px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .rent-magazine__hero-card,
-            .rent-magazine__secondary-card,
-            .rent-magazine__browse-card,
-            .rent-magazine__add-card,
-            .rent-magazine__hero-media img,
-            .rent-magazine__secondary-media img {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
-    </style>
-    <!-- ============================ Rent Magazine Grid End ================================== -->
+    <!-- ============================ Latest Property للبيع End ================================== -->
 
     <!-- ============================ Price Table Start ================================== -->
 
@@ -4068,510 +2410,223 @@
 {{--                        <h2 class="headingTitle2"> 	{{ trans('langsite.site_name')}}  </h2>--}}
 {{--                        <p class="">--}}
 
-{{--                            نضع العقارات التي تريدها بين يديك بدون وسيط ومن<br/>  المالك أو المشتري مباشرة--}}
+{{--                            نضع العقارات التي تريدها بين يديك بدون وسيط ومن<br/>  المالك مباشرة--}}
+{{--                            <br/>--}}
+{{--                            اختار عقارك بنفسك بدون وسطاء--}}
 {{--                        </p>--}}
-
 
 {{--                    </div>--}}
 {{--                </div>--}}
 
-
 {{--            </div>--}}
 {{--            <!-- /row -->--}}
-
 
 {{--        </div>--}}
 
 {{--    </section>--}}
-    <div style="display:none">
-        <!-- ============================ Step How To Use End ====================== -->
-        <section  class="bg-light">
-            <div class="container">
 
-                <div class="row justify-content-center">
+    <!-- sections-->
+    <section class="bg-light">
+        <div class="container">
 
-                    <div class="col-lg-7 col-md-10 text-center">
-
-                        <div class="sec-heading center">
-
-                            <h2 class="headingTitle">أحدث العقارات </h2>
-
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10 text-center">
+                    <div class="sec-heading center">
+                        <h2 class="headingTitle">{{ trans('langsite.services')}}</h2>
 
                     </div>
-
                 </div>
+            </div>
 
-                <div class="row">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="property-slide">
 
-                    @foreach ($lastAqars as $lastAqar)
-
-
-
-
-
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-
-                            <div class="property-listing property-2">
-
-                                <div class="listing-img-wrapper">
-
-                                    <div class="list-img-slide">
-
-                                        <div class="click">
-
-                                            <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $lastAqar->slug) }}">
+                        @foreach ($services as $serv )
 
 
-                                                    @if($lastAqar->mainImage)
-                                                        <img src="{{ URL::to('/').'/images/'.$lastAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
-
-                                                    @else
-
-                                                        @if($lastAqar->firstImage)<img
-                                                            src="{{ URL::to('/').'/images/'.$lastAqar->firstImage->img_url}}"
-                                                            class="img-fluid mx-auto" alt="" loading="lazy" />
-                                                        @else
-                                                            <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                                                 alt="main" loading="lazy" >
-                                                        @endif
-                                                    @endif
-
-
-                                                </a></div>
-
-
+                            <div class="single-items">
+                                <div class="location-property-wrap">
+                                    <div class="location-property-thumb">
+                                        <!-- <a target="_blank" href="listings-list-with-sidebar.html"><img src="https://via.placeholder.com/1200x800" class="img-fluid" alt=""></a> -->
+                                        <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}"><img src="{{ URL::to('/').'/'.$serv->image}}" class="img-fluid" alt="" loading="lazy" ></a>
+                                    </div>
+                                    <div class="location-property-content">
+                                        <div class="lp-content-flex">
+                                            <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/ourcompanies-' . $serv->slug) }}" class="lp-property-view">	<h4 class="lp-content-title">{{ $serv->Service}}</h4></a>
+                                            <!--<span>العنوان</span>-->
+                                        </div>
+                                        <div class="lp-content-right">
+                                            <!-- <a target="_blank" href="listings-list-with-sidebar.html" class="lp-property-view"><i class="ti-angle-right"></i></a> -->
 
                                         </div>
-
                                     </div>
-
                                 </div>
-
-                                <div class="listing-detail-wrapper">
-
-                                    <div class="listing-short-detail-wrap">
-
-                                        <div class="listing-short-detail">
-
-                                            <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $lastAqar->slug) }}"
-
-                                                                                             class="prt-link-detail">{{ \Illuminate\Support\Str::limit($lastAqar->title, $limit = 29, $end = '...')  }}</a></h4>
-
-                                            <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-
-                                        </div>
-
-
-
-                                    </div>
-
-                                </div>
-
-                                @if($lastAqar->offer_type == 1 || $lastAqar->offer_type == 2 )
-                                    <div  class="listing-short-detail-flex">
-
-                                        <h6 class="listing-card-info-price">{{ $lastAqar->total_price }} جنيه مصري</h6>
-
-                                    </div>
-
-                                @else
-                                    <div  class="listing-short-detail-flex">
-
-                                        <h6 class="listing-card-info-price">{{ $lastAqar->monthly_rent }} جنيه مصري</h6>
-
-                                    </div>
-
-                                @endif
-
-
-
-
-
-
-
-                                <div class="price-features-wrapper" >
-
-                                    <div class="list-fx-features">
-
-                                        <div class="listing-card-info-icon">
-
-                                            {{ $lastAqar->baths }} حمام
-
-                                            <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-
-                                                                             alt="" loading="lazy" /></div>
-
-                                        </div>
-
-                                        <div class="listing-card-info-icon">
-
-                                            {{ $lastAqar->rooms }} غرف
-
-                                            <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-
-                                                                             alt="" loading="lazy" /></div>
-
-                                        </div>
-
-                                        <div class="listing-card-info-icon">
-
-                                            {{ $lastAqar->total_area }} م²
-
-                                            <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-
-                                                                             alt="" loading="lazy" /></div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="listing-detail-footer bg-light">
-
-                                    <div class="footer-first">
-
-                                        <div class="foot-location">@if ($lastAqar->governrateq)
-                                                {{ $lastAqar->governrateq->governrate }}
-                                            @endif
-                                            @if ($lastAqar->districte)
-                                                {{ $lastAqar->districte->district }}
-                                            @endif
-
-
-
-                                            <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="footer-flex">
-
-                                        <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $lastAqar->slug) }}" class="prt-view">عرض</a>
-
-                                        <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
-
-                                    </div>
-
-                                </div>
-
                             </div>
 
-                        </div>
+                        @endforeach
 
-                    @endforeach
-
-
+                    </div>
                 </div>
 
 
             </div>
 
-        </section>
-        <!-- ============================ Latest Property للبيع Start ================================== -->
-        <section class="" dir="ltr">
-            <div class="container">
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-7 col-md-10 text-center">
-                        <div class="sec-heading center mb-4">
-                            <h2 class="headingTitle"> 	{{ trans('langsite.Latest')}} {{ trans('langsite.Properties_for_sale')}} </h2>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="property-slide">
-                            @foreach ($saleAqars as $saleAqar)
-                                <div class="single-items">
-                                    <div class="property-listing shadow-none property-2 border">
-
-                                        <div class="listing-img-wrapper">
-
-                                            <div class="list-img-slide">
-                                                <div class="click">
-
-                                                    <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $saleAqar->slug) }}">
 
 
-                                                            @if($saleAqar->mainImage)
-                                                                <img src="{{ URL::to('/').'/images/'.$saleAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
+        </div>
+    </section>
+    <!-- ============================ Latest Property للبيع Start ================================== -->
+    <section class="" dir="ltr">
+        <div class="container">
 
-                                                            @else
+            <div class="row justify-content-center">
+                <div class="col-lg-7 col-md-10 text-center">
+                    <div class="sec-heading center mb-4">
+                        <h2 class="headingTitle"> 	{{ trans('langsite.The_most_researched')}}  </h2>
 
-                                                                @if($saleAqar->firstImage)<img
-                                                                    src="{{ URL::to('/').'/images/'.$saleAqar->firstImage->img_url}}"
-                                                                    class="img-fluid mx-auto" alt="" loading="lazy" />
-                                                                @else
-                                                                    <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                                                         alt="main" loading="lazy" >
-                                                                @endif
-                                                            @endif
-
-                                                        </a></div>
-
-
-
-                                                </div>
-                                            </div>
-
-
-                                            <?php  if($saleAqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($saleAqar->created_at) < 1){   ?>
-                                            <div class="views">
-                                                <div class="views-1">مميز</div>
-                                            </div>
-                                            <?php }  ?>
-
-
-                                            <?php if(\Carbon\Carbon::now()->diffInYears($saleAqar->created_at) >= 1){ ?>
-                                            <div class="views " style="left: 13px;">
-                                                <div class="viewsRed">غير متاح</div>
-                                            </div>
-                                            <?php } ?>
-
-                                            <div class="views">
-
-                                                <div class="views-2">
-                                                    <i class="fa fa-eye"></i>
-                                                    <span>{{ $saleAqar->views }}</span>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="listing-detail-wrapper">
-                                            <div class="listing-short-detail-wrap">
-                                                <div class="listing-short-detail">
-                                                    <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $saleAqar->slug) }}"
-                                                                                                     class="">{{ \Illuminate\Support\Str::limit($saleAqar->title, $limit = 29, $end = '...')  }}</a></h4>
-                                                    <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div  class="listing-short-detail-flex">
-                                            <h6 class="listing-card-info-price">{{ $saleAqar->total_price }} جنيه مصري</h6>
-                                        </div>
-                                        <div class="price-features-wrapper" >
-                                            <div class="list-fx-features" >
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ $saleAqar->baths }} حمام
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
-                                                <div class="listing-card-info-icon">
-                                                    {{ $saleAqar->rooms }} غرف
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ $saleAqar->total_area }} م²
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-                                        <div class="listing-detail-footer bg-light">
-                                            <div class="footer-first">
-                                                <div class="foot-location">
-                                                    @if ($saleAqar->governrateq)
-                                                        {{ $saleAqar->governrateq->governrate }}
-                                                    @endif
-                                                    @if ($saleAqar->districte)
-                                                        {{ $saleAqar->districte->district }}
-                                                    @endif
-
-
-                                                    <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
-                                                </div>
-                                            </div>
-                                            <div class="footer-flex">
-                                                <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $saleAqar->slug) }}" class="prt-view">عرض</a>
-                                                <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                        <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_sale') }}" class="btn btn-theme-light rounded">اعرض المزيد</a>
-                        <!-- <a target="_blank" href="listings-list-with-sidebar.html" class="btrn btn-theme-light rounded">Browse More Properties</a> -->
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- ============================ Latest Property للبيع End ================================== -->
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="property-slide">
 
 
-        <!-- ============================ Call To Action ================================== -->
-{{--    <x-call-to-action />--}}
-        <!-- ============================ Call To Action End ================================== -->
+
+                        @foreach ($mostRecent as $most )
+                            <div class="single-items">
+                                <div class="property-listing shadow-none property-2 border">
+
+                                    <div class="listing-img-wrapper">
+
+                                        <div class="list-img-slide">
+                                            <div class="click">
+
+                                                <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $most->slug) }}">
+
+                                                        @if($most->mainImage)
+                                                            <img src="{{ URL::to('/').'/images/'.$most->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
+
+                                                        @else
 
 
-        <!-- ============================ Latest Property للإيجار Start ================================== -->
-        <section>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-7 col-md-10 text-center">
-                        <div class="sec-heading center mb-4">
-                            <h2 class="headingTitle"> 	{{ trans('langsite.Latest')}} {{ trans('langsite.Real_estate_for_rent')}} </h2>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="property-slide">
-                            @foreach ($rentAqars as $rentAqar)
-                                <div class="single-items">
-                                    <div class="property-listing shadow-none property-2 border">
-                                        <div class="listing-img-wrapper">
-                                            <div class="list-img-slide">
-                                                <div class="click">
-                                                    <div>
-                                                        <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}">
-                                                            @if($rentAqar->mainImage)
-                                                                <img src="{{ URL::to('/').'/images/'.$rentAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
-
-                                                            @else
-
-                                                                @if($rentAqar->firstImage)<img
-                                                                    src="{{ URL::to('/').'/images/'.$rentAqar->firstImage->img_url}}"
+                                                            @if($most->firstImage)
+                                                                <img
+                                                                    src="{{ URL::to('/').'/images/'.$most->firstImage->img_url}}"
                                                                     class="img-fluid mx-auto" alt="" loading="lazy" />
-                                                                @else
-                                                                    <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                                                         alt="main" loading="lazy" >
-                                                                @endif
-                                                            @endif
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                            @else
+                                                                <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
+                                                                     alt="main" loading="lazy" >
 
-                                            <?php  if($rentAqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) < 1){   ?>
-                                            <div class="views">
-                                                <div class="views-1">مميز</div>
-                                            </div>
-                                            <?php }  ?>
+                                                            @endif		@endif
 
-                                            <?php if(\Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1){ ?>
-                                            <div class="views " style="left: 13px;">
-                                                <div class="viewsRed">غير متاح</div>
-                                            </div>
-                                            <?php } ?>
+                                                    </a></div>
 
-                                            <div class="views">
-                                                <div class="views-2">
-                                                    <i class="fa fa-eye"></i>
-                                                    <span>{{ $rentAqar->views }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="listing-detail-wrapper">
-                                            <div class="listing-short-detail-wrap">
-                                                <div class="listing-short-detail">
-                                                    <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}"
-                                                                                                     class="">{{ \Illuminate\Support\Str::limit($rentAqar->title, $limit = 29, $end = '...')  }}</a></h4>
-                                                    <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div  class="listing-short-detail-flex">
-                                            <h6 class="listing-card-info-price">{{ $rentAqar->monthly_rent }} جنيه مصري</h6>
-                                        </div>
-                                        <div class="price-features-wrapper" >
-                                            <div class="list-fx-features" >
-
-
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ $rentAqar->baths }} حمام
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
-                                                <div class="listing-card-info-icon">
-                                                    {{ $rentAqar->rooms }} غرف
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
-
-                                                <div class="listing-card-info-icon">
-                                                    {{ $rentAqar->total_area }} م²
-                                                    <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-                                                                                     alt="" loading="lazy" /></div>
-                                                </div>
 
                                             </div>
                                         </div>
+                                        <div class="views">
 
-                                        <div class="listing-detail-footer bg-light">
-                                            <div class="footer-first">
-                                                <div class="foot-location">
-                                                    @if ($rentAqar->governrateq)
-                                                        {{ $rentAqar->governrateq->governrate }}
-                                                    @endif
-                                                    @if ($rentAqar->districte)
-                                                        {{ $rentAqar->districte->district }}
-                                                    @endif
+                                            <div class="views-2">
+                                                <i class="fa fa-eye"></i>
+                                                <span>{{ $most->views }}</span>
 
-                                                    <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
-                                                </div>
-                                            </div>
-                                            <div class="footer-flex">
-                                                <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}" class="prt-view">عرض</a>
-                                                <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="listing-detail-wrapper">
+                                        <div class="listing-short-detail-wrap">
+                                            <div class="listing-short-detail">
+                                                <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $most->slug) }}"
+                                                                                                 class="">{{  \Illuminate\Support\Str::limit($most->title, $limit = 29, $end = '...') }}</a></h4>
+                                                <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="listing-short-detail-flex">
+                                        <h6 class="listing-card-info-price">
+
+
+                                            @if ($most->offerTypes->id == 1 || $most->offerTypes->id == 2 )
+                                                {{ $most->total_price }}
+                                            @endif
+                                            @if ($most->offerTypes->id == 3 || $most->offerTypes->id == 4 )
+                                                {{ $most->monthly_rent }}
+                                            @endif  جنيه مصري
+
+
+
+                                        </h6>
+                                    </div>
+                                    <div class="price-features-wrapper" >
+                                        <div class="list-fx-features" >
+
+
+
+
+
+                                            <div class="listing-card-info-icon">
+                                                {{ $most->baths }} حمام
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+                                            <div class="listing-card-info-icon">
+                                                {{ $most->rooms }} غرف
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+
+                                            <div class="listing-card-info-icon">
+                                                {{ $most->total_area }}  م²
+                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
+                                                                                 alt="" loading="lazy" /></div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="listing-detail-footer bg-light">
+                                        <div class="footer-first">
+                                            <div class="foot-location">
+                                                @if ($most->governrateq)
+                                                    {{ $most->governrateq->governrate }}
+                                                @endif
+                                                @if ($most->districte)
+                                                    {{ $most->districte->district }}
+                                                @endif
+
+
+                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" loading="lazy" />
+                                            </div>
+                                        </div>
+                                        <div class="footer-flex">
+                                            <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $most->slug) }}" class="prt-view">عرض</a>
+                                            <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
+                                        </div>
+                                    </div>
+
                                 </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                        <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}" class="btn btn-theme-light rounded">اعرض المزيد</a>
+                            </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- ============================ Latest Property للإيجار End ================================== -->
 
-    </div>
+        </div>
+    </section>
+    <!-- ============================ Latest Property للبيع End ================================== -->
 
-
-    <!-- ============================ Price Table End ================================== -->
-
-
-    <!-- ============================ Agent Start ================================== -->
-
-
-    <!-- ============================ Agent End ================================== -->
-
-    <!-- ============================ Testimonials Start ================================== -->
-
-    <!-- ============================ Testimonials End ================================== -->
 
     <!-- ============================ Call To Action ================================== -->
 {{--    <x-call-to-action />--}}
+
     <!-- ============================ Call To Action End ================================== -->
 
 </x-layout>
