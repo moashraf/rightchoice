@@ -28,9 +28,7 @@
                                         </div>
 
                                         <div class="rc-field rc-field-keyword">
-                                            <label for="hero-keywords-{{ $loop->index }}">
-                                                {{ App::isLocale('en') ? 'Keyword or location' : 'الكلمة المفتاحية أو الموقع' }}
-                                            </label>
+
                                             <div class="rc-input-wrap">
                                                 <input id="hero-keywords-{{ $loop->index }}"
                                                        name="keywords"
@@ -131,14 +129,14 @@
                                 <!-- Hero content -->
                                 <div class="col-xl-7 col-lg-7 col-md-12 order-1 order-lg-2">
                                     <div class="rc-hero-content">
-                                            <span class="rc-hero-badge">
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M5.5 10.5V20h13v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                                    <path d="M9.5 20v-6h5v6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                                </svg>
-                                                {{ App::isLocale('en') ? 'Property deals without intermediaries' : 'بيع وشراء العقارات بدون وسيط' }}
-                                            </span>
+{{--                                            <span class="rc-hero-badge">--}}
+{{--                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">--}}
+{{--                                                    <path d="M3 11.5 12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>--}}
+{{--                                                    <path d="M5.5 10.5V20h13v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>--}}
+{{--                                                    <path d="M9.5 20v-6h5v6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>--}}
+{{--                                                </svg>--}}
+{{--                                                {{ App::isLocale('en') ? 'Property deals without intermediaries' : 'بيع وشراء العقارات بدون وسيط' }}--}}
+{{--                                            </span>--}}
 
                                         <h3 class="rc-hero-title">
                                             @if(App::isLocale('en'))
@@ -407,7 +405,7 @@
         }
 
         .rc-hero-title span {
-            display: block;
+            /*display: block;*/
             color: var(--rc-green);
             text-shadow: 0 8px 28px rgba(19, 200, 155, .14);
         }
@@ -2232,162 +2230,1139 @@
     </section>
     <!-- ============================ All Featured Property ================================== -->
     <!-- ============================ Free Plan CTA ================================== -->
-    <x-free-plan-cta />
+{{--    <x-free-plan-cta />--}}
     <!-- ============================ Free Plan CTA End ================================== -->
 
-    <!-- ============================ Latest Property للبيع Start ================================== -->
-    <section class="" dir="ltr">
-        <div class="container">
+    <!-- ============================ Rent Magazine Grid Start ================================== -->
+    @php
+        $rentMagazineAqars = collect($rentAqars)->values();
+        $rentMagazineMain = $rentMagazineAqars->first();
+        $rentMagazineSecondary = $rentMagazineAqars->slice(1, 2);
+    @endphp
 
-            <div class="row justify-content-center">
-                <div class="col-lg-7 col-md-10 text-center">
-                    <div class="sec-heading center mb-4">
-                        <h2 class="headingTitle"> 	{{ trans('langsite.Real_estate_for_rent')}} </h2>
+    <section class="rent-magazine" dir="{{ App::isLocale('en') ? 'ltr' : 'rtl' }}">
+        <div class="rent-magazine__glow rent-magazine__glow--one" aria-hidden="true"></div>
+        <div class="rent-magazine__glow rent-magazine__glow--two" aria-hidden="true"></div>
 
-                    </div>
+        <div class="container rent-magazine__container">
+            <header class="rent-magazine__header">
+                <div class="rent-magazine__heading">
+                    <span class="rent-magazine__eyebrow">
+                        <i class="fas fa-key" aria-hidden="true"></i>
+                        {{ App::isLocale('en') ? 'Selected rental opportunities' : 'فرص إيجار مختارة لك' }}
+                    </span>
+                    <h2>{{ trans('langsite.Real_estate_for_rent') }}</h2>
+                    <p>
+                        {{ App::isLocale('en')
+                            ? 'Discover clear rental opportunities and contact property owners directly without intermediaries.'
+                            : 'اكتشف فرص إيجار مميزة بتفاصيل واضحة وتواصل مباشرة مع المالك بدون وسيط.' }}
+                    </p>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="property-slide">
-                        @foreach ($rentAqars as $rentAqar)
-                            <div class="single-items">
-                                <div class="property-listing shadow-none property-2 border">
+                <div class="rent-magazine__chips" aria-label="{{ App::isLocale('en') ? 'Rental benefits' : 'مميزات الإيجار' }}">
+                    <span class="rent-magazine__chip rent-magazine__chip--active">
+                        <i class="fas fa-user-check" aria-hidden="true"></i>
+                        {{ App::isLocale('en') ? 'Direct contact' : 'تواصل مباشر' }}
+                    </span>
+                    <span class="rent-magazine__chip">
+                        <i class="fas fa-handshake" aria-hidden="true"></i>
+                        {{ App::isLocale('en') ? 'No intermediary' : 'بدون وسيط' }}
+                    </span>
+                    <span class="rent-magazine__chip">
+                        <i class="fas fa-home" aria-hidden="true"></i>
+                        {{ App::isLocale('en') ? 'Rental choices' : 'خيارات متنوعة' }}
+                    </span>
+                </div>
+            </header>
 
-                                    <div class="listing-img-wrapper">
+            @if ($rentMagazineMain)
+                @php
+                    $rentMainUrl = URL::to(Config::get('app.locale').'/aqars/'.$rentMagazineMain->slug);
+                    $rentMainExpired = \Carbon\Carbon::now()->diffInYears($rentMagazineMain->created_at) >= 1;
+                    $rentMainLocation = collect([
+                        optional($rentMagazineMain->governrateq)->governrate,
+                        optional($rentMagazineMain->districte)->district,
+                    ])->filter()->implode('، ');
 
-                                        <div class="list-img-slide">
-                                            <div class="click">
+                    if ($rentMagazineMain->mainImage) {
+                        $rentMainImage = URL::to('/').'/images/'.$rentMagazineMain->mainImage->img_url;
+                    } elseif ($rentMagazineMain->firstImage) {
+                        $rentMainImage = URL::to('/').'/images/'.$rentMagazineMain->firstImage->img_url;
+                    } else {
+                        $rentMainImage = URL::to('/').'/images/FBO.png';
+                    }
+                @endphp
 
-                                                <div><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}">
+                <div class="rent-magazine__grid">
+                    <article class="rent-magazine__hero-card">
+                        <a class="rent-magazine__hero-media"
+                           href="{{ $rentMainUrl }}"
+                           target="_blank"
+                           rel="noopener"
+                           aria-label="{{ $rentMagazineMain->title }}">
+                            <img src="{{ $rentMainImage }}"
+                                 alt="{{ $rentMagazineMain->title }}"
+                                 loading="lazy">
+                            <span class="rent-magazine__overlay" aria-hidden="true"></span>
+                        </a>
 
-                                                        @if($rentAqar->mainImage)
-                                                            <img src="{{ URL::to('/').'/images/'.$rentAqar->mainImage->img_url}}"  		class="img-fluid mx-auto"   alt="main" loading="lazy" >
+                        <div class="rent-magazine__hero-top">
+                            <div class="rent-magazine__status-group">
+                                @if ($rentMainExpired)
+                                    <span class="rent-magazine__status rent-magazine__status--unavailable">
+                                        {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
+                                    </span>
+                                @else
+                                    <span class="rent-magazine__status rent-magazine__status--available">
+                                        <span class="rent-magazine__status-dot"></span>
+                                        {{ App::isLocale('en') ? 'Available now' : 'متاح الآن' }}
+                                    </span>
+                                @endif
 
-                                                        @else
-
-                                                            @if($rentAqar->firstImage)<img
-                                                                src="{{ URL::to('/').'/images/'.$rentAqar->firstImage->img_url}}"
-                                                                class="img-fluid mx-auto" alt="" loading="lazy" />
-                                                            @else
-                                                                <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"
-                                                                     alt="main"loading="lazy" >
-                                                            @endif
-                                                        @endif
-
-                                                    </a></div>
-
-
-
-                                            </div>
-                                        </div>
-
-
-                                            <?php  if($rentAqar->vip ==1  && \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) < 1){   ?>
-                                        <div class="views">
-                                            <div class="views-1">مميز</div>
-                                        </div>
-
-                                        <?php }  ?>
-
-
-                                            <?php if(\Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1){ ?>
-                                        <div class="views " style="left: 13px;">
-                                            <div class="viewsRed">غير متاح</div>
-                                        </div>
-                                        <?php } ?>
-
-
-
-                                        <div class="views">
-
-                                            <div class="views-2">
-                                                <i class="fa fa-eye"></i>
-                                                <span>{{ $rentAqar->views }}</span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="listing-detail-wrapper">
-                                        <div class="listing-short-detail-wrap">
-                                            <div class="listing-short-detail">
-                                                <h4 class="listing-name verified center-name"><a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}"
-                                                                                                 class="">{{ \Illuminate\Support\Str::limit($rentAqar->title, $limit = 29, $end = '...')  }}</a></h4>
-                                                <!-- <h4 class="listing-name verified"><a target="_blank" href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div  class="listing-short-detail-flex">
-                                        <h6 class="listing-card-info-price">{{ $rentAqar->monthly_rent }} جنيه مصري</h6>
-                                    </div>
-                                    <div class="price-features-wrapper" >
-                                        <div class="list-fx-features" >
-
-
-
-
-
-                                            <div class="listing-card-info-icon">
-                                                {{ $rentAqar->baths }} حمام
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/bath.png') }}" width="12"
-                                                                                 alt="" loading="lazy" /></div>
-                                            </div>
-                                            <div class="listing-card-info-icon">
-                                                {{ $rentAqar->rooms }} غرف
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/room.png') }}" width="12"
-                                                                                 alt="" loading="lazy" /></div>
-                                            </div>
-
-                                            <div class="listing-card-info-icon">
-                                                {{ $rentAqar->total_area }} م²
-                                                <div class="inc-fleat-icon"><img src="{{ asset('images/icons/area.png') }}" width="12"
-                                                                                 alt="" loading="lazy" /></div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="listing-detail-footer bg-light">
-                                        <div class="footer-first">
-                                            <div class="foot-location">
-                                                @if ($rentAqar->governrateq)
-                                                    {{ $rentAqar->governrateq->governrate }}
-                                                @endif
-                                                @if ($rentAqar->districte)
-                                                    {{ $rentAqar->districte->district }}
-                                                @endif
-
-
-                                                <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt=""  loading="lazy" />
-                                            </div>
-                                        </div>
-                                        <div class="footer-flex">
-                                            <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/aqars/' . $rentAqar->slug) }}" class="prt-view">عرض</a>
-                                            <!-- <a target="_blank" href="property-detail.html" class="prt-view">View</a> -->
-                                        </div>
-                                    </div>
-
-                                </div>
+                                @if ((int) $rentMagazineMain->vip === 1 && !$rentMainExpired)
+                                    <span class="rent-magazine__status rent-magazine__status--featured">
+                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                        {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
+                                    </span>
+                                @endif
                             </div>
+
+                            <span class="rent-magazine__views">
+                                <i class="far fa-eye" aria-hidden="true"></i>
+                                {{ number_format((int) $rentMagazineMain->views) }}
+                            </span>
+                        </div>
+
+                        <div class="rent-magazine__hero-content">
+                            @if ($rentMainLocation)
+                                <div class="rent-magazine__location-pill">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                    <span>{{ $rentMainLocation }}</span>
+                                </div>
+                            @endif
+
+                            <h3>
+                                <a href="{{ $rentMainUrl }}" target="_blank" rel="noopener">
+                                    {{ \Illuminate\Support\Str::limit($rentMagazineMain->title, 60, '...') }}
+                                </a>
+                            </h3>
+
+                            <div class="rent-magazine__hero-bottom">
+                                <div>
+                                    <div class="rent-magazine__price-label">
+                                        {{ App::isLocale('en') ? 'Monthly rent' : 'الإيجار الشهري' }}
+                                    </div>
+                                    <div class="rent-magazine__price">
+                                        <strong>{{ number_format((float) $rentMagazineMain->monthly_rent) }}</strong>
+                                        <span>{{ trans('langsite.egyptian_pound') }}</span>
+                                    </div>
+
+                                    <div class="rent-magazine__features">
+                                        <span>
+                                            <img src="{{ asset('images/icons/area.png') }}" alt="" loading="lazy">
+                                            {{ $rentMagazineMain->total_area ?: '—' }} م²
+                                        </span>
+                                        <span>
+                                            <img src="{{ asset('images/icons/room.png') }}" alt="" loading="lazy">
+                                            {{ $rentMagazineMain->rooms ?: '—' }} {{ App::isLocale('en') ? 'rooms' : 'غرف' }}
+                                        </span>
+                                        <span>
+                                            <img src="{{ asset('images/icons/bath.png') }}" alt="" loading="lazy">
+                                            {{ $rentMagazineMain->baths ?: '—' }} {{ App::isLocale('en') ? 'baths' : 'حمام' }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <a class="rent-magazine__hero-cta"
+                                   href="{{ $rentMainUrl }}"
+                                   target="_blank"
+                                   rel="noopener">
+                                    <span>{{ App::isLocale('en') ? 'View property' : 'عرض العقار' }}</span>
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <div class="rent-magazine__side-grid">
+                        @foreach ($rentMagazineSecondary as $rentAqar)
+                            @php
+                                $rentPropertyUrl = URL::to(Config::get('app.locale').'/aqars/'.$rentAqar->slug);
+                                $rentPropertyExpired = \Carbon\Carbon::now()->diffInYears($rentAqar->created_at) >= 1;
+                                $rentPropertyLocation = collect([
+                                    optional($rentAqar->governrateq)->governrate,
+                                    optional($rentAqar->districte)->district,
+                                ])->filter()->implode('، ');
+
+                                if ($rentAqar->mainImage) {
+                                    $rentPropertyImage = URL::to('/').'/images/'.$rentAqar->mainImage->img_url;
+                                } elseif ($rentAqar->firstImage) {
+                                    $rentPropertyImage = URL::to('/').'/images/'.$rentAqar->firstImage->img_url;
+                                } else {
+                                    $rentPropertyImage = URL::to('/').'/images/FBO.png';
+                                }
+                            @endphp
+
+                            <article class="rent-magazine__secondary-card">
+                                <a href="{{ $rentPropertyUrl }}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="rent-magazine__secondary-media"
+                                   aria-label="{{ $rentAqar->title }}">
+                                    <img src="{{ $rentPropertyImage }}"
+                                         alt="{{ $rentAqar->title }}"
+                                         loading="lazy">
+                                    <span class="rent-magazine__secondary-overlay" aria-hidden="true"></span>
+                                </a>
+
+                                <div class="rent-magazine__secondary-top">
+                                    @if ($rentPropertyExpired)
+                                        <span class="rent-magazine__status rent-magazine__status--unavailable">
+                                            {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
+                                        </span>
+                                    @else
+                                        <span class="rent-magazine__status rent-magazine__status--available">
+                                            {{ App::isLocale('en') ? 'Available' : 'متاح' }}
+                                        </span>
+                                    @endif
+
+                                    <span class="rent-magazine__views">
+                                        <i class="far fa-eye" aria-hidden="true"></i>
+                                        {{ number_format((int) $rentAqar->views) }}
+                                    </span>
+                                </div>
+
+                                <div class="rent-magazine__secondary-content">
+                                    @if ($rentPropertyLocation)
+                                        <div class="rent-magazine__secondary-location">
+                                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                            {{ $rentPropertyLocation }}
+                                        </div>
+                                    @endif
+
+                                    <h3>
+                                        <a href="{{ $rentPropertyUrl }}" target="_blank" rel="noopener">
+                                            {{ \Illuminate\Support\Str::limit($rentAqar->title, 34, '...') }}
+                                        </a>
+                                    </h3>
+
+                                    <div class="rent-magazine__secondary-footer">
+                                        <div class="rent-magazine__secondary-price">
+                                            <strong>{{ number_format((float) $rentAqar->monthly_rent) }}</strong>
+                                            <span>{{ trans('langsite.egyptian_pound') }}</span>
+                                        </div>
+                                        <span class="rent-magazine__secondary-arrow">
+                                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </article>
                         @endforeach
 
+                        <article class="rent-magazine__browse-card">
+                            <div>
+                                <span class="rent-magazine__utility-label">
+                                    {{ App::isLocale('en') ? 'Browse easily' : 'تصفح بسهولة' }}
+                                </span>
+                                <h3>{{ App::isLocale('en') ? 'All rental properties' : 'كل عقارات الإيجار' }}</h3>
+                            </div>
+
+                            <div class="rent-magazine__browse-bottom">
+                                <div>
+                                    <strong>{{ number_format($rentMagazineAqars->count()) }}</strong>
+                                    <span>{{ App::isLocale('en') ? 'properties shown here' : 'عقار معروض هنا' }}</span>
+                                </div>
+                                <a href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   aria-label="{{ App::isLocale('en') ? 'View all rental properties' : 'عرض كل عقارات الإيجار' }}">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </article>
+
+                        <article class="rent-magazine__add-card">
+                            <span class="rent-magazine__add-icon">
+                                <i class="fas fa-home" aria-hidden="true"></i>
+                            </span>
+                            <div>
+                                <h3>{{ App::isLocale('en') ? 'List your property for rent' : 'اعرض عقارك للإيجار' }}</h3>
+                                <p>
+                                    {{ App::isLocale('en')
+                                        ? 'Reach tenants directly without an intermediary.'
+                                        : 'وصل للمستأجر مباشرة بدون وسيط.' }}
+                                </p>
+                            </div>
+                            <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}">
+                                <span>{{ App::isLocale('en') ? 'Add your property free' : 'أضف عقارك مجاناً' }}</span>
+                                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                            </a>
+                        </article>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                    <a target="_blank" href="{{ URL::to(Config::get('app.locale').'/all_aqar_for_rent') }}" class="btn btn-theme-light rounded">اعرض المزيد</a>
-                    <!-- <a target="_blank" href="listings-list-with-sidebar.html" class="btrn btn-theme-light rounded">Browse More Properties</a> -->
+            @else
+                <div class="rent-magazine__empty">
+                    <span class="rent-magazine__empty-icon">
+                        <i class="far fa-building" aria-hidden="true"></i>
+                    </span>
+                    <h3>{{ App::isLocale('en') ? 'No rental properties available now' : 'لا توجد عقارات للإيجار متاحة حالياً' }}</h3>
+                    <p>{{ App::isLocale('en') ? 'Check again soon for new rental opportunities.' : 'تابعنا قريباً للاطلاع على فرص إيجار جديدة.' }}</p>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
-    <!-- ============================ Latest Property للبيع End ================================== -->
+
+    <style>
+        .rent-magazine {
+            --rent-primary: #1778b8;
+            --rent-primary-dark: #0d527f;
+            --rent-accent: #19c5a0;
+            --rent-accent-dark: #0b9478;
+            --rent-ink: #102f47;
+            --rent-muted: #6a7f90;
+            --rent-border: #dce8ef;
+            position: relative;
+            padding: 78px 0 84px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 8% 5%, rgba(25, 197, 160, .09), transparent 29%),
+                radial-gradient(circle at 94% 16%, rgba(23, 120, 184, .10), transparent 32%),
+                linear-gradient(180deg, #f8fcfe 0%, #ffffff 72%);
+        }
+
+        .rent-magazine__container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .rent-magazine__glow {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .rent-magazine__glow--one {
+            width: 280px;
+            height: 280px;
+            top: -170px;
+            inset-inline-end: -85px;
+            border: 48px solid rgba(23, 120, 184, .045);
+        }
+
+        .rent-magazine__glow--two {
+            width: 190px;
+            height: 190px;
+            bottom: -105px;
+            inset-inline-start: 5%;
+            background: rgba(25, 197, 160, .05);
+        }
+
+        .rent-magazine__header {
+            text-align: right;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .rent-magazine__heading {
+            max-width: 690px;
+        }
+
+        .rent-magazine__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 9px;
+            color: var(--rent-accent-dark);
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .rent-magazine__eyebrow i {
+            color: var(--rent-accent);
+        }
+
+        .rent-magazine__heading h2 {
+            margin: 0 0 10px;
+            color: var(--rent-ink);
+            font-family: 'Cairo', sans-serif;
+            font-size: clamp(31px, 3.2vw, 44px);
+            font-weight: 900;
+            line-height: 1.3;
+        }
+
+        .rent-magazine__heading p {
+            max-width: 640px;
+            margin: 0;
+            color: var(--rent-muted);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .rent-magazine__chips {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+
+        .rent-magazine__chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 38px;
+            padding: 8px 13px;
+            color: #496274;
+            border: 1px solid var(--rent-border);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .92);
+            box-shadow: 0 7px 20px rgba(20, 57, 83, .04);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .rent-magazine__chip--active {
+            color: #fff;
+            border-color: var(--rent-primary);
+            background: var(--rent-primary);
+        }
+
+        .rent-magazine__grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.42fr) minmax(420px, .95fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .rent-magazine__hero-card,
+        .rent-magazine__secondary-card,
+        .rent-magazine__browse-card,
+        .rent-magazine__add-card {
+            animation: rentMagazineReveal .7s ease both;
+        }
+
+        .rent-magazine__hero-card {
+            position: relative;
+            min-height: 510px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .55);
+            border-radius: 28px;
+            background: #dbe8ef;
+            box-shadow: 0 25px 65px rgba(18, 60, 88, .16);
+            isolation: isolate;
+        }
+
+        .rent-magazine__hero-media,
+        .rent-magazine__hero-media img,
+        .rent-magazine__overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .rent-magazine__hero-media img {
+            object-fit: cover;
+            transition: transform .75s cubic-bezier(.2, .7, .2, 1);
+        }
+
+        .rent-magazine__overlay {
+            background:
+                linear-gradient(0deg, rgba(5, 29, 45, .94) 0%, rgba(5, 29, 45, .68) 37%, rgba(5, 29, 45, .10) 72%),
+                linear-gradient(90deg, rgba(5, 29, 45, .08), rgba(5, 29, 45, .26));
+        }
+
+        .rent-magazine__hero-card:hover .rent-magazine__hero-media img {
+            transform: scale(1.055);
+        }
+
+        .rent-magazine__hero-top {
+            position: absolute;
+            z-index: 3;
+            top: 22px;
+            inset-inline: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .rent-magazine__status-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rent-magazine__status,
+        .rent-magazine__views {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 32px;
+            padding: 6px 11px;
+            border: 1px solid rgba(255, 255, 255, .24);
+            border-radius: 999px;
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px);
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .rent-magazine__status--available {
+            color: #dffcf4;
+            background: rgba(10, 139, 114, .88);
+        }
+
+        .rent-magazine__status--unavailable {
+            color: #fff;
+            background: rgba(198, 45, 68, .92);
+        }
+
+        .rent-magazine__status--featured {
+            color: #6f5000;
+            border-color: rgba(255, 233, 155, .75);
+            background: rgba(255, 230, 145, .95);
+        }
+
+        .rent-magazine__status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #8cffe0;
+            box-shadow: 0 0 0 5px rgba(140, 255, 224, .13);
+        }
+
+        .rent-magazine__views {
+            color: #fff;
+            background: rgba(5, 29, 45, .60);
+        }
+
+        .rent-magazine__hero-content {
+            position: absolute;
+            z-index: 3;
+            inset-inline: 28px;
+            bottom: 28px;
+            color: #fff;
+        }
+
+        .rent-magazine__location-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            max-width: 100%;
+            margin-bottom: 11px;
+            padding: 7px 11px;
+            color: #e4f1f6;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 10px;
+            background: rgba(7, 36, 54, .56);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .rent-magazine__hero-content h3 {
+            max-width: 720px;
+            margin: 0 0 17px;
+            font-size: clamp(25px, 2.25vw, 34px);
+            font-weight: 900;
+            line-height: 1.45;
+        }
+
+        .rent-magazine__hero-content h3 a {
+            color: #fff !important;
+        }
+
+        .rent-magazine__hero-bottom {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .rent-magazine__price-label {
+            margin-bottom: 2px;
+            color: rgba(226, 240, 247, .72);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .rent-magazine__price {
+            display: flex;
+            align-items: baseline;
+            gap: 7px;
+            margin-bottom: 12px;
+            color: #64e4c4;
+        }
+
+        .rent-magazine__price strong {
+            font-size: 29px;
+            font-weight: 900;
+            letter-spacing: -.5px;
+        }
+
+        .rent-magazine__price span {
+            color: #d7ebe5;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .rent-magazine__features {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rent-magazine__features span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 31px;
+            padding: 5px 9px;
+            color: #eaf4f8;
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .08);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .rent-magazine__features img {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: .88;
+        }
+
+        .rent-magazine__hero-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 154px;
+            min-height: 49px;
+            padding: 10px 18px;
+            color: #073e35 !important;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #64e4c4, var(--rent-accent));
+            box-shadow: 0 12px 28px rgba(25, 197, 160, .25);
+            font-size: 13px;
+            font-weight: 900;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .rent-magazine__hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 34px rgba(25, 197, 160, .34);
+        }
+
+        .rent-magazine__side-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .rent-magazine__secondary-card {
+            position: relative;
+            min-height: 247px;
+            overflow: hidden;
+            border: 1px solid #dce8ef;
+            border-radius: 21px;
+            background: #dbe8ef;
+            box-shadow: 0 12px 31px rgba(18, 60, 88, .09);
+            isolation: isolate;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .rent-magazine__secondary-card:nth-child(2) {
+            animation-delay: .08s;
+        }
+
+        .rent-magazine__secondary-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 19px 42px rgba(18, 60, 88, .16);
+        }
+
+        .rent-magazine__secondary-media,
+        .rent-magazine__secondary-media img,
+        .rent-magazine__secondary-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .rent-magazine__secondary-media img {
+            object-fit: cover;
+            transition: transform .6s ease;
+        }
+
+        .rent-magazine__secondary-card:hover .rent-magazine__secondary-media img {
+            transform: scale(1.065);
+        }
+
+        .rent-magazine__secondary-overlay {
+            background: linear-gradient(0deg, rgba(5, 29, 45, .92) 0%, rgba(5, 29, 45, .46) 42%, rgba(5, 29, 45, .06) 75%);
+        }
+
+        .rent-magazine__secondary-top {
+            position: absolute;
+            z-index: 3;
+            top: 13px;
+            inset-inline: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 7px;
+        }
+
+        .rent-magazine__secondary-top .rent-magazine__status,
+        .rent-magazine__secondary-top .rent-magazine__views {
+            min-height: 28px;
+            padding: 4px 8px;
+            font-size: 9px;
+        }
+
+        .rent-magazine__secondary-content {
+            position: absolute;
+            z-index: 3;
+            inset-inline: 15px;
+            bottom: 14px;
+            color: #fff;
+        }
+
+        .rent-magazine__secondary-location {
+            display: -webkit-box;
+            overflow: hidden;
+            margin-bottom: 5px;
+            color: rgba(235, 246, 250, .72);
+            font-size: 9px;
+            font-weight: 700;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+        }
+
+        .rent-magazine__secondary-location i {
+            margin-inline-end: 4px;
+            color: #64e4c4;
+        }
+
+        .rent-magazine__secondary-content h3 {
+            margin: 0 0 8px;
+            font-size: 15px;
+            font-weight: 900;
+            line-height: 1.45;
+        }
+
+        .rent-magazine__secondary-content h3 a {
+            display: -webkit-box;
+            overflow: hidden;
+            color: #fff !important;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+        }
+
+        .rent-magazine__secondary-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .rent-magazine__secondary-price {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            color: #64e4c4;
+        }
+
+        .rent-magazine__secondary-price strong {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .rent-magazine__secondary-price span {
+            color: #dcebf1;
+            font-size: 8px;
+            font-weight: 700;
+        }
+
+        .rent-magazine__secondary-arrow {
+            display: inline-flex;
+            width: 31px;
+            height: 31px;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 31px;
+            color: var(--rent-primary);
+            border-radius: 9px;
+            background: #fff;
+            font-size: 11px;
+        }
+
+        .rent-magazine__browse-card,
+        .rent-magazine__add-card {
+            min-height: 247px;
+            padding: 22px;
+            border-radius: 21px;
+        }
+
+        .rent-magazine__browse-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #fff;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(25, 197, 160, .22), transparent 40%),
+                linear-gradient(145deg, #133d58, #0c2c43);
+            box-shadow: 0 15px 35px rgba(16, 47, 71, .16);
+            animation-delay: .16s;
+        }
+
+        .rent-magazine__utility-label {
+            display: block;
+            margin-bottom: 7px;
+            color: rgba(177, 213, 229, .72);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .rent-magazine__browse-card h3,
+        .rent-magazine__add-card h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 900;
+            line-height: 1.45;
+        }
+
+        .rent-magazine__browse-bottom {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .rent-magazine__browse-bottom > div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rent-magazine__browse-bottom strong {
+            color: #64e4c4;
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .rent-magazine__browse-bottom span {
+            margin-top: 5px;
+            color: rgba(221, 238, 245, .72);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .rent-magazine__browse-bottom a {
+            display: inline-flex;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 48px;
+            color: var(--rent-primary) !important;
+            border-radius: 13px;
+            background: #fff;
+            box-shadow: 0 9px 24px rgba(0, 0, 0, .14);
+            transition: transform .25s ease;
+        }
+
+        .rent-magazine__browse-bottom a:hover {
+            transform: translateX(-3px);
+        }
+
+        [dir="ltr"] .rent-magazine__browse-bottom a:hover {
+            transform: translateX(3px);
+        }
+
+        .rent-magazine__add-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--rent-ink);
+            border: 1px solid #d7eee7;
+            background:
+                radial-gradient(circle at 100% 0%, rgba(25, 197, 160, .15), transparent 43%),
+                linear-gradient(145deg, #effffb, #f6fbff);
+            box-shadow: 0 12px 30px rgba(18, 60, 88, .06);
+            animation-delay: .23s;
+        }
+
+        .rent-magazine__add-icon {
+            display: inline-flex;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            color: #073e35;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #64e4c4, var(--rent-accent));
+            box-shadow: 0 8px 22px rgba(25, 197, 160, .22);
+        }
+
+        .rent-magazine__add-card p {
+            margin: 8px 0 0;
+            color: var(--rent-muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .rent-magazine__add-card > a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-start;
+            color: var(--rent-primary) !important;
+            font-size: 11px;
+            font-weight: 900;
+            transition: gap .25s ease;
+        }
+
+        .rent-magazine__add-card > a:hover {
+            gap: 12px;
+        }
+
+        .rent-magazine__empty {
+            padding: 70px 25px;
+            text-align: center;
+            border: 1px solid var(--rent-border);
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 16px 40px rgba(18, 60, 88, .06);
+        }
+
+        .rent-magazine__empty-icon {
+            display: inline-flex;
+            width: 68px;
+            height: 68px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--rent-primary);
+            border-radius: 50%;
+            background: #edf7fd;
+            font-size: 28px;
+        }
+
+        .rent-magazine__empty h3 {
+            margin: 0 0 8px;
+            color: var(--rent-ink);
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .rent-magazine__empty p {
+            margin: 0;
+            color: var(--rent-muted);
+            font-size: 13px;
+        }
+
+        @keyframes rentMagazineReveal {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1199.98px) {
+            .rent-magazine__grid {
+                grid-template-columns: minmax(0, 1.2fr) minmax(390px, 1fr);
+            }
+
+            .rent-magazine__hero-card {
+                min-height: 495px;
+            }
+
+            .rent-magazine__secondary-card,
+            .rent-magazine__browse-card,
+            .rent-magazine__add-card {
+                min-height: 239px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .rent-magazine {
+                padding: 64px 0 70px;
+            }
+
+            .rent-magazine__header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .rent-magazine__chips {
+                justify-content: flex-start;
+            }
+
+            .rent-magazine__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rent-magazine__hero-card {
+                min-height: 455px;
+            }
+
+            .rent-magazine__side-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: auto;
+            }
+
+            .rent-magazine__secondary-card,
+            .rent-magazine__browse-card,
+            .rent-magazine__add-card {
+                min-height: 260px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .rent-magazine {
+                padding: 54px 0 58px;
+            }
+
+            .rent-magazine__header {
+                margin-bottom: 24px;
+                text-align: center;
+            }
+
+            .rent-magazine__heading {
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .rent-magazine__heading p {
+                margin-right: auto;
+                margin-left: auto;
+                font-size: 13px;
+            }
+
+            .rent-magazine__chips {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .rent-magazine__chip {
+                min-height: 34px;
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+
+            .rent-magazine__hero-card {
+                min-height: 430px;
+                border-radius: 22px;
+            }
+
+            .rent-magazine__hero-top {
+                top: 15px;
+                inset-inline: 15px;
+            }
+
+            .rent-magazine__hero-content {
+                inset-inline: 18px;
+                bottom: 18px;
+            }
+
+            .rent-magazine__hero-content h3 {
+                margin-bottom: 12px;
+                font-size: 25px;
+            }
+
+            .rent-magazine__hero-bottom {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .rent-magazine__hero-cta {
+                min-height: 44px;
+                align-self: flex-start;
+            }
+
+            .rent-magazine__side-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rent-magazine__secondary-card {
+                min-height: 290px;
+            }
+
+            .rent-magazine__browse-card,
+            .rent-magazine__add-card {
+                min-height: 190px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .rent-magazine__heading h2 {
+                font-size: 29px;
+            }
+
+            .rent-magazine__chips {
+                gap: 6px;
+            }
+
+            .rent-magazine__hero-card {
+                min-height: 445px;
+            }
+
+            .rent-magazine__hero-top {
+                align-items: flex-start;
+            }
+
+            .rent-magazine__status-group {
+                max-width: 72%;
+            }
+
+            .rent-magazine__features {
+                gap: 5px;
+            }
+
+            .rent-magazine__features span {
+                padding: 5px 7px;
+                font-size: 9px;
+            }
+
+            .rent-magazine__price strong {
+                font-size: 26px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rent-magazine__hero-card,
+            .rent-magazine__secondary-card,
+            .rent-magazine__browse-card,
+            .rent-magazine__add-card,
+            .rent-magazine__hero-media img,
+            .rent-magazine__secondary-media img {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+    <!-- ============================ Rent Magazine Grid End ================================== -->
 
     <!-- ============================ Price Table Start ================================== -->
 
