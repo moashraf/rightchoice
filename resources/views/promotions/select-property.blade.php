@@ -288,8 +288,12 @@
             );
             var selectionError = document.getElementById('property-selection-error');
 
-            function updateSelectedProperty() {
+            function updateSelectedProperty(selectedInput) {
                 propertyInputs.forEach(function (input) {
+                    if (selectedInput && input !== selectedInput) {
+                        input.checked = false;
+                    }
+
                     var card = input.closest('.rc-property-card');
                     var selectText = card ? card.querySelector('.rc-property-card__select-text') : null;
 
@@ -313,7 +317,9 @@
             }
 
             propertyInputs.forEach(function (input) {
-                input.addEventListener('change', updateSelectedProperty);
+                input.addEventListener('change', function () {
+                    updateSelectedProperty(input);
+                });
             });
 
             form.addEventListener('submit', function (event) {
