@@ -23,6 +23,19 @@ Route::prefix('{locale}')
             ->middleware('CheackUser')
             ->whereNumber('pricing')
             ->name('sell-faster.subscribe');
+
+        Route::post('/sell-faster/subscribe/{pricing}/property', [SellFasterController::class, 'selectProperty'])
+            ->middleware('CheackUser')
+            ->whereNumber('pricing')
+            ->name('sell-faster.select-property');
+
+        Route::get('/sell-faster/checkout/{pricing}/{aqar}', [SellFasterController::class, 'checkout'])
+            ->middleware('CheackUser')
+            ->where([
+                'pricing' => '[0-9]+',
+                'aqar' => '[0-9]+',
+            ])
+            ->name('sell-faster.checkout');
     });
 
 Route::prefix('sitemanagement')
