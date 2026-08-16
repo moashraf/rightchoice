@@ -621,11 +621,15 @@
 
                                             <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_contacted_aqars') }}">
-
                                                     عقارات تواصلت معها
-
                                                 </a>
                                             </li>
+
+                                                <li>
+                                                    <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}">
+                                                    باقاتي
+                                                    </a>
+                                                </li>
 
                                             <li>
                                                 <a href="{{ URL::to(Config::get('app.locale').'/user_ads') }}">

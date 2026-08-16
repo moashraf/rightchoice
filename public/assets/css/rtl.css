@@ -7431,27 +7431,16 @@ nav a:hover {
 
 .nav-dropdown>li>a {
   font-family: 'cairo', sans-serif !important;
-
     width: 100%;
-
     border-bottom: 1px solid #e4e8ec;
-
     display: inline-block;
-
     color: #5b6d90;
-
     -webkit-transition: all 0.3s ease 0s;
-
     -moz-transition: all 0.3s ease 0s;
-
     -o-transition: all 0.3s ease 0s;
-
     transition: all 0.3s ease 0s;
-
     font-family: 'cairo', sans-serif;
-
-    padding: 10px 10px !important;
-
+    padding: 5px 10px !important;
 
 }
 

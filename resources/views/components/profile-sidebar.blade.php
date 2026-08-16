@@ -55,6 +55,15 @@
                             <i class="fa fa-heart"></i> المفضلة
                         </a>
 
+                        <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}"
+                           class="btn btn-sm btn-outline-danger">
+                            <i class="fa fa-check"></i>
+                            باقاتي
+                        </a>
+
+
+
+
                         <a href="{{ URL::to(Config::get('app.locale').'/user_complaints') }}"
                            class="btn btn-sm btn-outline-secondary">
                             <i class="fa fa-exclamation-circle"></i> شكاواي
