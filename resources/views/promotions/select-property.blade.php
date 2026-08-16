@@ -115,7 +115,12 @@
                                 @endphp
 
                                 <div class="col-xl-4 col-lg-4 col-md-6 mb-4 d-flex">
-                                    <label class="rc-property-card{{ (string) old('aqar_id') === (string) $property->id ? ' is-selected' : '' }}">
+                                    <div
+                                        class="rc-property-card{{ (string) old('aqar_id') === (string) $property->id ? ' is-selected' : '' }}"
+                                        role="radio"
+                                        tabindex="0"
+                                        aria-checked="{{ (string) old('aqar_id') === (string) $property->id ? 'true' : 'false' }}"
+                                    >
                                         <input
                                             type="radio"
                                             name="aqar_id"
@@ -164,7 +169,7 @@
                                                 {{ $isEnglish ? 'Select this property' : 'اختار العقار ده' }}
                                             </span>
                                         </span>
-                                    </label>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -233,7 +238,7 @@
         .rc-property-card:hover { transform: translateY(-5px); box-shadow: 0 23px 52px rgba(5,55,91,.13); }
         .rc-property-card.is-selected { border-color: var(--picker-green); background: #f3fffc; box-shadow: 0 23px 55px rgba(24,199,161,.25), 0 0 0 4px rgba(24,199,161,.1); transform: translateY(-4px); }
         .rc-property-card:has(input:checked) { border-color: var(--picker-green); background: #f3fffc; box-shadow: 0 23px 55px rgba(24,199,161,.25), 0 0 0 4px rgba(24,199,161,.1); transform: translateY(-4px); }
-        .rc-property-card input { position: absolute; opacity: 0; pointer-events: none; }
+        .rc-property-card > input[type="radio"] { position: absolute !important; top: 0 !important; right: auto !important; bottom: auto !important; left: 0 !important; width: 1px !important; height: 1px !important; margin: 0 !important; padding: 0 !important; opacity: 0 !important; clip-path: inset(50%); pointer-events: none; }
         .rc-property-card__check { position: absolute; z-index: 3; top: 14px; inset-inline-start: 14px; width: 31px; height: 31px; display: inline-flex; align-items: center; justify-content: center; color: transparent; border: 2px solid rgba(255,255,255,.85); border-radius: 50%; background: rgba(4,44,78,.35); backdrop-filter: blur(7px); transition: all .2s ease; }
         .rc-property-card input:checked ~ .rc-property-card__check,
         .rc-property-card.is-selected .rc-property-card__check { color: #fff; border-color: #fff; background: var(--picker-green); box-shadow: 0 0 0 4px rgba(24,199,161,.3); }
@@ -317,7 +322,28 @@
             }
 
             propertyInputs.forEach(function (input) {
+                var card = input.closest('.rc-property-card');
+
                 input.addEventListener('change', function () {
+                    updateSelectedProperty(input);
+                });
+
+                if (!card) {
+                    return;
+                }
+
+                card.addEventListener('click', function () {
+                    input.checked = true;
+                    updateSelectedProperty(input);
+                });
+
+                card.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    input.checked = true;
                     updateSelectedProperty(input);
                 });
             });
