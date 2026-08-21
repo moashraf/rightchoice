@@ -1,7 +1,5 @@
 <x-layout>
-    @section('title', App::isLocale('en') ? 'Featured Properties' : 'العقارات المميزة')
-
-    @php($isEnglish = App::isLocale('en'))
+    @section('title', $isEnglish ? 'Featured Properties' : 'العقارات المميزة')
 
     <main class="rc-featured-page" dir="{{ $isEnglish ? 'ltr' : 'rtl' }}">
         <section class="rc-featured-hero">
@@ -44,37 +42,16 @@
             @if($featuredAqars->isNotEmpty())
                 <div class="rc-featured-grid">
                     @foreach($featuredAqars as $aqar)
-                        @php
-                            $offer = $aqar->offerTypes;
-                            $offerId = (int) optional($offer)->id;
-                            $price = in_array($offerId, [3, 4], true)
-                                ? $aqar->monthly_rent
-                                : $aqar->total_price;
-                            $hasPrice = is_numeric($price) && (float) $price > 0;
-                            $image = $aqar->mainImage
-                                ? URL::to('/') . '/images/' . $aqar->mainImage->img_url
-                                : ($aqar->firstImage
-                                    ? URL::to('/') . '/images/' . $aqar->firstImage->img_url
-                                    : asset('images/FBO.png'));
-                            $title = $isEnglish && $aqar->title_en ? $aqar->title_en : $aqar->title;
-                            $title = $title ?: ($isEnglish ? 'Property details' : 'تفاصيل العقار');
-                            $offerName = $isEnglish && optional($offer)->type_offer_en
-                                ? $offer->type_offer_en
-                                : optional($offer)->type_offer;
-                            $offerName = $offerName ?: ($isEnglish ? 'Property' : 'عقار');
-                            $propertyUrl = URL::to(Config::get('app.locale') . '/aqars/' . $aqar->slug);
-                        @endphp
-
                         <article class="rc-featured-card">
-                            <a href="{{ $propertyUrl }}" class="rc-featured-card__media" target="_blank"
-                               aria-label="{{ $isEnglish ? 'View' : 'عرض' }} {{ $title }}">
-                                <img src="{{ $image }}" alt="{{ $title }}" width="640" height="420" loading="lazy">
+                            <a href="{{ $aqar->featured_url }}" class="rc-featured-card__media" target="_blank"
+                               aria-label="{{ $isEnglish ? 'View' : 'عرض' }} {{ $aqar->featured_title }}">
+                                <img src="{{ $aqar->featured_image }}" alt="{{ $aqar->featured_title }}" width="640" height="420" loading="lazy">
 
                                 <span class="rc-featured-card__badge">
                                     <i class="fas fa-star" aria-hidden="true"></i>
                                     {{ $isEnglish ? 'Featured' : 'مميز' }}
                                 </span>
-                                <span class="rc-featured-card__offer">{{ $offerName }}</span>
+                                <span class="rc-featured-card__offer">{{ $aqar->featured_offer_name }}</span>
                                 <span class="rc-featured-card__views">
                                     <i class="fas fa-eye" aria-hidden="true"></i>
                                     {{ number_format((int) $aqar->views) }}
@@ -83,17 +60,17 @@
 
                             <div class="rc-featured-card__body">
                                 <div class="rc-featured-card__reference">
-                                    <span>{{ $offerName }}</span>
+                                    <span>{{ $aqar->featured_offer_name }}</span>
                                     <small>#{{ $aqar->id }}</small>
                                 </div>
 
                                 <h3>
-                                    <a href="{{ $propertyUrl }}" target="_blank">{{ $title }}</a>
+                                    <a href="{{ $aqar->featured_url }}" target="_blank">{{ $aqar->featured_title }}</a>
                                 </h3>
 
                                 <div class="rc-featured-card__price">
-                                    @if($hasPrice)
-                                        <strong>{{ number_format((float) $price) }}</strong>
+                                    @if($aqar->featured_has_price)
+                                        <strong>{{ number_format((float) $aqar->featured_price) }}</strong>
                                         <span>{{ $isEnglish ? 'EGP' : 'جنيه مصري' }}</span>
                                     @else
                                         <strong>{{ $isEnglish ? 'Contact for price' : 'السعر عند التواصل' }}</strong>
@@ -126,7 +103,7 @@
                                         </span>
                                     </div>
 
-                                    <a href="{{ $propertyUrl }}" target="_blank" class="rc-featured-card__action">
+                                    <a href="{{ $aqar->featured_url }}" target="_blank" class="rc-featured-card__action">
                                         {{ $isEnglish ? 'View details' : 'عرض التفاصيل' }}
                                         <i class="fas {{ $isEnglish ? 'fa-arrow-right' : 'fa-arrow-left' }}" aria-hidden="true"></i>
                                     </a>
