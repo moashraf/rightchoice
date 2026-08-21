@@ -1174,7 +1174,7 @@
                                         <span class="featured-property__badge featured-property__badge--unavailable">
                                             {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
                                         </span>
-                                    @else
+                                    @elseif($aqarVip->isPromotionActive())
                                         <span class="featured-property__badge featured-property__badge--featured">
                                             <i class="fas fa-star" aria-hidden="true"></i>
                                             {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
@@ -2084,7 +2084,7 @@
 
 
 
-                                    <?php  if($saleAqar->vip ==1 && \Carbon\Carbon::now()->diffInYears($saleAqar->created_at) < 1 ){   ?>
+                                    <?php if ($saleAqar->isPromotionActive()) { ?>
                                 <div class="views"  >
                                     <div class="views-1">مميز</div>
                                 </div>
@@ -2319,7 +2319,7 @@
                                     </span>
                                 @endif
 
-                                @if ((int) $rentMagazineMain->vip === 1 && !$rentMainExpired)
+                                @if ($rentMagazineMain->isPromotionActive() && !$rentMainExpired)
                                     <span class="rent-magazine__status rent-magazine__status--featured">
                                         <i class="fas fa-star" aria-hidden="true"></i>
                                         {{ App::isLocale('en') ? 'Featured' : 'مميز' }}

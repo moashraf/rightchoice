@@ -17,7 +17,7 @@ class PropertyPromotionService
     public function activate(aqar $property, PriceVip $package, bool $sendSms = true): aqar
     {
         if (!$property->isEligibleForPromotion()) {
-            throw new DomainException('لا يمكن تمييز إلا العقارات المنشورة والمفعلة.');
+            throw new DomainException('العقار يجب أن يكون منشورًا وغير مميز حاليًا.');
         }
 
         $startedAt = now();
