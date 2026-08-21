@@ -51,6 +51,7 @@ class aqar extends Model
         'vip_price_id',
         'vip_started_at',
         'vip_expires_at',
+        'auto_suspended_at',
         'finance_bank',
         'finannce_bank',
         'licensed',
@@ -98,6 +99,7 @@ class aqar extends Model
     protected $casts = [
         'vip_started_at' => 'datetime',
         'vip_expires_at' => 'datetime',
+        'auto_suspended_at' => 'datetime',
     ];
 
     public function isPromotionActive(): bool

@@ -4,7 +4,7 @@
         <label>الحالة</label>
         <select class="form-control" name="filter_status">
             <option value="">اختر</option>
-            @foreach(\App\Enums\StatusEnumAqar::values() as $key => $case)
+            @foreach($statusOptions as $key => $case)
                 <option
                     value="{{ $case }}" {{ request('filter_status') !== null ? (request('filter_status') == $case ? 'selected' : '') : '' }}>{{ $key }}</option>
             @endforeach
@@ -214,7 +214,25 @@
                         <span class="text-muted">—</span>
                     @endif
                 </td>
-                <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
+                <td style="min-width:190px;">
+                    <div>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</div>
+                    @if($allAqars_val->was_auto_suspended)
+                        <span class="badge badge-warning mt-1">معلق تلقائيًا</span>
+                        <br>
+                        <small class="text-muted">
+                            منذ {{ $allAqars_val->auto_suspended_at->format('Y-m-d H:i') }}
+                        </small>
+                    @elseif((int) $allAqars_val->status === 1 && $allAqars_val->auto_suspension_at)
+                        <br>
+                        <strong class="text-warning">{{ $allAqars_val->auto_suspension_remaining }}</strong>
+                        <br>
+                        <small>{{ $allAqars_val->auto_suspension_at->format('Y-m-d H:i') }}</small>
+                        @if($allAqars_val->auto_suspension_deferred_by_promotion)
+                            <br>
+                            <small class="badge badge-info">مؤجل حتى انتهاء التمييز</small>
+                        @endif
+                    @endif
+                </td>
                 <td>
                     @php $authUser = auth()->guard('admin')->user() ?? auth()->user(); @endphp
                     <div class="btn-group gap-2">
@@ -231,6 +249,15 @@
                                class="btn btn-primary btn-sm" title="تعديل">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            <button type="button"
+                                    class="btn btn-warning btn-sm aqar-status-btn"
+                                    title="تغيير حالة العقار"
+                                    data-id="{{ $allAqars_val->id }}"
+                                    data-title="{{ $allAqars_val->title }}"
+                                    data-status="{{ $allAqars_val->status }}"
+                                    data-url="{{ route('sitemanagement.aqars.updateStatus', $allAqars_val->id) }}">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
                         @endif
 
                         {{-- حذف: aqars.delete فقط --}}
@@ -256,6 +283,47 @@
 <div class="card-footer clearfix">
     <div class="float-right">
         {{ $allAqars->appends(request()->query())->links() }}
+    </div>
+</div>
+
+{{-- ── Modal تغيير حالة العقار ───────────────────────────── --}}
+<div class="modal fade" id="aqarStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="POST" id="aqarStatusForm">
+            @csrf
+            @method('PATCH')
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exchange-alt ml-1"></i>
+                        تغيير حالة العقار
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="إغلاق">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">
+                        العقار: <strong id="aqarStatusTitle"></strong>
+                    </p>
+                    <div class="form-group mb-0">
+                        <label for="aqarStatusSelect">الحالة الجديدة</label>
+                        <select name="status" id="aqarStatusSelect" class="form-control" required>
+                            @foreach($statusOptions as $label => $value)
+                                <option value="{{ $value }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-save ml-1"></i>
+                        حفظ الحالة
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -436,6 +504,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('statsContent').innerHTML = '<div class="alert alert-danger">حدث خطأ أثناء تحميل البيانات</div>';
                 document.getElementById('statsContent').style.display = 'block';
             });
+        });
+    });
+
+    document.querySelectorAll('.aqar-status-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.getElementById('aqarStatusForm').action = this.dataset.url;
+            document.getElementById('aqarStatusTitle').textContent = '#' + this.dataset.id + ' - ' + this.dataset.title;
+            document.getElementById('aqarStatusSelect').value = this.dataset.status;
+            $('#aqarStatusModal').modal('show');
         });
     });
 });

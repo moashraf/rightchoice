@@ -219,6 +219,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:aqars.delete');
     Route::delete('aqars/{id}/force-delete', [App\Http\Controllers\AdminAqarController::class, 'forceDeleteAqar'])->name('aqars.forceDelete')
         ->middleware('permission:aqars.delete');
+    Route::patch('aqars/{id}/status', [App\Http\Controllers\AdminAqarController::class, 'updateStatus'])->name('aqars.updateStatus')
+        ->middleware('permission:aqars.update');
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
         ->middleware('permission:aqars.create')->only(['create', 'store']);
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)

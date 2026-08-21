@@ -28,15 +28,22 @@ use App\Models\Mzaya;
 use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\Models\Notification;
+use App\Services\PropertyAutoSuspensionService;
+use App\Enums\StatusEnumAqar;
 
 class AdminAqarController extends AppBaseController
 {
     /** @var aqarRepository */
     private $aqarRepository;
+    private PropertyAutoSuspensionService $propertyAutoSuspensionService;
 
-    public function __construct(aqarRepository $aqarRepo)
+    public function __construct(
+        aqarRepository $aqarRepo,
+        PropertyAutoSuspensionService $propertyAutoSuspensionService
+    )
     {
         $this->aqarRepository = $aqarRepo;
+        $this->propertyAutoSuspensionService = $propertyAutoSuspensionService;
         $this->middleware('adminfCheckAdmin');
     }
 
@@ -102,6 +109,7 @@ class AdminAqarController extends AppBaseController
         }
 
         $allAqars = $allAqars->paginate(50);
+        $this->propertyAutoSuspensionService->decorateCollection($allAqars->getCollection());
 
         $propertyTypes = property_type::select('id', 'property_type')->get();
         $governrates   = Governrate::select('id', 'governrate')->get();
@@ -112,8 +120,35 @@ class AdminAqarController extends AppBaseController
                 ->get()
             : collect();
         $offerTypes    = \App\Models\OfferTypes::select('id', 'type_offer')->get();
+        $statusOptions = StatusEnumAqar::values();
 
-        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'districts', 'offerTypes'));
+        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'districts', 'offerTypes', 'statusOptions'));
+    }
+
+    /**
+     * Update only the status of an aqar from the admin listing.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|integer|in:0,1,2',
+        ]);
+
+        $aqar = aqar::find($id);
+
+        if (empty($aqar)) {
+            Flash::error('العقار غير موجود');
+            return back();
+        }
+
+        $aqar->update([
+            'status' => (int) $validated['status'],
+            'auto_suspended_at' => null,
+        ]);
+
+        Flash::success('تم تغيير حالة العقار بنجاح.');
+
+        return back();
     }
 
     /**
@@ -297,6 +332,10 @@ class AdminAqarController extends AppBaseController
                 'vip_started_at' => null,
                 'vip_expires_at' => null,
             ]);
+        }
+
+        if ((int) $request->input('status') !== 0) {
+            $request->merge(['auto_suspended_at' => null]);
         }
 
         $aqar = $this->aqarRepository->update($request->all(), $id);

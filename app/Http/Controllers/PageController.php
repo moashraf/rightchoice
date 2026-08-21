@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Laravel\Jetstream\Jetstream;
 
 use App\Models\aqar;
+use App\Services\PropertyAutoSuspensionService;
 use App\Models\wish;
 use App\Models\FawryPayment;
 
@@ -101,7 +102,7 @@ class PageController extends Controller
     }
 
 
-    public function user_ads(Request $request)
+    public function user_ads(Request $request, PropertyAutoSuspensionService $propertyAutoSuspensionService)
     {
         $getUser = Auth::user();
 
@@ -134,6 +135,7 @@ class PageController extends Controller
 
             return $aqar;
         });
+        $propertyAutoSuspensionService->decorateCollection($allAqars->getCollection());
 
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
