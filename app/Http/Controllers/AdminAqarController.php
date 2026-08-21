@@ -28,15 +28,21 @@ use App\Models\Mzaya;
 use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\Models\Notification;
+use App\Services\PropertyAutoSuspensionService;
 
 class AdminAqarController extends AppBaseController
 {
     /** @var aqarRepository */
     private $aqarRepository;
+    private PropertyAutoSuspensionService $propertyAutoSuspensionService;
 
-    public function __construct(aqarRepository $aqarRepo)
+    public function __construct(
+        aqarRepository $aqarRepo,
+        PropertyAutoSuspensionService $propertyAutoSuspensionService
+    )
     {
         $this->aqarRepository = $aqarRepo;
+        $this->propertyAutoSuspensionService = $propertyAutoSuspensionService;
         $this->middleware('adminfCheckAdmin');
     }
 
@@ -102,6 +108,7 @@ class AdminAqarController extends AppBaseController
         }
 
         $allAqars = $allAqars->paginate(50);
+        $this->propertyAutoSuspensionService->decorateCollection($allAqars->getCollection());
 
         $propertyTypes = property_type::select('id', 'property_type')->get();
         $governrates   = Governrate::select('id', 'governrate')->get();
@@ -297,6 +304,10 @@ class AdminAqarController extends AppBaseController
                 'vip_started_at' => null,
                 'vip_expires_at' => null,
             ]);
+        }
+
+        if ((int) $request->input('status') !== 0) {
+            $request->merge(['auto_suspended_at' => null]);
         }
 
         $aqar = $this->aqarRepository->update($request->all(), $id);

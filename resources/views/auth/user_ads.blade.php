@@ -85,7 +85,13 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
 
                                                             </div>
-                                                            @if ($aqar->status == 0)
+                                                            @if ($aqar->status == 0 && $aqar->was_auto_suspended)
+                                                                 <div>
+                                                                      <span class="btn btn-warning disabled">
+                                                                          معلق تلقائيًا بعد مرور 180 يومًا
+                                                                      </span>
+                                                                </div>
+                                                            @elseif ($aqar->status == 0)
                                                                  <div>
 
                                                                       <a  href="#" class="btn btn-outline-warning">جاري المراجعه</a>
@@ -111,6 +117,25 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                         تم رفض الاعلان
                                                                         </a>
 
+                                                                </div>
+                                                            @endif
+
+                                                            @if ((int) $aqar->status === 1 && $aqar->auto_suspension_at)
+                                                                <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
+                                                                    <strong>متبقي حتى يتحول العقار إلى معلق:</strong>
+                                                                    <div>{{ $aqar->auto_suspension_remaining }}</div>
+                                                                    <small>
+                                                                        الموعد: {{ $aqar->auto_suspension_at->format('Y-m-d H:i') }}
+                                                                    </small>
+                                                                    @if($aqar->auto_suspension_deferred_by_promotion)
+                                                                        <div class="mt-1 text-info">
+                                                                            تم تأجيل التعليق حتى انتهاء مدة التمييز الحالية.
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @elseif($aqar->was_auto_suspended)
+                                                                <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
+                                                                    تم تعليق العقار تلقائيًا لتجاوز مدة 180 يومًا من تاريخ إضافته.
                                                                 </div>
                                                             @endif
 
