@@ -146,6 +146,27 @@ class AdminAqarController extends AppBaseController
      */
     public function store(CreateaqarRequest $request)
     {
+        if ((int) $request->input('vip') === 1) {
+            $startedAt = $request->filled('vip_started_at')
+                ? \Carbon\Carbon::parse($request->input('vip_started_at'))
+                : now();
+
+            $expiresAt = $request->filled('vip_expires_at')
+                ? \Carbon\Carbon::parse($request->input('vip_expires_at'))
+                : $startedAt->copy()->addDays((int) $request->input('vip_duration_days', 7));
+
+            $request->merge([
+                'vip_started_at' => $startedAt,
+                'vip_expires_at' => $expiresAt,
+            ]);
+        } else {
+            $request->merge([
+                'vip_price_id' => null,
+                'vip_started_at' => null,
+                'vip_expires_at' => null,
+            ]);
+        }
+
         $input = $request->all();
         $aqar = $this->aqarRepository->create($input);
 
@@ -255,6 +276,27 @@ class AdminAqarController extends AppBaseController
         if (empty($aqar)) {
             Flash::error('العقار غير موجود');
             return redirect(route('sitemanagement.aqars.index'));
+        }
+
+        if ((int) $request->input('vip') === 1) {
+            $startedAt = $request->filled('vip_started_at')
+                ? \Carbon\Carbon::parse($request->input('vip_started_at'))
+                : ($aqar->vip_started_at ?? now());
+
+            $expiresAt = $request->filled('vip_expires_at')
+                ? \Carbon\Carbon::parse($request->input('vip_expires_at'))
+                : $startedAt->copy()->addDays((int) $request->input('vip_duration_days', 7));
+
+            $request->merge([
+                'vip_started_at' => $startedAt,
+                'vip_expires_at' => $expiresAt,
+            ]);
+        } else {
+            $request->merge([
+                'vip_price_id' => null,
+                'vip_started_at' => null,
+                'vip_expires_at' => null,
+            ]);
         }
 
         $aqar = $this->aqarRepository->update($request->all(), $id);

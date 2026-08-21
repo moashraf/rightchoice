@@ -290,6 +290,26 @@
             <label class="form-check-label" for="vip-no">No</label>
         </div>
     </div>
+
+    <div class="form-group col-sm-4">
+        {!! Form::label('vip_duration_days', 'مدة التمييز السريعة:') !!}
+        {!! Form::select('vip_duration_days', [7 => '7 أيام', 14 => '14 يومًا', 30 => '30 يومًا'], 7, ['class' => 'form-control']) !!}
+        <small class="form-text text-muted">تُستخدم المدة عند عدم إدخال تاريخ انتهاء يدويًا.</small>
+    </div>
+
+    <div class="form-group col-sm-4">
+        {!! Form::label('vip_started_at', 'بداية التمييز:') !!}
+        <input type="datetime-local" name="vip_started_at" class="form-control"
+               value="{{ old('vip_started_at', isset($aqar) && $aqar->vip_started_at ? $aqar->vip_started_at->format('Y-m-d\\TH:i') : '') }}">
+        <small class="text-danger">{{ $errors->first('vip_started_at') }}</small>
+    </div>
+
+    <div class="form-group col-sm-4">
+        {!! Form::label('vip_expires_at', 'انتهاء التمييز:') !!}
+        <input type="datetime-local" name="vip_expires_at" class="form-control"
+               value="{{ old('vip_expires_at', isset($aqar) && $aqar->vip_expires_at ? $aqar->vip_expires_at->format('Y-m-d\\TH:i') : '') }}">
+        <small class="text-danger">{{ $errors->first('vip_expires_at') }}</small>
+    </div>
 </div>
 
 <!-- Rec Time Field -->

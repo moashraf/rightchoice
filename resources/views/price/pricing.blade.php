@@ -201,6 +201,12 @@
                                                 </span>
                                                 {{ $sellerPlan->views }} مشاهدة مستهدفة
                                             </li>
+                                            <li>
+                                                <span class="rc-check">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                                </span>
+                                                تمييز لمدة {{ $sellerPlan->duration_days }} يوم
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -210,15 +216,15 @@
                                                 غير متاح لحسابات الشركات
                                             </button>
                                         @else
-                                            <a
-                                                href="{{ route('user_ads', ['locale' => Config::get('app.locale')]) }}"
-                                                class="rc-btn rc-btn--seller"
-                                            >
-                                                اختر إعلانك وابدأ التمييز
-                                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                                    <path d="M5 12h14M13 6l6 6-6 6"/>
-                                                </svg>
-                                            </a>
+                                            <form method="POST" action="{{ route('sell-faster.subscribe', ['locale' => Config::get('app.locale'), 'pricing' => $sellerPlan->id]) }}">
+                                                @csrf
+                                                <button type="submit" class="rc-btn rc-btn--seller">
+                                                    اختر إعلانك وابدأ التمييز
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                        <path d="M5 12h14M13 6l6 6-6 6"/>
+                                                    </svg>
+                                                </button>
+                                            </form>
                                         @endif
                                     </div>
                                 </article>

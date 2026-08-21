@@ -104,6 +104,14 @@ class PageController extends Controller
     public function user_ads(Request $request)
     {
         $getUser = Auth::user();
+
+        aqar::query()
+            ->where('user_id', $getUser->id)
+            ->where('vip', 1)
+            ->whereNotNull('vip_expires_at')
+            ->where('vip_expires_at', '<=', now())
+            ->update(['vip' => 0]);
+
         $points = 0;
         if (($getUser->userpricin)) {
 

@@ -10,6 +10,7 @@ use App\Models\aqar;
 use App\Models\FawryPayment;
 
 use App\Models\UserPriceing;
+use App\Services\PropertyPromotionService;
 use Redirect;
 
 
@@ -365,10 +366,10 @@ $pric= Pricing::find(2);
 
         $pieces_id = explode("55555", $_GET['customerProfileId']);
 
-         $aqar = aqar::where('id','=',$pieces_id[1])->first();
-               //dd($aqar);
-        $aqar->vip = 1;
-        $aqar->save();
+         $aqar = aqar::where('id','=',$pieces_id[1])->firstOrFail();
+         $package = PriceVip::findOrFail($pieces_id[0]);
+
+         app(PropertyPromotionService::class)->activate($aqar, $package);
 
 
 
@@ -927,8 +928,8 @@ $paymentStatus = $response['type']; // get response values
 
         //
         $aqar = aqar::findOrFail($aqarid->id);
-        $aqar->vip = 1;
-        $aqar->save();
+        $package = PriceVip::orderBy('duration_days')->firstOrFail();
+        app(PropertyPromotionService::class)->activate($aqar, $package, false);
 
         session()->flash('success', 'تم تمييز إعلانك بنجاح');
          //dd($aqarid->id);

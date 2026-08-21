@@ -29,6 +29,7 @@ class UpdatePriceVipRequest extends FormRequest
             'price'      => 'required|integer|min:0',
             'name'       => 'required',
             'views'      => 'required|integer',
+            'duration_days' => 'required|integer|in:7,14,30',
         ];
     }
 }

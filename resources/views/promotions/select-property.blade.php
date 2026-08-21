@@ -41,6 +41,10 @@
                         {{ number_format((int) $pricing->views) }}
                         {{ $isEnglish ? 'expected views' : 'مشاهدة متوقعة' }}
                     </div>
+                    <div class="rc-selected-package__metric">
+                        <strong>{{ $pricing->duration_days }}</strong>
+                        <span>{{ $isEnglish ? 'days promotion' : 'يوم تمييز' }}</span>
+                    </div>
                     <div class="rc-selected-package__price">
                         <del>{{ number_format((float) $pricing->price, 2) }}</del>
                         <strong>{{ number_format($discountedPrice, 2) }}</strong>
@@ -221,6 +225,9 @@
         .rc-selected-package small { margin-bottom: 3px; color: rgba(255,255,255,.62); font-size: 11px; font-weight: 800; }
         .rc-selected-package strong { color: #fff; font-size: 17px; font-weight: 950; }
         .rc-selected-package__views { display: flex; align-items: center; gap: 8px; color: #bdf5e8; font-size: 13px; font-weight: 850; }
+        .rc-selected-package__metric { display: flex; align-items: baseline; gap: 6px; color: #fff; }
+        .rc-selected-package__metric strong { font-size: 20px; }
+        .rc-selected-package__metric span { color: #bdf5e8; font-size: 12px; font-weight: 800; }
         .rc-selected-package__price { display: flex; align-items: baseline; gap: 7px; }
         .rc-selected-package__price del { color: rgba(255,255,255,.45); font-size: 12px; }
         .rc-selected-package__price strong { color: #fff; font-size: 25px; }

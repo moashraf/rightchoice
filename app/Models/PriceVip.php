@@ -19,6 +19,11 @@ class PriceVip extends Model
         'name_en',
         'price',
         'views',
+        'duration_days',
         'bgColor'
+    ];
+
+    protected $casts = [
+        'duration_days' => 'integer',
     ];
 }

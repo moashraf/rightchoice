@@ -8,7 +8,9 @@ use App\Models\Pricing;
 use App\Models\UserPriceing;
 use App\Models\User;
 use App\Models\aqar;
+use App\Models\PriceVip;
 use App\Services\FawryPaymentGatewayService;
+use App\Services\PropertyPromotionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -482,6 +484,7 @@ class FawryPaymentAPIController extends AppBaseController
 
         // ── Parse customerProfileId ─────────────────────────────────────────
         $pieces = explode('55555', $request->query('customerProfileId'));
+        $packageId = $pieces[0] ?? null;
         $aqarId = $pieces[1] ?? null;
 
         if (!$aqarId || !is_numeric($aqarId)) {
@@ -498,6 +501,13 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
+        $package = PriceVip::find($packageId);
+        if (!$package) {
+            return $this->sendError('باقة التمييز غير موجودة', 404, [
+                'price_vip_id' => ["باقة التمييز رقم {$packageId} غير موجودة في النظام."],
+            ]);
+        }
+
         // التحقق من عدم تكرار نفس الدفعة
         $referenceNumber  = $request->query('referenceNumber');
         $alreadyProcessed = FawryPayment::where('referenceNumber', $referenceNumber)
@@ -510,14 +520,13 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
-        if ($aqar->vip == 1) {
+        if ($aqar->isPromotionActive()) {
             return $this->sendError('الإعلان مميز بالفعل', 409, [
                 'aqar_id' => ["الإعلان رقم {$aqarId} مميز بالفعل."],
             ]);
         }
 
-        $aqar->vip = 1;
-        $aqar->save();
+        app(PropertyPromotionService::class)->activate($aqar, $package);
 
         FawryPayment::where('referenceNumber', $referenceNumber)
             ->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
@@ -525,7 +534,8 @@ class FawryPaymentAPIController extends AppBaseController
         return $this->sendResponse([
             'aqar_id' => $aqar->id,
             'vip'     => true,
+            'duration_days' => $package->duration_days,
+            'vip_expires_at' => $aqar->fresh()->vip_expires_at?->toIso8601String(),
         ], 'تم تمييز إعلانك بنجاح');
     }
 }
-

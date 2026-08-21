@@ -20,7 +20,8 @@ class PriceVipRepository extends BaseRepository
         'name',
         'price',
         'description',
-        'views'
+        'views',
+        'duration_days',
     ];
 
     /**

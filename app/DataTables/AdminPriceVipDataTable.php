@@ -42,6 +42,7 @@ class AdminPriceVipDataTable extends DataTable
             'name',
             'price',
             'views',
+            'duration_days' => ['title' => 'مدة التمييز (يوم)'],
         ];
     }
 
