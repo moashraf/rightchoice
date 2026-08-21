@@ -128,6 +128,12 @@ class PageController extends Controller
             ->latest()
             ->paginate(9);
 
+        $allAqars->getCollection()->transform(function (aqar $aqar) {
+            $aqar->setAttribute('promotion_active', $aqar->isPromotionActive());
+
+            return $aqar;
+        });
+
         return view('auth.user_ads', compact('allAqars', 'points'));
     }
 
