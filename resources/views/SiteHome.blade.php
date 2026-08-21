@@ -1174,11 +1174,9 @@
                                         <span class="featured-property__badge featured-property__badge--unavailable">
                                             {{ App::isLocale('en') ? 'Unavailable' : 'غير متاح' }}
                                         </span>
-                                    @elseif($aqarVip->isPromotionActive())
-                                        <span class="featured-property__badge featured-property__badge--featured">
-                                            <i class="fas fa-star" aria-hidden="true"></i>
-                                            {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
-                                        </span>
+                                    @else
+                                        <x-property-promotion-badge :property="$aqarVip"
+                                                                     class="featured-property__badge featured-property__badge--featured" />
                                     @endif
 
                                     <span class="featured-property__views">
@@ -2084,11 +2082,9 @@
 
 
 
-                                    <?php if ($saleAqar->isPromotionActive()) { ?>
-                                <div class="views"  >
-                                    <div class="views-1">مميز</div>
+                                <div class="views">
+                                    <x-property-promotion-badge :property="$saleAqar" />
                                 </div>
-                                <?php }  ?>
 
 
                                     <?php if(\Carbon\Carbon::now()->diffInYears($saleAqar->created_at) >= 1){ ?>
@@ -2319,11 +2315,9 @@
                                     </span>
                                 @endif
 
-                                @if ($rentMagazineMain->isPromotionActive() && !$rentMainExpired)
-                                    <span class="rent-magazine__status rent-magazine__status--featured">
-                                        <i class="fas fa-star" aria-hidden="true"></i>
-                                        {{ App::isLocale('en') ? 'Featured' : 'مميز' }}
-                                    </span>
+                                @if (!$rentMainExpired)
+                                    <x-property-promotion-badge :property="$rentMagazineMain"
+                                                                 class="rent-magazine__status rent-magazine__status--featured" />
                                 @endif
                             </div>
 

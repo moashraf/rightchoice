@@ -22,11 +22,9 @@
                     </div>
                 </div>
 
-                <?php if ($aqar->isPromotionActive()) { ?>
                 <div class="views">
-                    <div class="views-1">مميز</div>
+                    <x-property-promotion-badge :property="$aqar" />
                 </div>
-                <?php } ?>
 
                 <div class="views-2">
                     <i class="fa fa-eye"></i>

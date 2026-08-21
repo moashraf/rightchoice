@@ -66,12 +66,8 @@
                         </span>
                     @endif
 
-                    @if ($aqar->isPromotionActive())
-                        <span class="property-heading-badge property-heading-badge--accent">
-                            <i class="fas fa-star"></i>
-                            عقار مميز
-                        </span>
-                    @endif
+                    <x-property-promotion-badge :property="$aqar"
+                                                 class="property-heading-badge property-heading-badge--accent" />
                 </div>
             </div>
 
@@ -317,12 +313,9 @@
 
 
                                         </a>
-                                        <?php if ($aqar->isPromotionActive()) { ?>
-
                                         <div class="views" style=" left: 13px;">
-                                            <div class="views-1">مميز</div>
+                                            <x-property-promotion-badge :property="$aqar" />
                                         </div>
-                                        <?php } ?>
 
                                         <?php if (\Carbon\Carbon::now()->diffInYears($aqar->created_at) >= 1){ ?>
                                         <div class="views " style="left: 13px;">

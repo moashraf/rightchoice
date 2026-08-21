@@ -236,7 +236,7 @@
                                             </div>
                                         </div>
                                         <div class="views">
-
+                                            <x-property-promotion-badge :property="$aqarSim" />
                                             <div class="views-2">
                                                 <i class="fa fa-eye"></i>
                                                 <span>{{ $aqarSim->views }}</span>

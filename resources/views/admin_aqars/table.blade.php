@@ -201,7 +201,7 @@
                 </td>
                 <td>
                     @if($allAqars_val->isPromotionActive())
-                        <span class="badge badge-success">نشط</span>
+                        <x-property-promotion-badge :property="$allAqars_val" />
                         <br>
                         <small>{{ $allAqars_val->vip_expires_at->format('Y-m-d H:i') }}</small>
                         <br>

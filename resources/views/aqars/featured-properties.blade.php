@@ -47,10 +47,7 @@
                                aria-label="{{ $isEnglish ? 'View' : 'عرض' }} {{ $aqar->featured_title }}">
                                 <img src="{{ $aqar->featured_image }}" alt="{{ $aqar->featured_title }}" width="640" height="420" loading="lazy">
 
-                                <span class="rc-featured-card__badge">
-                                    <i class="fas fa-star" aria-hidden="true"></i>
-                                    {{ $isEnglish ? 'Featured' : 'مميز' }}
-                                </span>
+                                <x-property-promotion-badge :property="$aqar" class="rc-featured-card__badge" />
                                 <span class="rc-featured-card__offer">{{ $aqar->featured_offer_name }}</span>
                                 <span class="rc-featured-card__views">
                                     <i class="fas fa-eye" aria-hidden="true"></i>
