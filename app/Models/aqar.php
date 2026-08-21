@@ -48,6 +48,9 @@ class aqar extends Model
         'description',
         'compound',
         'vip',
+        'vip_price_id',
+        'vip_started_at',
+        'vip_expires_at',
         'finance_bank',
         'finannce_bank',
         'licensed',
@@ -91,6 +94,29 @@ class aqar extends Model
         'updated_by',
         'aqar_delete_reasons_id',
     ];
+
+    protected $casts = [
+        'vip_started_at' => 'datetime',
+        'vip_expires_at' => 'datetime',
+    ];
+
+    public function isPromotionActive(): bool
+    {
+        return $this->isEligibleForPromotion()
+            && (int) $this->vip === 1
+            && $this->vip_expires_at !== null
+            && $this->vip_expires_at->isFuture();
+    }
+
+    public function isEligibleForPromotion(): bool
+    {
+        return !$this->trashed() && (int) $this->status === 1;
+    }
+
+    public function promotionPackage()
+    {
+        return $this->belongsTo(PriceVip::class, 'vip_price_id');
+    }
 
     public static $rules = [
         // ── الحقول الأساسية ─────────────────────────────────────

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\aqar;
 use App\Models\PriceVip;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SellFasterController extends Controller
 {
@@ -50,6 +51,7 @@ class SellFasterController extends Controller
         $properties = aqar::query()
             ->with(['mainImage', 'firstImage', 'governrateq', 'districte'])
             ->where('user_id', auth()->id())
+            ->where('status', 1)
             ->latest('id')
             ->get();
 
@@ -69,19 +71,28 @@ class SellFasterController extends Controller
         PriceVip $pricing
     ) {
         $validated = $request->validate([
-            'aqar_id' => ['required', 'integer', 'exists:aqar,id'],
+            'aqar_id' => [
+                'required',
+                'integer',
+                Rule::exists('aqar', 'id')->where(function ($query) {
+                    $query->where('user_id', auth()->id())
+                        ->where('status', 1)
+                        ->whereNull('deleted_at');
+                }),
+            ],
         ], [
             'aqar_id.required' => $locale === 'en'
                 ? 'Please select a property first.'
                 : 'من فضلك اختر العقار الذي تريد تمييزه.',
             'aqar_id.exists' => $locale === 'en'
-                ? 'The selected property is not available.'
-                : 'العقار المختار غير متاح.',
+                ? 'Only published and active properties can be promoted.'
+                : 'يمكن تمييز العقارات المنشورة والمفعلة فقط.',
         ]);
 
         $property = aqar::query()
             ->where('id', $validated['aqar_id'])
             ->where('user_id', auth()->id())
+            ->where('status', 1)
             ->firstOrFail();
 
         return redirect()->route('sell-faster.checkout', [
@@ -99,7 +110,14 @@ class SellFasterController extends Controller
         PriceVip $pricing,
         aqar $aqar
     ) {
-        abort_unless((int) $aqar->user_id === (int) auth()->id(), 403);
+        abort_unless(
+            (int) $aqar->user_id === (int) auth()->id()
+                && $aqar->isEligibleForPromotion(),
+            403,
+            $locale === 'en'
+                ? 'Only published and active properties can be promoted.'
+                : 'يمكن تمييز العقارات المنشورة والمفعلة فقط.'
+        );
 
         $discountMultiplier = (100 - self::DISCOUNT_PERCENT) / 100;
         $discountedPrice = round((float) $pricing->price * $discountMultiplier, 2);

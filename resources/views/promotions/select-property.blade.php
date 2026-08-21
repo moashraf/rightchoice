@@ -41,6 +41,10 @@
                         {{ number_format((int) $pricing->views) }}
                         {{ $isEnglish ? 'expected views' : 'مشاهدة متوقعة' }}
                     </div>
+                    <div class="rc-selected-package__metric">
+                        <strong>{{ $pricing->duration_days }}</strong>
+                        <span>{{ $isEnglish ? 'days promotion' : 'يوم تمييز' }}</span>
+                    </div>
                     <div class="rc-selected-package__price">
                         <del>{{ number_format((float) $pricing->price, 2) }}</del>
                         <strong>{{ number_format($discountedPrice, 2) }}</strong>
@@ -62,8 +66,8 @@
                 @if($properties->isEmpty())
                     <div class="rc-property-picker__empty">
                         <div class="rc-property-picker__empty-icon"><i class="fas fa-home"></i></div>
-                        <h2>{{ $isEnglish ? 'You do not have any properties yet' : 'لسه مفيش عقارات مضافة على حسابك' }}</h2>
-                        <p>{{ $isEnglish ? 'Add your property first, then return to choose a promotion package.' : 'ضيف عقارك الأول، وبعدها ارجع اختار باقة التمييز المناسبة.' }}</p>
+                        <h2>{{ $isEnglish ? 'You do not have any published properties' : 'لا توجد عقارات منشورة متاحة للتمييز' }}</h2>
+                        <p>{{ $isEnglish ? 'Wait until your property is reviewed and published, then return to choose a promotion package.' : 'انتظر حتى تتم مراجعة عقارك ونشره، وبعدها ارجع لاختيار باقة التمييز.' }}</p>
                         <a href="{{ url($locale . '/aqars/create') }}" class="rc-property-picker__primary-btn">
                             <i class="fas fa-plus"></i>
                             {{ $isEnglish ? 'Add a property' : 'أضف عقارك الآن' }}
@@ -221,6 +225,9 @@
         .rc-selected-package small { margin-bottom: 3px; color: rgba(255,255,255,.62); font-size: 11px; font-weight: 800; }
         .rc-selected-package strong { color: #fff; font-size: 17px; font-weight: 950; }
         .rc-selected-package__views { display: flex; align-items: center; gap: 8px; color: #bdf5e8; font-size: 13px; font-weight: 850; }
+        .rc-selected-package__metric { display: flex; align-items: baseline; gap: 6px; color: #fff; }
+        .rc-selected-package__metric strong { font-size: 20px; }
+        .rc-selected-package__metric span { color: #bdf5e8; font-size: 12px; font-weight: 800; }
         .rc-selected-package__price { display: flex; align-items: baseline; gap: 7px; }
         .rc-selected-package__price del { color: rgba(255,255,255,.45); font-size: 12px; }
         .rc-selected-package__price strong { color: #fff; font-size: 25px; }

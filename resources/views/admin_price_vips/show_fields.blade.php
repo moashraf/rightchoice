@@ -23,6 +23,12 @@
 </div>
 
 <!-- Description Field -->
+<div class="col-sm-6">
+    {!! Form::label('duration_days', 'مدة التمييز:') !!}
+    <p>{{ $priceVip->duration_days }} يوم</p>
+</div>
+
+<!-- Description Field -->
 <div class="col-sm-12">
     {!! Form::label('description', 'Description:') !!}
     <p>{{ $priceVip->description }}</p>

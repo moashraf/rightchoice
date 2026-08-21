@@ -46,19 +46,25 @@ class VodafoneSmsProvider implements SmsProviderInterface
                      . "&SMSText={$message}";
         $signature = strtoupper(hash_hmac('sha256', $stringValue, $this->secretCode));
 
+        $xmlAccountId = htmlspecialchars($this->accountId, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $xmlPassword = htmlspecialchars($this->password, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $xmlSenderName = htmlspecialchars($this->senderName, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $xmlMobile = htmlspecialchars($mobile, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+        $xmlMessage = htmlspecialchars($message, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+
         // Build XML request body
         $xmlBody = "<?xml version='1.0' encoding='UTF-8'?>"
             . "<SubmitSMSRequest xmlns:='http://www.edafa.com/web2sms/sms/model/' "
             . "xmlns:xsi='http://www.w3.org/2001/XMLSchemainstance' "
             . "xsi:schemaLocation='http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd ' "
             . "xsi:type='SubmitSMSRequest'>"
-            . "<AccountId>{$this->accountId}</AccountId>"
-            . "<Password>{$this->password}</Password>"
+            . "<AccountId>{$xmlAccountId}</AccountId>"
+            . "<Password>{$xmlPassword}</Password>"
             . "<SecureHash>{$signature}</SecureHash>"
             . "<SMSList>"
-            . "<SenderName>{$this->senderName}</SenderName>"
-            . "<ReceiverMSISDN>{$mobile}</ReceiverMSISDN>"
-            . "<SMSText>{$message}</SMSText>"
+            . "<SenderName>{$xmlSenderName}</SenderName>"
+            . "<ReceiverMSISDN>{$xmlMobile}</ReceiverMSISDN>"
+            . "<SMSText>{$xmlMessage}</SMSText>"
             . "</SMSList>"
             . "</SubmitSMSRequest>";
 

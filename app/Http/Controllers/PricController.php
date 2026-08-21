@@ -10,6 +10,7 @@ use App\Models\aqar;
 use App\Models\FawryPayment;
 
 use App\Models\UserPriceing;
+use App\Services\PropertyPromotionService;
 use Redirect;
 
 
@@ -365,10 +366,16 @@ $pric= Pricing::find(2);
 
         $pieces_id = explode("55555", $_GET['customerProfileId']);
 
-         $aqar = aqar::where('id','=',$pieces_id[1])->first();
-               //dd($aqar);
-        $aqar->vip = 1;
-        $aqar->save();
+         $aqar = aqar::where('id','=',$pieces_id[1])->firstOrFail();
+         $package = PriceVip::findOrFail($pieces_id[0]);
+
+         if (!$aqar->isEligibleForPromotion()) {
+             return redirect()
+                 ->route('user_ads', ['locale' => app()->getLocale()])
+                 ->withErrors(['aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.']);
+         }
+
+         app(PropertyPromotionService::class)->activate($aqar, $package);
 
 
 
@@ -905,16 +912,17 @@ $paymentStatus = $response['type']; // get response values
     public function vip($locale,$aqarSingle)
     {
         //
-        $aqar = aqar::find($aqarSingle);
+        $aqar = aqar::where('id', $aqarSingle)->where('status', 1)->firstOrFail();
         $vips = PriceVip::all();
         return view('price.vip_aqar', ['aqarSingle' => $aqar],compact('vips'));
     }
 
 
-      public function tamyeez_vip($locale,$vipid,$aqarSingle_id)
+    public function tamyeez_vip($locale,$vipid,$aqarSingle_id)
     {
 
       $PriceVip = PriceVip::find($vipid);
+      $aqar = aqar::where('id', $aqarSingle_id)->where('status', 1)->firstOrFail();
 
      // dd($vipid);
          return view('aqar_tmez_singel', ['vipid' => $vipid ,'aqarSingle_id' => $aqarSingle_id ],compact('PriceVip','aqarSingle_id'));
@@ -927,8 +935,15 @@ $paymentStatus = $response['type']; // get response values
 
         //
         $aqar = aqar::findOrFail($aqarid->id);
-        $aqar->vip = 1;
-        $aqar->save();
+
+        if (!$aqar->isEligibleForPromotion()) {
+            return Redirect::back()->withErrors([
+                'aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.',
+            ]);
+        }
+
+        $package = PriceVip::orderBy('duration_days')->firstOrFail();
+        app(PropertyPromotionService::class)->activate($aqar, $package, false);
 
         session()->flash('success', 'تم تمييز إعلانك بنجاح');
          //dd($aqarid->id);

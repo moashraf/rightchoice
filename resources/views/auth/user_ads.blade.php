@@ -169,18 +169,39 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         </div>
 
                                                     <div class="btnAdds">
+                                                        @if($aqar->promotion_active)
+                                                            <div class="alert alert-success w-100 mb-3" style="border-radius:10px;">
+                                                                <strong><i class="fas fa-star ml-1"></i> الإعلان مميز</strong>
+                                                                <div class="mt-1">
+                                                                    متبقي:
+                                                                    <span class="promotion-countdown font-weight-bold"
+                                                                          data-expires-at="{{ $aqar->vip_expires_at->toIso8601String() }}">
+                                                                        جاري الحساب...
+                                                                    </span>
+                                                                </div>
+                                                                <small>ينتهي في {{ $aqar->vip_expires_at->format('Y-m-d H:i') }}</small>
+                                                            </div>
+                                                        @elseif($aqar->vip_expires_at)
+                                                            <div class="alert alert-secondary w-100 mb-3" style="border-radius:10px;">
+                                                                انتهت مدة تمييز هذا الإعلان في {{ $aqar->vip_expires_at->format('Y-m-d H:i') }}
+                                                            </div>
+                                                        @endif
+
                                                         <a type="button" class="btn btn-outline-danger removeFromAds ml-2" data-id="{{$aqar['id']}}"> حذف</a>
                                                         <a  href="{{ URL::to(Config::get('app.locale').'/aqars/update/'.$aqar->slug ) }}" class="btn btn-outline-dark ml-2">
                                                             تعديل
                                                           </a>
 
-                                                       @if($aqar->vip === 19999999999)
-                                                        <a  href="{{ URL::to(Config::get('app.locale').'/pricing-vip/'.$aqar->id ) }}" class="btn btn-outline-success ml-2">تمييز</a>
-                                                        @else
-                                                      <!--
-                                                      <a disabled class="btn btn-success ml-2">تم التمييز</a>
-                                                                !-->
-                                                                @endif
+                                                        @if(!$aqar->promotion_active && $aqar->promotion_eligible)
+                                                            <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}"
+                                                               class="btn btn-outline-success ml-2">
+                                                                {{ $aqar->vip_expires_at ? 'تجديد التمييز' : 'تمييز' }}
+                                                            </a>
+                                                        @elseif(!$aqar->promotion_eligible)
+                                                            <button type="button" class="btn btn-secondary ml-2" disabled>
+                                                                التمييز متاح للعقارات المنشورة فقط
+                                                            </button>
+                                                        @endif
 
                                                         <a   target="_blank"  href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}"  class="btn btn-outline-primary ml-2">عرض</a>
 
@@ -547,6 +568,27 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
         box.style.display = isOpen ? 'none' : 'block';
         btn.classList.toggle('active', !isOpen);
     });
+
+    function updatePromotionCountdowns() {
+        document.querySelectorAll('.promotion-countdown').forEach(function (element) {
+            var expiresAt = new Date(element.getAttribute('data-expires-at')).getTime();
+            var remaining = Math.max(0, expiresAt - Date.now());
+
+            if (remaining === 0) {
+                element.textContent = 'انتهت مدة التمييز';
+                return;
+            }
+
+            var days = Math.floor(remaining / 86400000);
+            var hours = Math.floor((remaining % 86400000) / 3600000);
+            var minutes = Math.floor((remaining % 3600000) / 60000);
+
+            element.textContent = days + ' يوم و' + hours + ' ساعة و' + minutes + ' دقيقة';
+        });
+    }
+
+    updatePromotionCountdowns();
+    window.setInterval(updatePromotionCountdowns, 60000);
 </script>
 
 </x-layout>

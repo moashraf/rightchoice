@@ -116,6 +116,7 @@
              <th>الحاله</th>
             <th>اسم المالك</th>
             <th>المشاهدات</th>
+            <th>انتهاء التمييز</th>
             <th>تاريخ الاضافه</th>
             <th>التنفيذ</th>
         </tr>
@@ -197,6 +198,21 @@
                             </span>
                         </a>
                     </small>
+                </td>
+                <td>
+                    @if($allAqars_val->isPromotionActive())
+                        <span class="badge badge-success">نشط</span>
+                        <br>
+                        <small>{{ $allAqars_val->vip_expires_at->format('Y-m-d H:i') }}</small>
+                        <br>
+                        <small class="text-muted">متبقي {{ now()->diffForHumans($allAqars_val->vip_expires_at, ['parts' => 2, 'short' => true]) }}</small>
+                    @elseif($allAqars_val->vip_expires_at)
+                        <span class="badge badge-secondary">منتهي</span>
+                        <br>
+                        <small>{{ $allAqars_val->vip_expires_at->format('Y-m-d H:i') }}</small>
+                    @else
+                        <span class="text-muted">—</span>
+                    @endif
                 </td>
                 <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                 <td>
@@ -424,4 +440,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-
