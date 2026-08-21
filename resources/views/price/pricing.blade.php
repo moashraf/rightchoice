@@ -744,6 +744,7 @@
 
         .rc-plans-section {
             position: relative;
+            scroll-margin-top: 90px;
             background:
                 radial-gradient(circle at 10% 20%, rgba(56, 189, 248, .12), transparent 28%),
                 radial-gradient(circle at 90% 80%, rgba(229, 57, 69, .08), transparent 28%),
@@ -1623,6 +1624,23 @@
             }
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const pricingSection = document.getElementById('pricing');
+
+            if (!pricingSection) {
+                return;
+            }
+
+            window.requestAnimationFrame(function () {
+                pricingSection.scrollIntoView({
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+    </script>
 
     <link rel="stylesheet" href="https://rightchoice-co.com/public/assets/css/mof.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
