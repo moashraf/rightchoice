@@ -66,7 +66,7 @@
                         </span>
                     @endif
 
-                    @if ($aqar->vip == 1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1)
+                    @if ($aqar->isPromotionActive())
                         <span class="property-heading-badge property-heading-badge--accent">
                             <i class="fas fa-star"></i>
                             عقار مميز
@@ -317,7 +317,7 @@
 
 
                                         </a>
-                                        <?php if ($aqar->vip == 1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1){ ?>
+                                        <?php if ($aqar->isPromotionActive()) { ?>
 
                                         <div class="views" style=" left: 13px;">
                                             <div class="views-1">مميز</div>
