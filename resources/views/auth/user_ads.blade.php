@@ -123,7 +123,13 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                             @if ((int) $aqar->status === 1 && $aqar->auto_suspension_at)
                                                                 <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
                                                                     <strong>متبقي حتى يتحول العقار إلى معلق:</strong>
-                                                                    <div>{{ $aqar->auto_suspension_remaining }}</div>
+                                                                    <div>
+                                                                        @forelse($aqar->auto_suspension_remaining_parts as $remainingPart)
+                                                                            <span class="d-block">{{ $remainingPart['value'] }} {{ $remainingPart['label'] }}</span>
+                                                                        @empty
+                                                                            {{ $aqar->auto_suspension_remaining }}
+                                                                        @endforelse
+                                                                    </div>
                                                                     <small>
                                                                         الموعد: {{ $aqar->auto_suspension_at->format('Y-m-d H:i') }}
                                                                     </small>
