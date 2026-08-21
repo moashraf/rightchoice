@@ -6,6 +6,7 @@ use App\Contracts\SmsProviderInterface;
 use App\Models\aqar;
 use App\Models\PriceVip;
 use Illuminate\Support\Facades\Log;
+use DomainException;
 
 class PropertyPromotionService
 {
@@ -15,6 +16,10 @@ class PropertyPromotionService
 
     public function activate(aqar $property, PriceVip $package, bool $sendSms = true): aqar
     {
+        if (!$property->isEligibleForPromotion()) {
+            throw new DomainException('لا يمكن تمييز إلا العقارات المنشورة والمفعلة.');
+        }
+
         $startedAt = now();
         $expiresAt = $startedAt->copy()->addDays((int) $package->duration_days);
 

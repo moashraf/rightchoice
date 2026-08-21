@@ -130,6 +130,7 @@ class PageController extends Controller
 
         $allAqars->getCollection()->transform(function (aqar $aqar) {
             $aqar->setAttribute('promotion_active', $aqar->isPromotionActive());
+            $aqar->setAttribute('promotion_eligible', $aqar->isEligibleForPromotion());
 
             return $aqar;
         });

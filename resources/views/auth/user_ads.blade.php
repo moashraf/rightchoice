@@ -192,11 +192,15 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                             تعديل
                                                           </a>
 
-                                                        @if(!$aqar->promotion_active)
+                                                        @if(!$aqar->promotion_active && $aqar->promotion_eligible)
                                                             <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}"
                                                                class="btn btn-outline-success ml-2">
                                                                 {{ $aqar->vip_expires_at ? 'تجديد التمييز' : 'تمييز' }}
                                                             </a>
+                                                        @elseif(!$aqar->promotion_eligible)
+                                                            <button type="button" class="btn btn-secondary ml-2" disabled>
+                                                                التمييز متاح للعقارات المنشورة فقط
+                                                            </button>
                                                         @endif
 
                                                         <a   target="_blank"  href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}"  class="btn btn-outline-primary ml-2">عرض</a>

@@ -66,8 +66,8 @@
                 @if($properties->isEmpty())
                     <div class="rc-property-picker__empty">
                         <div class="rc-property-picker__empty-icon"><i class="fas fa-home"></i></div>
-                        <h2>{{ $isEnglish ? 'You do not have any properties yet' : 'لسه مفيش عقارات مضافة على حسابك' }}</h2>
-                        <p>{{ $isEnglish ? 'Add your property first, then return to choose a promotion package.' : 'ضيف عقارك الأول، وبعدها ارجع اختار باقة التمييز المناسبة.' }}</p>
+                        <h2>{{ $isEnglish ? 'You do not have any published properties' : 'لا توجد عقارات منشورة متاحة للتمييز' }}</h2>
+                        <p>{{ $isEnglish ? 'Wait until your property is reviewed and published, then return to choose a promotion package.' : 'انتظر حتى تتم مراجعة عقارك ونشره، وبعدها ارجع لاختيار باقة التمييز.' }}</p>
                         <a href="{{ url($locale . '/aqars/create') }}" class="rc-property-picker__primary-btn">
                             <i class="fas fa-plus"></i>
                             {{ $isEnglish ? 'Add a property' : 'أضف عقارك الآن' }}

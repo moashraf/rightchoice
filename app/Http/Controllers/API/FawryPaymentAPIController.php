@@ -508,6 +508,12 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
+        if (!$aqar->isEligibleForPromotion()) {
+            return $this->sendError('لا يمكن تمييز هذا الإعلان', 422, [
+                'aqar_id' => ['يمكن تمييز العقارات المنشورة والمفعلة فقط.'],
+            ]);
+        }
+
         // التحقق من عدم تكرار نفس الدفعة
         $referenceNumber  = $request->query('referenceNumber');
         $alreadyProcessed = FawryPayment::where('referenceNumber', $referenceNumber)

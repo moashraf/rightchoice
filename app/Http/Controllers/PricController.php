@@ -369,6 +369,12 @@ $pric= Pricing::find(2);
          $aqar = aqar::where('id','=',$pieces_id[1])->firstOrFail();
          $package = PriceVip::findOrFail($pieces_id[0]);
 
+         if (!$aqar->isEligibleForPromotion()) {
+             return redirect()
+                 ->route('user_ads', ['locale' => app()->getLocale()])
+                 ->withErrors(['aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.']);
+         }
+
          app(PropertyPromotionService::class)->activate($aqar, $package);
 
 
@@ -906,16 +912,17 @@ $paymentStatus = $response['type']; // get response values
     public function vip($locale,$aqarSingle)
     {
         //
-        $aqar = aqar::find($aqarSingle);
+        $aqar = aqar::where('id', $aqarSingle)->where('status', 1)->firstOrFail();
         $vips = PriceVip::all();
         return view('price.vip_aqar', ['aqarSingle' => $aqar],compact('vips'));
     }
 
 
-      public function tamyeez_vip($locale,$vipid,$aqarSingle_id)
+    public function tamyeez_vip($locale,$vipid,$aqarSingle_id)
     {
 
       $PriceVip = PriceVip::find($vipid);
+      $aqar = aqar::where('id', $aqarSingle_id)->where('status', 1)->firstOrFail();
 
      // dd($vipid);
          return view('aqar_tmez_singel', ['vipid' => $vipid ,'aqarSingle_id' => $aqarSingle_id ],compact('PriceVip','aqarSingle_id'));
@@ -928,6 +935,13 @@ $paymentStatus = $response['type']; // get response values
 
         //
         $aqar = aqar::findOrFail($aqarid->id);
+
+        if (!$aqar->isEligibleForPromotion()) {
+            return Redirect::back()->withErrors([
+                'aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.',
+            ]);
+        }
+
         $package = PriceVip::orderBy('duration_days')->firstOrFail();
         app(PropertyPromotionService::class)->activate($aqar, $package, false);
 
