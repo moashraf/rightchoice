@@ -22,9 +22,8 @@
                 <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
                 <small>{{ App::isLocale('en') ? 'Limited 80% OFF' : 'خصم 80% على الباقات' }}</small>
             @else
-                <strong>{{ App::isLocale('en') ? 'Join Right Choice' : 'انضم إلى رايت تشويس' }}</strong>
-                <small>{{ App::isLocale('en') ? 'Register your details for free' : 'سجل بياناتك مجانًا' }}</small>
-            @endif
+                <strong>{{ App::isLocale('en') ? 'Join Right Choice' : 'سجل بياناتك' }}</strong>
+             @endif
         </span>
 
         <span class="rc-sell-faster-float__badge">

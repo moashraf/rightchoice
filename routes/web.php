@@ -273,6 +273,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:users.update');
     Route::get('users/{user}/get-points', [App\Http\Controllers\AdminUserPointsController::class, 'getPoints'])->name('users.getPoints')
         ->middleware('permission:users.update');
+    Route::post('users/{user}/impersonate', [App\Http\Controllers\AdminUserImpersonationController::class, 'start'])
+        ->name('users.impersonate');
 
     // ── Reports ──────────────────────────────────────────────────────────
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index')
@@ -458,6 +460,11 @@ Route::get('/dashboard', function () {
     // dd($locale);
     return redirect('/' . $locale . '/dashboard');
 });
+
+Route::get('/{locale}/admin-impersonation/{token}', [App\Http\Controllers\AdminUserImpersonationController::class, 'consume'])
+    ->where(['locale' => 'ar|en', 'token' => '[A-Za-z0-9]{64}'])
+    ->middleware('throttle:10,1')
+    ->name('admin.impersonation.consume');
 
 
 Route::group(['prefix' => '{locale?}'], function () {
