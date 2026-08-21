@@ -169,9 +169,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         </div>
 
                                                     <div class="btnAdds">
-                                                        @php($promotionActive = $aqar->isPromotionActive())
-
-                                                        @if($promotionActive)
+                                                        @if($aqar->promotion_active)
                                                             <div class="alert alert-success w-100 mb-3" style="border-radius:10px;">
                                                                 <strong><i class="fas fa-star ml-1"></i> الإعلان مميز</strong>
                                                                 <div class="mt-1">
@@ -194,7 +192,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                             تعديل
                                                           </a>
 
-                                                        @if(!$promotionActive)
+                                                        @if(!$aqar->promotion_active)
                                                             <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}"
                                                                class="btn btn-outline-success ml-2">
                                                                 {{ $aqar->vip_expires_at ? 'تجديد التمييز' : 'تمييز' }}
