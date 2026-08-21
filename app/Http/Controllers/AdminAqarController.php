@@ -29,6 +29,7 @@ use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\Models\Notification;
 use App\Services\PropertyAutoSuspensionService;
+use App\Enums\StatusEnumAqar;
 
 class AdminAqarController extends AppBaseController
 {
@@ -119,8 +120,35 @@ class AdminAqarController extends AppBaseController
                 ->get()
             : collect();
         $offerTypes    = \App\Models\OfferTypes::select('id', 'type_offer')->get();
+        $statusOptions = StatusEnumAqar::values();
 
-        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'districts', 'offerTypes'));
+        return view('admin_aqars.index', compact('allAqars', 'propertyTypes', 'governrates', 'districts', 'offerTypes', 'statusOptions'));
+    }
+
+    /**
+     * Update only the status of an aqar from the admin listing.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|integer|in:0,1,2',
+        ]);
+
+        $aqar = aqar::find($id);
+
+        if (empty($aqar)) {
+            Flash::error('العقار غير موجود');
+            return back();
+        }
+
+        $aqar->update([
+            'status' => (int) $validated['status'],
+            'auto_suspended_at' => null,
+        ]);
+
+        Flash::success('تم تغيير حالة العقار بنجاح.');
+
+        return back();
     }
 
     /**
