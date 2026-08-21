@@ -141,7 +141,7 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.aqars.index') }}"
-                                   class="nav-link {{ request()->is('sitemanagement/aqars') || (request()->is('sitemanagement/aqars*') && !request()->is('sitemanagement/aqars/deleted*')) ? 'active' : '' }}">
+                                   class="nav-link {{ (request()->is('sitemanagement/aqars') || (request()->is('sitemanagement/aqars*') && !request()->is('sitemanagement/aqars/deleted*'))) && request()->query('filter_vip') != '1' ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>كل العقارات</p>
                                 </a>
@@ -164,6 +164,13 @@
                                    class="nav-link {{ request()->is('sitemanagement/aqar-delete-reasons*') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon text-warning"></i>
                                     <p>أسباب حذف العقار</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.aqars.index', ['filter_vip' => 1]) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/aqars') && request()->query('filter_vip') == '1' ? 'active' : '' }}">
+                                    <i class="fas fa-star nav-icon text-warning"></i>
+                                    <p>العقارات المميزة</p>
                                 </a>
                             </li>
                         </ul>
