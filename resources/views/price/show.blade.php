@@ -13,8 +13,8 @@
             <i class="fa fa-exclamation-triangle fa-3x mb-3" style="color:#f0ad4e;"></i>
             <h3>هذه الباقة غير موجودة</h3>
             <p class="text-muted">الباقة التي تبحث عنها غير متاحة أو تم حذفها.</p>
-            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}" class="btn btn-primary mt-2">
-                <i class="fa fa-arrow-right ml-1"></i> عرض جميع الباقات
+            <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}" class="btn btn-primary mt-2">
+                <i class="fa fa-arrow-right ml-1"></i> عرض باقات المشتري
             </a>
         </div>
     </div>
@@ -284,5 +284,4 @@ function failureCallBack(data) {
 
     @endif
 </x-layout>
-
 

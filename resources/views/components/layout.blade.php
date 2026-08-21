@@ -459,9 +459,15 @@
                                 </li>
 
                                 <li class="{{ Request::is('*/pricing-seller*') ? 'active' : '' }}">
-                                    <a href="{{ URL::to(Config::get('app.locale').'/pricing-seller') }}">
-                                        <i class=" fas fa-check" style="margin-left:4px; margin-right:4px;"></i>
-                                        {{ trans('langsite.Packages') }}
+                                    <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}">
+                                        <i class="fas fa-bullhorn" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Seller Packages' : 'باقات البائع' }}
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/pricing-buyer*') ? 'active' : '' }}">
+                                    <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}">
+                                        <i class="fas fa-key" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Buyer Packages' : 'باقات المشتري' }}
                                     </a>
                                 </li>
 
@@ -997,7 +1003,14 @@
                             <a href="{{ url(Config::get('app.locale').'/about-us') }}">{{ trans('langsite.About') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}">{{ trans('langsite.Packages') }}</a>
+                            <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}">
+                                {{ App::isLocale('en') ? 'Seller Packages' : 'باقات البائع' }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}">
+                                {{ App::isLocale('en') ? 'Buyer Packages' : 'باقات المشتري' }}
+                            </a>
                         </li>
                         <li>
                             <a href="{{ url(Config::get('app.locale').'/contact-us') }}">{{ trans('langsite.Get_In') }}</a>

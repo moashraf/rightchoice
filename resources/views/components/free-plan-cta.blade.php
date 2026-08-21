@@ -50,7 +50,7 @@
                                     <i class="fa fa-ban fp-btn-icon"></i>
                                 </button>
                             @else
-                                <a href="/ar/pricing-seller" class="fp-cta-btn">
+                                <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}" class="fp-cta-btn">
                                     <span>اشترك مجاناً الآن</span>
                                     <i class="fa fa-arrow-left fp-btn-icon"></i>
                                 </a>
