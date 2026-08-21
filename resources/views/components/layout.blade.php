@@ -283,6 +283,7 @@
                         <li class="{{ Request::is('/') ? 'active' : '' }}">
                             <a href="{{ asset('/').Config::get('app.locale') }}">{{ trans('langsite.Home')}}</a>
                         </li>
+
                         <li
 
                             class="{{ Request::is('aqars-cash') || Request::is('aqars-installment') || Request::is('aqar-finnance') ? 'active' : '' }}">
@@ -419,7 +420,12 @@
 
                             <ul class=" momayezz nav-dropdown nav-submenu">
 
-
+                                <li class="{{ Request::is('*/featured-properties') ? 'active' : '' }}">
+                                    <a href="{{ route('aqars.featured', ['locale' => Config::get('app.locale')]) }}">
+                                        <i class="fas fa-star" style="margin-left:4px; margin-right:4px;"></i>
+                                        {{ App::isLocale('en') ? 'Featured Properties' : 'العقارات المميزة' }}
+                                    </a>
+                                </li>
                                 <li class="{{ Request::is('*/developers') || Request::is('*/developers/*') ? 'active' : '' }}">
                                     <a href="{{ URL::to(Config::get('app.locale') . '/developers') }}">
                                         {{ trans('langsite.developers') }}
@@ -1001,6 +1007,11 @@
                         </li>
                         <li>
                             <a href="{{ url(Config::get('app.locale').'/about-us') }}">{{ trans('langsite.About') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('aqars.featured', ['locale' => Config::get('app.locale')]) }}">
+                                {{ App::isLocale('en') ? 'Featured Properties' : 'العقارات المميزة' }}
+                            </a>
                         </li>
                         <li>
                             <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}">

@@ -1861,6 +1861,54 @@ $request->validate([
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function featuredProperties(Request $request, $locale)
+    {
+        $isEnglish = $locale === 'en';
+
+        $featuredAqars = aqar::query()
+            ->where('status', 1)
+            ->where('vip', 1)
+            ->whereNotNull('vip_expires_at')
+            ->where('vip_expires_at', '>', now())
+            ->with(['mainImage', 'firstImage', 'offerTypes', 'governrateq', 'districte'])
+            ->orderByDesc('vip_started_at')
+            ->orderByDesc('id')
+            ->paginate(12);
+
+        $featuredAqars->getCollection()->transform(function (aqar $property) use ($isEnglish, $locale) {
+            $offer = $property->offerTypes;
+            $offerId = (int) optional($offer)->id;
+            $price = in_array($offerId, [3, 4], true)
+                ? $property->monthly_rent
+                : $property->total_price;
+
+            $property->setAttribute('featured_price', $price);
+            $property->setAttribute('featured_has_price', is_numeric($price) && (float) $price > 0);
+            $property->setAttribute('featured_image', $property->mainImage
+                ? url('/images/' . $property->mainImage->img_url)
+                : ($property->firstImage
+                    ? url('/images/' . $property->firstImage->img_url)
+                    : asset('images/FBO.png')));
+            $property->setAttribute(
+                'featured_title',
+                ($isEnglish && $property->title_en ? $property->title_en : $property->title)
+                    ?: ($isEnglish ? 'Property details' : 'تفاصيل العقار')
+            );
+            $property->setAttribute(
+                'featured_offer_name',
+                ($isEnglish && optional($offer)->type_offer_en ? $offer->type_offer_en : optional($offer)->type_offer)
+                    ?: ($isEnglish ? 'Property' : 'عقار')
+            );
+            $property->setAttribute('featured_url', url($locale . '/aqars/' . $property->slug));
+
+            return $property;
+        });
+
+        return view('aqars.featured-properties', compact('featuredAqars', 'isEnglish'));
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     public function all_aqar_for_rent(Request $request, $locale)
     {
