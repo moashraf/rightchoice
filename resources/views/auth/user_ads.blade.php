@@ -171,7 +171,7 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                     <div class="btnAdds">
                                                         @if($aqar->promotion_active)
                                                             <div class="alert alert-success w-100 mb-3" style="border-radius:10px;">
-                                                                <strong><i class="fas fa-star ml-1"></i> الإعلان مميز</strong>
+                                                                <x-property-promotion-badge :property="$aqar" class="mb-2" />
                                                                 <div class="mt-1">
                                                                     متبقي:
                                                                     <span class="promotion-countdown font-weight-bold"

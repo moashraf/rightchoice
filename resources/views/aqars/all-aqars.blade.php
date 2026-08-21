@@ -703,14 +703,7 @@
                                             </a>
 
                                             <div class="rc-property-card__badges">
-                                                @if($featuredAqar->isPromotionActive())
-                                                    <span class="rc-property-badge rc-property-badge--featured">
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                                            <path d="m12 2.8 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 2.8Z"/>
-                                                        </svg>
-                                                        مميز
-                                                    </span>
-                                                @endif
+                                                <x-property-promotion-badge :property="$featuredAqar" />
                                                 <span class="rc-property-badge rc-property-badge--offer">
                                                     {{ $featuredOfferName }}
                                                 </span>
@@ -880,14 +873,7 @@
                                         </a>
 
                                         <div class="rc-property-card__badges">
-                                            @if ($cardIsFeatured)
-                                                <span class="rc-property-badge rc-property-badge--featured">
-                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                                        <path d="m12 2.8 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 2.8Z"/>
-                                                    </svg>
-                                                    مميز
-                                                </span>
-                                            @endif
+                                            <x-property-promotion-badge :property="$aqar" />
                                             <span class="rc-property-badge rc-property-badge--offer">
                                                 {{ $cardOfferName }}
                                             </span>
