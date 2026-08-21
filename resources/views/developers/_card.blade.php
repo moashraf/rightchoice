@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <?php if ($aqar->vip == 1 && \Carbon\Carbon::now()->diffInYears($aqar->created_at) < 1) { ?>
+                <?php if ($aqar->isPromotionActive()) { ?>
                 <div class="views">
                     <div class="views-1">مميز</div>
                 </div>
@@ -108,4 +108,3 @@
         </div>
     </div>
 </div>
-

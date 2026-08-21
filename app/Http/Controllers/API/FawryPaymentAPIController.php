@@ -508,9 +508,15 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
+        if ($aqar->isPromotionActive()) {
+            return $this->sendError('الإعلان مميز بالفعل', 409, [
+                'aqar_id' => ["الإعلان رقم {$aqarId} مميز حاليًا بالفعل."],
+            ]);
+        }
+
         if (!$aqar->isEligibleForPromotion()) {
             return $this->sendError('لا يمكن تمييز هذا الإعلان', 422, [
-                'aqar_id' => ['يمكن تمييز العقارات المنشورة والمفعلة فقط.'],
+                'aqar_id' => ['يجب أن يكون العقار منشورًا وغير مميز حاليًا.'],
             ]);
         }
 
@@ -523,12 +529,6 @@ class FawryPaymentAPIController extends AppBaseController
         if ($alreadyProcessed) {
             return $this->sendError('تم معالجة هذه العملية مسبقًا', 409, [
                 'referenceNumber' => [$referenceNumber],
-            ]);
-        }
-
-        if ($aqar->isPromotionActive()) {
-            return $this->sendError('الإعلان مميز بالفعل', 409, [
-                'aqar_id' => ["الإعلان رقم {$aqarId} مميز بالفعل."],
             ]);
         }
 

@@ -53,7 +53,9 @@ class SellFasterController extends Controller
             ->where('user_id', auth()->id())
             ->where('status', 1)
             ->latest('id')
-            ->get();
+            ->get()
+            ->filter(fn (aqar $property) => $property->isEligibleForPromotion())
+            ->values();
 
         return view('promotions.select-property', [
             'pricing' => $pricing,
@@ -77,7 +79,13 @@ class SellFasterController extends Controller
                 Rule::exists('aqar', 'id')->where(function ($query) {
                     $query->where('user_id', auth()->id())
                         ->where('status', 1)
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at')
+                        ->where(function ($promotionQuery) {
+                            $promotionQuery->whereNull('vip')
+                                ->orWhere('vip', '!=', 1)
+                                ->orWhereNull('vip_expires_at')
+                                ->orWhere('vip_expires_at', '<=', now());
+                        });
                 }),
             ],
         ], [
@@ -85,8 +93,8 @@ class SellFasterController extends Controller
                 ? 'Please select a property first.'
                 : 'من فضلك اختر العقار الذي تريد تمييزه.',
             'aqar_id.exists' => $locale === 'en'
-                ? 'Only published and active properties can be promoted.'
-                : 'يمكن تمييز العقارات المنشورة والمفعلة فقط.',
+                ? 'The property must be published and not currently promoted.'
+                : 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.',
         ]);
 
         $property = aqar::query()
@@ -94,6 +102,14 @@ class SellFasterController extends Controller
             ->where('user_id', auth()->id())
             ->where('status', 1)
             ->firstOrFail();
+
+        if (!$property->isEligibleForPromotion()) {
+            return back()->withErrors([
+                'aqar_id' => $locale === 'en'
+                    ? 'The property must be published and not currently promoted.'
+                    : 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.',
+            ])->withInput();
+        }
 
         return redirect()->route('sell-faster.checkout', [
             'locale' => $locale,
@@ -115,8 +131,8 @@ class SellFasterController extends Controller
                 && $aqar->isEligibleForPromotion(),
             403,
             $locale === 'en'
-                ? 'Only published and active properties can be promoted.'
-                : 'يمكن تمييز العقارات المنشورة والمفعلة فقط.'
+                ? 'The property must be published and not currently promoted.'
+                : 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.'
         );
 
         $discountMultiplier = (100 - self::DISCOUNT_PERCENT) / 100;
