@@ -401,11 +401,25 @@ $message ="  تم تميز اعلانك بنجاح ";
 
     public function index($locale)
     {
-        //
-        $allPricing = Pricing::all();
-        $sellerPricing = PriceVip::all();
+        return $this->buyer($locale);
+    }
 
-        return view('price.pricing', compact('allPricing', 'sellerPricing'));
+    public function seller($locale)
+    {
+        return view('price.pricing', [
+            'audience' => 'seller',
+            'allPricing' => collect(),
+            'sellerPricing' => PriceVip::all(),
+        ]);
+    }
+
+    public function buyer($locale)
+    {
+        return view('price.pricing', [
+            'audience' => 'buyer',
+            'allPricing' => Pricing::all(),
+            'sellerPricing' => collect(),
+        ]);
     }
 
 

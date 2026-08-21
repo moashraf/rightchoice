@@ -1,11 +1,12 @@
 <x-layout>
 
     @section('title')
-        اختر إحدى الباقات
+        {{ ($audience ?? 'buyer') === 'seller' ? 'باقات البائع' : 'باقات المشتري' }}
     @endsection
 
     @php
         $isCompanyAccount = auth()->check() && auth()->user()->isCompanyAccount();
+        $isSellerPage = ($audience ?? 'buyer') === 'seller';
     @endphp
 
     <div class="rc-pricing-page" dir="rtl">
@@ -16,10 +17,11 @@
             <div class="container position-relative">
                 <div class="rc-pricing-hero__content">
                     <span class="rc-eyebrow">Right Choice</span>
-                    <h1>{{ trans('langsite.Packages') }}</h1>
+                    <h1>{{ $isSellerPage ? 'باقات البائع' : 'باقات المشتري' }}</h1>
                     <p>
-                        اختر الباقة المناسبة وابدأ الوصول إلى أفضل الفرص العقارية والتواصل
-                        المباشر مع الملاك بدون وسطاء أو عمولات.
+                        {{ $isSellerPage
+                            ? 'ميّز إعلانك العقاري ووصل إلى عدد أكبر من المشترين المهتمين.'
+                            : 'اختر الباقة المناسبة وتواصل مباشرة مع الملاك بدون وسطاء أو عمولات.' }}
                     </p>
 
                     <div class="rc-hero-points">
@@ -112,37 +114,32 @@
                 </div>
 
                 <div class="rc-audience-tabs" role="tablist" aria-label="اختر نوع الباقة">
-                    <button
-                        type="button"
-                        class="rc-audience-tab is-active"
-                        data-pricing-tab="seller"
-                        role="tab"
-                        aria-selected="true"
-                        aria-controls="seller-plans"
+                    <a
+                        href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}"
+                        class="rc-audience-tab {{ $isSellerPage ? 'is-active' : '' }}"
+                        aria-current="{{ $isSellerPage ? 'page' : 'false' }}"
                     >
                         <span class="rc-audience-tab__icon">🏠</span>
                         <span>
                             <strong>هتبيع؟</strong>
                             <small>باقات البائع وتمييز إعلانك</small>
                         </span>
-                    </button>
+                    </a>
 
-                    <button
-                        type="button"
-                        class="rc-audience-tab"
-                        data-pricing-tab="buyer"
-                        role="tab"
-                        aria-selected="false"
-                        aria-controls="buyer-plans"
+                    <a
+                        href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}"
+                        class="rc-audience-tab {{ !$isSellerPage ? 'is-active' : '' }}"
+                        aria-current="{{ !$isSellerPage ? 'page' : 'false' }}"
                     >
                         <span class="rc-audience-tab__icon">🔑</span>
                         <span>
                             <strong>هتشتري؟</strong>
                             <small>باقات المشتري والتواصل مع الملاك</small>
                         </span>
-                    </button>
+                    </a>
                 </div>
 
+                @if($isSellerPage)
                 <div
                     id="seller-plans"
                     class="rc-pricing-panel is-active"
@@ -234,12 +231,12 @@
                     </div>
                 </div>
 
+                @else
                 <div
                     id="buyer-plans"
-                    class="rc-pricing-panel"
+                    class="rc-pricing-panel is-active"
                     data-pricing-panel="buyer"
                     role="tabpanel"
-                    hidden
                 >
                     <div class="rc-panel-intro">
                         <span>للمشتري</span>
@@ -345,7 +342,7 @@
                                         </button>
                                     @else
                                         <a
-                                            href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
+                                            href="{{ route('priceSingle', ['locale' => Config::get('app.locale'), 'single' => $single->id]) }}"
                                             class="rc-btn {{ $isFree ? 'rc-btn--free' : 'rc-btn--primary' }}"
                                         >
                                             {{ $isFree ? 'ابدأ مجانًا الآن' : 'اشترك بالباقة' }}
@@ -364,9 +361,11 @@
                     @endforeach
                     </div>
                 </div>
+                @endif
             </div>
         </section>
 
+        @unless($isSellerPage)
         {{-- Subscription information --}}
         <section class="rc-section rc-how-section">
             <div class="container">
@@ -439,8 +438,10 @@
                 </div>
             </div>
         </section>
+        @endunless
 
         {{-- Modals --}}
+        @unless($isSellerPage)
         @foreach ($allPricing as $single)
             @php $isFree = ((float) $single->price === 0.0); @endphp
 
@@ -491,7 +492,7 @@
                                 </button>
                             @else
                                 <a
-                                    href="{{ URL::to(Config::get('app.locale').'/pricing-seller/' . $single->id) }}"
+                                    href="{{ route('priceSingle', ['locale' => Config::get('app.locale'), 'single' => $single->id]) }}"
                                     class="rc-btn {{ $isFree ? 'rc-btn--free' : 'rc-btn--primary' }}"
                                 >
                                     {{ $isFree ? 'ابدأ مجانًا الآن' : 'اشترك بالباقة' }}
@@ -502,6 +503,7 @@
                 </div>
             </div>
         @endforeach
+        @endunless
     </div>
 
     <style>
@@ -1150,11 +1152,13 @@
             background: transparent;
             cursor: pointer;
             transition: all .25s ease;
+            text-decoration: none;
         }
 
         .rc-audience-tab:hover {
             color: var(--rc-white);
             background: rgba(255, 255, 255, .08);
+            text-decoration: none;
         }
 
         .rc-audience-tab.is-active {
@@ -1619,31 +1623,6 @@
             }
         }
     </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabs = document.querySelectorAll('[data-pricing-tab]');
-            const panels = document.querySelectorAll('[data-pricing-panel]');
-
-            tabs.forEach(function (tab) {
-                tab.addEventListener('click', function () {
-                    const selectedAudience = tab.getAttribute('data-pricing-tab');
-
-                    tabs.forEach(function (currentTab) {
-                        const isSelected = currentTab === tab;
-                        currentTab.classList.toggle('is-active', isSelected);
-                        currentTab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-                    });
-
-                    panels.forEach(function (panel) {
-                        const isSelected = panel.getAttribute('data-pricing-panel') === selectedAudience;
-                        panel.classList.toggle('is-active', isSelected);
-                        panel.hidden = !isSelected;
-                    });
-                });
-            });
-        });
-    </script>
 
     <link rel="stylesheet" href="https://rightchoice-co.com/public/assets/css/mof.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

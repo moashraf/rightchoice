@@ -486,8 +486,12 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/callfary_api_card', 'App\Http\Controllers\DeveloperfawryPayment@callfary_api_card')->name('callfary_api_card')->middleware('setLocale');
 
 
-        Route::get('/pricing-seller', 'App\Http\Controllers\PricController@index')->name('priceSeller')->middleware('setLocale');
-        Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
+        Route::get('/pricing-seller', 'App\Http\Controllers\PricController@seller')->name('priceSeller')->middleware('setLocale');
+        Route::get('/pricing-buyer', 'App\Http\Controllers\PricController@buyer')->name('priceBuyer')->middleware('setLocale');
+        Route::get('/pricing-buyer/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle')->middleware('setLocale');
+        Route::get('/pricing-seller/{single}', function ($locale, $single) {
+            return redirect()->route('priceSingle', compact('locale', 'single'));
+        })->middleware('setLocale');
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
         Route::get('/user_complaints', 'App\Http\Controllers\PageController@user_complaints')->name('user_complaints')->middleware(['setLocale']);
