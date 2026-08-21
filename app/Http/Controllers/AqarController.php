@@ -1861,6 +1861,23 @@ $request->validate([
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function featuredProperties(Request $request, $locale)
+    {
+        $featuredAqars = aqar::query()
+            ->where('status', 1)
+            ->where('vip', 1)
+            ->whereNotNull('vip_expires_at')
+            ->where('vip_expires_at', '>', now())
+            ->with(['mainImage', 'firstImage', 'offerTypes', 'governrateq', 'districte'])
+            ->orderByDesc('vip_started_at')
+            ->orderByDesc('id')
+            ->paginate(12);
+
+        return view('aqars.featured-properties', compact('featuredAqars'));
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     public function all_aqar_for_rent(Request $request, $locale)
     {

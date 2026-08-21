@@ -472,6 +472,10 @@ Route::group(['prefix' => '{locale?}'], function () {
     // â”€â”€ Real Estate Map Page (public, no auth required) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/map', [App\Http\Controllers\MapController::class, 'index'])->middleware('setLocale')->name('map.index');
 
+    Route::get('/featured-properties', [App\Http\Controllers\AqarController::class, 'featuredProperties'])
+        ->middleware('setLocale')
+        ->name('aqars.featured');
+
     // â”€â”€ Real Estate Developers (public) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/developers', [App\Http\Controllers\DeveloperController::class, 'index'])
         ->middleware('setLocale')->name('developers.index');
