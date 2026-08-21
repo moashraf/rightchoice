@@ -224,7 +224,13 @@
                         </small>
                     @elseif((int) $allAqars_val->status === 1 && $allAqars_val->auto_suspension_at)
                         <br>
-                        <strong class="text-warning">{{ $allAqars_val->auto_suspension_remaining }}</strong>
+                        <strong class="text-warning d-block">
+                            @forelse($allAqars_val->auto_suspension_remaining_parts as $remainingPart)
+                                <span class="d-block">{{ $remainingPart['value'] }} {{ $remainingPart['label'] }}</span>
+                            @empty
+                                {{ $allAqars_val->auto_suspension_remaining }}
+                            @endforelse
+                        </strong>
                         <br>
                         <small>{{ $allAqars_val->auto_suspension_at->format('Y-m-d H:i') }}</small>
                         @if($allAqars_val->auto_suspension_deferred_by_promotion)

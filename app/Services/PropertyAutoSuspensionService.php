@@ -44,32 +44,41 @@ class PropertyAutoSuspensionService
         $effectiveDeadline = $promotionDefersSuspension
             ? $property->vip_expires_at->copy()
             : $baseDeadline;
+        $remaining = $this->remaining($effectiveDeadline);
 
         $property->setAttribute('auto_suspension_days', self::ACTIVE_LIFETIME_DAYS);
         $property->setAttribute('auto_suspension_at', $effectiveDeadline);
         $property->setAttribute('auto_suspension_deferred_by_promotion', $promotionDefersSuspension);
-        $property->setAttribute('auto_suspension_remaining', $this->remainingText($effectiveDeadline));
+        $property->setAttribute('auto_suspension_remaining', $remaining['text']);
+        $property->setAttribute('auto_suspension_remaining_parts', $remaining['parts']);
         $property->setAttribute('was_auto_suspended', $property->auto_suspended_at !== null);
 
         return $property;
     }
 
-    private function remainingText(?CarbonInterface $deadline): ?string
+    private function remaining(?CarbonInterface $deadline): array
     {
         if (!$deadline) {
-            return null;
+            return ['text' => null, 'parts' => []];
         }
 
         $remainingSeconds = now()->diffInSeconds($deadline, false);
 
         if ($remainingSeconds <= 0) {
-            return 'حان موعد التعليق';
+            return ['text' => 'حان موعد التعليق', 'parts' => []];
         }
 
         $days = intdiv($remainingSeconds, 86400);
         $hours = intdiv($remainingSeconds % 86400, 3600);
         $minutes = intdiv($remainingSeconds % 3600, 60);
 
-        return "{$days} يوم و{$hours} ساعة و{$minutes} دقيقة";
+        return [
+            'text' => "{$days} يوم و{$hours} ساعة و{$minutes} دقيقة",
+            'parts' => [
+                ['value' => $days, 'label' => 'يوم'],
+                ['value' => $hours, 'label' => 'ساعة'],
+                ['value' => $minutes, 'label' => 'دقيقة'],
+            ],
+        ];
     }
 }
