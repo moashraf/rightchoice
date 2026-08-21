@@ -118,7 +118,6 @@
             <th>المشاهدات</th>
             <th>انتهاء التمييز</th>
             <th>تاريخ الاضافه</th>
-            <th>التعليق التلقائي</th>
             <th>التنفيذ</th>
         </tr>
         </thead>
@@ -215,15 +214,16 @@
                         <span class="text-muted">—</span>
                     @endif
                 </td>
-                <td>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</td>
                 <td style="min-width:190px;">
+                    <div>{{ $allAqars_val->created_at ? date_format($allAqars_val->created_at, "Y/m/d") : '' }}</div>
                     @if($allAqars_val->was_auto_suspended)
-                        <span class="badge badge-warning">معلق تلقائيًا</span>
+                        <span class="badge badge-warning mt-1">معلق تلقائيًا</span>
                         <br>
                         <small class="text-muted">
                             منذ {{ $allAqars_val->auto_suspended_at->format('Y-m-d H:i') }}
                         </small>
                     @elseif((int) $allAqars_val->status === 1 && $allAqars_val->auto_suspension_at)
+                        <br>
                         <strong class="text-warning">{{ $allAqars_val->auto_suspension_remaining }}</strong>
                         <br>
                         <small>{{ $allAqars_val->auto_suspension_at->format('Y-m-d H:i') }}</small>
@@ -231,8 +231,6 @@
                             <br>
                             <small class="badge badge-info">مؤجل حتى انتهاء التمييز</small>
                         @endif
-                    @else
-                        <span class="text-muted">—</span>
                     @endif
                 </td>
                 <td>
