@@ -13,6 +13,7 @@
     $canUpdate  = $__au && $__au->hasPermission('users.update');
     $canDelete  = $__au && $__au->hasPermission('users.delete');
     $canBlock   = $__au && $__au->hasPermission('users.block');
+    $canImpersonate = $__au && ($__au->isAdminRole() || (bool) $__au->isAdmin);
 
     $activeUserTypeTab = in_array(request('type_tab'), ['companies', 'developer', 'normal'], true)
         ? request('type_tab')
@@ -331,6 +332,24 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($canImpersonate && !$user->isAdmin)
+                                        <form action="{{ route('sitemanagement.users.impersonate', $user->id) }}"
+                                              method="POST"
+                                              target="_blank"
+                                              class="d-inline"
+                                              onsubmit="return confirm('سيتم تسجيل الدخول بهذا المستخدم في نافذة جديدة. هل تريد المتابعة؟')">
+                                            @csrf
+                                            <input type="hidden" name="locale" value="{{ in_array(app()->getLocale(), ['ar', 'en'], true) ? app()->getLocale() : 'ar' }}">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success ml-2 mb-1"
+                                                    data-toggle="tooltip"
+                                                    title="تسجيل الدخول باستخدام هذا المستخدم">
+                                                <i class="fas fa-sign-in-alt ml-1"></i>
+                                                سجل الدخول باستخدام هذا المستخدم
+                                            </button>
+                                        </form>
+                                    @endif
+
                                     @if($canBlock)
                                         @if($user->status == 1)
                                             <a onclick="return confirm('هل انت متأكد من حظر هذا المستخدم؟')"
