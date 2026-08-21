@@ -18,7 +18,10 @@
             
             <h3 style=" line-height: 41px;">              {{ session('success') }}</h3>
             <br>
-            <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}"><h5><strong>الباقات المدفوعه</strong></h5></a>
+            <div class="d-flex justify-content-center flex-wrap" style="gap:12px;">
+                <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}" class="btn btn-outline-primary">باقات البائع</a>
+                <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}" class="btn btn-outline-primary">باقات المشتري</a>
+            </div>
             <br>
             <p>
               لديك مشكله ؟

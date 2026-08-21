@@ -106,9 +106,13 @@
                     <span class="ty-nav-icon"><i class="fa fa-cogs"></i></span>
                     <span class="ty-nav-label">بدور علي ايه</span>
                 </a>
-                <a href="{{ url(Config::get('app.locale').'/pricing-seller') }}" class="ty-nav-btn">
+                <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}" class="ty-nav-btn">
                     <span class="ty-nav-icon"><i class="fa fa-tags"></i></span>
-                    <span class="ty-nav-label">الباقات</span>
+                    <span class="ty-nav-label">باقات البائع</span>
+                </a>
+                <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}" class="ty-nav-btn">
+                    <span class="ty-nav-icon"><i class="fa fa-key"></i></span>
+                    <span class="ty-nav-label">باقات المشتري</span>
                 </a>
             </div>
           </div>

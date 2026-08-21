@@ -2030,12 +2030,15 @@
                 <p> تحتاج الي {{ $aqar->points_avail }} نقطه </p>
 
 
-                <p> رصيد نقاطك لا يكفي <br> الانتقال الى صفحه الباقات ؟ </p>
+                <p> رصيد نقاطك لا يكفي <br> اختر صفحة الباقات المناسبة </p>
                 <div>
 
 
-                    <a href="{{ route('priceSeller', Config::get('app.locale')) }}"
-                       class="btn btn-success">تاكيد</a>
+                    <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}"
+                       class="btn btn-success">باقات المشتري</a>
+
+                    <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}"
+                       class="btn btn-primary">باقات البائع</a>
 
                     <button onClick="document.getElementById('myModal2').style.display = 'none'"
                             class="btn btn-danger">الغاء
