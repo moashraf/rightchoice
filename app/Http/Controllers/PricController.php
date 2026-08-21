@@ -369,10 +369,16 @@ $pric= Pricing::find(2);
          $aqar = aqar::where('id','=',$pieces_id[1])->firstOrFail();
          $package = PriceVip::findOrFail($pieces_id[0]);
 
+         if ($aqar->isPromotionActive()) {
+             return redirect()
+                 ->route('user_ads', ['locale' => app()->getLocale()])
+                 ->withErrors(['aqar' => 'هذا العقار مميز حاليًا بالفعل.']);
+         }
+
          if (!$aqar->isEligibleForPromotion()) {
              return redirect()
                  ->route('user_ads', ['locale' => app()->getLocale()])
-                 ->withErrors(['aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.']);
+                 ->withErrors(['aqar' => 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.']);
          }
 
          app(PropertyPromotionService::class)->activate($aqar, $package);
@@ -938,7 +944,9 @@ $paymentStatus = $response['type']; // get response values
 
         if (!$aqar->isEligibleForPromotion()) {
             return Redirect::back()->withErrors([
-                'aqar' => 'يمكن تمييز العقارات المنشورة والمفعلة فقط.',
+                'aqar' => $aqar->isPromotionActive()
+                    ? 'هذا العقار مميز حاليًا بالفعل.'
+                    : 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.',
             ]);
         }
 

@@ -1,22 +1,35 @@
 @php
     $promoLocale = Config::get('app.locale') ?: app()->getLocale();
     $isSellFasterPage = request()->is($promoLocale . '/sell-faster');
+    $isAuthenticated = auth()->check();
+    $floatingCtaUrl = $isAuthenticated
+        ? url($promoLocale . '/sell-faster')
+        : route('user.register', ['locale' => $promoLocale]);
 @endphp
 
 @unless($isSellFasterPage)
     <a
-        href="{{ url($promoLocale . '/sell-faster') }}"
+        href="{{ $floatingCtaUrl }}"
         class="rc-sell-faster-float"
-        aria-label="{{ App::isLocale('en') ? 'Sell your property faster - 80% off packages' : 'بيع عقارك أسرع - خصم 80% على الباقات' }}"
+        aria-label="{{ $isAuthenticated
+            ? (App::isLocale('en') ? 'Sell your property faster - 80% off packages' : 'بيع عقارك أسرع - خصم 80% على الباقات')
+            : (App::isLocale('en') ? 'Register your details for free' : 'سجل بياناتك مجانًا') }}"
     >
 
 
         <span class="rc-sell-faster-float__copy">
-            <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
-            <small>{{ App::isLocale('en') ? 'Limited 80% OFF' : 'خصم 80% على الباقات' }}</small>
+            @if($isAuthenticated)
+                <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
+                <small>{{ App::isLocale('en') ? 'Limited 80% OFF' : 'خصم 80% على الباقات' }}</small>
+            @else
+                <strong>{{ App::isLocale('en') ? 'Join Right Choice' : 'انضم إلى رايت تشويس' }}</strong>
+                <small>{{ App::isLocale('en') ? 'Register your details for free' : 'سجل بياناتك مجانًا' }}</small>
+            @endif
         </span>
 
-        <span class="rc-sell-faster-float__badge">80%</span>
+        <span class="rc-sell-faster-float__badge">
+            {{ $isAuthenticated ? '80%' : (App::isLocale('en') ? 'FREE' : 'مجانًا') }}
+        </span>
     </a>
 
     <style>

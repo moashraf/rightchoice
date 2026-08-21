@@ -102,15 +102,20 @@ class aqar extends Model
 
     public function isPromotionActive(): bool
     {
-        return $this->isEligibleForPromotion()
+        return $this->isPublishedForPromotion()
             && (int) $this->vip === 1
             && $this->vip_expires_at !== null
             && $this->vip_expires_at->isFuture();
     }
 
-    public function isEligibleForPromotion(): bool
+    public function isPublishedForPromotion(): bool
     {
         return !$this->trashed() && (int) $this->status === 1;
+    }
+
+    public function isEligibleForPromotion(): bool
+    {
+        return $this->isPublishedForPromotion() && !$this->isPromotionActive();
     }
 
     public function promotionPackage()

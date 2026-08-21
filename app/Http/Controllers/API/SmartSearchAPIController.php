@@ -111,7 +111,7 @@ class SmartSearchAPIController extends AppBaseController
                 'area'       => $aqar->total_area,
                 'location'   => $location,
                 'views'      => $aqar->views,
-                'vip'        => $aqar->vip == 1,
+                'vip'        => $aqar->isPromotionActive(),
             ];
         });
 
@@ -244,4 +244,3 @@ class SmartSearchAPIController extends AppBaseController
         }
     }
 }
-
