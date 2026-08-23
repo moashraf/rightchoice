@@ -323,6 +323,7 @@
         }
 
         .rc-promo-hero h1 {
+            text-align: right;
             max-width: 760px;
             margin: 0 0 20px;
             color: #fff;
@@ -342,6 +343,7 @@
         }
 
         .rc-promo-hero__lead {
+            text-align: right;
             max-width: 680px;
             margin: 0 0 28px;
             color: rgba(255,255,255,.82);
@@ -453,7 +455,7 @@
 
         .rc-promo-benefits { padding: 85px 0 65px; background: #f7fafc; }
         .rc-promo-section-heading { max-width: 720px; margin: 0 auto 42px; text-align: center; }
-        .rc-promo-section-heading > span { display: inline-block; margin-bottom: 9px; color: var(--rc-orange); font-size: 12px; font-weight: 950; letter-spacing: 1px; }
+        .rc-promo-section-heading > span { display: inline-block; margin-bottom: 9px; color: var(--rc-orange); font-size: 20px; font-weight: 950; letter-spacing: 1px; }
         .rc-promo-section-heading h2 { margin: 0 0 11px; color: var(--rc-navy); font-size: clamp(29px, 4vw, 43px); line-height: 1.3; font-weight: 950; }
         .rc-promo-section-heading p { margin: 0; color: var(--rc-muted); font-size: 15px; line-height: 1.9; font-weight: 600; }
 
@@ -535,8 +537,8 @@
         }
         .rc-promo-package-card__reach small,
         .rc-promo-package-card__reach strong { display: block; }
-        .rc-promo-package-card__reach small { margin-bottom: 2px; color: #548076; font-size: 11px; font-weight: 800; }
-        .rc-promo-package-card__reach strong { color: #08765f; font-size: 16px; font-weight: 950; }
+        .rc-promo-package-card__reach small {      text-align: right; margin-bottom: 2px; color: #548076; font-size: 11px; font-weight: 800; }
+        .rc-promo-package-card__reach strong { text-align: right;  color: #08765f; font-size: 16px; font-weight: 950; }
         .rc-promo-package-card__benefits { list-style: none; margin: 0 0 22px; padding: 0; }
         .rc-promo-package-card__benefits li { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; color: var(--rc-text); font-size: 12px; font-weight: 750; }
         .rc-promo-package-card__benefits i { width: 21px; height: 21px; flex: 0 0 21px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #08765f; background: rgba(24,199,161,.12); font-size: 9px; }
