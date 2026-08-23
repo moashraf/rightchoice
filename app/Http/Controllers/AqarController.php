@@ -168,7 +168,10 @@ class AqarController extends Controller
 
             }
         })
-            ->with('images')->with('districte')->with('governrateq')->with('images')->with('subAreaa')->paginate(9);
+            ->with('images')->with('districte')->with('governrateq')->with('images')->with('subAreaa')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->paginate(9);
 
 
         $compounds = Compound::all();
