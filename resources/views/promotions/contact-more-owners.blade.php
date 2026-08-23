@@ -105,7 +105,7 @@
                             </button>
 
                             <ul class="rc-buyer-plan__features">
-                                <li><i class="fas fa-check"></i>{{ number_format((int) $package->points) }} {{ $isEnglish ? 'contact points' : 'نقطة تواصل فور الدفع' }}</li>
+                                <li><i class="fas fa-check"></i>{{ number_format((int) $package->points) }} {{ $isEnglish ? 'contact points' : 'نقطة تضاف فور الدفع' }}</li>
                                 <li><i class="fas fa-check"></i>{{ $isEnglish ? 'Direct owner contact' : 'تواصل مباشر مع الملاك' }}</li>
                                 <li><i class="fas fa-check"></i>{{ $isEnglish ? 'No commission or broker' : 'بدون عمولة وبدون وسيط' }}</li>
                             </ul>
