@@ -19,6 +19,14 @@ Route::prefix('{locale}')
         Route::get('/sell-faster', [SellFasterController::class, 'index'])
             ->name('sell-faster.index');
 
+        Route::get('/contact-more-owners', [SellFasterController::class, 'contactMoreOwners'])
+            ->name('contact-more-owners.index');
+
+        Route::get('/contact-more-owners/checkout/{pricing}', [SellFasterController::class, 'buyerCheckout'])
+            ->middleware('CheackUser')
+            ->whereNumber('pricing')
+            ->name('contact-more-owners.checkout');
+
         Route::post('/sell-faster/subscribe/{pricing}', [SellFasterController::class, 'subscribe'])
             ->middleware('CheackUser')
             ->whereNumber('pricing')
