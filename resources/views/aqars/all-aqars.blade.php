@@ -759,7 +759,7 @@
                                                     <span class="rc-property-card__meta-icon">
                                                         <img src="{{ asset('images/icons/bath.png') }}" width="16" height="16" alt="">
                                                     </span>
-                                                    <small>الحمامات</small>
+                                                    <small>حمام</small>
                                                     <strong>{{ (int) $featuredAqar->baths }}</strong>
                                                 </div>
                                             </div>
@@ -930,7 +930,7 @@
                                                 <span class="rc-property-card__meta-icon">
                                                     <img src="{{ asset('images/icons/bath.png') }}" width="16" height="16" alt="">
                                                 </span>
-                                                <small>الحمامات</small>
+                                                <small>حمام</small>
                                                 <strong>{{ (int) $aqar->baths }}</strong>
                                             </div>
                                         </div>
