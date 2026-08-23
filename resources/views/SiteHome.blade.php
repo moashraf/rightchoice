@@ -1191,11 +1191,11 @@
                                     </span>
 
                                     @unless ($isForRent)
-                                        <span class="featured-property__type featured-property__type--payment">
-                                            {{ $isInstallment
-                                                ? (App::isLocale('en') ? 'Installments' : 'تقسيط')
-                                                : (App::isLocale('en') ? 'Cash' : 'كاش') }}
+                                        @if($isInstallment)
+                                        <span  class="featured-property__type featured-property__type--payment">
+                                              تقسيط
                                         </span>
+                                        @endif
                                     @endunless
 
                                     @if ($categoryLabel)
@@ -1240,18 +1240,22 @@
                                 </div>
 
                                 <div class="featured-property__features">
+
+
                                     <div class="featured-property__feature">
-                                        <img src="{{ asset('images/icons/area.png') }}" alt="" loading="lazy">
-                                        <span>{{ $aqarVip->total_area ?: '—' }} م²</span>
+                                        <img src="{{ asset('images/icons/bath.png') }}" alt="" loading="lazy">
+                                        <span>{{ $aqarVip->baths ?: '—' }} {{ App::isLocale('en') ? 'baths' : 'حمام' }}</span>
                                     </div>
                                     <div class="featured-property__feature">
                                         <img src="{{ asset('images/icons/room.png') }}" alt="" loading="lazy">
                                         <span>{{ $aqarVip->rooms ?: '—' }} {{ App::isLocale('en') ? 'rooms' : 'غرف' }}</span>
                                     </div>
+
                                     <div class="featured-property__feature">
-                                        <img src="{{ asset('images/icons/bath.png') }}" alt="" loading="lazy">
-                                        <span>{{ $aqarVip->baths ?: '—' }} {{ App::isLocale('en') ? 'baths' : 'حمام' }}</span>
+                                        <img src="{{ asset('images/icons/area.png') }}" alt="" loading="lazy">
+                                        <span>{{ $aqarVip->total_area ?: '—' }} م²</span>
                                     </div>
+
                                 </div>
 
                                 <a class="featured-property__details"
@@ -2417,13 +2421,18 @@
                                     </h3>
 
                                     <div class="rent-magazine__secondary-footer">
+
+
                                         <div class="rent-magazine__secondary-price">
                                             <strong>{{ number_format((float) $rentAqar->monthly_rent) }}</strong>
                                             <span>{{ trans('langsite.egyptian_pound') }}</span>
                                         </div>
+                                        <a href="{{ $rentPropertyUrl }}" target="_blank" rel="noopener">
+
                                         <span class="rent-magazine__secondary-arrow">
                                             <i class="fas fa-arrow-left" aria-hidden="true"></i>
                                         </span>
+                                        </a>
                                     </div>
                                 </div>
                             </article>
@@ -2935,6 +2944,7 @@
         }
 
         .rent-magazine__secondary-content h3 a {
+            text-align: right;
             display: -webkit-box;
             overflow: hidden;
             color: #fff !important;
@@ -3010,6 +3020,7 @@
 
         .rent-magazine__browse-card h3,
         .rent-magazine__add-card h3 {
+            color: #bca16e;
             margin: 0;
             font-size: 20px;
             font-weight: 900;

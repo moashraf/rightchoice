@@ -12,7 +12,7 @@
 @if(!$isSellFasterPage || !$isContactMoreOwnersPage)
     <div class="rc-floating-promos" aria-label="{{ App::isLocale('en') ? 'Special offers' : 'العروض الخاصة' }}">
         @unless($isSellFasterPage)
-            <a href="{{ $sellFasterUrl }}" class="rc-promo-float rc-promo-float--seller">
+            <a href="{{ $sellFasterUrl }}#promo-packages" class="rc-promo-float rc-promo-float--seller">
                 <span class="rc-promo-float__copy">
                     @if($isAuthenticated)
                         <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
@@ -32,7 +32,6 @@
                     <strong>{{ App::isLocale('en') ? 'Contact more owners' : 'تواصل   مباشر مع الملاك ' }}</strong>
                     <small>
                          خصم
-
                         <span style="
     background: #ffffff;
     font-size: 13px;
