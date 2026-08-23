@@ -769,7 +769,10 @@ class AqarController extends Controller
             ->with('governrateq')
             ->with('districte')
             ->with('subAreaa')
-            ->with('offerTypes')->paginate(9);
+            ->with('offerTypes')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->paginate(9);
         // dd($allAqars);
         $offerTypes = OfferTypes::all();
         $vipAqars = aqar::where('status', 1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('offerTypes')->inRandomOrder()->take(10)->get();
