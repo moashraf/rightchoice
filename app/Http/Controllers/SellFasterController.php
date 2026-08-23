@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\aqar;
 use App\Models\PriceVip;
+use App\Models\Pricing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -24,6 +25,67 @@ class SellFasterController extends Controller
         return view('promotions.sell-faster', [
             'packages' => $packages,
             'discountPercent' => self::DISCOUNT_PERCENT,
+        ]);
+    }
+
+    /**
+     * Show the buyer promotion and discounted packages.
+     */
+    public function contactMoreOwners(string $locale)
+    {
+        $packages = Pricing::query()
+            ->where('price', '>', 0)
+            ->orderBy('price')
+            ->get();
+
+        return view('promotions.contact-more-owners', [
+            'packages' => $packages,
+            'discountPercent' => self::DISCOUNT_PERCENT,
+        ]);
+    }
+
+    /**
+     * Open the existing buyer checkout with the promotional price.
+     */
+    public function buyerCheckout(string $locale, Pricing $pricing)
+    {
+        if ((float) $pricing->price <= 0) {
+            return redirect()
+                ->route('contact-more-owners.index', ['locale' => $locale])
+                ->with('success', $locale === 'en'
+                    ? 'This package is not available.'
+                    : 'هذه الباقة غير متاحة حاليًا.');
+        }
+
+        if (auth()->user()->isCompanyAccount()) {
+            return redirect()
+                ->route('contact-more-owners.index', ['locale' => $locale])
+                ->with('success', $locale === 'en'
+                    ? 'Buyer packages are not available for company accounts.'
+                    : 'باقات المشتري غير متاحة لحسابات الشركات.');
+        }
+
+        $discountedPrice = round(
+            (float) $pricing->price * ((100 - self::DISCOUNT_PERCENT) / 100),
+            2
+        );
+
+        $single = clone $pricing;
+        $single->price = $discountedPrice;
+
+        session([
+            'buyer_promotion_checkout' => [
+                'pricing_id' => $pricing->id,
+                'original_price' => (float) $pricing->price,
+                'discounted_price' => $discountedPrice,
+                'discount_percent' => self::DISCOUNT_PERCENT,
+            ],
+        ]);
+
+        return view('price.show', [
+            'single' => $single,
+            'promotionDiscountPercent' => self::DISCOUNT_PERCENT,
+            'promotionOriginalPrice' => (float) $pricing->price,
         ]);
     }
 
