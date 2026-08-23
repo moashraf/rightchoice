@@ -1697,7 +1697,7 @@ else{
         });
 
 
-        $('body').on("click", "a.addToCart", function (e) {
+        $('body').on("click", ".addToCart", function (e) {
             e.preventDefault();
             var $btn = $(this);
             var token = "{{ csrf_token() }}"
@@ -1779,7 +1779,7 @@ else{
         {{-- Mark already-saved aqars on page load --}}
             @auth
             (function() {
-                var $buttons = $('a.addToCart');
+                var $buttons = $('.addToCart');
                 if ($buttons.length === 0) return;
                 $.get("{{ route('get-wish_list_ids') }}", function(data) {
                     if (data.ids && data.ids.length > 0) {
