@@ -464,14 +464,14 @@
                                     </a>
                                 </li>
 
-                                <li class="{{ Request::is('*/pricing-seller*') ? 'active' : '' }}">
-                                    <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}">
+                                <li class="{{ Request::is('*/sell-faster*') ? 'active' : '' }}">
+                                    <a href="{{ route('sell-faster.index', ['locale' => Config::get('app.locale')]) }}">
                                         <i class="fas fa-bullhorn" style="margin-left:4px; margin-right:4px;"></i>
                                         {{ App::isLocale('en') ? 'Seller Packages' : 'باقات البائع' }}
                                     </a>
                                 </li>
-                                <li class="{{ Request::is('*/pricing-buyer*') ? 'active' : '' }}">
-                                    <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}">
+                                <li class="{{ Request::is('*/contact-more-owners*') ? 'active' : '' }}">
+                                    <a href="{{ route('contact-more-owners.index', ['locale' => Config::get('app.locale')]) }}">
                                         <i class="fas fa-key" style="margin-left:4px; margin-right:4px;"></i>
                                         {{ App::isLocale('en') ? 'Buyer Packages' : 'باقات المشتري' }}
                                     </a>
@@ -1014,12 +1014,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('priceSeller', ['locale' => Config::get('app.locale')]) }}">
+                            <a href="{{ route('sell-faster.index', ['locale' => Config::get('app.locale')]) }}">
                                 {{ App::isLocale('en') ? 'Seller Packages' : 'باقات البائع' }}
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('priceBuyer', ['locale' => Config::get('app.locale')]) }}">
+                            <a href="{{ route('contact-more-owners.index', ['locale' => Config::get('app.locale')]) }}">
                                 {{ App::isLocale('en') ? 'Buyer Packages' : 'باقات المشتري' }}
                             </a>
                         </li>
