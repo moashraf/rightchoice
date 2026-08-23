@@ -27,7 +27,7 @@
         @endunless
 
         @unless($isContactMoreOwnersPage)
-            <a href="{{ $contactMoreOwnersUrl }}" class="rc-promo-float rc-promo-float--buyer">
+            <a href="{{ $contactMoreOwnersUrl }}#buyer-packages" class="rc-promo-float rc-promo-float--buyer">
                 <span class="rc-promo-float__copy">
                     <strong>{{ App::isLocale('en') ? 'Contact more owners' : 'تواصل   مباشر مع الملاك ' }}</strong>
                     <small>
