@@ -52,7 +52,7 @@
         <div class="container">
             <header class="rc-buyer-heading rc-buyer-heading--light">
                 <span>{{ $isEnglish ? '80% OFF' : 'خصم 80%' }}</span>
-                <h2>{{ $isEnglish ? 'Choose your buyer package' : 'اختار باقة المشتري المناسبة' }}</h2>
+                <h2>{{ $isEnglish ? 'Choose your buyer package' : 'اختار    الباقه المناسبة' }}</h2>
                 <p>{{ $isEnglish ? 'The discounted price is applied automatically when you continue from this page.' : 'السعر بعد الخصم بيتطبق تلقائيًا عند الاشتراك من الصفحة دي.' }}</p>
             </header>
             @if($packages->isEmpty())
@@ -71,11 +71,13 @@
                             <p>{{ $package->description }}</p>
                             <div class="rc-buyer-plan__price">
                                 <del>{{ number_format($originalPrice, 0) }} {{ $isEnglish ? 'EGP' : 'ج.م' }}</del>
-                                <strong>{{ number_format($promoPrice, 2) }} <small>{{ $isEnglish ? 'EGP' : 'ج.م' }}</small></strong>
+                                <strong>{{ number_format($promoPrice, 2) }} <small>{{ $isEnglish ? 'EGP' : 'ج.م' }}</small>
+                                </strong>
                             </div>
                             <ul>
-                                <li><i class="fas fa-check"></i>{{ number_format((int) $package->points) }} {{ $isEnglish ? 'contact points' : 'نقطة تواصل' }}</li>
+                                <li><i class="fas fa-check"></i>{{ number_format((int) $package->points) }} {{ $isEnglish ? 'contact points' : ' فور الدفع  ' }}</li>
                                 <li><i class="fas fa-check"></i>{{ $isEnglish ? 'Direct owner contact' : 'تواصل مباشر مع الملاك' }}</li>
+                                <li><i class="fas fa-check"></i>{{ $isEnglish ? 'Direct owner contact' : '       بدون عموله بدون وسيط' }}</li>
                             </ul>
                             <a href="{{ route('contact-more-owners.checkout', ['locale' => $locale, 'pricing' => $package->id]) }}">{{ $isEnglish ? 'Subscribe now' : 'اشترك الآن' }} <i class="fas fa-arrow-left"></i></a>
                         </article>
@@ -99,7 +101,7 @@
 .rc-buyer-btn--primary{background:#fff;color:var(--blue)!important;box-shadow:0 16px 35px #001b354d}.rc-buyer-btn--ghost{border:1px solid #ffffff55;color:#fff!important;background:#ffffff10}.rc-buyer-btn:hover{transform:translateY(-4px)}
 .rc-buyer-trust{display:flex;flex-wrap:wrap;gap:18px;margin-top:25px;font-size:13px;font-weight:800}.rc-buyer-trust i{margin-inline-end:6px;color:#62d6ff}
 .rc-buyer-discount{position:relative;padding:34px;text-align:center;border:1px solid #ffffff42;border-radius:30px;background:#ffffff14;box-shadow:0 25px 60px #00172d59;backdrop-filter:blur(12px);animation:rcBuyerCard 4s ease-in-out infinite}.rc-buyer-discount small{font-weight:900;letter-spacing:2px}.rc-buyer-discount strong{display:block;font-size:92px;line-height:1;color:#fff;text-shadow:0 10px 30px #001b35}.rc-buyer-discount sup{font-size:36px}.rc-buyer-discount h2{font-size:22px;font-weight:900}.rc-buyer-discount p{color:#d9efff}
-.rc-buyer-benefits,.rc-buyer-packages{padding:80px 0}.rc-buyer-heading{text-align:center;margin-bottom:38px}.rc-buyer-heading span{color:var(--blue);font-weight:950}.rc-buyer-heading h2{margin:8px 0;font-size:clamp(28px,4vw,44px);font-weight:950}.rc-buyer-heading p{color:#dcecff}.rc-buyer-heading--light{color:#fff}.rc-buyer-heading--light span{color:#62d6ff}
+.rc-buyer-benefits,.rc-buyer-packages{padding:80px 0}.rc-buyer-heading{text-align:center;margin-bottom:38px}.rc-buyer-heading span{color:var(--blue);font-weight:950}.rc-buyer-heading h2{    color: #ffffff; margin:8px 0;font-size:clamp(28px,4vw,44px);font-weight:950}.rc-buyer-heading p{color:#dcecff}.rc-buyer-heading--light{color:#fff}.rc-buyer-heading--light span{color:#62d6ff}
 .rc-buyer-benefits__grid,.rc-buyer-packages__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.rc-buyer-benefits article{padding:30px;border:1px solid #dce9f7;border-radius:24px;background:#fff;box-shadow:0 15px 40px #194f8012;transition:.3s}.rc-buyer-benefits article:hover{transform:translateY(-8px);box-shadow:0 22px 48px #194f8024}.rc-buyer-benefits article i{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:#e5f3ff;color:var(--blue);font-size:21px}.rc-buyer-benefits h3{margin:18px 0 8px;font-weight:900}.rc-buyer-benefits p{color:#64788c;line-height:1.8}
 .rc-buyer-packages{background:linear-gradient(145deg,#052c55,#0b5cab)}.rc-buyer-plan{position:relative;padding:30px;border:1px solid #ffffff30;border-radius:26px;background:#fff;box-shadow:0 22px 55px #00172d52;animation:rcBuyerPlanEnter .65s ease backwards;animation-delay:var(--delay);transition:.3s}.rc-buyer-plan:hover{transform:translateY(-10px);box-shadow:0 30px 65px #00172d80}.rc-buyer-plan__badge{position:absolute;top:18px;left:18px;padding:6px 10px;border-radius:999px;background:#0b5cab;color:#fff;font-weight:950}.rc-buyer-plan h3{padding-inline-end:65px;font-size:22px;font-weight:950}.rc-buyer-plan>p{min-height:48px;color:#66798c}.rc-buyer-plan__price{margin:22px 0;padding:18px;border-radius:18px;background:#edf7ff}.rc-buyer-plan__price del{display:block;color:#8798a8}.rc-buyer-plan__price strong{display:block;color:var(--blue);font-size:35px;font-weight:950}.rc-buyer-plan__price small{font-size:14px}.rc-buyer-plan ul{padding:0;list-style:none;line-height:2.2}.rc-buyer-plan li i{margin-inline-end:8px;color:#159447}.rc-buyer-plan>a{display:flex;justify-content:center;gap:10px;padding:14px;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff!important;font-weight:900;text-decoration:none!important}
 .rc-buyer-empty{padding:35px;border-radius:20px;background:#fff;text-align:center}.rc-buyer-plan:nth-child(2){transform:translateY(-12px)}.rc-buyer-plan:nth-child(2):hover{transform:translateY(-20px)}
