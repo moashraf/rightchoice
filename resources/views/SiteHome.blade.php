@@ -1783,31 +1783,7 @@
                                 حوّل عقارك إلى فرصة استثمارية اليوم
                                 <br>
                                 أنشئ إعلانك بخطوات بسيطة ودع العملاء يصلون إليك مباشرة.    </p>
-                            <div class="register-cta-features animate-fade-up-delay2">
-                                <div class="register-cta-feature">
-                                    <div class="register-cta-feature-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                                    </div>
-                                    <span>إضافة إعلانات مجانية</span>
-                                </div>
-                                <div class="register-cta-feature">
-                                    <div class="register-cta-feature-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                                    </div>
-                                    <span>
-                                    تحكم كامل في تفاصيل إعلانك
-                                    </span>
-                                </div>
-                                <div class="register-cta-feature">
-                                    <div class="register-cta-feature-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#196aa2" viewBox="0 0 24 24">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                                    </div>
-                                    <span>تواصل مباشر مع المُعلنين</span>
-                                </div>
-                            </div>
+
                             <a href="{{ URL::to(Config::get('app.locale').'/aqars/create') }}" class="register-cta-btn animate-fade-up-delay3">
                                 <span> جرّب إضافة عقارك   مجاناً</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 24 24" style="margin-right:8px;">

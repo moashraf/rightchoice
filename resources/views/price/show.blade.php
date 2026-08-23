@@ -25,7 +25,17 @@
 
             <span>{{    $single->type   }}</span>
             <br> <br>
-            <h1 style="display: inline; font-weight:bold;" class="pr-value {{    $single->title_color   }}">{{ $single->price }}</h1><span>ج.م</span>
+            @if(isset($promotionDiscountPercent, $promotionOriginalPrice))
+                <div style="margin: 0 auto 18px; max-width: 420px; padding: 18px; border-radius: 18px; background: #eaf5ff; border: 1px solid #b9dcf8;">
+                    <span style="display:inline-block; padding:5px 11px; border-radius:999px; color:#fff; background:#0b66bd; font-weight:900;">
+                        خصم {{ $promotionDiscountPercent }}%
+                    </span>
+                    <div style="margin-top:10px;">
+                        <del style="color:#7b8b99; font-size:18px;">{{ number_format($promotionOriginalPrice, 2) }} ج.م</del>
+                    </div>
+                </div>
+            @endif
+            <h1 style="display: inline; font-weight:bold;" class="pr-value {{ $single->title_color }}">{{ number_format((float) $single->price, 2) }}</h1><span> ج.م</span>
             <br>
                 <p> {{    $single->description   }} </p>
                  <br>

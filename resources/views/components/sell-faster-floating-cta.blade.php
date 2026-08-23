@@ -1,172 +1,68 @@
 @php
     $promoLocale = Config::get('app.locale') ?: app()->getLocale();
     $isSellFasterPage = request()->is($promoLocale . '/sell-faster');
+    $isContactMoreOwnersPage = request()->is($promoLocale . '/contact-more-owners*');
     $isAuthenticated = auth()->check();
-    $floatingCtaUrl = $isAuthenticated
-        ? url($promoLocale . '/sell-faster')
+    $sellFasterUrl = $isAuthenticated
+        ? route('sell-faster.index', ['locale' => $promoLocale])
         : route('user.register', ['locale' => $promoLocale]);
+    $contactMoreOwnersUrl = route('contact-more-owners.index', ['locale' => $promoLocale]);
 @endphp
 
-@unless($isSellFasterPage)
-    <a
-        href="{{ $floatingCtaUrl }}"
-        class="rc-sell-faster-float"
-        aria-label="{{ $isAuthenticated
-            ? (App::isLocale('en') ? 'Sell your property faster - 80% off packages' : 'بيع عقارك أسرع - خصم 80% على الباقات')
-            : (App::isLocale('en') ? 'Register your details for free' : 'سجل بياناتك مجانًا') }}"
-    >
+@if(!$isSellFasterPage || !$isContactMoreOwnersPage)
+    <div class="rc-floating-promos" aria-label="{{ App::isLocale('en') ? 'Special offers' : 'العروض الخاصة' }}">
+        @unless($isSellFasterPage)
+            <a href="{{ $sellFasterUrl }}" class="rc-promo-float rc-promo-float--seller">
+                <span class="rc-promo-float__copy">
+                    @if($isAuthenticated)
+                        <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
+                        <small>{{ App::isLocale('en') ? 'Limited 80% OFF' : 'خصم 80% على الباقات' }}</small>
+                    @else
+                        <strong>{{ App::isLocale('en') ? 'Join Right Choice' : 'سجل بياناتك' }}</strong>
+                        <small>{{ App::isLocale('en') ? 'Start for free' : 'ابدأ مجانًا' }}</small>
+                    @endif
+                </span>
+                <span class="rc-promo-float__badge">{{ $isAuthenticated ? '80%' : (App::isLocale('en') ? 'FREE' : 'مجانًا') }}</span>
+            </a>
+        @endunless
 
+        @unless($isContactMoreOwnersPage)
+            <a href="{{ $contactMoreOwnersUrl }}#buyer-packages" class="rc-promo-float rc-promo-float--buyer">
+                <span class="rc-promo-float__copy">
+                    <strong>{{ App::isLocale('en') ? 'Contact more owners' : 'تواصل   مباشر مع الملاك ' }}</strong>
+                    <small>
+                         خصم
 
-        <span class="rc-sell-faster-float__copy">
-            @if($isAuthenticated)
-                <strong>{{ App::isLocale('en') ? 'Sell faster' : 'بيع عقارك أسرع' }}</strong>
-                <small>{{ App::isLocale('en') ? 'Limited 80% OFF' : 'خصم 80% على الباقات' }}</small>
-            @else
-                <strong>{{ App::isLocale('en') ? 'Join Right Choice' : 'سجل بياناتك' }}</strong>
-             @endif
-        </span>
-
-        <span class="rc-sell-faster-float__badge">
-            {{ $isAuthenticated ? '80%' : (App::isLocale('en') ? 'FREE' : 'مجانًا') }}
-        </span>
-    </a>
+                        <span style="
+    background: #ffffff;
+    font-size: 13px;
+    color: #000000;
+    padding: 2px;
+    border-radius: 50%;
+"> 80 %</span>
+                         على الباقات
+                    </small>
+                 </span>
+{{--                <span class="rc-promo-float__badge">80%</span>--}}
+            </a>
+        @endunless
+    </div>
 
     <style>
-        .rc-sell-faster-float,
-        .rc-sell-faster-float * {
-            box-sizing: border-box;
-        }
-
-        .rc-sell-faster-float {
-            position: fixed;
-            top: 53%;
-            right: 0;
-            z-index: 9998;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-height: 66px;
-            padding: 10px 12px 10px 14px;
-            border-radius: 22px 0 0 22px;
-            color: #fff !important;
-            text-decoration: none !important;
-            background:
-                radial-gradient(circle at 15% 10%, rgba(255,255,255,.22), transparent 35%),
-                linear-gradient(135deg, #F47D35 0%, #EE5B2A 48%, #D9472A 100%);
-            border: 1px solid rgba(255,255,255,.26);
-            border-right: 0;
-            box-shadow: 0 18px 44px rgba(4, 44, 78, .28);
-            transform: translateY(-50%);
-            transition: transform .25s ease, box-shadow .25s ease, padding .25s ease;
-            overflow: hidden;
-            isolation: isolate;
-            animation: rcSellFasterFloatPulse 2.8s ease-in-out infinite;
-        }
-
-        .rc-sell-faster-float::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            background: linear-gradient(115deg, transparent 15%, rgba(255,255,255,.26) 42%, transparent 67%);
-            transform: translateX(120%);
-            animation: rcSellFasterShine 3.2s ease-in-out infinite;
-        }
-
-        .rc-sell-faster-float:hover,
-        .rc-sell-faster-float:focus {
-            color: #fff !important;
-            text-decoration: none !important;
-            transform: translateY(-50%) translateX(-6px);
-            box-shadow: 0 22px 54px rgba(4, 44, 78, .36);
-            outline: none;
-        }
-
-
-
-        .rc-sell-faster-float__copy {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            white-space: nowrap;
-            text-align: right;
-            line-height: 1.3;
-        }
-
-        html[lang^="en"] .rc-sell-faster-float__copy {
-            text-align: left;
-        }
-
-        .rc-sell-faster-float__copy strong {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        .rc-sell-faster-float__copy small {
-            color: rgba(255,255,255,.88);
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .rc-sell-faster-float__badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 42px;
-            height: 32px;
-            padding: 0 7px;
-            border-radius: 999px;
-            color: #073F73;
-            background: #fff;
-            font-size: 12px;
-            font-weight: 900;
-            box-shadow: 0 8px 20px rgba(0,0,0,.14);
-        }
-
-        @keyframes rcSellFasterFloatPulse {
-            0%, 100% { box-shadow: 0 18px 44px rgba(4, 44, 78, .28); }
-            50% { box-shadow: 0 18px 50px rgba(244, 125, 53, .46); }
-        }
-
-        @keyframes rcSellFasterShine {
-            0%, 58% { transform: translateX(120%); }
-            78%, 100% { transform: translateX(-120%); }
-        }
-
-        @media (max-width: 767.98px) {
-            .rc-sell-faster-float {
-                top: auto;
-                right: 14px;
-                bottom: 82px;
-                min-height: 56px;
-                padding: 8px 10px;
-                border-radius: 18px;
-                border-right: 1px solid rgba(255,255,255,.26);
-                transform: none;
-                box-shadow: 0 16px 38px rgba(4, 44, 78, .3);
-            }
-
-            .rc-sell-faster-float:hover,
-            .rc-sell-faster-float:focus {
-                transform: translateY(-4px);
-            }
-
-            .rc-sell-faster-float__copy strong {  display: none; font-size: 13px; }
-            .rc-sell-faster-float__copy small { font-size: 10px; }
-            .rc-sell-faster-float__badge { min-width: 38px; height: 29px; }
-        }
-
-        @media (max-width: 420px) {
-            .rc-sell-faster-float__copy small { display: none; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .rc-sell-faster-float,
-            .rc-sell-faster-float::before {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
+        .rc-floating-promos,.rc-floating-promos *{box-sizing:border-box}
+        .rc-floating-promos{position:fixed;top:47%;right:0;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:10px;transform:translateY(-50%)}
+        .rc-promo-float{position:relative;display:flex;align-items:center;gap:10px;min-height:66px;padding:10px 12px 10px 14px;border:1px solid #ffffff42;border-right:0;border-radius:22px 0 0 22px;color:#fff!important;text-decoration:none!important;box-shadow:0 18px 44px #042c4e47;overflow:hidden;isolation:isolate;transition:transform .25s ease,box-shadow .25s ease,padding .25s ease;animation:rcPromoPulse 3s ease-in-out infinite}
+        .rc-promo-float::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,transparent 15%,#ffffff42 42%,transparent 67%);transform:translateX(120%);animation:rcPromoShine 3.2s ease-in-out infinite}
+        .rc-promo-float--seller{background:radial-gradient(circle at 15% 10%,#ffffff38,transparent 35%),linear-gradient(135deg,#f47d35,#ee5b2a 48%,#d9472a)}
+        .rc-promo-float--buyer{background:radial-gradient(circle at 15% 10%,#ffffff38,transparent 35%),linear-gradient(135deg,#178ee0,#0b66bd 50%,#084b91);animation-delay:.7s}
+        .rc-promo-float--buyer::before{animation-delay:1.1s}
+        .rc-promo-float:hover,.rc-promo-float:focus{color:#fff!important;text-decoration:none!important;transform:translateX(-7px);box-shadow:0 22px 54px #042c4e5c;outline:none}
+        .rc-promo-float__copy{display:flex;flex-direction:column;gap:6px;white-space:nowrap;text-align:right;line-height:1.3}html[lang^=en] .rc-promo-float__copy{text-align:left}
+        .rc-promo-float__copy strong{color:#fff;font-size:14px;font-weight:900}.rc-promo-float__copy small{color:#ffffffe0;font-size:11px;font-weight:800}
+        .rc-promo-float__badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:32px;padding:0 7px;border-radius:999px;color:#073f73;background:#fff;font-size:12px;font-weight:900;box-shadow:0 8px 20px #00000024}
+        @keyframes rcPromoPulse{50%{box-shadow:0 20px 52px #0b66bd59}}@keyframes rcPromoShine{0%,58%{transform:translateX(120%)}78%,100%{transform:translateX(-120%)}}
+        @media(max-width:767.98px){.rc-floating-promos{top:auto;right:12px;bottom:76px;gap:8px;transform:none}.rc-promo-float{min-height:52px;padding:7px 9px;border-radius:17px;border-right:1px solid #ffffff42}.rc-promo-float:hover,.rc-promo-float:focus{transform:translateY(-3px)}.rc-promo-float__copy strong{font-size:12px}.rc-promo-float__copy small{font-size:9px}.rc-promo-float__badge{min-width:36px;height:28px}}
+        @media(max-width:420px){.rc-promo-float__copy small{display:none}.rc-promo-float{min-height:46px}.rc-promo-float__badge{height:25px}}
+        @media(prefers-reduced-motion:reduce){.rc-promo-float,.rc-promo-float::before{animation:none!important;transition:none!important}}
     </style>
-@endunless
+@endif

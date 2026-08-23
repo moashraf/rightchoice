@@ -177,10 +177,10 @@
                                             <i class="fas fa-eye"></i>
                                         </div>
                                         <div>
-                                            <small>{{ $isEnglish ? 'Expected property exposure' : 'الظهور المتوقع لعقارك' }}</small>
+                                            <small>{{ $isEnglish ? 'Expected property exposure' : ' ميز اعلانك    ' }}</small>
                                             <strong>
-                                                {{ number_format((int) $package->views) }}
-                                                {{ $isEnglish ? 'views' : 'مشاهدة' }}
+                                                {{  $package->duration_days  }}
+                                                  يوم  وخلي الاعلان يظهر اكثر للمشترين
                                             </strong>
                                         </div>
                                     </div>
