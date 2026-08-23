@@ -29,10 +29,21 @@
         @unless($isContactMoreOwnersPage)
             <a href="{{ $contactMoreOwnersUrl }}" class="rc-promo-float rc-promo-float--buyer">
                 <span class="rc-promo-float__copy">
-                    <strong>{{ App::isLocale('en') ? 'Contact more owners' : 'تواصل مع ملاك أكثر' }}</strong>
-                    <small>{{ App::isLocale('en') ? '80% off buyer packages' : 'خصم 80% على باقات المشتري' }}</small>
-                </span>
-                <span class="rc-promo-float__badge">80%</span>
+                    <strong>{{ App::isLocale('en') ? 'Contact more owners' : 'تواصل   مباشر مع الملاك ' }}</strong>
+                    <small>
+                         خصم
+
+                        <span style="
+    background: #ffffff;
+    font-size: 13px;
+    color: #000000;
+    padding: 2px;
+    border-radius: 50%;
+"> 80 %</span>
+                         على الباقات
+                    </small>
+                 </span>
+{{--                <span class="rc-promo-float__badge">80%</span>--}}
             </a>
         @endunless
     </div>
@@ -46,7 +57,7 @@
         .rc-promo-float--buyer{background:radial-gradient(circle at 15% 10%,#ffffff38,transparent 35%),linear-gradient(135deg,#178ee0,#0b66bd 50%,#084b91);animation-delay:.7s}
         .rc-promo-float--buyer::before{animation-delay:1.1s}
         .rc-promo-float:hover,.rc-promo-float:focus{color:#fff!important;text-decoration:none!important;transform:translateX(-7px);box-shadow:0 22px 54px #042c4e5c;outline:none}
-        .rc-promo-float__copy{display:flex;flex-direction:column;gap:2px;white-space:nowrap;text-align:right;line-height:1.3}html[lang^=en] .rc-promo-float__copy{text-align:left}
+        .rc-promo-float__copy{display:flex;flex-direction:column;gap:6px;white-space:nowrap;text-align:right;line-height:1.3}html[lang^=en] .rc-promo-float__copy{text-align:left}
         .rc-promo-float__copy strong{color:#fff;font-size:14px;font-weight:900}.rc-promo-float__copy small{color:#ffffffe0;font-size:11px;font-weight:800}
         .rc-promo-float__badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:32px;padding:0 7px;border-radius:999px;color:#073f73;background:#fff;font-size:12px;font-weight:900;box-shadow:0 8px 20px #00000024}
         @keyframes rcPromoPulse{50%{box-shadow:0 20px 52px #0b66bd59}}@keyframes rcPromoShine{0%,58%{transform:translateX(120%)}78%,100%{transform:translateX(-120%)}}
