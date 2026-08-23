@@ -64,10 +64,11 @@
                             $originalPrice = (float) $package->price;
                             $promoPrice = round($originalPrice * $discountMultiplier, 2);
                             $packageName = $isEnglish && !empty($package->type_en) ? $package->type_en : $package->type;
+                            $packageName = strip_tags($packageName, '<i>');
                         @endphp
                         <article class="rc-buyer-plan" style="--delay: {{ $loop->index * 120 }}ms">
                             <span class="rc-buyer-plan__badge">-{{ $discountPercent }}%</span>
-                            <h3>{{ $packageName }}</h3>
+                            <h3>{!! $packageName !!}</h3>
                             <p>{{ $package->description }}</p>
                             <div class="rc-buyer-plan__price">
                                 <del>{{ number_format($originalPrice, 0) }} {{ $isEnglish ? 'EGP' : 'ج.م' }}</del>
