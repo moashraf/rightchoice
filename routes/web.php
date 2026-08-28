@@ -298,6 +298,11 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
 
+    // ── Laravel System Logs ─────────────────────────────────────────────
+    Route::get('systemLogs', [App\Http\Controllers\AdminSystemLogController::class, 'index'])
+        ->name('systemLogs.index')
+        ->middleware('role:admin');
+
     // ── Error Logs ─────────────────────────────────────────────────────
     Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])
         ->name('errorLogs.clearAll')
