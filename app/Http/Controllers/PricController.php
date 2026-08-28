@@ -506,14 +506,10 @@ $message ="  تم تميز اعلانك بنجاح ";
 
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
-
               $referenceNumber=($response['referenceNumber']);
                $customerMobile = isset($response['customerMobile']) ? $response['customerMobile'] : 'N/A';
-
  /////////////////////////////////////////////
-
-            $FawryPayment = new FawryPayment();
-
+         $FawryPayment = new FawryPayment();
         $FawryPayment->paymentAmount =$amount  ;
     //    $FawryPayment->tmyezz_price_vip_id = $request->price_id;
         $FawryPayment->user_id = auth()->user()->id;
@@ -919,12 +915,8 @@ $paymentStatus = $response['type']; // get response values
 
         $data = $validator->validated();
 
-        $payment = FawryPayment::where(
-            'merchantRefNumber',
-            $data['merchantRefNumber']
-        )->first();
-
-        if (!$payment) {
+        $payment = FawryPayment::where(  'merchantRefNumber',  $data['merchantRefNumber']  )->first();
+         if (!$payment) {
             Log::warning('Fawry callback payment not found.', $request->all());
 
             return response()->json(['message' => 'Payment not found.'], 404);
