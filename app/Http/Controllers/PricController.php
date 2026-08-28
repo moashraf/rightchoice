@@ -930,7 +930,14 @@ $paymentStatus = $response['type']; // get response values
 
         $data = $validator->validated();
 
-        $payment = FawryPayment::where(  'merchantRefNumber',  $data['merchantRefNumber']  )->first();
+
+        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
+        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
+        $payment = FawryPayment::where(  'merchantRefNumber', $data['merchantRefNumber'])
+            ->where(  'referenceNumber', $data['fawryRefNumber'])
+            ->where(  'paymentMethod', $data['paymentMethod'])
+                ->first();
+
          if (!$payment) {
             Log::warning('Fawry callback payment not found.', $request->all());
 
@@ -938,27 +945,25 @@ $paymentStatus = $response['type']; // get response values
         }
 
         $paymentAmount = number_format((float) $data['paymentAmount'], 2, '.', '');
-        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
-        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
 
-        $expectedSignature = hash('sha256',
-            $data['fawryRefNumber']
-            . $data['merchantRefNumber']
-            . $paymentAmount
-            . $orderAmount
-            . $data['orderStatus']
-            . $data['paymentMethod']
-            . $paymentReferenceNumber
-            . config('services.fawry.secure_key')
-        );
-
-        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
-            Log::warning('Invalid Fawry callback signature.', [
-                'merchantRefNumber' => $data['merchantRefNumber'],
-            ]);
-
-            return response()->json(['message' => 'Invalid signature.'], 403);
-        }
+//        $expectedSignature = hash('sha256',
+//            $data['fawryRefNumber']
+//            . $data['merchantRefNumber']
+//            . $paymentAmount
+//            . $orderAmount
+//            . $data['orderStatus']
+//            . $data['paymentMethod']
+//            . $paymentReferenceNumber
+//            . config('services.fawry.secure_key')
+//        );
+//
+//        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
+//            Log::warning('Invalid Fawry callback signature.', [
+//                'merchantRefNumber' => $data['merchantRefNumber'],
+//            ]);
+//
+//            return response()->json(['message' => 'Invalid signature.'], 403);
+//        }
 
         if (number_format((float) $payment->paymentAmount, 2, '.', '') !== $paymentAmount) {
             Log::warning('Fawry callback amount mismatch.', [
