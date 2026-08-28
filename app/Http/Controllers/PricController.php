@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PriceVip;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\Pricing;
 use App\Models\aqar;
 use App\Models\FawryPayment;
 
 use App\Models\UserPriceing;
 use App\Services\PropertyPromotionService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Redirect;
 
 
@@ -211,7 +213,6 @@ class PricController extends Controller
         return $this->callPostApi($fawryUrl,$data);
     }
 
-
     public function getProductsJSON($amount)
     {
         $data = [] ;
@@ -233,7 +234,6 @@ class PricController extends Controller
         */
         return response()->json($data);
     }
-
 
    public function fawryCallback()
     {
@@ -351,8 +351,6 @@ $pric= Pricing::find(2);
 
     }
 
-
-
    public function tmyezz_fawryCallback()
     {
 
@@ -411,7 +409,6 @@ $message ="  تم تميز اعلانك بنجاح ";
     }
 
 
-
     public function index($locale)
     {
         return $this->buyer($locale);
@@ -441,7 +438,6 @@ $message ="  تم تميز اعلانك بنجاح ";
 
  $add_to_vip = aqar::where('id', $request->aqar_id)->where('user_id', $request->user_id)->first();
 
-// dd($add_to_vip);
     }
 
 
@@ -470,8 +466,6 @@ $message ="  تم تميز اعلانك بنجاح ";
             return Redirect::back();
         }
 
-          //  dd(auth()->user()->email);
-
 
         $merchantRefNum=  $six_digit_random_number = random_int(100000, 999999);
         $amount=$request->price;
@@ -489,10 +483,11 @@ $message ="  تم تميز اعلانك بنجاح ";
             "amount"              => $amount,
             "currencyCode"        => "EGP",
             "description"         => "purchases   by fawry",
+            "orderWebHookUrl"     => route('fawry.payment.notification'),
             "chargeItems"         => $this->getProductsJSON($amount)->getData(),
             "signature"           => $this->buildMessageSignatureV2($amount,$merchantRefNum,auth()->user()->id)
         ];
-        //dd($data);
+
        // return $this->callPostApi($fawryUrl,$data);
 
          $payload = json_encode($data);
@@ -500,12 +495,8 @@ $message ="  تم تميز اعلانك بنجاح ";
             'headers' => [
               'Accept' => 'application/json',
               'Content-Type' => 'application/json',
-
-    'Content-Length: ' . strlen($payload)
-
-            ],
-            'json' =>  $data
-
+               'Content-Length: ' . strlen($payload)   ],
+               'json' =>  $data
         ];
         try {
             //$client = new \GuzzleHttp\Client(['verify' => false ]);
@@ -513,7 +504,6 @@ $message ="  تم تميز اعلانك بنجاح ";
             $apiRequest = $client->request('POST', $fawryUrl, $requestContent);
             $response = json_decode($apiRequest->getBody()->getContents(), true);
 
- //dd($response);
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
 
@@ -847,6 +837,156 @@ $paymentStatus = $response['type']; // get response values
         session()->flash('success', ' تم الاشتراك بنجاح');
         return view('/th', compact('message'));
         */
+    }
+
+    /**
+     * Receive Fawry server-to-server payment status notifications.
+     */
+    public function paymentNotification(Request $request): JsonResponse
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fawryRefNumber'        => ['required'],
+                'merchantRefNumber'     => ['required'],
+                'paymentAmount'         => ['required'],
+                'orderAmount'           => ['required'],
+                'orderStatus'           => ['required'],
+                'paymentMethod'         => ['required'],
+                'paymentRefrenceNumber' => ['nullable'],
+                'messageSignature'      => ['required'],
+            ],
+            [
+                'fawryRefNumber.required' =>
+                    'رقم مرجع فوري مطلوب.',
+
+                'fawryRefNumber.string' =>
+                    'رقم مرجع فوري يجب أن يكون نصًا.',
+
+                'merchantRefNumber.required' =>
+                    'رقم مرجع العملية في الموقع مطلوب.',
+
+                'merchantRefNumber.string' =>
+                    'رقم مرجع العملية يجب أن يكون نصًا.',
+
+                'paymentAmount.required' =>
+                    'المبلغ المدفوع مطلوب.',
+
+                'paymentAmount.numeric' =>
+                    'المبلغ المدفوع يجب أن يكون رقمًا.',
+
+                'orderAmount.required' =>
+                    'قيمة الطلب مطلوبة.',
+
+                'orderAmount.numeric' =>
+                    'قيمة الطلب يجب أن تكون رقمًا.',
+
+                'orderStatus.required' =>
+                    'حالة عملية الدفع مطلوبة.',
+
+                'orderStatus.string' =>
+                    'حالة عملية الدفع يجب أن تكون نصًا.',
+
+                'paymentMethod.required' =>
+                    'طريقة الدفع مطلوبة.',
+
+                'paymentMethod.string' =>
+                    'طريقة الدفع يجب أن تكون نصًا.',
+
+                'paymentRefrenceNumber.string' =>
+                    'رقم مرجع الدفع يجب أن يكون نصًا.',
+
+                'messageSignature.required' =>
+                    'توقيع رسالة فوري مطلوب.',
+
+                'messageSignature.string' =>
+                    'توقيع رسالة فوري يجب أن يكون نصًا.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            Log::warning('Fawry callback validation failed.', [
+                'errors'  => $validator->errors()->toArray(),
+                'payload' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'بيانات إشعار الدفع المرسلة من فوري غير صحيحة.',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $data = $validator->validated();
+
+        $payment = FawryPayment::where(
+            'merchantRefNumber',
+            $data['merchantRefNumber']
+        )->first();
+
+        if (!$payment) {
+            Log::warning('Fawry callback payment not found.', $request->all());
+
+            return response()->json(['message' => 'Payment not found.'], 404);
+        }
+
+        $paymentAmount = number_format((float) $data['paymentAmount'], 2, '.', '');
+        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
+        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
+
+        $expectedSignature = hash('sha256',
+            $data['fawryRefNumber']
+            . $data['merchantRefNumber']
+            . $paymentAmount
+            . $orderAmount
+            . $data['orderStatus']
+            . $data['paymentMethod']
+            . $paymentReferenceNumber
+            . config('services.fawry.secure_key')
+        );
+
+        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
+            Log::warning('Invalid Fawry callback signature.', [
+                'merchantRefNumber' => $data['merchantRefNumber'],
+            ]);
+
+            return response()->json(['message' => 'Invalid signature.'], 403);
+        }
+
+        if (number_format((float) $payment->paymentAmount, 2, '.', '') !== $paymentAmount) {
+            Log::warning('Fawry callback amount mismatch.', [
+                'merchantRefNumber' => $data['merchantRefNumber'],
+                'expectedAmount' => $payment->paymentAmount,
+                'receivedAmount' => $paymentAmount,
+            ]);
+
+            return response()->json(['message' => 'Payment amount mismatch.'], 422);
+        }
+
+        $status = strtoupper($data['orderStatus']);
+        if ($status === 'CANCELED') {
+            $status = 'CANCELLED';
+        }
+
+        $allowedStatuses = ['UNPAID', 'PAID', 'EXPIRED', 'FAILED', 'CANCELLED'];
+        if (!in_array($status, $allowedStatuses, true)) {
+            return response()->json(['message' => 'Unsupported payment status.'], 422);
+        }
+
+        $payment->paymentStatus = $status;
+        $payment->referenceNumber = $data['fawryRefNumber'];
+        $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+
+        if ($status === 'PAID' && !$payment->paid_at) {
+            $payment->paid_at = now();
+        }
+
+        $payment->save();
+
+        return response()->json([
+            'message' => 'Payment status updated successfully.',
+            'paymentStatus' => $payment->paymentStatus,
+        ]);
     }
 
 

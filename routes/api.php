@@ -123,6 +123,8 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 |--------------------------------------------------------------------------
 */
 // Callback من فوري (public – فوري بيبعتها من السيرفر بتاعهم)
+Route::post('fawry/payment-notification', [App\Http\Controllers\PricController::class, 'paymentNotification'])
+    ->name('fawry.payment.notification');
 Route::get('fawry/callback',     [App\Http\Controllers\API\FawryPaymentAPIController::class, 'fawryCallback']);
 Route::get('fawry/vip-callback', [App\Http\Controllers\API\FawryPaymentAPIController::class, 'tmyezzFawryCallback']);
 
@@ -224,4 +226,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('account/delete-request',          [App\Http\Controllers\API\AccountDeleteAPIController::class, 'store']);
     Route::get('account/delete-request/status',    [App\Http\Controllers\API\AccountDeleteAPIController::class, 'status']);
 });
-
