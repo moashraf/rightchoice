@@ -984,7 +984,9 @@ $paymentStatus = $response['type']; // get response values
         $payment->referenceNumber = $data['fawryRefNumber'];
         $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
 
-        $this->appendGatewayResponse($payment, $request->all());
+        if ($status === 'FAILED') {
+            $this->appendGatewayResponse($payment, $request->all());
+        }
 
         if ($status === 'PAID' && !$payment->paid_at) {
             $payment->paid_at = now();
