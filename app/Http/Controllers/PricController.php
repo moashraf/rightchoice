@@ -483,7 +483,7 @@ $message ="  تم تميز اعلانك بنجاح ";
             "amount"              => $amount,
             "currencyCode"        => "EGP",
             "description"         => "purchases   by fawry",
-            "orderWebHookUrl"     => route('fawry.payment.notification'),
+            "orderWebHookUrl"     => (string) config('services.fawry.webhook_url') ?: route('fawry.payment.notification'),
             "chargeItems"         => $this->getProductsJSON($amount)->getData(),
             "signature"           => $this->buildMessageSignatureV2($amount,$merchantRefNum,auth()->user()->id)
         ];
@@ -855,6 +855,14 @@ $paymentStatus = $response['type']; // get response values
      */
     public function paymentNotification(Request $request): JsonResponse
     {
+        Log::info('Fawry payment notification received.', [
+            'requestId' => $request->input('requestId'),
+            'fawryRefNumber' => $request->input('fawryRefNumber'),
+            'merchantRefNumber' => $request->input('merchantRefNumber'),
+            'orderStatus' => $request->input('orderStatus'),
+            'paymentMethod' => $request->input('paymentMethod'),
+        ]);
+
         $validator = Validator::make(
             $request->all(),
             [
