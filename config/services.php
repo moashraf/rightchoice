@@ -39,6 +39,10 @@ return [
         'secure_key'    => env('FAWRY_SECURE_KEY', '160224c0e40347318144da5efa284eda'),
         'charge_url'    => env('FAWRY_CHARGE_URL', 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/charge'),
         'status_url'    => env('FAWRY_STATUS_URL', 'https://www.atfawry.com/ECommerceWeb/Fawry/payments/status'),
+        'webhook_url'   => env(
+            'FAWRY_WEBHOOK_URL',
+            rtrim(env('APP_URL', ''), '/') . '/api/fawry/payment-notification'
+        ),
     ],
 
 ];

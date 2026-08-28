@@ -10,13 +10,44 @@
                 <h1><i class="fas fa-file-alt text-warning"></i> سجلات النظام</h1>
             </div>
             <div class="col-sm-6 text-left">
-                <small class="text-muted">عرض ملفات Laravel الموجودة داخل storage/logs</small>
+                <small class="text-muted d-block mb-2">عرض ملفات Laravel الموجودة داخل storage/logs</small>
+                @if($selectedFile)
+                    <form method="POST"
+                          action="{{ route('sitemanagement.systemLogs.clear') }}"
+                          class="d-inline"
+                          onsubmit="return confirm('سيتم مسح جميع السجلات الموجودة حاليًا داخل ملف {{ $selectedFile }}. لا يمكن التراجع عن العملية. هل تريد المتابعة؟');">
+                        @csrf
+                        <input type="hidden" name="file" value="{{ $selectedFile }}">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i>
+                            مسح السجلات القديمة
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
 </section>
 
 <div class="content px-3" dir="rtl">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert" aria-label="إغلاق">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert" aria-label="إغلاق">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ session('error') }}
+        </div>
+    @endif
+
     @if($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">

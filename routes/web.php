@@ -302,6 +302,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('systemLogs', [App\Http\Controllers\AdminSystemLogController::class, 'index'])
         ->name('systemLogs.index')
         ->middleware('role:admin');
+    Route::post('systemLogs/clear', [App\Http\Controllers\AdminSystemLogController::class, 'clear'])
+        ->name('systemLogs.clear')
+        ->middleware('role:admin');
 
     // ── Error Logs ─────────────────────────────────────────────────────
     Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])

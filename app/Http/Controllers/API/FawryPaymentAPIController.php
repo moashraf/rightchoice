@@ -124,6 +124,11 @@ class FawryPaymentAPIController extends AppBaseController
         // ── Process ──────────────────────────────────────────────────────────
         $merchantRefNum = random_int(100000, 999999);
         $amount         = number_format((float) $request->price, 2, '.', '');
+        $webhookUrl     = (string) config('services.fawry.webhook_url');
+
+        if ($webhookUrl === '') {
+            $webhookUrl = route('fawry.payment.notification');
+        }
 
         $data = [
             'merchantCode'      => $this->merchantCode,
@@ -135,9 +140,16 @@ class FawryPaymentAPIController extends AppBaseController
             'amount'            => $amount,
             'currencyCode'      => 'EGP',
             'description'       => 'Subscription purchase via Fawry',
+            'orderWebHookUrl'   => $webhookUrl,
             'chargeItems'       => $this->buildChargeItems($amount),
             'signature'         => $this->buildSignature($amount, $merchantRefNum, $user->id),
         ];
+
+        Log::info('Fawry charge request prepared.', [
+            'merchantRefNumber' => $merchantRefNum,
+            'paymentMethod' => 'PAYATFAWRY',
+            'orderWebHookUrl' => $webhookUrl,
+        ]);
 
         try {
             $client     = new \GuzzleHttp\Client();
