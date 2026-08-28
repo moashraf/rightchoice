@@ -598,7 +598,7 @@
 
 
                     {{-- ── Laravel System Logs (admin only) ─────────────── --}}
-                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    @if(Route::has('sitemanagement.systemLogs.index') && Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.systemLogs.index') }}"
                            class="nav-link {{ request()->is('sitemanagement/systemLogs*') ? 'active' : '' }}">
