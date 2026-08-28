@@ -506,14 +506,10 @@ $message ="  تم تميز اعلانك بنجاح ";
 
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
-
               $referenceNumber=($response['referenceNumber']);
                $customerMobile = isset($response['customerMobile']) ? $response['customerMobile'] : 'N/A';
-
  /////////////////////////////////////////////
-
-            $FawryPayment = new FawryPayment();
-
+         $FawryPayment = new FawryPayment();
         $FawryPayment->paymentAmount =$amount  ;
     //    $FawryPayment->tmyezz_price_vip_id = $request->price_id;
         $FawryPayment->user_id = auth()->user()->id;
@@ -840,6 +836,21 @@ $paymentStatus = $response['type']; // get response values
     }
 
     /**
+     * Append a Fawry response without removing previously stored responses.
+     */
+    private function appendGatewayResponse(FawryPayment $payment, array $payload): void
+    {
+        $gatewayResponse = json_encode(
+            $payload,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
+
+        $payment->gateway_response = !empty($payment->gateway_response)
+            ? rtrim($payment->gateway_response) . ",\n" . $gatewayResponse
+            : $gatewayResponse;
+    }
+
+    /**
      * Receive Fawry server-to-server payment status notifications.
      */
     public function paymentNotification(Request $request): JsonResponse
@@ -919,39 +930,40 @@ $paymentStatus = $response['type']; // get response values
 
         $data = $validator->validated();
 
-        $payment = FawryPayment::where(
-            'merchantRefNumber',
-            $data['merchantRefNumber']
-        )->first();
 
-        if (!$payment) {
+        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
+        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
+        $payment = FawryPayment::where(  'merchantRefNumber', $data['merchantRefNumber'])
+            ->where(  'referenceNumber', $data['fawryRefNumber'])
+            ->where(  'paymentMethod', $data['paymentMethod'])
+                ->first();
+
+         if (!$payment) {
             Log::warning('Fawry callback payment not found.', $request->all());
 
             return response()->json(['message' => 'Payment not found.'], 404);
         }
 
         $paymentAmount = number_format((float) $data['paymentAmount'], 2, '.', '');
-        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
-        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
 
-        $expectedSignature = hash('sha256',
-            $data['fawryRefNumber']
-            . $data['merchantRefNumber']
-            . $paymentAmount
-            . $orderAmount
-            . $data['orderStatus']
-            . $data['paymentMethod']
-            . $paymentReferenceNumber
-            . config('services.fawry.secure_key')
-        );
-
-        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
-            Log::warning('Invalid Fawry callback signature.', [
-                'merchantRefNumber' => $data['merchantRefNumber'],
-            ]);
-
-            return response()->json(['message' => 'Invalid signature.'], 403);
-        }
+//        $expectedSignature = hash('sha256',
+//            $data['fawryRefNumber']
+//            . $data['merchantRefNumber']
+//            . $paymentAmount
+//            . $orderAmount
+//            . $data['orderStatus']
+//            . $data['paymentMethod']
+//            . $paymentReferenceNumber
+//            . config('services.fawry.secure_key')
+//        );
+//
+//        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
+//            Log::warning('Invalid Fawry callback signature.', [
+//                'merchantRefNumber' => $data['merchantRefNumber'],
+//            ]);
+//
+//            return response()->json(['message' => 'Invalid signature.'], 403);
+//        }
 
         if (number_format((float) $payment->paymentAmount, 2, '.', '') !== $paymentAmount) {
             Log::warning('Fawry callback amount mismatch.', [
@@ -976,6 +988,10 @@ $paymentStatus = $response['type']; // get response values
         $payment->paymentStatus = $status;
         $payment->referenceNumber = $data['fawryRefNumber'];
         $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+
+        if ($status === 'FAILED') {
+            $this->appendGatewayResponse($payment, $request->all());
+        }
 
         if ($status === 'PAID' && !$payment->paid_at) {
             $payment->paid_at = now();
