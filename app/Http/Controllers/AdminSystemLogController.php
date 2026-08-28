@@ -60,6 +60,40 @@ class AdminSystemLogController extends Controller
         ));
     }
 
+    public function clear(Request $request)
+    {
+        $validated = $request->validate([
+            'file' => ['required', 'string'],
+        ]);
+
+        $files = $this->availableLogFiles();
+        $selectedFile = $validated['file'];
+
+        if (!collect($files)->contains('name', $selectedFile)) {
+            abort(404);
+        }
+
+        $path = storage_path('logs/' . $selectedFile);
+
+        if (!is_file($path) || !is_writable($path)) {
+            return redirect()
+                ->route('sitemanagement.systemLogs.index', ['file' => $selectedFile])
+                ->with('error', 'تعذر مسح ملف اللوج. تأكد من صلاحيات الكتابة على الملف.');
+        }
+
+        if (file_put_contents($path, '', LOCK_EX) === false) {
+            return redirect()
+                ->route('sitemanagement.systemLogs.index', ['file' => $selectedFile])
+                ->with('error', 'حدث خطأ أثناء مسح ملف اللوج.');
+        }
+
+        clearstatcache(true, $path);
+
+        return redirect()
+            ->route('sitemanagement.systemLogs.index', ['file' => $selectedFile])
+            ->with('success', 'تم مسح السجلات القديمة من ملف ' . $selectedFile . ' بنجاح.');
+    }
+
     private function availableLogFiles(): array
     {
         $paths = glob(storage_path('logs/*.log')) ?: [];
