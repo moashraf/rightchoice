@@ -11,6 +11,8 @@ use App\Models\FawryPayment;
 
 use App\Models\UserPriceing;
 use App\Services\PropertyPromotionService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Redirect;
 
 
@@ -487,6 +489,7 @@ $message ="  تم تميز اعلانك بنجاح ";
             "amount"              => $amount,
             "currencyCode"        => "EGP",
             "description"         => "purchases   by fawry",
+            "orderWebHookUrl"     => route('fawry.payment.notification'),
             "chargeItems"         => $this->getProductsJSON($amount)->getData(),
             "signature"           => $this->buildMessageSignatureV2($amount,$merchantRefNum,auth()->user()->id)
         ];
@@ -845,6 +848,92 @@ $paymentStatus = $response['type']; // get response values
         session()->flash('success', ' تم الاشتراك بنجاح');
         return view('/th', compact('message'));
         */
+    }
+
+    /**
+     * Receive Fawry server-to-server payment status notifications.
+     */
+    public function paymentNotification(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'fawryRefNumber'        => ['required', 'string'],
+            'merchantRefNumber'     => ['required', 'string'],
+            'paymentAmount'         => ['required', 'numeric'],
+            'orderAmount'           => ['required', 'numeric'],
+            'orderStatus'           => ['required', 'string'],
+            'paymentMethod'         => ['required', 'string'],
+            'paymentRefrenceNumber' => ['nullable', 'string'],
+            'messageSignature'      => ['required', 'string'],
+        ]);
+
+        $payment = FawryPayment::where(
+            'merchantRefNumber',
+            $data['merchantRefNumber']
+        )->first();
+
+        if (!$payment) {
+            Log::warning('Fawry callback payment not found.', $request->all());
+
+            return response()->json(['message' => 'Payment not found.'], 404);
+        }
+
+        $paymentAmount = number_format((float) $data['paymentAmount'], 2, '.', '');
+        $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
+        $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
+
+        $expectedSignature = hash('sha256',
+            $data['fawryRefNumber']
+            . $data['merchantRefNumber']
+            . $paymentAmount
+            . $orderAmount
+            . $data['orderStatus']
+            . $data['paymentMethod']
+            . $paymentReferenceNumber
+            . config('services.fawry.secure_key')
+        );
+
+        if (!hash_equals(strtolower($expectedSignature), strtolower($data['messageSignature']))) {
+            Log::warning('Invalid Fawry callback signature.', [
+                'merchantRefNumber' => $data['merchantRefNumber'],
+            ]);
+
+            return response()->json(['message' => 'Invalid signature.'], 403);
+        }
+
+        if (number_format((float) $payment->paymentAmount, 2, '.', '') !== $paymentAmount) {
+            Log::warning('Fawry callback amount mismatch.', [
+                'merchantRefNumber' => $data['merchantRefNumber'],
+                'expectedAmount' => $payment->paymentAmount,
+                'receivedAmount' => $paymentAmount,
+            ]);
+
+            return response()->json(['message' => 'Payment amount mismatch.'], 422);
+        }
+
+        $status = strtoupper($data['orderStatus']);
+        if ($status === 'CANCELED') {
+            $status = 'CANCELLED';
+        }
+
+        $allowedStatuses = ['UNPAID', 'PAID', 'EXPIRED', 'FAILED', 'CANCELLED'];
+        if (!in_array($status, $allowedStatuses, true)) {
+            return response()->json(['message' => 'Unsupported payment status.'], 422);
+        }
+
+        $payment->paymentStatus = $status;
+        $payment->referenceNumber = $data['fawryRefNumber'];
+        $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+
+        if ($status === 'PAID' && !$payment->paid_at) {
+            $payment->paid_at = now();
+        }
+
+        $payment->save();
+
+        return response()->json([
+            'message' => 'Payment status updated successfully.',
+            'paymentStatus' => $payment->paymentStatus,
+        ]);
     }
 
 
