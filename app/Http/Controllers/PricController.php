@@ -836,6 +836,21 @@ $paymentStatus = $response['type']; // get response values
     }
 
     /**
+     * Append a Fawry response without removing previously stored responses.
+     */
+    private function appendGatewayResponse(FawryPayment $payment, array $payload): void
+    {
+        $gatewayResponse = json_encode(
+            $payload,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
+
+        $payment->gateway_response = !empty($payment->gateway_response)
+            ? rtrim($payment->gateway_response) . ",\n" . $gatewayResponse
+            : $gatewayResponse;
+    }
+
+    /**
      * Receive Fawry server-to-server payment status notifications.
      */
     public function paymentNotification(Request $request): JsonResponse
@@ -969,14 +984,7 @@ $paymentStatus = $response['type']; // get response values
         $payment->referenceNumber = $data['fawryRefNumber'];
         $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
 
-        $gatewayResponse = json_encode(
-            $request->all(),
-            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-        );
-
-        $payment->gateway_response = !empty($payment->gateway_response)
-            ? rtrim($payment->gateway_response) . ",\n" . $gatewayResponse
-            : $gatewayResponse;
+        $this->appendGatewayResponse($payment, $request->all());
 
         if ($status === 'PAID' && !$payment->paid_at) {
             $payment->paid_at = now();
