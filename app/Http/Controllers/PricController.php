@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PriceVip;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\Pricing;
 use App\Models\aqar;
 use App\Models\FawryPayment;
@@ -213,7 +213,6 @@ class PricController extends Controller
         return $this->callPostApi($fawryUrl,$data);
     }
 
-
     public function getProductsJSON($amount)
     {
         $data = [] ;
@@ -235,7 +234,6 @@ class PricController extends Controller
         */
         return response()->json($data);
     }
-
 
    public function fawryCallback()
     {
@@ -353,8 +351,6 @@ $pric= Pricing::find(2);
 
     }
 
-
-
    public function tmyezz_fawryCallback()
     {
 
@@ -413,7 +409,6 @@ $message ="  تم تميز اعلانك بنجاح ";
     }
 
 
-
     public function index($locale)
     {
         return $this->buyer($locale);
@@ -443,7 +438,6 @@ $message ="  تم تميز اعلانك بنجاح ";
 
  $add_to_vip = aqar::where('id', $request->aqar_id)->where('user_id', $request->user_id)->first();
 
-// dd($add_to_vip);
     }
 
 
@@ -501,12 +495,8 @@ $message ="  تم تميز اعلانك بنجاح ";
             'headers' => [
               'Accept' => 'application/json',
               'Content-Type' => 'application/json',
-
-    'Content-Length: ' . strlen($payload)
-
-            ],
-            'json' =>  $data
-
+               'Content-Length: ' . strlen($payload)   ],
+               'json' =>  $data
         ];
         try {
             //$client = new \GuzzleHttp\Client(['verify' => false ]);
@@ -514,7 +504,6 @@ $message ="  تم تميز اعلانك بنجاح ";
             $apiRequest = $client->request('POST', $fawryUrl, $requestContent);
             $response = json_decode($apiRequest->getBody()->getContents(), true);
 
- //dd($response);
            // $GIHO= json_decode($apiRequest->getBody());
            // return   $GIHO;
 
@@ -855,16 +844,80 @@ $paymentStatus = $response['type']; // get response values
      */
     public function paymentNotification(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'fawryRefNumber'        => ['required', 'string'],
-            'merchantRefNumber'     => ['required', 'string'],
-            'paymentAmount'         => ['required', 'numeric'],
-            'orderAmount'           => ['required', 'numeric'],
-            'orderStatus'           => ['required', 'string'],
-            'paymentMethod'         => ['required', 'string'],
-            'paymentRefrenceNumber' => ['nullable', 'string'],
-            'messageSignature'      => ['required', 'string'],
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'fawryRefNumber'        => ['required'],
+                'merchantRefNumber'     => ['required'],
+                'paymentAmount'         => ['required'],
+                'orderAmount'           => ['required'],
+                'orderStatus'           => ['required'],
+                'paymentMethod'         => ['required'],
+                'paymentRefrenceNumber' => ['nullable'],
+                'messageSignature'      => ['required'],
+            ],
+            [
+                'fawryRefNumber.required' =>
+                    'رقم مرجع فوري مطلوب.',
+
+                'fawryRefNumber.string' =>
+                    'رقم مرجع فوري يجب أن يكون نصًا.',
+
+                'merchantRefNumber.required' =>
+                    'رقم مرجع العملية في الموقع مطلوب.',
+
+                'merchantRefNumber.string' =>
+                    'رقم مرجع العملية يجب أن يكون نصًا.',
+
+                'paymentAmount.required' =>
+                    'المبلغ المدفوع مطلوب.',
+
+                'paymentAmount.numeric' =>
+                    'المبلغ المدفوع يجب أن يكون رقمًا.',
+
+                'orderAmount.required' =>
+                    'قيمة الطلب مطلوبة.',
+
+                'orderAmount.numeric' =>
+                    'قيمة الطلب يجب أن تكون رقمًا.',
+
+                'orderStatus.required' =>
+                    'حالة عملية الدفع مطلوبة.',
+
+                'orderStatus.string' =>
+                    'حالة عملية الدفع يجب أن تكون نصًا.',
+
+                'paymentMethod.required' =>
+                    'طريقة الدفع مطلوبة.',
+
+                'paymentMethod.string' =>
+                    'طريقة الدفع يجب أن تكون نصًا.',
+
+                'paymentRefrenceNumber.string' =>
+                    'رقم مرجع الدفع يجب أن يكون نصًا.',
+
+                'messageSignature.required' =>
+                    'توقيع رسالة فوري مطلوب.',
+
+                'messageSignature.string' =>
+                    'توقيع رسالة فوري يجب أن يكون نصًا.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            Log::warning('Fawry callback validation failed.', [
+                'errors'  => $validator->errors()->toArray(),
+                'payload' => $request->all(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'بيانات إشعار الدفع المرسلة من فوري غير صحيحة.',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        $data = $validator->validated();
 
         $payment = FawryPayment::where(
             'merchantRefNumber',
