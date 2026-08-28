@@ -152,7 +152,7 @@
                             <td><span class="badge {{ $badgeClass }}">{{ strtoupper($log['level']) }}</span></td>
                             <td><code>{{ $log['environment'] }}</code></td>
                             <td style="min-width: 420px">
-                                <div class="font-weight-bold text-break">{{ IlluminateSupportStr::limit($summary, 220) }}</div>
+                                <div class="font-weight-bold text-break">{{ \Illuminate\Support\Str::limit($summary, 220) }}</div>
                                 @if(count($messageLines) > 1 || mb_strlen($summary) > 220)
                                     <button class="btn btn-link btn-sm px-0 mt-1" type="button"
                                             data-toggle="collapse" data-target="#{{ $collapseId }}"
