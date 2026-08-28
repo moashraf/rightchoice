@@ -10,7 +10,10 @@ use App\Models\aqar;
 use App\Models\FawryPayment;
 
 use App\Models\UserPriceing;
+use App\Enums\PaymentStatusEnum;
+use App\Services\FawryPaymentGatewayService;
 use App\Services\PropertyPromotionService;
+use DomainException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Redirect;
@@ -351,63 +354,270 @@ $pric= Pricing::find(2);
 
     }
 
-   public function tmyezz_fawryCallback()
+    public function tmyezz_fawryCallback(Request $request)
     {
+        $orderStatus = strtoupper((string) $request->query('orderStatus', ''));
+        $locale = app()->getLocale();
 
-        if ( isset($_GET['orderStatus'])) {
-
- if (  ($_GET['orderStatus'])=='PAID') {
-
-
-
-                       if ( isset($_GET['customerProfileId'])) {
-
-        $pieces_id = explode("55555", $_GET['customerProfileId']);
-
-         $aqar = aqar::where('id','=',$pieces_id[1])->firstOrFail();
-         $package = PriceVip::findOrFail($pieces_id[0]);
-
-         if ($aqar->isPromotionActive()) {
-             return redirect()
-                 ->route('user_ads', ['locale' => app()->getLocale()])
-                 ->withErrors(['aqar' => 'هذا العقار مميز حاليًا بالفعل.']);
-         }
-
-         if (!$aqar->isEligibleForPromotion()) {
-             return redirect()
-                 ->route('user_ads', ['locale' => app()->getLocale()])
-                 ->withErrors(['aqar' => 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.']);
-         }
-
-         app(PropertyPromotionService::class)->activate($aqar, $package);
-
-
-
-                     //    dd($pric);
-}
-
-
-
-
-
-
-$message ="  تم تميز اعلانك بنجاح ";
-
-        //$dsgfsg= json_encode(['entities'=> $pric], JSON_PRETTY_PRINT);
- //  dd($dsgfsg);
-        session()->flash('success',  $message);
-        return view('/th', compact('message'));
-
-        }
-        }else{
-            dd("جاري تجهيز الدفع ");
-
+        if ($orderStatus === '') {
+            $message = 'لم تكتمل عملية الدفع. برجاء المحاولة مرة أخرى.';
+            session()->flash('success', $message);
+            return view('th', compact('message'));
         }
 
+        if ($orderStatus !== 'PAID') {
+            $message = 'لم يتم الدفع بنجاح. حالة العملية: ' . $orderStatus;
+            session()->flash('success', $message);
+            return view('th', compact('message'));
+        }
 
+        $parsed = $this->parseVipCustomerProfileId((string) $request->query('customerProfileId', ''));
+        if (!$parsed) {
+            Log::error('VIP Fawry callback: invalid customerProfileId.', $request->query());
+            return redirect()
+                ->route('user_ads', ['locale' => $locale])
+                ->withErrors(['aqar' => 'تعذر تحديد بيانات الإعلان من عملية الدفع.']);
+        }
 
+        $package = PriceVip::find($parsed['vip_id']);
+        $aqar = aqar::find($parsed['aqar_id']);
+
+        if (!$package || !$aqar) {
+            return redirect()
+                ->route('user_ads', ['locale' => $locale])
+                ->withErrors(['aqar' => 'الإعلان أو باقة التمييز غير موجودة.']);
+        }
+
+        if ((int) $aqar->user_id !== (int) auth()->id()) {
+            return redirect()
+                ->route('user_ads', ['locale' => $locale])
+                ->withErrors(['aqar' => 'لا يمكنك تمييز إعلان لا يخصك.']);
+        }
+
+        $referenceNumber = (string) $request->query('referenceNumber', $request->query('fawryRefNumber', ''));
+        $merchantRefNumber = (string) $request->query('merchantRefNumber', '');
+
+        $alreadyPaid = $referenceNumber !== '' && FawryPayment::where('referenceNumber', $referenceNumber)
+            ->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->exists();
+
+        if ($alreadyPaid && $aqar->isPromotionActive()) {
+            $message = 'تم تمييز إعلانك بنجاح';
+            session()->flash('success', $message);
+            return view('th', compact('message'));
+        }
+
+        try {
+            $payment = $this->findOrCreateVipCardPayment(
+                $package,
+                $aqar,
+                $merchantRefNumber,
+                $referenceNumber
+            );
+
+            $this->markVipPaymentPaidAndActivate($payment, $aqar, $package, $request->query());
+        } catch (DomainException $exception) {
+            return redirect()
+                ->route('user_ads', ['locale' => $locale])
+                ->withErrors(['aqar' => $exception->getMessage()]);
+        }
+
+        $message = 'تم تمييز إعلانك بنجاح';
+        session()->flash('success', $message);
+        return view('th', compact('message'));
     }
 
+    public function initVipCardCheckout(Request $request, FawryPaymentGatewayService $fawryGateway): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'price_id' => 'required|integer|exists:price_vip,id',
+            'aqar_id'  => 'required|integer|exists:aqar,id',
+        ], [
+            'price_id.required' => 'باقة التمييز مطلوبة.',
+            'price_id.exists'   => 'باقة التمييز غير موجودة.',
+            'aqar_id.required'  => 'العقار مطلوب.',
+            'aqar_id.exists'    => 'العقار غير موجود.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        try {
+            [$package, $aqar, $amount] = $this->resolveVipCheckout($request->integer('price_id'), $request->integer('aqar_id'));
+        } catch (DomainException $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], 422);
+        }
+
+        $user = auth()->user();
+        if (empty($user->email) || empty($user->MOP)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'برجاء استكمال البريد الإلكتروني ورقم الموبايل في حسابك قبل الدفع بالفيزا.',
+            ], 422);
+        }
+
+        $merchantRefNum = $this->makeVipMerchantRefNum($aqar->id, $package->id);
+        $customerProfileId = $this->buildVipCustomerProfileId((int) $package->id, (int) $aqar->id);
+        $itemId = (string) $package->id;
+        $itemQuantity = 1;
+        $returnUrl = $this->buildFawryPluginReturnUrl('tmyezz_fawryCallback');
+        $signature = $fawryGateway->buildPluginSignature(
+            $merchantRefNum,
+            $customerProfileId,
+            $returnUrl,
+            $itemId,
+            $itemQuantity,
+            $amount
+        );
+
+        FawryPayment::create([
+            'paymentAmount'       => $amount,
+            'currency'            => 'EGP',
+            'tmyezz_price_vip_id' => $package->id,
+            'paqaat_priceing_sale_id' => 0,
+            'user_id'             => $user->id,
+            'paymentStatus'       => PaymentStatusEnum::UNPAID,
+            'paymentMethod'       => 'CARD',
+            'transaction_type'    => 'vip_card',
+            'signature'           => $signature,
+            'referenceNumber'     => $merchantRefNum,
+            'merchantRefNumber'   => $merchantRefNum,
+            'gateway_response'    => json_encode(['aqar_id' => $aqar->id], JSON_UNESCAPED_UNICODE),
+        ]);
+
+        Log::info('VIP Fawry CARD checkout initiated.', [
+            'merchantRefNumber' => $merchantRefNum,
+            'aqar_id' => $aqar->id,
+            'price_vip_id' => $package->id,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'chargeRequest' => [
+                'merchantCode'      => $fawryGateway->merchantCode(),
+                'merchantRefNum'    => $merchantRefNum,
+                'customerMobile'    => (string) $user->MOP,
+                'customerEmail'     => (string) $user->email,
+                'customerName'      => (string) ($user->name ?? ''),
+                'paymentExpiry'     => strval((time() + 86400) . '000'),
+                'customerProfileId' => $customerProfileId,
+                'chargeItems'       => [[
+                    'itemId'      => $itemId,
+                    'description' => strip_tags((string) ($package->name ?: 'تمييز إعلان')),
+                    'price'       => (float) $amount,
+                    'quantity'    => $itemQuantity,
+                    'imageUrl'    => 'https://www.atfawry.com/ECommercePlugin/resources/images/atfawry-ar-logo.png',
+                ]],
+                'paymentMethod'          => 'CARD',
+                'authCaptureModePayment' => false,
+                'returnUrl'              => $returnUrl,
+                'signature'              => $signature,
+            ],
+        ]);
+    }
+
+    public function storeVipFawry(Request $request, FawryPaymentGatewayService $fawryGateway)
+    {
+        $validator = Validator::make($request->all(), [
+            'price_id' => 'required|integer|exists:price_vip,id',
+            'aqar_id'  => 'required|integer|exists:aqar,id',
+        ], [
+            'price_id.required' => 'باقة التمييز مطلوبة.',
+            'price_id.exists'   => 'باقة التمييز غير موجودة.',
+            'aqar_id.required'  => 'العقار مطلوب.',
+            'aqar_id.exists'    => 'العقار غير موجود.',
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            [$package, $aqar, $amount] = $this->resolveVipCheckout($request->integer('price_id'), $request->integer('aqar_id'));
+        } catch (DomainException $exception) {
+            return Redirect::back()->withErrors(['aqar' => $exception->getMessage()]);
+        }
+
+        $user = auth()->user();
+        if (empty($user->email) || empty($user->MOP)) {
+            return Redirect::back()->withErrors([
+                'aqar' => 'برجاء استكمال البريد الإلكتروني ورقم الموبايل في حسابك قبل الدفع من فوري.',
+            ]);
+        }
+
+        $merchantRefNum = $this->makeVipMerchantRefNum($aqar->id, $package->id);
+        $customerProfileId = $this->buildVipCustomerProfileId((int) $package->id, (int) $aqar->id);
+        $signature = $fawryGateway->buildPayAtFawrySignature($merchantRefNum, $customerProfileId, $amount);
+        $webhookUrl = (string) config('services.fawry.webhook_url') ?: route('fawry.payment.notification');
+
+        $data = [
+            'merchantCode'      => $fawryGateway->merchantCode(),
+            'merchantRefNum'    => $merchantRefNum,
+            'customerProfileId' => $customerProfileId,
+            'customerMobile'    => (string) $user->MOP,
+            'customerEmail'     => (string) $user->email,
+            'paymentMethod'     => 'PAYATFAWRY',
+            'amount'            => $amount,
+            'currencyCode'      => 'EGP',
+            'description'       => 'تمييز إعلان عبر فوري',
+            'orderWebHookUrl'   => $webhookUrl,
+            'chargeItems'       => $this->getProductsJSON($amount)->getData(),
+            'signature'         => $signature,
+        ];
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $apiRequest = $client->request('POST', $fawryGateway->chargeUrl(), [
+                'headers' => [
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $data,
+            ]);
+            $response = json_decode($apiRequest->getBody()->getContents(), true);
+            $referenceNumber = $response['referenceNumber'] ?? null;
+
+            if (!$referenceNumber) {
+                Log::error('VIP Fawry PAYATFAWRY charge missing reference.', ['response' => $response]);
+                return Redirect::back()->withErrors(['aqar' => 'رفضت فوري طلب الدفع، حاول مرة أخرى.']);
+            }
+
+            $FawryPayment = FawryPayment::create([
+                'paymentAmount'       => $amount,
+                'currency'            => 'EGP',
+                'tmyezz_price_vip_id' => $package->id,
+                'paqaat_priceing_sale_id' => 0,
+                'user_id'             => $user->id,
+                'paymentStatus'       => PaymentStatusEnum::UNPAID,
+                'paymentMethod'       => 'PAYATFAWRY',
+                'transaction_type'    => 'vip_fawry',
+                'signature'           => $signature,
+                'referenceNumber'     => $referenceNumber,
+                'merchantRefNumber'   => $merchantRefNum,
+                'gateway_response'    => json_encode(['aqar_id' => $aqar->id], JSON_UNESCAPED_UNICODE),
+            ]);
+
+            $customerMobile = $response['customerMobile'] ?? $user->MOP;
+            $message = "$referenceNumber
+  استخدم الكود دا وانت بتدفع في اي منفذ من منافذ فوري الموجودة في انحاء الجمهورية  رقم  الهاتف الخاص بك هو
+  $customerMobile
+  المبلغ المطلوب سداده
+  $amount
+  ";
+            session()->flash('success', $message);
+            return view('th', compact('message'));
+        } catch (\Throwable $exception) {
+            Log::error('VIP Fawry PAYATFAWRY charge failed.', ['message' => $exception->getMessage()]);
+            return Redirect::back()->withErrors(['aqar' => 'تعذر الاتصال بخدمة فوري، حاول مرة أخرى لاحقًا.']);
+        }
+    }
 
     public function index($locale)
     {
@@ -850,6 +1060,195 @@ $paymentStatus = $response['type']; // get response values
             : $gatewayResponse;
     }
 
+    private function buildFawryPluginReturnUrl(string $path): string
+    {
+        if ((string) config('services.fawry.env') !== 'production') {
+            return url(app()->getLocale() . '/' . ltrim($path, '/'));
+        }
+
+        $base = rtrim((string) config('services.fawry.return_url_base'), '/');
+        if ($base === '') {
+            $base = 'https://rightchoice-co.com';
+        }
+
+        return $base . '/' . app()->getLocale() . '/' . ltrim($path, '/');
+    }
+
+    private function buildVipCustomerProfileId(int $vipId, int $aqarId): string
+    {
+        return $vipId . '55555' . $aqarId;
+    }
+
+    private function parseVipCustomerProfileId(string $profileId): ?array
+    {
+        $pieces = explode('55555', $profileId, 2);
+        if (count($pieces) !== 2 || !ctype_digit((string) $pieces[0]) || !ctype_digit((string) $pieces[1])) {
+            return null;
+        }
+
+        return [
+            'vip_id'  => (int) $pieces[0],
+            'aqar_id' => (int) $pieces[1],
+        ];
+    }
+
+    private function makeVipMerchantRefNum(int $aqarId, int $vipId): string
+    {
+        return (string) (time() . $aqarId . $vipId . random_int(10, 99));
+    }
+
+    /**
+     * @return array{0: PriceVip, 1: aqar, 2: string}
+     */
+    private function resolveVipCheckout(int $priceVipId, int $aqarId): array
+    {
+        $user = auth()->user();
+        if (!$user) {
+            throw new DomainException('يجب تسجيل الدخول أولاً لإتمام الدفع.');
+        }
+
+        if ($user->isCompanyAccount()) {
+            throw new DomainException('باقات تمييز العقارات غير متاحة لحسابات الشركات.');
+        }
+
+        $package = PriceVip::find($priceVipId);
+        $aqar = aqar::find($aqarId);
+
+        if (!$package || !$aqar) {
+            throw new DomainException('الإعلان أو باقة التمييز غير موجودة.');
+        }
+
+        if ((int) $aqar->user_id !== (int) $user->id) {
+            throw new DomainException('لا يمكنك تمييز إعلان لا يخصك.');
+        }
+
+        if ($aqar->isPromotionActive()) {
+            throw new DomainException('هذا العقار مميز حاليًا بالفعل.');
+        }
+
+        if (!$aqar->isEligibleForPromotion()) {
+            throw new DomainException('يجب أن يكون العقار منشورًا وغير مميز حاليًا.');
+        }
+
+        $sessionCheckout = session('sell_faster_checkout');
+        if (
+            is_array($sessionCheckout)
+            && (int) ($sessionCheckout['price_vip_id'] ?? 0) === (int) $package->id
+            && (int) ($sessionCheckout['aqar_id'] ?? 0) === (int) $aqar->id
+            && isset($sessionCheckout['discounted_price'])
+        ) {
+            $amount = number_format((float) $sessionCheckout['discounted_price'], 2, '.', '');
+        } else {
+            $amount = number_format((float) $package->price, 2, '.', '');
+        }
+
+        if ((float) $amount <= 0) {
+            throw new DomainException('سعر باقة التمييز غير صالح.');
+        }
+
+        return [$package, $aqar, $amount];
+    }
+
+    private function findOrCreateVipCardPayment(
+        PriceVip $package,
+        aqar $aqar,
+        string $merchantRefNumber,
+        string $referenceNumber
+    ): FawryPayment {
+        $payment = null;
+
+        if ($merchantRefNumber !== '') {
+            $payment = FawryPayment::where('merchantRefNumber', $merchantRefNumber)->first();
+        }
+
+        if (!$payment && $referenceNumber !== '') {
+            $payment = FawryPayment::where('referenceNumber', $referenceNumber)->first();
+        }
+
+        if ($payment) {
+            return $payment;
+        }
+
+        $sessionCheckout = session('sell_faster_checkout');
+        if (
+            is_array($sessionCheckout)
+            && (int) ($sessionCheckout['price_vip_id'] ?? 0) === (int) $package->id
+            && (int) ($sessionCheckout['aqar_id'] ?? 0) === (int) $aqar->id
+            && isset($sessionCheckout['discounted_price'])
+        ) {
+            $amount = number_format((float) $sessionCheckout['discounted_price'], 2, '.', '');
+        } else {
+            $amount = number_format((float) $package->price, 2, '.', '');
+        }
+
+        return FawryPayment::create([
+            'paymentAmount'       => $amount,
+            'currency'            => 'EGP',
+            'tmyezz_price_vip_id' => $package->id,
+            'paqaat_priceing_sale_id' => 0,
+            'user_id'             => $aqar->user_id,
+            'paymentStatus'       => PaymentStatusEnum::UNPAID,
+            'paymentMethod'       => 'CARD',
+            'transaction_type'    => 'vip_card',
+            'signature'           => 'callback',
+            'referenceNumber'     => $referenceNumber !== '' ? $referenceNumber : ($merchantRefNumber !== '' ? $merchantRefNumber : (string) random_int(100000, 999999)),
+            'merchantRefNumber'   => $merchantRefNumber !== '' ? $merchantRefNumber : ($referenceNumber !== '' ? $referenceNumber : (string) time()),
+            'gateway_response'    => json_encode(['aqar_id' => $aqar->id], JSON_UNESCAPED_UNICODE),
+        ]);
+    }
+
+    private function extractAqarIdFromPayment(FawryPayment $payment, array $payload = []): ?int
+    {
+        $gateway = json_decode((string) $payment->gateway_response, true);
+        if (is_array($gateway) && isset($gateway['aqar_id']) && is_numeric($gateway['aqar_id'])) {
+            return (int) $gateway['aqar_id'];
+        }
+
+        $profileId = (string) ($payload['customerMerchantId'] ?? $payload['customerProfileId'] ?? '');
+        $parsed = $this->parseVipCustomerProfileId($profileId);
+        if ($parsed) {
+            return $parsed['aqar_id'];
+        }
+
+        return null;
+    }
+
+    private function markVipPaymentPaidAndActivate(
+        FawryPayment $payment,
+        aqar $aqar,
+        PriceVip $package,
+        array $payload = []
+    ): void {
+        $referenceNumber = (string) ($payload['referenceNumber'] ?? $payload['fawryRefNumber'] ?? '');
+        if ($referenceNumber !== '') {
+            $payment->referenceNumber = $referenceNumber;
+        }
+
+        if (!empty($payload['merchantRefNumber'])) {
+            $payment->merchantRefNumber = $payload['merchantRefNumber'];
+        }
+
+        $payment->tmyezz_price_vip_id = $payment->tmyezz_price_vip_id ?: $package->id;
+        $payment->callback_payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
+
+        if ($payment->paymentStatus !== PaymentStatusEnum::PAID) {
+            $payment->paymentStatus = PaymentStatusEnum::PAID;
+            $payment->paid_at = $payment->paid_at ?: now();
+        }
+
+        $payment->save();
+
+        if ($aqar->isPromotionActive()) {
+            return;
+        }
+
+        if (!$aqar->isEligibleForPromotion()) {
+            throw new DomainException('يجب أن يكون العقار منشورًا وغير مميز حاليًا.');
+        }
+
+        app(PropertyPromotionService::class)->activate($aqar, $package);
+    }
+
     /**
      * Receive Fawry server-to-server payment status notifications.
      */
@@ -941,10 +1340,11 @@ $paymentStatus = $response['type']; // get response values
 
         $orderAmount = number_format((float) $data['orderAmount'], 2, '.', '');
         $paymentReferenceNumber = $data['paymentRefrenceNumber'] ?? '';
-        $payment = FawryPayment::where(  'merchantRefNumber', $data['merchantRefNumber'])
-            ->where(  'referenceNumber', $data['fawryRefNumber'])
-            ->where(  'paymentMethod', $data['paymentMethod'])
-                ->first();
+        $payment = FawryPayment::where('merchantRefNumber', $data['merchantRefNumber'])->first();
+
+        if (!$payment) {
+            $payment = FawryPayment::where('referenceNumber', $data['fawryRefNumber'])->first();
+        }
 
          if (!$payment) {
             Log::warning('Fawry callback payment not found.', $request->all());
@@ -1006,6 +1406,29 @@ $paymentStatus = $response['type']; // get response values
         }
 
         $payment->save();
+
+        if ($status === 'PAID' && $payment->tmyezz_price_vip_id) {
+            try {
+                $package = PriceVip::find($payment->tmyezz_price_vip_id);
+                $aqarId = $this->extractAqarIdFromPayment($payment, $request->all());
+                $aqar = $aqarId ? aqar::find($aqarId) : null;
+
+                if ($package && $aqar) {
+                    $this->markVipPaymentPaidAndActivate($payment, $aqar, $package, $request->all());
+                } else {
+                    Log::warning('Fawry VIP notification missing package or property.', [
+                        'payment_id' => $payment->id,
+                        'tmyezz_price_vip_id' => $payment->tmyezz_price_vip_id,
+                        'aqar_id' => $aqarId,
+                    ]);
+                }
+            } catch (DomainException $exception) {
+                Log::warning('Fawry VIP notification could not activate listing.', [
+                    'payment_id' => $payment->id,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        }
 
         return response()->json([
             'message' => 'Payment status updated successfully.',

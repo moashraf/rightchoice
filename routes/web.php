@@ -521,7 +521,9 @@ Route::group(['prefix' => '{locale?}'], function () {
         */
         Route::get('/update_companies/{company}', 'App\Http\Controllers\CompanyController@updateCompany')->middleware('setLocale');
         Route::get('/fawryCallback', 'App\Http\Controllers\PricController@fawryCallback')->middleware('setLocale');
-        Route::get('/tmyezz_fawryCallback', 'App\Http\Controllers\PricController@tmyezz_fawryCallback')->middleware('setLocale');
+        Route::get('/tmyezz_fawryCallback', 'App\Http\Controllers\PricController@tmyezz_fawryCallback')->name('tmyezz.fawry.callback')->middleware('setLocale');
+        Route::post('/vip-card-checkout', 'App\Http\Controllers\PricController@initVipCardCheckout')->name('vip-card-checkout')->middleware('setLocale');
+        Route::post('/vip-fawry-checkout', 'App\Http\Controllers\PricController@storeVipFawry')->name('vip-fawry-checkout')->middleware('setLocale');
 
 
         //  Route::post('/post_fawry_code_send', 'App\Http\Controllers\PricController@getNumber')->middleware('setLocale')->name('post_fawry_code_send');

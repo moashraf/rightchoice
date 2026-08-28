@@ -17,9 +17,84 @@ class FawryPaymentGatewayService
     public function __construct()
     {
         $this->client       = new Client(['timeout' => 20, 'connect_timeout' => 10]);
-        $this->merchantCode = (string) config('services.fawry.merchant_code');
-        $this->secureKey    = (string) config('services.fawry.secure_key');
-        $this->statusUrl    = (string) config('services.fawry.status_url');
+        $active             = $this->activeConfig();
+        $this->merchantCode = (string) ($active['merchant_code'] ?? '');
+        $this->secureKey    = (string) ($active['secure_key'] ?? '');
+        $this->statusUrl    = (string) ($active['status_url'] ?? '');
+    }
+
+    public function isStaging(): bool
+    {
+        return (string) config('services.fawry.env') !== 'production';
+    }
+
+    public function pluginJs(): string
+    {
+        return (string) ($this->activeConfig()['plugin_js'] ?? '');
+    }
+
+    public function pluginCss(): string
+    {
+        return (string) ($this->activeConfig()['plugin_css'] ?? '');
+    }
+
+    public function chargeUrl(): string
+    {
+        return (string) ($this->activeConfig()['charge_url'] ?? '');
+    }
+
+    private function activeConfig(): array
+    {
+        if ($this->isStaging()) {
+            return (array) config('services.fawry.staging', []);
+        }
+
+        return [
+            'merchant_code' => config('services.fawry.merchant_code'),
+            'secure_key'    => config('services.fawry.secure_key'),
+            'charge_url'    => config('services.fawry.charge_url'),
+            'status_url'    => config('services.fawry.status_url'),
+            'plugin_js'     => config('services.fawry.plugin_js'),
+            'plugin_css'    => config('services.fawry.plugin_css'),
+        ];
+    }
+
+    public function merchantCode(): string
+    {
+        return $this->merchantCode;
+    }
+
+    /**
+     * FawryPay JS plugin signature:
+     * SHA256(merchantCode + merchantRefNum + customerProfileId + returnUrl + itemId + quantity + price + secureKey)
+     */
+    public function buildPluginSignature(
+        string $merchantRefNum,
+        string $customerProfileId,
+        string $returnUrl,
+        string $itemId,
+        int $quantity,
+        string $price
+    ): string {
+        return hash(
+            'sha256',
+            $this->merchantCode
+            . $merchantRefNum
+            . $customerProfileId
+            . $returnUrl
+            . $itemId
+            . $quantity
+            . $price
+            . $this->secureKey
+        );
+    }
+
+    public function buildPayAtFawrySignature(string $merchantRefNum, string $customerProfileId, string $amount): string
+    {
+        return hash(
+            'sha256',
+            $this->merchantCode . $merchantRefNum . $customerProfileId . 'PAYATFAWRY' . $amount . $this->secureKey
+        );
     }
 
     public function checkPaymentStatus($payment): array
