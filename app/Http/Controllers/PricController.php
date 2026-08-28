@@ -470,8 +470,6 @@ $message ="  تم تميز اعلانك بنجاح ";
             return Redirect::back();
         }
 
-          //  dd(auth()->user()->email);
-
 
         $merchantRefNum=  $six_digit_random_number = random_int(100000, 999999);
         $amount=$request->price;
@@ -492,7 +490,7 @@ $message ="  تم تميز اعلانك بنجاح ";
             "chargeItems"         => $this->getProductsJSON($amount)->getData(),
             "signature"           => $this->buildMessageSignatureV2($amount,$merchantRefNum,auth()->user()->id)
         ];
-        //dd($data);
+
        // return $this->callPostApi($fawryUrl,$data);
 
          $payload = json_encode($data);
