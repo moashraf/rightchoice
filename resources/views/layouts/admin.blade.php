@@ -597,6 +597,17 @@
 
 
 
+                    {{-- ── Laravel System Logs (admin only) ─────────────── --}}
+                    @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.systemLogs.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/systemLogs*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-alt text-warning"></i>
+                            <p>سجلات النظام</p>
+                        </a>
+                    </li>
+                    @endif
+
                     {{-- ── Error Logs (admin only) ────────────────────── --}}
                     @if(Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
                     <li class="nav-item">
