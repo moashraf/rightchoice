@@ -969,6 +969,15 @@ $paymentStatus = $response['type']; // get response values
         $payment->referenceNumber = $data['fawryRefNumber'];
         $payment->callback_payload = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
 
+        $gatewayResponse = json_encode(
+            $request->all(),
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
+
+        $payment->gateway_response = !empty($payment->gateway_response)
+            ? rtrim($payment->gateway_response) . ",\n" . $gatewayResponse
+            : $gatewayResponse;
+
         if ($status === 'PAID' && !$payment->paid_at) {
             $payment->paid_at = now();
         }
