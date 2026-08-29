@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Complaints extends Model
 {
@@ -25,7 +26,20 @@ class Complaints extends Model
         'message',
         'solution_details',
         'status',
+        'updated_by',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($model) {
+            $adminId = Auth::guard('admin')->id() ?? Auth::id();
+            if ($adminId) {
+                $model->updated_by = $adminId;
+            }
+        });
+    }
 
     public static $rules = [
         'user_id'  => 'required',
@@ -41,6 +55,19 @@ class Complaints extends Model
     public function aqarinfo()
     {
         return $this->belongsTo(\App\Models\aqar::class, 'aqars_id');
+    }
+
+    /**
+     * The admin who last handled / updated this complaint.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by')->withTrashed();
+    }
+
+    public function handlerName(): string
+    {
+        return $this->updatedBy?->name ?: 'لا يوجد';
     }
 
 }

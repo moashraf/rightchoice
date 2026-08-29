@@ -34,15 +34,25 @@ class AdminComplaintsDataTable extends DataTable
                 if ($row->status == Complaints::COMPLAINT_SOLVED)     return '<span class="badge badge-success">تم الحل</span>';
                 return '-';
             })
+            ->addColumn('handler_name', function ($row) {
+                if (!$row->updatedBy) {
+                    return '<span class="text-muted">لا يوجد</span>';
+                }
+
+                $name = e($row->updatedBy->name);
+                $url = route('sitemanagement.users.index', ['filter_user_id' => $row->updatedBy->id]);
+
+                return '<a href="' . $url . '" target="_blank">' . $name . '</a>';
+            })
             ->addColumn('created_date', function ($row) {
                 return $row->created_at ? $row->created_at->format('Y-m-d H:i') : '-';
             })
-            ->rawColumns(['action', 'status_label', 'user_name', 'user_phone', 'aqar_title']);
+            ->rawColumns(['action', 'status_label', 'user_name', 'user_phone', 'aqar_title', 'handler_name']);
     }
 
     public function query(Complaints $model)
     {
-        $query = $model->newQuery()->with(['userinfo', 'aqarinfo'])->orderBy('id', 'DESC');
+        $query = $model->newQuery()->with(['userinfo', 'aqarinfo', 'updatedBy'])->orderBy('id', 'DESC');
 
         if (request()->filled('user_id')) {
             $query->where('user_id', request('user_id'));
@@ -110,6 +120,7 @@ class AdminComplaintsDataTable extends DataTable
             'aqar_title'   => ['title' => 'العقار',    'data' => 'aqar_title',   'name' => 'aqar_title',   'searchable' => false, 'orderable' => false],
             'message',
             'status_label' => ['title' => 'الحالة',    'data' => 'status_label', 'name' => 'status_label', 'searchable' => false, 'orderable' => false],
+            'handler_name' => ['title' => 'القائم بالحل', 'data' => 'handler_name', 'name' => 'handler_name', 'searchable' => false, 'orderable' => false],
             'created_date' => ['title' => 'تاريخ الإنشاء', 'data' => 'created_date', 'name' => 'created_date', 'searchable' => false, 'orderable' => false],
         ];
     }
