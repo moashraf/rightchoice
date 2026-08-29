@@ -278,39 +278,109 @@
 
     <!-- VIP Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('vip', 'Vip:') !!}
+        {!! Form::label('vip', 'هل تريد تمييز الاعلان :') !!}
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-yes" value="1"
                    @if(@$aqar->vip == 1) checked @endif>
-            <label class="form-check-label" for="vip-yes">Yes</label>
+            <label class="form-check-label" for="vip-yes">اعلان مميز</label>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-no" value="0"
                    @if(@$aqar->vip == 0) checked @endif>
-            <label class="form-check-label" for="vip-no">No</label>
+            <label class="form-check-label" for="vip-no">اعلان عادي</label>
         </div>
     </div>
 
+    @php
+        $vipDurationOptions = [0 => 'غير مميز', 7 => '7 أيام', 14 => '14 يومًا', 30 => '30 يومًا'];
+        $vipDurationSelected = old('vip_duration_days');
+        if ($vipDurationSelected === null) {
+            if (isset($aqar) && (int) $aqar->vip === 1) {
+                $promoDays = optional($aqar->activePromotion)->duration_days;
+                if (in_array((int) $promoDays, [7, 14, 30], true)) {
+                    $vipDurationSelected = (int) $promoDays;
+                } elseif ($aqar->vip_started_at && $aqar->vip_expires_at) {
+                    $diffDays = (int) $aqar->vip_started_at->diffInDays($aqar->vip_expires_at);
+                    $vipDurationSelected = in_array($diffDays, [7, 14, 30], true) ? $diffDays : 7;
+                } else {
+                    $vipDurationSelected = 7;
+                }
+            } else {
+                $vipDurationSelected = 0;
+            }
+        }
+    @endphp
     <div class="form-group col-sm-4">
-        {!! Form::label('vip_duration_days', 'مدة التمييز السريعة:') !!}
-        {!! Form::select('vip_duration_days', [7 => '7 أيام', 14 => '14 يومًا', 30 => '30 يومًا'], 7, ['class' => 'form-control']) !!}
-        <small class="form-text text-muted">تُستخدم المدة عند عدم إدخال تاريخ انتهاء يدويًا.</small>
+        {!! Form::label('vip_duration_days', 'مدة التمييز  :') !!}
+        <select name="vip_duration_days" id="vip_duration_days" class="form-control">
+            @foreach($vipDurationOptions as $value => $label)
+                <option value="{{ $value }}" @if((int) $vipDurationSelected === (int) $value) selected @endif>{{ $label }}</option>
+            @endforeach
+        </select>
+        <small class="form-text text-muted">اختيار «غير مميز» يفرّغ تواريخ التمييز ويجعل Vip = 0.</small>
     </div>
 
     <div class="form-group col-sm-4">
         {!! Form::label('vip_started_at', 'بداية التمييز:') !!}
-        <input type="datetime-local" name="vip_started_at" class="form-control"
-               value="{{ old('vip_started_at', isset($aqar) && $aqar->vip_started_at ? $aqar->vip_started_at->format('Y-m-d\\TH:i') : '') }}">
+        <input type="datetime-local" name="vip_started_at" id="vip_started_at" class="form-control"
+               value="{{ old('vip_started_at', isset($aqar) && (int) $vipDurationSelected !== 0 && $aqar->vip_started_at ? $aqar->vip_started_at->format('Y-m-d\\TH:i') : '') }}">
         <small class="text-danger">{{ $errors->first('vip_started_at') }}</small>
     </div>
 
     <div class="form-group col-sm-4">
         {!! Form::label('vip_expires_at', 'انتهاء التمييز:') !!}
-        <input type="datetime-local" name="vip_expires_at" class="form-control"
-               value="{{ old('vip_expires_at', isset($aqar) && $aqar->vip_expires_at ? $aqar->vip_expires_at->format('Y-m-d\\TH:i') : '') }}">
+        <input type="datetime-local" name="vip_expires_at" id="vip_expires_at" class="form-control"
+               value="{{ old('vip_expires_at', isset($aqar) && (int) $vipDurationSelected !== 0 && $aqar->vip_expires_at ? $aqar->vip_expires_at->format('Y-m-d\\TH:i') : '') }}">
         <small class="text-danger">{{ $errors->first('vip_expires_at') }}</small>
     </div>
 </div>
+<script>
+    (function () {
+        function pad(n) { return n < 10 ? '0' + n : '' + n; }
+        function toLocal(dt) {
+            return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate())
+                + 'T' + pad(dt.getHours()) + ':' + pad(dt.getMinutes());
+        }
+        function applyVipDurationChoice() {
+            var days = parseInt(document.getElementById('vip_duration_days').value, 10) || 0;
+            var startInput = document.getElementById('vip_started_at');
+            var endInput = document.getElementById('vip_expires_at');
+            var vipNo = document.getElementById('vip-no');
+            var vipYes = document.getElementById('vip-yes');
+
+            if (days === 0) {
+                startInput.value = '';
+                endInput.value = '';
+                if (vipNo) vipNo.checked = true;
+                return;
+            }
+
+            if (vipYes) vipYes.checked = true;
+            var start = startInput.value ? new Date(startInput.value) : new Date();
+            if (isNaN(start.getTime())) start = new Date();
+            startInput.value = toLocal(start);
+            var end = new Date(start.getTime());
+            end.setDate(end.getDate() + days);
+            endInput.value = toLocal(end);
+        }
+
+        var durationSelect = document.getElementById('vip_duration_days');
+        if (durationSelect) {
+            durationSelect.addEventListener('change', applyVipDurationChoice);
+        }
+        document.querySelectorAll('input[name="vip"]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                if (this.value === '0') {
+                    durationSelect.value = '0';
+                    applyVipDurationChoice();
+                } else if ((parseInt(durationSelect.value, 10) || 0) === 0) {
+                    durationSelect.value = '7';
+                    applyVipDurationChoice();
+                }
+            });
+        });
+    })();
+</script>
 
 <!-- Rec Time Field -->
 <div id="rec_time" class="form-group col-sm-6">
