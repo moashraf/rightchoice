@@ -144,6 +144,14 @@ class aqar extends Model
             ->latest('id');
     }
 
+    /**
+     * Latest promotion attempt, including pending, expired and cancelled states.
+     */
+    public function latestPromotion()
+    {
+        return $this->hasOne(PropertyPromotion::class, 'aqar_id')->latestOfMany();
+    }
+
     public static $rules = [
         // ── الحقول الأساسية ─────────────────────────────────────
         'title'            => 'required|string|max:255',
