@@ -66,6 +66,17 @@ class AdminPaymentDataTable extends DataTable
             ->editColumn('net_amount', function ($payment) {
                 return number_format($payment->net_amount, 2) . ' ج.م';
             })
+            ->addColumn('package_type', function ($payment) {
+                if ($payment->paqaat_priceing_sale_id) {
+                    return '<span class="badge badge-success" title="اشترك فى باقة مشتري (لعرض بيانات التواصل)">'
+                        . '<i class="fas fa-shopping-cart"></i> مشتري</span>';
+                }
+                if ($payment->tmyezz_price_vip_id) {
+                    return '<span class="badge badge-warning" title="اشترك فى باقة بائع VIP (لتمييز الإعلان)">'
+                        . '<i class="fas fa-star"></i> بائع VIP</span>';
+                }
+                return '<span class="badge badge-secondary">-</span>';
+            })
             ->addColumn('package', function ($payment) {
                 $packageName = $payment->package_name;
                 $editUrl = null;
@@ -124,6 +135,17 @@ class AdminPaymentDataTable extends DataTable
             $query->where('referenceNumber', 'like', "%{$refNum}%");
         }
 
+        // فلتر نوع الباقة (باقة مشتري / باقة بائع VIP)
+        if ($packageType = request('filter_package_type')) {
+            if ($packageType === 'buyer') {
+                $query->whereNotNull('paqaat_priceing_sale_id')
+                      ->where('paqaat_priceing_sale_id', '>', 0);
+            } elseif ($packageType === 'seller') {
+                $query->whereNotNull('tmyezz_price_vip_id')
+                      ->where('tmyezz_price_vip_id', '>', 0);
+            }
+        }
+
         return $query;
     }
 
@@ -155,6 +177,7 @@ class AdminPaymentDataTable extends DataTable
             'paymentStatus'    => ['title' => 'حالة الدفع'],
             'paymentMethod'    => ['title' => 'طريقة الدفع'],
             'referenceNumber'  => ['title' => 'رقم المرجع'],
+            'package_type'     => ['title' => 'نوع الباقة', 'orderable' => false, 'searchable' => false],
             'package'          => ['title' => 'الباقة', 'orderable' => false, 'searchable' => false],
             'paid_at'          => ['title' => 'تاريخ الدفع'],
             'refund_status'    => ['title' => 'حالة الاسترداد'],

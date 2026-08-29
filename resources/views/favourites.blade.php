@@ -17,15 +17,15 @@
 
 <x-property-card/>
 
-                            </div> 
+                            </div>
 
 
-                </div> 
+                </div>
 
                 </div>
           </section>
-			
 
-<x-call-to-action/>
+
+{{--<x-call-to-action/>--}}
 
 </x-layout>

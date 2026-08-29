@@ -105,6 +105,48 @@
         </div>
     </div>
 
+    {{-- Buyer vs Seller Packages Stats --}}
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="info-box bg-gradient-success">
+                <span class="info-box-icon"><i class="fas fa-shopping-cart"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text"><strong>باقات المشتري</strong> — priceing_sale</span>
+                    <span class="info-box-number">
+                        {{ number_format($stats['buyerCount'] ?? 0) }}
+                        <small style="font-size:13px;">عملية</small>
+                        &nbsp;·&nbsp;
+                        {{ number_format($stats['buyerRevenue'] ?? 0, 2) }}
+                        <small style="font-size:13px;">ج.م</small>
+                    </span>
+                    <a href="{{ route('sitemanagement.payments.index', ['filter_package_type' => 'buyer']) }}"
+                       class="btn btn-xs btn-light mt-1">
+                        <i class="fas fa-filter"></i> عرض عمليات المشترى فقط
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-box bg-gradient-warning">
+                <span class="info-box-icon"><i class="fas fa-star"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text"><strong>باقات البائع (VIP)</strong> — price_vip</span>
+                    <span class="info-box-number">
+                        {{ number_format($stats['sellerCount'] ?? 0) }}
+                        <small style="font-size:13px;">عملية</small>
+                        &nbsp;·&nbsp;
+                        {{ number_format($stats['sellerRevenue'] ?? 0, 2) }}
+                        <small style="font-size:13px;">ج.م</small>
+                    </span>
+                    <a href="{{ route('sitemanagement.payments.index', ['filter_package_type' => 'seller']) }}"
+                       class="btn btn-xs btn-light mt-1">
+                        <i class="fas fa-filter"></i> عرض عمليات البائع فقط
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Filters --}}
     <div class="card card-outline card-primary collapsed-card">
         <div class="card-header">
@@ -166,6 +208,16 @@
                             <input type="text" name="filter_reference" class="form-control form-control-sm" value="{{ request('filter_reference') }}" placeholder="رقم المرجع...">
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>نوع الباقة</label>
+                            <select name="filter_package_type" class="form-control form-control-sm">
+                                <option value="">الكل</option>
+                                <option value="buyer"  {{ request('filter_package_type') == 'buyer'  ? 'selected' : '' }}>باقة مشتري</option>
+                                <option value="seller" {{ request('filter_package_type') == 'seller' ? 'selected' : '' }}>باقة بائع (VIP)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> بحث</button>
                 <a href="{{ route('sitemanagement.payments.index') }}" class="btn btn-secondary btn-sm"><i class="fas fa-redo"></i> إعادة تعيين</a>
@@ -192,6 +244,26 @@
         </div>
         <div class="card-body">
             @include('flash::message')
+
+            {{-- Package Type Quick Tabs --}}
+            @php $pt = request('filter_package_type'); @endphp
+            <div class="mb-3">
+                <div class="btn-group btn-group-sm" role="group" aria-label="فلتر نوع الباقة">
+                    <a href="{{ route('sitemanagement.payments.index', array_merge(request()->except('filter_package_type', 'page'))) }}"
+                       class="btn {{ $pt === null || $pt === '' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        <i class="fas fa-list"></i> الكل
+                    </a>
+                    <a href="{{ route('sitemanagement.payments.index', array_merge(request()->except('page'), ['filter_package_type' => 'buyer'])) }}"
+                       class="btn {{ $pt === 'buyer' ? 'btn-success' : 'btn-outline-success' }}">
+                        <i class="fas fa-shopping-cart"></i> باقات المشتري
+                    </a>
+                    <a href="{{ route('sitemanagement.payments.index', array_merge(request()->except('page'), ['filter_package_type' => 'seller'])) }}"
+                       class="btn {{ $pt === 'seller' ? 'btn-warning' : 'btn-outline-warning' }}">
+                        <i class="fas fa-star"></i> باقات البائع (VIP)
+                    </a>
+                </div>
+            </div>
+
             {!! $dataTable->table(['width' => '100%', 'class' => 'table table-bordered table-striped table-sm']) !!}
         </div>
     </div>

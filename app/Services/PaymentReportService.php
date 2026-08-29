@@ -30,9 +30,23 @@ class PaymentReportService
         $totalFees      = (clone $payments)->where('paymentStatus', PaymentStatusEnum::PAID)->sum('gateway_fees');
         $netRevenue     = $totalRevenue - $totalRefunded - $totalFees;
 
+        // إحصائيات باقات المشتري (priceing_sale) vs باقات البائع VIP (price_vip)
+        $paidBuyer  = (clone $payments)->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->whereNotNull('paqaat_priceing_sale_id')
+            ->where('paqaat_priceing_sale_id', '>', 0);
+        $paidSeller = (clone $payments)->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->whereNotNull('tmyezz_price_vip_id')
+            ->where('tmyezz_price_vip_id', '>', 0);
+
+        $buyerCount    = (clone $paidBuyer)->count();
+        $buyerRevenue  = (clone $paidBuyer)->sum('paymentAmount');
+        $sellerCount   = (clone $paidSeller)->count();
+        $sellerRevenue = (clone $paidSeller)->sum('paymentAmount');
+
         return compact(
             'totalCount', 'successCount', 'failedCount', 'pendingCount',
-            'totalRevenue', 'totalRefunded', 'totalFees', 'netRevenue'
+            'totalRevenue', 'totalRefunded', 'totalFees', 'netRevenue',
+            'buyerCount', 'buyerRevenue', 'sellerCount', 'sellerRevenue'
         );
     }
 
