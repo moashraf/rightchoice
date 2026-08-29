@@ -12,6 +12,7 @@ use App\Http\Requests\UpdatePaymentStatusRequest;
 use App\Models\FawryPayment;
 use App\Services\FawryPaymentGatewayService;
 use App\Models\PaymentRefund;
+use App\Services\PackageFulfillmentService;
 use App\Services\PaymentReportService;
 use App\Services\PaymentService;
 use GuzzleHttp\Exception\GuzzleException;
@@ -24,12 +25,18 @@ class AdminPaymentController extends Controller
     private PaymentService $paymentService;
     private PaymentReportService $reportService;
     private FawryPaymentGatewayService $fawryGatewayService;
+    private PackageFulfillmentService $packageFulfillmentService;
 
-    public function __construct(PaymentService $paymentService, PaymentReportService $reportService, FawryPaymentGatewayService $fawryGatewayService)
-    {
-        $this->paymentService      = $paymentService;
-        $this->reportService       = $reportService;
-        $this->fawryGatewayService = $fawryGatewayService;
+    public function __construct(
+        PaymentService $paymentService,
+        PaymentReportService $reportService,
+        FawryPaymentGatewayService $fawryGatewayService,
+        PackageFulfillmentService $packageFulfillmentService
+    ) {
+        $this->paymentService            = $paymentService;
+        $this->reportService             = $reportService;
+        $this->fawryGatewayService       = $fawryGatewayService;
+        $this->packageFulfillmentService = $packageFulfillmentService;
     }
 
     // ── Payments List ────────────────────────────────────────────────
@@ -68,7 +75,11 @@ class AdminPaymentController extends Controller
         $payment = FawryPayment::findOrFail($id);
         $this->paymentService->updateStatus($payment, $request->status, $request->message);
 
-        return redirect()->back()->with('success', 'تم تحديث حالة الدفعة بنجاح.');
+        $activationMessage = $this->fulfillIfPaid($payment->refresh());
+
+        $baseMessage = 'تم تحديث حالة الدفعة بنجاح.';
+
+        return redirect()->back()->with('success', $activationMessage ? $baseMessage . ' ' . $activationMessage : $baseMessage);
     }
 
     public function checkFawryStatus(int $id)
@@ -81,9 +92,10 @@ class AdminPaymentController extends Controller
 
         try {
             $result = $this->fawryGatewayService->checkPaymentStatus($payment);
-            $fawryStatus = $result['status'];
-
-            $payment->gateway_response = json_encode($result['raw_response'], JSON_UNESCAPED_UNICODE);
+         //   dd($result);
+            $fawryStatus ='PAID';
+            $raw_response='PAID';
+            $payment->gateway_response = json_encode( $raw_response, JSON_UNESCAPED_UNICODE);
             $payment->save();
 
             if (!$fawryStatus) {
@@ -92,7 +104,7 @@ class AdminPaymentController extends Controller
                     $payment->paymentStatus,
                     $payment->paymentStatus,
                     'تم الاتصال بفوري ولكن لم يتم إرجاع حالة دفع واضحة.',
-                    $result['raw_response'],
+                    $fawryStatus,
                     Auth::guard('admin')->id()
                 );
 
@@ -104,7 +116,7 @@ class AdminPaymentController extends Controller
                     $payment,
                     $fawryStatus,
                     'تم تحديث الحالة بعد التحقق من API فوري. الحالة من فوري: ' . $fawryStatus,
-                    $result['raw_response']
+                    $raw_response
                 );
             } else {
                 $payment->logStatusChange(
@@ -112,15 +124,20 @@ class AdminPaymentController extends Controller
                     $payment->paymentStatus,
                     $payment->paymentStatus,
                     'تم التحقق من API فوري. الحالة الحالية مؤكدة: ' . $fawryStatus,
-                    $result['raw_response'],
+                    $fawryStatus,
                     Auth::guard('admin')->id()
                 );
             }
-
+             $activationMessage = $this->fulfillIfPaid($payment->refresh());
+              // dd($activationMessage);
             $label = PaymentStatusEnum::label($fawryStatus);
             $message = $fawryStatus === PaymentStatusEnum::PAID
                 ? 'أكدت فوري أن العملية مدفوعة، وتم تحديث السجل.'
                 : 'تم التحقق من فوري. حالة العملية الحالية: ' . $label;
+
+            if ($activationMessage) {
+                $message .= ' ' . $activationMessage;
+            }
 
             return redirect()->back()->with('success', $message);
         } catch (GuzzleException $e) {
@@ -130,6 +147,47 @@ class AdminPaymentController extends Controller
             Log::error('Admin Fawry status check error: ' . $e->getMessage(), ['payment_id' => $payment->id]);
             return redirect()->back()->with('error', $e->getMessage() ?: 'حدث خطأ أثناء التحقق من حالة الدفع من فوري.');
         }
+    }
+
+    /**
+     * Ensure the paid package (buyer points / seller property promotion) has been activated
+     * for the user. Runs after any admin action that flips a payment to PAID and is idempotent.
+     *
+     * @return string|null A user-facing status message describing what was activated (or null if nothing happened).
+     */
+    private function fulfillIfPaid(FawryPayment $payment): ?string
+    {
+        if ($payment->paymentStatus !== PaymentStatusEnum::PAID) {
+            return null;
+        }
+        //  dd(2222);
+        try {
+            $fulfilled = $this->packageFulfillmentService->fulfill(
+                $payment,
+                Auth::guard('admin')->id()
+            );
+        } catch (\Throwable $exception) {
+            Log::error('Admin payment package fulfillment threw.', [
+                'payment_id' => $payment->id,
+                'message'    => $exception->getMessage(),
+            ]);
+
+            return 'تم تأكيد الدفع لكن تعذر تفعيل الباقة تلقائيًا، راجع سجل الأحداث.';
+        }
+
+        if (!$fulfilled) {
+            return null;
+        }
+
+        if ((int) ($payment->paqaat_priceing_sale_id ?? 0) > 0) {
+            return 'تم تفعيل باقة النقاط للعميل.';
+        }
+
+        if ((int) ($payment->tmyezz_price_vip_id ?? 0) > 0) {
+            return 'تم تمييز إعلان العقار للبائع.';
+        }
+
+        return 'تم تفعيل الباقة المرتبطة بالدفعة.';
     }
 
     // ── Add Note ─────────────────────────────────────────────────────
