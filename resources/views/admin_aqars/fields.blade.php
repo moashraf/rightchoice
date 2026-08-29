@@ -294,8 +294,9 @@
     @php
         $vipDurationOptions = [0 => 'غير مميز', 7 => '7 أيام', 14 => '14 يومًا', 30 => '30 يومًا'];
         $vipDurationSelected = old('vip_duration_days');
+        $isVipAd = (int) old('vip', isset($aqar) ? $aqar->vip : 0) === 1;
         if ($vipDurationSelected === null) {
-            if (isset($aqar) && (int) $aqar->vip === 1) {
+            if (isset($aqar) && $isVipAd) {
                 $promoDays = optional($aqar->activePromotion)->duration_days;
                 if (in_array((int) $promoDays, [7, 14, 30], true)) {
                     $vipDurationSelected = (int) $promoDays;
@@ -310,28 +311,29 @@
             }
         }
     @endphp
-    <div class="form-group col-sm-4">
-        {!! Form::label('vip_duration_days', 'مدة التمييز  :') !!}
-        <select name="vip_duration_days" id="vip_duration_days" class="form-control">
-            @foreach($vipDurationOptions as $value => $label)
-                <option value="{{ $value }}" @if((int) $vipDurationSelected === (int) $value) selected @endif>{{ $label }}</option>
-            @endforeach
-        </select>
-        <small class="form-text text-muted">اختيار «غير مميز» يفرّغ تواريخ التمييز ويجعل Vip = 0.</small>
-    </div>
+    <div id="vip-schedule-fields" class="row col-12 px-0 mx-0" @if(!$isVipAd) style="display:none;" @endif>
+        <div class="form-group col-sm-4">
+            {!! Form::label('vip_duration_days', 'مدة التمييز  :') !!}
+            <select name="vip_duration_days" id="vip_duration_days" class="form-control">
+                @foreach($vipDurationOptions as $value => $label)
+                    <option value="{{ $value }}" @if((int) $vipDurationSelected === (int) $value) selected @endif>{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
 
-    <div class="form-group col-sm-4">
-        {!! Form::label('vip_started_at', 'بداية التمييز:') !!}
-        <input type="datetime-local" name="vip_started_at" id="vip_started_at" class="form-control"
-               value="{{ old('vip_started_at', isset($aqar) && (int) $vipDurationSelected !== 0 && $aqar->vip_started_at ? $aqar->vip_started_at->format('Y-m-d\\TH:i') : '') }}">
-        <small class="text-danger">{{ $errors->first('vip_started_at') }}</small>
-    </div>
+        <div class="form-group col-sm-4">
+            {!! Form::label('vip_started_at', 'بداية التمييز:') !!}
+            <input type="datetime-local" name="vip_started_at" id="vip_started_at" class="form-control"
+                   value="{{ old('vip_started_at', isset($aqar) && $isVipAd && $aqar->vip_started_at ? $aqar->vip_started_at->format('Y-m-d\\TH:i') : '') }}">
+            <small class="text-danger">{{ $errors->first('vip_started_at') }}</small>
+        </div>
 
-    <div class="form-group col-sm-4">
-        {!! Form::label('vip_expires_at', 'انتهاء التمييز:') !!}
-        <input type="datetime-local" name="vip_expires_at" id="vip_expires_at" class="form-control"
-               value="{{ old('vip_expires_at', isset($aqar) && (int) $vipDurationSelected !== 0 && $aqar->vip_expires_at ? $aqar->vip_expires_at->format('Y-m-d\\TH:i') : '') }}">
-        <small class="text-danger">{{ $errors->first('vip_expires_at') }}</small>
+        <div class="form-group col-sm-4">
+            {!! Form::label('vip_expires_at', 'انتهاء التمييز:') !!}
+            <input type="datetime-local" name="vip_expires_at" id="vip_expires_at" class="form-control"
+                   value="{{ old('vip_expires_at', isset($aqar) && $isVipAd && $aqar->vip_expires_at ? $aqar->vip_expires_at->format('Y-m-d\\TH:i') : '') }}">
+            <small class="text-danger">{{ $errors->first('vip_expires_at') }}</small>
+        </div>
     </div>
 </div>
 <script>
@@ -340,6 +342,16 @@
         function toLocal(dt) {
             return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate())
                 + 'T' + pad(dt.getHours()) + ':' + pad(dt.getMinutes());
+        }
+        function isVipSelected() {
+            var vipYes = document.getElementById('vip-yes');
+            return !!(vipYes && vipYes.checked);
+        }
+        function toggleVipScheduleFields() {
+            var box = document.getElementById('vip-schedule-fields');
+            if (box) {
+                box.style.display = isVipSelected() ? '' : 'none';
+            }
         }
         function applyVipDurationChoice() {
             var days = parseInt(document.getElementById('vip_duration_days').value, 10) || 0;
@@ -352,10 +364,12 @@
                 startInput.value = '';
                 endInput.value = '';
                 if (vipNo) vipNo.checked = true;
+                toggleVipScheduleFields();
                 return;
             }
 
             if (vipYes) vipYes.checked = true;
+            toggleVipScheduleFields();
             var start = startInput.value ? new Date(startInput.value) : new Date();
             if (isNaN(start.getTime())) start = new Date();
             startInput.value = toLocal(start);
@@ -376,9 +390,12 @@
                 } else if ((parseInt(durationSelect.value, 10) || 0) === 0) {
                     durationSelect.value = '7';
                     applyVipDurationChoice();
+                } else {
+                    toggleVipScheduleFields();
                 }
             });
         });
+        toggleVipScheduleFields();
     })();
 </script>
 
