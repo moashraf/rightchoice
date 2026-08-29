@@ -58,6 +58,7 @@ class aqar extends Model
         'category',
         'trade',
         'number_of_floors',
+        'vip_duration_days',
         'total_area',
         'rooms',
         'baths',

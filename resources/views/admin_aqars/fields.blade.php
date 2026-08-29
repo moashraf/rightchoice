@@ -278,16 +278,16 @@
 
     <!-- VIP Field -->
     <div class="form-group col-sm-6">
-        {!! Form::label('vip', 'Vip:') !!}
+        {!! Form::label('vip', 'هل تريد تمييز الاعلان :') !!}
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-yes" value="1"
                    @if(@$aqar->vip == 1) checked @endif>
-            <label class="form-check-label" for="vip-yes">Yes</label>
+            <label class="form-check-label" for="vip-yes">اعلان مميز</label>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="vip" id="vip-no" value="0"
                    @if(@$aqar->vip == 0) checked @endif>
-            <label class="form-check-label" for="vip-no">No</label>
+            <label class="form-check-label" for="vip-no">اعلان عادي</label>
         </div>
     </div>
 
@@ -311,7 +311,7 @@
         }
     @endphp
     <div class="form-group col-sm-4">
-        {!! Form::label('vip_duration_days', 'مدة التمييز السريعة:') !!}
+        {!! Form::label('vip_duration_days', 'مدة التمييز  :') !!}
         <select name="vip_duration_days" id="vip_duration_days" class="form-control">
             @foreach($vipDurationOptions as $value => $label)
                 <option value="{{ $value }}" @if((int) $vipDurationSelected === (int) $value) selected @endif>{{ $label }}</option>
