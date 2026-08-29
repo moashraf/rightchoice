@@ -39,8 +39,8 @@ class UpdateaqarRequest extends FormRequest
             'monthly_rent'        => (Request()->offer_type == 3 || Request()->offer_type == 4) ? 'required|integer|min:0' : '',
             'vip'                 => 'nullable|integer|in:0,1',
             'vip_started_at'      => 'nullable|date',
-            'vip_expires_at'      => 'nullable|date|after:vip_started_at',
-            'vip_duration_days'   => 'nullable|integer|in:7,14,30',
+            'vip_expires_at'      => 'nullable|date',
+            'vip_duration_days'   => 'nullable|integer|in:0,7,14,30',
         ];
     }
 }
