@@ -132,6 +132,7 @@ Route::get('fawry/vip-callback', [App\Http\Controllers\API\FawryPaymentAPIContro
 // إنشاء طلب الدفع والتحقق من الحالة (authenticated)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('fawry/charge',        [App\Http\Controllers\API\FawryPaymentAPIController::class, 'charge']);
+    Route::post('fawry/vip-charge',    [App\Http\Controllers\API\FawryPaymentAPIController::class, 'chargeVip']);
     Route::get('fawry/check-status',   [App\Http\Controllers\API\FawryPaymentAPIController::class, 'checkStatus']);
 });
 
@@ -182,6 +183,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ── Points & Contact ─────────────────────────────────────────────
     Route::get('my-points',               [App\Http\Controllers\API\UserDashboardAPIController::class, 'myPoints']);
+    Route::get('my-seller-packages',      [App\Http\Controllers\API\PackagesAPIController::class, 'mySellerPackages']);
+    Route::get('my-properties-for-promotion', [App\Http\Controllers\API\PackagesAPIController::class, 'propertiesForPromotion']);
     Route::post('contact-aqar',           [App\Http\Controllers\API\UserDashboardAPIController::class, 'contactAqar']);
     Route::post('aqars/whatsapp-contact', [App\Http\Controllers\API\UserDashboardAPIController::class, 'trackWhatsappContact']);
 

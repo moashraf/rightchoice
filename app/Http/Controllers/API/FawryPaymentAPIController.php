@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
+use App\Enums\PaymentStatusEnum;
 use App\Models\FawryPayment;
 use App\Models\Pricing;
 use App\Models\UserPriceing;
 use App\Models\User;
 use App\Models\aqar;
 use App\Models\PriceVip;
+use App\Models\PropertyPromotion;
 use App\Services\FawryPaymentGatewayService;
 use App\Services\PropertyPromotionService;
 use Illuminate\Http\JsonResponse;
@@ -213,6 +215,158 @@ class FawryPaymentAPIController extends AppBaseController
         } catch (\Exception $e) {
             Log::error('Fawry charge error: ' . $e->getMessage());
             return $this->sendError('حدث خطأ غير متوقع أثناء معالجة الدفع.', 500);
+        }
+    }
+
+    /**
+     * POST /api/fawry/vip-charge
+     * إنشاء طلب دفع فوري لباقة تمييز إعلان (بائع).
+     */
+    public function chargeVip(Request $request, FawryPaymentGatewayService $fawryGateway): JsonResponse
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'price_id' => 'required|integer|exists:price_vip,id',
+                'aqar_id'  => 'required|integer|exists:aqar,id',
+            ],
+            array_merge($this->arabicMessages, [
+                'price_id.exists' => 'باقة التمييز المختارة غير موجودة في النظام.',
+                'aqar_id.exists'  => 'العقار غير موجود في النظام.',
+            ]),
+            [
+                'price_id' => 'باقة التمييز',
+                'aqar_id'  => 'العقار',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return $this->sendError('خطأ في البيانات المدخلة', 422, $validator->errors()->toArray());
+        }
+
+        $user = $request->user();
+
+        if ($user->isCompanyAccount()) {
+            return $this->sendError('حسابات الشركات غير مسموح لها بالاشتراك في باقات تمييز الإعلانات.', 403);
+        }
+
+        if (empty($user->email) || empty($user->MOP)) {
+            return $this->sendError('برجاء استكمال البريد الإلكتروني ورقم الموبايل في حسابك قبل الدفع.', 422);
+        }
+
+        $package = PriceVip::find($request->integer('price_id'));
+        $property = aqar::find($request->integer('aqar_id'));
+
+        if (!$package || (float) $package->price <= 0) {
+            return $this->sendError('باقة التمييز غير متاحة.', 404);
+        }
+
+        if ((int) $property->user_id !== (int) $user->id) {
+            return $this->sendError('لا يمكنك تمييز إعلان لا يخصك.', 403);
+        }
+
+        if (!$property->isEligibleForPromotion()) {
+            return $this->sendError('يجب أن يكون العقار منشورًا وغير مميز حاليًا.', 422);
+        }
+
+        $pendingPayment = FawryPayment::where('user_id', $user->id)
+            ->where('tmyezz_price_vip_id', $package->id)
+            ->where('paymentStatus', PaymentStatusEnum::UNPAID)
+            ->where('created_at', '>=', now()->subHours(24))
+            ->first();
+
+        if ($pendingPayment) {
+            return $this->sendError('يوجد طلب دفع معلق', 409, [
+                'referenceNumber' => [$pendingPayment->referenceNumber],
+                'message'         => ['لديك طلب دفع معلق لنفس الباقة. يمكنك استخدام الكود: ' . $pendingPayment->referenceNumber],
+            ]);
+        }
+
+        $amount = number_format((float) $package->price, 2, '.', '');
+        $merchantRefNum = (string) (time() . $property->id . $package->id . random_int(10, 99));
+        $customerProfileId = $package->id . '55555' . $property->id;
+        $signature = $fawryGateway->buildPayAtFawrySignature($merchantRefNum, $customerProfileId, $amount);
+        $webhookUrl = (string) config('services.fawry.webhook_url') ?: route('fawry.payment.notification');
+
+        $data = [
+            'merchantCode'      => $fawryGateway->merchantCode(),
+            'merchantRefNum'    => $merchantRefNum,
+            'customerProfileId' => $customerProfileId,
+            'customerMobile'    => (string) $user->MOP,
+            'customerEmail'     => (string) $user->email,
+            'paymentMethod'     => 'PAYATFAWRY',
+            'amount'            => $amount,
+            'currencyCode'      => 'EGP',
+            'description'       => 'تمييز إعلان عبر فوري',
+            'orderWebHookUrl'   => $webhookUrl,
+            'chargeItems'       => $this->buildChargeItems($amount),
+            'signature'         => $signature,
+        ];
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $apiRequest = $client->request('POST', $fawryGateway->chargeUrl(), [
+                'headers' => [
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $data,
+            ]);
+
+            $response = json_decode($apiRequest->getBody()->getContents(), true);
+
+            if (isset($response['statusCode']) && $response['statusCode'] != 200) {
+                Log::error('VIP Fawry API error response: ' . json_encode($response));
+                return $this->sendError('رفضت فوري طلب الدفع', 422, [
+                    'fawry_message' => [$response['description'] ?? 'خطأ غير معروف من فوري'],
+                ]);
+            }
+
+            $referenceNumber = $response['referenceNumber'] ?? null;
+            if (!$referenceNumber) {
+                return $this->sendError('لم يتم استلام رقم المرجع من فوري', 502);
+            }
+
+            $payment = FawryPayment::create([
+                'paymentAmount'           => $amount,
+                'currency'                => 'EGP',
+                'tmyezz_price_vip_id'     => $package->id,
+                'paqaat_priceing_sale_id' => 0,
+                'user_id'                 => $user->id,
+                'paymentStatus'           => PaymentStatusEnum::UNPAID,
+                'paymentMethod'           => 'PAYATFAWRY',
+                'transaction_type'        => 'vip_fawry',
+                'signature'               => $signature,
+                'referenceNumber'         => $referenceNumber,
+                'merchantRefNumber'       => $merchantRefNum,
+                'gateway_response'        => json_encode(['aqar_id' => $property->id], JSON_UNESCAPED_UNICODE),
+            ]);
+
+            PropertyPromotion::recordPending(
+                (int) $user->id,
+                (int) $property->id,
+                (int) $package->id,
+                (int) $payment->id,
+                (float) $amount,
+                (int) $package->duration_days
+            );
+
+            return $this->sendResponse([
+                'referenceNumber' => $referenceNumber,
+                'customerMobile'  => $response['customerMobile'] ?? $user->MOP,
+                'amount'          => $amount,
+                'paymentMethod'   => 'PAYATFAWRY',
+                'payment_id'      => $payment->id,
+                'aqar_id'         => $property->id,
+                'price_vip_id'    => $package->id,
+                'message'         => "استخدم الكود $referenceNumber وانت بتدفع في أي منفذ من منافذ فوري. المبلغ المطلوب: $amount جنيه.",
+            ], 'تم إنشاء طلب دفع تمييز الإعلان بنجاح');
+        } catch (\GuzzleHttp\Exception\ConnectException $e) {
+            Log::error('VIP Fawry connection error: ' . $e->getMessage());
+            return $this->sendError('تعذر الاتصال بخدمة فوري، حاول مرة أخرى لاحقًا.', 503);
+        } catch (\Throwable $e) {
+            Log::error('VIP Fawry charge error: ' . $e->getMessage());
+            return $this->sendError('حدث خطأ غير متوقع أثناء معالجة دفع باقة البائع.', 500);
         }
     }
 
