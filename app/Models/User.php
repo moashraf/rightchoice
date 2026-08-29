@@ -208,6 +208,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(aqar::class, 'user_id');
     }
 
+    /**
+     * Every VIP promotion this user has ever subscribed to (across all ads).
+     */
+    public function propertyPromotions()
+    {
+        return $this->hasMany(PropertyPromotion::class, 'user_id');
+    }
+
     // ─────────────────────────────────────────────────────────
     // RBAC Relationship & Helpers
     // ─────────────────────────────────────────────────────────

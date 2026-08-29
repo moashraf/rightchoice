@@ -8163,17 +8163,12 @@ nav a {
 }
 
 .nav-menu.nav-menu-social>li.add-listing  ul li a {
-
-    padding: 15px 15px !important;
-
+    padding: 5px 15px !important;
     font-family: 'cairo', sans-serif;
-
     color: #39466d;
-
 }
 
 .nav-menu.nav-menu-social>li.add-listing  ul li a :hover {
-
     padding: 10px 10px !important;
 
     font-family: 'cairo', sans-serif;

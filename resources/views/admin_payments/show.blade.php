@@ -53,6 +53,40 @@
                         <tr><th>رقم المرجع (فوري)</th><td><code>{{ $payment->referenceNumber }}</code></td></tr>
                         <tr><th>رقم مرجع التاجر</th><td><code>{{ $payment->merchantRefNumber }}</code></td></tr>
                         <tr><th>الباقة</th><td>{{ $payment->package_name }}</td></tr>
+                        @if($payment->isSellerVip())
+                            <tr>
+                                <th>الإعلان المميز</th>
+                                <td>
+                                    @if(!empty($targetAqar))
+                                        @php
+                                            $aqarTitle = trim((string) ($targetAqar->title ?: $targetAqar->title_en)) ?: ('إعلان #' . $targetAqar->id);
+                                        @endphp
+                                        <a href="{{ route('sitemanagement.aqars.show', $targetAqar->id) }}" target="_blank">
+                                            <i class="fas fa-home"></i>
+                                            {{ $aqarTitle }}
+                                            <small class="text-muted">#{{ $targetAqar->id }}</small>
+                                        </a>
+                                        @if($payment->propertyPromotion)
+                                            <br>
+                                            <small class="text-muted">
+                                                حالة الاشتراك:
+                                                <span class="badge badge-{{ $payment->propertyPromotion->status === 'active' ? 'success' : ($payment->propertyPromotion->status === 'pending' ? 'warning' : 'secondary') }}">
+                                                    {{ $payment->propertyPromotion->status }}
+                                                </span>
+                                                @if($payment->propertyPromotion->expires_at)
+                                                    &nbsp;| ينتهي: {{ $payment->propertyPromotion->expires_at->format('Y-m-d H:i') }}
+                                                @endif
+                                            </small>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">
+                                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                                            لم يتم تحديد إعلان لهذه العملية
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                         <tr><th>رسوم البوابة</th><td>{{ number_format($payment->gateway_fees, 2) }} ج.م</td></tr>
                         <tr><th>صافي المبلغ</th><td>{{ number_format($payment->net_amount, 2) }} ج.م</td></tr>
                         <tr><th>تاريخ الإنشاء</th><td>{{ $payment->created_at?->format('Y-m-d H:i:s') }}</td></tr>
