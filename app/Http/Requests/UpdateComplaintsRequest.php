@@ -28,9 +28,30 @@ class UpdateComplaintsRequest extends FormRequest
         return [
             'user_id'          => 'nullable|exists:users,id',
             'aqars_id'         => 'nullable|exists:aqar,id',
-            'status'           => 'nullable',
+            'status'           => 'required|integer|in:' . implode(',', [
+                Complaints::COMPLAINT_PENDING,
+                Complaints::COMPLAINT_INPROGRESS,
+                Complaints::COMPLAINT_SOLVED,
+            ]),
             'message'          => 'nullable|string',
-            'solution_details' => 'nullable|string|max:5000',
+            'solution_details' => 'required|string|min:1|max:5000',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'status'           => 'الحالة',
+            'solution_details' => 'تفاصيل حل المشكلة',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'status.required'           => 'الحالة حقل إلزامي.',
+            'status.in'                 => 'يجب اختيار حالة صحيحة.',
+            'solution_details.required' => 'تفاصيل حل المشكلة حقل إلزامي.',
         ];
     }
 }
