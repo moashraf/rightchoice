@@ -26,12 +26,12 @@
 
 <!-- Status Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('status', 'الحالة:') !!}
+    {!! Form::label('status', 'الحالة:') !!} <span class="text-danger">*</span>
     {!! Form::select('status', [
         \App\Models\Complaints::COMPLAINT_PENDING    => 'متوقف',
         \App\Models\Complaints::COMPLAINT_INPROGRESS => 'جاري العمل عليه',
         \App\Models\Complaints::COMPLAINT_SOLVED     => 'تم الحل',
-    ], null, ['placeholder' => 'اختر الحالة...', 'class' => 'form-control custom-select']) !!}
+    ], null, ['placeholder' => 'اختر الحالة...', 'class' => 'form-control custom-select', 'required' => true]) !!}
     <small class="text-danger">{{ $errors->first('status') }}</small>
 </div>
 
@@ -60,13 +60,14 @@
 
 <!-- Solution Details Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('solution_details', 'تفاصيل حل المشكلة:') !!}
+    {!! Form::label('solution_details', 'تفاصيل حل المشكلة:') !!} <span class="text-danger">*</span>
     {!! Form::textarea('solution_details', null, [
         'class' => 'form-control',
         'rows' => 4,
+        'required' => true,
         'placeholder' => 'اكتب تفاصيل حل المشكلة والإجراءات التي تم اتخاذها...',
     ]) !!}
-    <small class="text-muted">يتم توضيح ما تم عمله لحل الشكوى وسيظهر للمراجعة.</small>
+    <small class="text-muted">حقل إلزامي. يتم توضيح ما تم عمله لحل الشكوى وسيظهر للمراجعة.</small>
     <small class="text-danger d-block">{{ $errors->first('solution_details') }}</small>
 </div>
 
