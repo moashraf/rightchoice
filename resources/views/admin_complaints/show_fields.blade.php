@@ -48,6 +48,20 @@
     </p>
 </div>
 
+<!-- Handler Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('updated_by', 'القائم بالحل:') !!}
+    <p>
+        @if($complaints->updatedBy)
+            <a href="{{ route('sitemanagement.users.index', ['filter_user_id' => $complaints->updatedBy->id]) }}" target="_blank" class="badge badge-primary p-2" style="font-size:14px;">
+                <i class="fa fa-user-check ml-1"></i> {{ $complaints->updatedBy->name }}
+            </a>
+        @else
+            <span class="text-muted">لا يوجد</span>
+        @endif
+    </p>
+</div>
+
 <!-- Message Field -->
 <div class="form-group col-sm-12">
     {!! Form::label('message', 'الرسالة:') !!}

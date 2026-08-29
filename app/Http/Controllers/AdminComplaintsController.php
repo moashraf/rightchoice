@@ -11,6 +11,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\User;
 use App\Models\aqar;
+use Illuminate\Support\Facades\Auth;
 
 class AdminComplaintsController extends AppBaseController
 {
@@ -59,6 +60,8 @@ class AdminComplaintsController extends AppBaseController
             return redirect(route('sitemanagement.complaints.index'));
         }
 
+        $complaints->load('updatedBy');
+
         $user  = $complaints->user_id  ? User::find($complaints->user_id)  : null;
         $aqar  = $complaints->aqars_id ? \App\Models\aqar::find($complaints->aqars_id) : null;
         $users = User::pluck('name', 'id');
@@ -75,7 +78,7 @@ class AdminComplaintsController extends AppBaseController
             return redirect(route('sitemanagement.complaints.index'));
         }
 
-        $complaints->load('userinfo', 'aqarinfo');
+        $complaints->load('userinfo', 'aqarinfo', 'updatedBy');
 
         $users = User::pluck('name', 'id');
         $aqars = aqar::pluck('title', 'id');
@@ -91,7 +94,9 @@ class AdminComplaintsController extends AppBaseController
             return redirect(route('sitemanagement.complaints.index'));
         }
 
-        $complaints = $this->complaintsRepository->update($request->all(), $id);
+        $input = $request->except(['user_id', 'aqars_id', 'updated_by']);
+        $input['updated_by'] = Auth::guard('admin')->id() ?? Auth::id();
+        $complaints = $this->complaintsRepository->update($input, $id);
 
         Flash::success('تم تحديث الشكوى بنجاح.');
         return redirect(route('sitemanagement.complaints.index'));
