@@ -93,6 +93,30 @@ class AdminPaymentDataTable extends DataTable
 
                 return '<a  target="_blank" href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>';
             })
+            ->addColumn('aqar', function ($payment) {
+                if (! $payment->isSellerVip()) {
+                    return '<span class="text-muted">-</span>';
+                }
+
+                $aqar = $payment->resolveTargetAqar();
+
+                if (! $aqar) {
+                    return '<span class="text-muted" title="لم يتم تحديد إعلان لهذه العملية">'
+                        . '<i class="fas fa-exclamation-triangle text-warning"></i> غير محدد</span>';
+                }
+
+                $title = trim((string) ($aqar->title ?: $aqar->title_en));
+                if ($title === '') {
+                    $title = 'إعلان #' . $aqar->id;
+                }
+
+                $showUrl = route('sitemanagement.aqars.show', $aqar->id);
+
+                return '<a href="' . e($showUrl) . '" target="_blank" title="عرض تفاصيل الإعلان">'
+                    . '<i class="fas fa-home"></i> ' . e($title)
+                    . ' <small class="text-muted">#' . (int) $aqar->id . '</small>'
+                    . '</a>';
+            })
             ->editColumn('paid_at', function ($payment) {
                 return $payment->paid_at ? $payment->paid_at->format('Y-m-d H:i') : '-';
             })
@@ -110,7 +134,13 @@ class AdminPaymentDataTable extends DataTable
 
     public function query(FawryPayment $model)
     {
-        $query = $model->newQuery()->with(['user:id,name,email', 'pricingSale:id,type', 'priceVip:id,name']);
+        $query = $model->newQuery()->with([
+            'user:id,name,email',
+            'pricingSale:id,type',
+            'priceVip:id,name',
+            'propertyPromotion:id,fawry_payment_id,aqar_id,status',
+            'propertyPromotion.aqar:id,title,title_en,slug,slug_en',
+        ]);
 
         // Apply filters from request
         if ($status = request('filter_status')) {
@@ -179,6 +209,7 @@ class AdminPaymentDataTable extends DataTable
             'referenceNumber'  => ['title' => 'رقم المرجع'],
             'package_type'     => ['title' => 'نوع الباقة', 'orderable' => false, 'searchable' => false],
             'package'          => ['title' => 'الباقة', 'orderable' => false, 'searchable' => false],
+            'aqar'             => ['title' => 'الإعلان المميز', 'orderable' => false, 'searchable' => false],
             'paid_at'          => ['title' => 'تاريخ الدفع'],
             'refund_status'    => ['title' => 'حالة الاسترداد'],
             'refunded_amount'  => ['title' => 'المسترد'],

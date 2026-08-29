@@ -61,11 +61,14 @@ class AdminPaymentController extends Controller
             'refunds.admin:id,name',
             'statusLogs.performer:id,name',
             'notes.admin:id,name',
+            'propertyPromotion:id,fawry_payment_id,aqar_id,status,started_at,expires_at,duration_days',
+            'propertyPromotion.aqar:id,title,title_en,slug,slug_en',
         ])->findOrFail($id);
 
         $statuses = PaymentStatusEnum::labels();
+        $targetAqar = $payment->resolveTargetAqar();
 
-        return view('admin_payments.show', compact('payment', 'statuses'));
+        return view('admin_payments.show', compact('payment', 'statuses', 'targetAqar'));
     }
 
     // ── Update Payment Status ────────────────────────────────────────
