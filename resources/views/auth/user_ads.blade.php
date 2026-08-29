@@ -133,11 +133,11 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                     <small>
                                                                         الموعد: {{ $aqar->auto_suspension_at->format('Y-m-d H:i') }}
                                                                     </small>
-                                                                    @if($aqar->auto_suspension_deferred_by_promotion)
-                                                                        <div class="mt-1 text-info">
-                                                                            تم تأجيل التعليق حتى انتهاء مدة التمييز الحالية.
-                                                                        </div>
-                                                                    @endif
+{{--                                                                    @if($aqar->auto_suspension_deferred_by_promotion)--}}
+{{--                                                                        <div class="mt-1 text-info">--}}
+{{--                                                                            تم تأجيل التعليق حتى انتهاء مدة التمييز الحالية.--}}
+{{--                                                                        </div>--}}
+{{--                                                                    @endif--}}
                                                                 </div>
                                                             @elseif($aqar->was_auto_suspended)
                                                                 <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
@@ -443,6 +443,11 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
 
             </section>
+
+
+        <!-- ============================ Featured Properties ================================== -->
+        <x-featured-properties :limit="6" :exclude-user-id="auth()->id()" />
+        <!-- ============================ Featured Properties End ============================== -->
 
 
 		<!-- ============================ Call To Action ================================== -->

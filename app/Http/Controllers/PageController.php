@@ -330,10 +330,16 @@ class PageController extends Controller
     }
 
 
-    public function user_point_count_history()
+    public function user_point_count_history(Request $request)
     {
 
         $getUser = Auth::user();
+
+        // فلتر نوع الباقات (باقات المشتري / باقات البائع)
+        $filter = $request->query('filter', 'all');
+        if (!in_array($filter, ['all', 'buyer', 'seller'], true)) {
+            $filter = 'all';
+        }
 
         //  $data_con = user::with('contact')->where('id','=',$getUser->id)->get();
         $all_data = UserContactAqar::with([
@@ -344,7 +350,30 @@ class PageController extends Controller
             'all_aqat_viw.offerTypes',
         ])->where('user_id', '=', $getUser->id)->orderBy('created_at', 'DESC')->paginate(50);
 
-        $all_history_of_point_of_user = UserPriceing::with('pricing')->where('user_id', '=', $getUser->id)->get();
+        // باقات المشتري: يتم شحن نقاطها فى users_priceing_sale
+        $buyer_packages = collect();
+        if ($filter === 'all' || $filter === 'buyer') {
+            $buyer_packages = UserPriceing::with('pricing')
+                ->where('user_id', '=', $getUser->id)
+                ->orderBy('id', 'DESC')
+                ->get();
+        }
+
+        // باقات البائع: يتم تفعيلها لكل عقار عبر aqar.vip_price_id
+        $seller_packages = collect();
+        if ($filter === 'all' || $filter === 'seller') {
+            $seller_packages = aqar::with(['promotionPackage', 'firstImage'])
+                ->withTrashed()
+                ->where('user_id', '=', $getUser->id)
+                ->whereNotNull('vip_price_id')
+                ->orderByDesc('vip_started_at')
+                ->orderByDesc('id')
+                ->get();
+        }
+
+        // متغير الإرث للتوافق مع أى استخدام قديم فى الـ blade
+        $all_history_of_point_of_user = $buyer_packages;
+
         $points = 0;
         $allpoints = ($getUser->userpricin);
         if ($getUser->userpricin) {
@@ -387,7 +416,16 @@ class PageController extends Controller
         }
 
 
-        return view('user_point_count_history', compact('FawryPayment_data', 'FawryPayment_data_unpaid', 'all_data', 'points', 'all_history_of_point_of_user'));
+        return view('user_point_count_history', compact(
+            'FawryPayment_data',
+            'FawryPayment_data_unpaid',
+            'all_data',
+            'points',
+            'all_history_of_point_of_user',
+            'buyer_packages',
+            'seller_packages',
+            'filter'
+        ));
     }
 
     public function user_contacted_aqars()

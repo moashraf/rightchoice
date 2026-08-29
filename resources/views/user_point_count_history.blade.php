@@ -38,136 +38,329 @@
                                 <div id="collapseOne" class="accordion-collapse collapse show"
                                      aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 
-                                    @if($all_history_of_point_of_user->isEmpty())
-                                        <div class="alert alert-info m-3">لا توجد باقات مشترك بها حتى الآن</div>
-                                    @else
-                                        @foreach ($all_history_of_point_of_user->sortByDesc('id') as $not)
-                                        @php $pkgIndex = $loop->index; @endphp
-                                        <div class="pkg-card shadow-sm mb-3 mx-2">
-                                            {{-- ─── رأس الباقة ─── --}}
-                                            <div class="pkg-header d-flex justify-content-between align-items-center"
-                                                 data-bs-toggle="collapse"
-                                                 data-bs-target="#pkg-{{ $pkgIndex }}"
-                                                 aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
-                                                 style="cursor:pointer;">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="pkg-icon"><i class="fa fa-gem"></i></span>
-                                                    <div class="text-right">
-                                                        <div class="pkg-name">{{ $not->pricing->type ?? 'باقة' }}</div>
-                                                        <div class="pkg-date text-muted small">
-                                                            {{ \Carbon\Carbon::parse($not->created_at)->format('d-m-Y') }}
+                                    {{-- ─── فلتر نوع الباقات ─── --}}
+                                    @php
+                                        $currentFilter = $filter ?? 'all';
+                                        $buyerCount   = isset($buyer_packages)  ? $buyer_packages->count()  : 0;
+                                        $sellerCount  = isset($seller_packages) ? $seller_packages->count() : 0;
+                                    @endphp
+
+                                    <div class="pkg-filter-bar d-flex flex-wrap justify-content-center align-items-center gap-2 my-3">
+                                        <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}?filter=all"
+                                           class="btn btn-sm {{ $currentFilter === 'all' ? 'btn-primary' : 'btn-outline-primary' }}">
+                                            <i class="fa fa-list ml-1"></i>
+                                            جميع الباقات
+                                            <span class="badge bg-light text-dark ml-1">{{ $buyerCount + $sellerCount }}</span>
+                                        </a>
+                                        <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}?filter=buyer"
+                                           class="btn btn-sm {{ $currentFilter === 'buyer' ? 'btn-success' : 'btn-outline-success' }}">
+                                            <i class="fa fa-shopping-cart ml-1"></i>
+                                            باقات المشتري
+                                            <span class="badge bg-light text-dark ml-1">{{ $buyerCount }}</span>
+                                        </a>
+                                        <a href="{{ URL::to(Config::get('app.locale').'/user_point_count_history') }}?filter=seller"
+                                           class="btn btn-sm {{ $currentFilter === 'seller' ? 'btn-warning' : 'btn-outline-warning' }}">
+                                            <i class="fa fa-star ml-1"></i>
+                                            باقات البائع (VIP)
+                                            <span class="badge bg-light text-dark ml-1">{{ $sellerCount }}</span>
+                                        </a>
+                                    </div>
+
+                                    {{-- ============================================================
+                                         باقات المشتري (priceing_sale)
+                                         ============================================================ --}}
+                                    @if($currentFilter === 'all' || $currentFilter === 'buyer')
+                                        <div class="pkg-group-title text-right mx-2 mb-2">
+                                            <i class="fa fa-shopping-cart text-success ml-1"></i>
+                                            <span>باقات المشتري</span>
+                                            <small class="text-muted">— تُشحن نقاطها لعرض بيانات التواصل مع البائعين</small>
+                                        </div>
+
+                                        @if($buyer_packages->isEmpty())
+                                            <div class="alert alert-info m-3">لا توجد باقات مشتري مشترك بها حتى الآن</div>
+                                        @else
+                                            @foreach ($buyer_packages as $not)
+                                            @php $pkgIndex = 'buyer-' . $loop->index; @endphp
+                                            <div class="pkg-card pkg-card-buyer shadow-sm mb-3 mx-2">
+                                                {{-- ─── رأس الباقة ─── --}}
+                                                <div class="pkg-header pkg-header-buyer d-flex justify-content-between align-items-center"
+                                                     data-bs-toggle="collapse"
+                                                     data-bs-target="#pkg-{{ $pkgIndex }}"
+                                                     aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                                     style="cursor:pointer;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="pkg-icon"><i class="fa fa-shopping-cart"></i></span>
+                                                        <div class="text-right">
+                                                            <div class="pkg-name">
+                                                                {{ $not->pricing->type ?? 'باقة مشتري' }}
+                                                                <span class="pkg-type-tag pkg-type-buyer">مشتري</span>
+                                                            </div>
+                                                            <div class="pkg-date text-muted small">
+                                                                {{ \Carbon\Carbon::parse($not->created_at)->format('d-m-Y') }}
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="d-flex gap-3 align-items-center">
+                                                        <span class="badge badge-price">{{ number_format($not->pricing->price ?? 0) }} ج.م</span>
+                                                        <span class="badge badge-points-total">
+                                                            <i class="fa fa-star ml-1"></i>
+                                                            {{ $not->start_points }} نقطة
+                                                        </span>
+                                                        <span class="badge {{ $not->current_points > 0 ? 'badge-points-ok' : 'badge-points-zero' }}">
+                                                            متبقي: {{ max(0, $not->current_points) }}
+                                                        </span>
+                                                        <i class="fa fa-chevron-down pkg-chevron"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex gap-3 align-items-center">
-                                                    <span class="badge badge-price">{{ number_format($not->pricing->price ?? 0) }} ج.م</span>
-                                                    <span class="badge badge-points-total">
-                                                        <i class="fa fa-star ml-1"></i>
-                                                        {{ $not->start_points }} نقطة
-                                                    </span>
-                                                    <span class="badge {{ $not->current_points > 0 ? 'badge-points-ok' : 'badge-points-zero' }}">
-                                                        متبقي: {{ max(0, $not->current_points) }}
-                                                    </span>
-                                                    <i class="fa fa-chevron-down pkg-chevron"></i>
+
+                                                {{-- ─── تفاصيل الباقة + العقارات ─── --}}
+                                                <div id="pkg-{{ $pkgIndex }}"
+                                                     class="collapse {{ $loop->first ? 'show' : '' }}">
+                                                    <div class="pkg-body">
+
+                                                        {{-- ملخص النقاط --}}
+                                                        <div class="points-summary">
+                                                            <div class="points-box">
+                                                                <div class="points-num text-primary">{{ $not->start_points }}</div>
+                                                                <div class="points-lbl">إجمالي النقاط</div>
+                                                            </div>
+                                                            <div class="points-box">
+                                                                <div class="points-num text-danger">{{ $not->sub_points }}</div>
+                                                                <div class="points-lbl">المخصوم</div>
+                                                            </div>
+                                                            <div class="points-box">
+                                                                <div class="points-num text-success">{{ max(0, $not->current_points) }}</div>
+                                                                <div class="points-lbl">المتبقي</div>
+                                                            </div>
+                                                        </div>
+
+                                                        {{-- شريط تقدم النقاط --}}
+                                                        @php
+                                                            $pct = $not->start_points > 0
+                                                                ? min(100, round(($not->sub_points / $not->start_points) * 100))
+                                                                : 0;
+                                                        @endphp
+                                                        <div class="progress my-2" style="height:8px;">
+                                                            <div class="progress-bar bg-warning" style="width:{{ $pct }}%"></div>
+                                                        </div>
+                                                        <div class="text-muted small text-right mb-3">
+                                                            تم استخدام {{ $pct }}% من النقاط
+                                                        </div>
+
+                                                        {{-- ─── العقارات التي تم مشاهدتها ─── --}}
+                                                        <h6 class="pkg-section-title">
+                                                            <i class="fa fa-building ml-1"></i>
+                                                            العقارات التي شاهدتها وخُصمت نقاطها
+                                                        </h6>
+
+                                                        @php
+                                                            $viewedAqars = $all_data->filter(fn($v) => $v->all_aqat_viw !== null);
+                                                        @endphp
+
+                                                        @if($viewedAqars->isEmpty())
+                                                            <div class="alert alert-light text-muted text-center">
+                                                                لم تشاهد أي عقار بعد
+                                                            </div>
+                                                        @else
+                                                            <div class="aqar-list">
+                                                                @foreach($viewedAqars as $val)
+                                                                @php $aq = $val->all_aqat_viw; @endphp
+                                                                <div class="aqar-row">
+                                                                    <div class="aqar-row-img">
+                                                                        @if($aq->firstImage)
+                                                                            <img src="{{ URL::to('/') . '/images/' . $aq->firstImage->img_url }}"
+                                                                                 alt="{{ $aq->title }}" loading="lazy"/>
+                                                                        @else
+                                                                            <img src="https://rightchoice-co.com/images/FBO.png"
+                                                                                 alt="no-img" loading="lazy"/>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="aqar-row-info">
+                                                                        <a href="{{ URL::to(Config::get('app.locale').'/aqars/'.$aq->slug) }}"
+                                                                           target="_blank" class="aqar-row-title">
+                                                                            {{ Str::limit($aq->title, 50) }}
+                                                                        </a>
+                                                                        <div class="aqar-row-meta">
+                                                                            @if($aq->governrateq)
+                                                                                <span><i class="fa fa-map-marker"></i> {{ $aq->governrateq->governrate }}</span>
+                                                                            @endif
+                                                                            @if($aq->categoryRel)
+                                                                                <span><i class="fa fa-building"></i> {{ $aq->categoryRel->category_name }}</span>
+                                                                            @endif
+                                                                            <span class="text-muted small">
+                                                                                <i class="fa fa-calendar"></i>
+                                                                                {{ \Carbon\Carbon::parse($val->created_at)->format('d-m-Y') }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="aqar-row-points">
+                                                                        <span class="points-deducted">
+                                                                            <i class="fa fa-minus-circle text-danger ml-1"></i>
+                                                                            {{ $aq->points_avail ?? 0 }}
+                                                                        </span>
+                                                                        <div class="text-muted" style="font-size:11px;">نقطة</div>
+                                                                    </div>
+                                                                </div>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+
+                                                    </div>{{-- /pkg-body --}}
                                                 </div>
                                             </div>
+                                            @endforeach
+                                        @endif
+                                    @endif
 
-                                            {{-- ─── تفاصيل الباقة + العقارات ─── --}}
-                                            <div id="pkg-{{ $pkgIndex }}"
-                                                 class="collapse {{ $loop->first ? 'show' : '' }}">
-                                                <div class="pkg-body">
+                                    {{-- ============================================================
+                                         باقات البائع (price_vip) — تمييز الإعلانات
+                                         ============================================================ --}}
+                                    @if($currentFilter === 'all' || $currentFilter === 'seller')
+                                        <div class="pkg-group-title text-right mx-2 mb-2 mt-4">
+                                            <i class="fa fa-star text-warning ml-1"></i>
+                                            <span>باقات البائع (تمييز الإعلانات - VIP)</span>
+                                            <small class="text-muted">— اشتراكات تمييز عقاراتك لجذب المزيد من المشاهدات</small>
+                                        </div>
 
-                                                    {{-- ملخص النقاط --}}
-                                                    <div class="points-summary">
-                                                        <div class="points-box">
-                                                            <div class="points-num text-primary">{{ $not->start_points }}</div>
-                                                            <div class="points-lbl">إجمالي النقاط</div>
-                                                        </div>
-                                                        <div class="points-box">
-                                                            <div class="points-num text-danger">{{ $not->sub_points }}</div>
-                                                            <div class="points-lbl">المخصوم</div>
-                                                        </div>
-                                                        <div class="points-box">
-                                                            <div class="points-num text-success">{{ max(0, $not->current_points) }}</div>
-                                                            <div class="points-lbl">المتبقي</div>
+                                        @if($seller_packages->isEmpty())
+                                            <div class="alert alert-info m-3">لا توجد باقات بائع مشترك بها حتى الآن</div>
+                                        @else
+                                            @foreach ($seller_packages as $aqSeller)
+                                            @php
+                                                $pkgIndex   = 'seller-' . $loop->index;
+                                                $pkg        = $aqSeller->promotionPackage;
+                                                $startedAt  = $aqSeller->vip_started_at;
+                                                $expiresAt  = $aqSeller->vip_expires_at;
+                                                $isActive   = $aqSeller->vip == 1 && $expiresAt && $expiresAt->isFuture() && !$aqSeller->trashed();
+                                                $daysLeft   = ($expiresAt && $expiresAt->isFuture()) ? now()->diffInDays($expiresAt) : 0;
+                                                $totalDays  = (int) ($pkg->duration_days ?? 0);
+                                                $usedDays   = ($startedAt && $totalDays > 0)
+                                                                ? min($totalDays, max(0, now()->diffInDays($startedAt, false)))
+                                                                : 0;
+                                                $usedPct    = $totalDays > 0 ? min(100, round(($usedDays / $totalDays) * 100)) : 0;
+                                            @endphp
+                                            <div class="pkg-card pkg-card-seller shadow-sm mb-3 mx-2">
+                                                {{-- ─── رأس الباقة ─── --}}
+                                                <div class="pkg-header pkg-header-seller d-flex justify-content-between align-items-center"
+                                                     data-bs-toggle="collapse"
+                                                     data-bs-target="#pkg-{{ $pkgIndex }}"
+                                                     aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                                     style="cursor:pointer;">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="pkg-icon"><i class="fa fa-star"></i></span>
+                                                        <div class="text-right">
+                                                            <div class="pkg-name">
+                                                                {{ $pkg->name ?? 'باقة تمييز' }}
+                                                                <span class="pkg-type-tag pkg-type-seller">بائع - VIP</span>
+                                                            </div>
+                                                            <div class="pkg-date text-muted small">
+                                                                @if($startedAt)
+                                                                    بدأت: {{ $startedAt->format('d-m-Y') }}
+                                                                @endif
+                                                            </div>
                                                         </div>
                                                     </div>
-
-                                                    {{-- شريط تقدم النقاط --}}
-                                                    @php
-                                                        $pct = $not->start_points > 0
-                                                            ? min(100, round(($not->sub_points / $not->start_points) * 100))
-                                                            : 0;
-                                                    @endphp
-                                                    <div class="progress my-2" style="height:8px;">
-                                                        <div class="progress-bar bg-warning" style="width:{{ $pct }}%"></div>
+                                                    <div class="d-flex gap-3 align-items-center">
+                                                        <span class="badge badge-price">{{ number_format($pkg->price ?? 0) }} ج.م</span>
+                                                        <span class="badge badge-points-total">
+                                                            <i class="fa fa-clock ml-1"></i>
+                                                            {{ $totalDays }} يوم
+                                                        </span>
+                                                        <span class="badge {{ $isActive ? 'badge-points-ok' : 'badge-points-zero' }}">
+                                                            {{ $isActive ? 'نشطة - متبقي ' . $daysLeft . ' يوم' : 'منتهية' }}
+                                                        </span>
+                                                        <i class="fa fa-chevron-down pkg-chevron"></i>
                                                     </div>
-                                                    <div class="text-muted small text-right mb-3">
-                                                        تم استخدام {{ $pct }}% من النقاط
-                                                    </div>
+                                                </div>
 
-                                                    {{-- ─── العقارات التي تم مشاهدتها ─── --}}
-                                                    <h6 class="pkg-section-title">
-                                                        <i class="fa fa-building ml-1"></i>
-                                                        العقارات التي شاهدتها وخُصمت نقاطها
-                                                    </h6>
+                                                {{-- ─── تفاصيل الباقة + العقار المرتبط ─── --}}
+                                                <div id="pkg-{{ $pkgIndex }}"
+                                                     class="collapse {{ $loop->first ? 'show' : '' }}">
+                                                    <div class="pkg-body">
 
-                                                    @php
-                                                        $viewedAqars = $all_data->filter(fn($v) => $v->all_aqat_viw !== null);
-                                                    @endphp
-
-                                                    @if($viewedAqars->isEmpty())
-                                                        <div class="alert alert-light text-muted text-center">
-                                                            لم تشاهد أي عقار بعد
+                                                        {{-- ملخص الأيام --}}
+                                                        <div class="points-summary">
+                                                            <div class="points-box">
+                                                                <div class="points-num text-primary">{{ $totalDays }}</div>
+                                                                <div class="points-lbl">مدة الباقة (يوم)</div>
+                                                            </div>
+                                                            <div class="points-box">
+                                                                <div class="points-num text-danger">{{ $usedDays }}</div>
+                                                                <div class="points-lbl">أيام مستخدمة</div>
+                                                            </div>
+                                                            <div class="points-box">
+                                                                <div class="points-num text-success">{{ $daysLeft }}</div>
+                                                                <div class="points-lbl">أيام متبقية</div>
+                                                            </div>
                                                         </div>
-                                                    @else
+
+                                                        {{-- شريط تقدم الأيام --}}
+                                                        <div class="progress my-2" style="height:8px;">
+                                                            <div class="progress-bar bg-warning" style="width:{{ $usedPct }}%"></div>
+                                                        </div>
+                                                        <div class="text-muted small text-right mb-3">
+                                                            تم استخدام {{ $usedPct }}% من مدة الباقة
+                                                            @if($expiresAt)
+                                                                — تنتهى بتاريخ {{ $expiresAt->format('d-m-Y') }}
+                                                            @endif
+                                                        </div>
+
+                                                        {{-- ─── العقار الذى تم تمييزه ─── --}}
+                                                        <h6 class="pkg-section-title">
+                                                            <i class="fa fa-building ml-1"></i>
+                                                            العقار الذى تم تمييزه
+                                                        </h6>
+
                                                         <div class="aqar-list">
-                                                            @foreach($viewedAqars as $val)
-                                                            @php $aq = $val->all_aqat_viw; @endphp
                                                             <div class="aqar-row">
                                                                 <div class="aqar-row-img">
-                                                                    @if($aq->firstImage)
-                                                                        <img src="{{ URL::to('/') . '/images/' . $aq->firstImage->img_url }}"
-                                                                             alt="{{ $aq->title }}" loading="lazy"/>
+                                                                    @if($aqSeller->firstImage)
+                                                                        <img src="{{ URL::to('/') . '/images/' . $aqSeller->firstImage->img_url }}"
+                                                                             alt="{{ $aqSeller->title }}" loading="lazy"/>
                                                                     @else
                                                                         <img src="https://rightchoice-co.com/images/FBO.png"
                                                                              alt="no-img" loading="lazy"/>
                                                                     @endif
                                                                 </div>
                                                                 <div class="aqar-row-info">
-                                                                    <a href="{{ URL::to(Config::get('app.locale').'/aqars/'.$aq->slug) }}"
-                                                                       target="_blank" class="aqar-row-title">
-                                                                        {{ Str::limit($aq->title, 50) }}
-                                                                    </a>
-                                                                    <div class="aqar-row-meta">
-                                                                        @if($aq->governrateq)
-                                                                            <span><i class="fa fa-map-marker"></i> {{ $aq->governrateq->governrate }}</span>
-                                                                        @endif
-                                                                        @if($aq->categoryRel)
-                                                                            <span><i class="fa fa-building"></i> {{ $aq->categoryRel->category_name }}</span>
-                                                                        @endif
-                                                                        <span class="text-muted small">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                            {{ \Carbon\Carbon::parse($val->created_at)->format('d-m-Y') }}
+                                                                    @if($aqSeller->trashed())
+                                                                        <span class="aqar-row-title text-muted">
+                                                                            {{ Str::limit($aqSeller->title, 50) }} <small>(محذوف)</small>
                                                                         </span>
+                                                                    @else
+                                                                        <a href="{{ URL::to(Config::get('app.locale').'/aqars/'.$aqSeller->slug) }}"
+                                                                           target="_blank" class="aqar-row-title">
+                                                                            {{ Str::limit($aqSeller->title, 50) }}
+                                                                        </a>
+                                                                    @endif
+                                                                    <div class="aqar-row-meta">
+                                                                        <span>
+                                                                            <i class="fa fa-eye"></i>
+                                                                            {{ $pkg->views ?? 0 }} مشاهدات إضافية
+                                                                        </span>
+                                                                        @if($startedAt)
+                                                                            <span class="text-muted small">
+                                                                                <i class="fa fa-calendar"></i>
+                                                                                {{ $startedAt->format('d-m-Y') }}
+                                                                            </span>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                                 <div class="aqar-row-points">
-                                                                    <span class="points-deducted">
-                                                                        <i class="fa fa-minus-circle text-danger ml-1"></i>
-                                                                        {{ $aq->points_avail ?? 0 }}
+                                                                    <span class="points-deducted text-warning">
+                                                                        <i class="fa fa-star ml-1"></i>
+                                                                        {{ $totalDays }}
                                                                     </span>
-                                                                    <div class="text-muted" style="font-size:11px;">نقطة</div>
+                                                                    <div class="text-muted" style="font-size:11px;">يوم</div>
                                                                 </div>
                                                             </div>
-                                                            @endforeach
                                                         </div>
-                                                    @endif
 
-                                                </div>{{-- /pkg-body --}}
+                                                    </div>{{-- /pkg-body --}}
+                                                </div>
                                             </div>
-                                        </div>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
                                     @endif
 
                                 </div>
@@ -371,6 +564,47 @@
     transition: opacity 0.2s;
 }
 .pkg-header:hover { opacity: 0.92; }
+
+/* ── تمييز باقات المشترى مقابل باقات البائع ── */
+.pkg-card-buyer   { border-color: #b6e2c9; }
+.pkg-card-seller  { border-color: #ffe1a3; }
+.pkg-header-buyer  { background: linear-gradient(135deg, #1e7d47 0%, #28a745 100%); }
+.pkg-header-seller { background: linear-gradient(135deg, #c47b00 0%, #ffb703 100%); color:#fff; }
+
+.pkg-type-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+.pkg-type-buyer  { background:#e6f7ee; color:#1e7d47; }
+.pkg-type-seller { background:#fff3d9; color:#8a5a00; }
+
+/* ── شريط الفلاتر ── */
+.pkg-filter-bar {
+    background: #f8fbff;
+    border: 1px dashed #dce8f5;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin: 0 8px 12px 8px;
+}
+.pkg-filter-bar .btn { min-width: 130px; }
+.pkg-filter-bar .badge { font-weight: 700; }
+
+/* ── عنوان مجموعة الباقات ── */
+.pkg-group-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #196aa2;
+    padding: 6px 10px;
+    border-right: 4px solid #196aa2;
+    background: #f4f9ff;
+    border-radius: 4px;
+}
+.pkg-group-title small { font-weight: 400; margin-right: 6px; }
 .pkg-icon {
     width: 40px; height: 40px;
     background: rgba(255,255,255,0.2);

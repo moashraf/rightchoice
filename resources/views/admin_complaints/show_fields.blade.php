@@ -54,6 +54,19 @@
     <p>{{ $complaints->message }}</p>
 </div>
 
+<!-- Solution Details Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('solution_details', 'تفاصيل حل المشكلة:') !!}
+    @if(!empty($complaints->solution_details))
+        <div class="alert alert-success mb-0" style="white-space: pre-wrap;">
+            <i class="fa fa-check-circle ml-1"></i>
+            {{ $complaints->solution_details }}
+        </div>
+    @else
+        <p class="text-muted"><em>لم يتم إضافة تفاصيل حل بعد.</em></p>
+    @endif
+</div>
+
 <!-- Created At Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('created_at', 'تاريخ الإرسال:') !!}

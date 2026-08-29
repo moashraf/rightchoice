@@ -42,4 +42,16 @@
     <small class="text-danger">{{ $errors->first('message') }}</small>
 </div>
 
+<!-- Solution Details Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('solution_details', 'تفاصيل حل المشكلة:') !!}
+    {!! Form::textarea('solution_details', null, [
+        'class' => 'form-control',
+        'rows' => 4,
+        'placeholder' => 'اكتب تفاصيل حل المشكلة والإجراءات التي تم اتخاذها...',
+    ]) !!}
+    <small class="text-muted">يتم توضيح ما تم عمله لحل الشكوى وسيظهر للمراجعة.</small>
+    <small class="text-danger d-block">{{ $errors->first('solution_details') }}</small>
+</div>
+
 <div class="clearfix"></div>

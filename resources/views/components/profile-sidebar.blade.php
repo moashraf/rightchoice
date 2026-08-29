@@ -39,6 +39,12 @@
 
                     {{-- Quick Links --}}
                     <div class="d-flex flex-wrap justify-content-center gap-2" style="gap: 8px;">
+
+                        <a   href="{{ asset('/').Config::get('app.locale') }}"   class="btn btn-sm btn-outline-warning ">
+                            <i class="fa fa-home"></i>
+                            {{ trans('langsite.Home')}}
+                        </a>
+
                         <a href="{{ URL::to(Config::get('app.locale').'/notification') }}"
                            class="btn btn-sm btn-outline-warning {{ $countNotifi > 0 ? 'btn-warning text-white' : '' }}">
                             <i class="fa fa-bell"></i> التنبيهات
