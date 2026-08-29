@@ -101,7 +101,9 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th style="width:40px;">#</th>
+                                            <th>المصدر</th>
                                             <th>عنوان IP</th>
+                                            <th>الموقع التقريبي</th>
                                             <th>الجهاز</th>
                                             <th>نظام التشغيل</th>
                                             <th>المتصفح</th>
@@ -113,7 +115,18 @@
                                             <tr>
                                                 <td>{{ $i + 1 }}</td>
                                                 <td>
+                                                    <span class="badge badge-secondary">
+                                                        <i class="fas fa-desktop"></i> {{ $session->device->sourceWeb }}
+                                                    </span>
+                                                </td>
+                                                <td>
                                                     <code class="bg-light px-2 py-1 rounded">{{ $session->ip_address ?? '-' }}</code>
+                                                </td>
+                                                <td>
+                                                    {{ optional($session->location)->label ?? 'غير معروف' }}
+                                                    @if(optional($session->location)->isp)
+                                                        <br><small class="text-muted">{{ $session->location->isp }}</small>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if($session->device->device === 'موبايل')
@@ -134,7 +147,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="bg-light">
-                                                <td colspan="6" style="padding:4px 15px;">
+                                                <td colspan="8" style="padding:4px 15px;">
                                                     <small class="text-muted">
                                                         <i class="fas fa-info-circle mr-1"></i>
                                                         <strong>User Agent:</strong> {{ Str::limit($session->user_agent, 120) }}
@@ -156,6 +169,67 @@
             </div>
         </div>
 
+        <div class="card card-primary card-outline mb-4">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-mobile-alt mr-1"></i> جلسات التطبيق / API ({{ $apiTokens->count() }})</h3>
+            </div>
+            <div class="card-body p-0">
+                @if($apiTokens->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>المصدر</th>
+                                    <th>عنوان IP</th>
+                                    <th>الموقع التقريبي</th>
+                                    <th>الجهاز / النظام</th>
+                                    <th>آخر استخدام</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($apiTokens as $i => $token)
+                                    <tr>
+                                        <td>{{ $i + 1 }}</td>
+                                        <td>
+                                            <span class="badge badge-primary">
+                                                <i class="fas fa-mobile-alt"></i> التطبيق
+                                            </span>
+                                        </td>
+                                        <td><code class="bg-light px-2 py-1 rounded">{{ $token->ip_address ?? '-' }}</code></td>
+                                        <td>
+                                            {{ optional($token->location)->label ?? 'غير معروف' }}
+                                            @if(optional($token->location)->isp)
+                                                <br><small class="text-muted">{{ $token->location->isp }}</small>
+                                            @endif
+                                        </td>
+                                        <td>{{ $token->device->device }} / {{ $token->device->os }}</td>
+                                        <td>
+                                            <span title="{{ $token->last_activity_carbon->format('Y-m-d H:i:s') }}">
+                                                {{ $token->last_activity_carbon->diffForHumans() }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-light">
+                                        <td colspan="6" style="padding:4px 15px;">
+                                            <small class="text-muted">
+                                                <strong>User Agent:</strong> {{ Str::limit($token->user_agent ?? '-', 140) }}
+                                            </small>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-4">
+                        <i class="fas fa-mobile-alt fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">لا توجد جلسة تطبيق نشطة حالياً</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
         {{-- ════════════════════════════════════════════════════════════════
              All IP Addresses
         ════════════════════════════════════════════════════════════════ --}}
@@ -172,6 +246,7 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>عنوان IP</th>
+                                            <th>الموقع التقريبي</th>
                                             <th>عدد الجلسات</th>
                                             <th>آخر ظهور</th>
                                             <th>الحالة</th>
@@ -181,6 +256,12 @@
                                         @foreach($allIps as $ip)
                                             <tr>
                                                 <td><code class="bg-light px-2 py-1 rounded">{{ $ip->ip_address }}</code></td>
+                                                <td>
+                                                    {{ optional($ip->location)->label ?? 'غير معروف' }}
+                                                    @if(optional($ip->location)->isp)
+                                                        <br><small class="text-muted">{{ $ip->location->isp }}</small>
+                                                    @endif
+                                                </td>
                                                 <td><span class="badge badge-secondary">{{ $ip->session_count }}</span></td>
                                                 <td>
                                                     <span title="{{ $ip->last_seen_carbon->format('Y-m-d H:i:s') }}">
