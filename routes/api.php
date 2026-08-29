@@ -123,7 +123,8 @@ Route::get('map/governorate-coords', [App\Http\Controllers\API\MapAPIController:
 |--------------------------------------------------------------------------
 */
 // Callback من فوري (public – فوري بيبعتها من السيرفر بتاعهم)
-Route::post('fawry/payment-notification', [App\Http\Controllers\PricController::class, 'paymentNotification'])
+// يقبل GET و POST لأن فوري بيبعت الـ notification بالطريقتين حسب الإعدادات
+Route::match(['GET', 'POST'], 'fawry/payment-notification', [App\Http\Controllers\PricController::class, 'paymentNotification'])
     ->name('fawry.payment.notification');
 Route::get('fawry/callback',     [App\Http\Controllers\API\FawryPaymentAPIController::class, 'fawryCallback']);
 Route::get('fawry/vip-callback', [App\Http\Controllers\API\FawryPaymentAPIController::class, 'tmyezzFawryCallback']);
