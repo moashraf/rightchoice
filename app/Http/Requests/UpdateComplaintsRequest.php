@@ -26,10 +26,11 @@ class UpdateComplaintsRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'  => 'nullable|exists:users,id',
-            'aqars_id' => 'nullable|exists:aqar,id',
-            'status'   => 'nullable',
-            'message'  => 'nullable|string',
+            'user_id'          => 'nullable|exists:users,id',
+            'aqars_id'         => 'nullable|exists:aqar,id',
+            'status'           => 'nullable',
+            'message'          => 'nullable|string',
+            'solution_details' => 'nullable|string|max:5000',
         ];
     }
 }

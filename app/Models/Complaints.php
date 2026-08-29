@@ -23,6 +23,7 @@ class Complaints extends Model
         'user_id',
         'aqars_id',
         'message',
+        'solution_details',
         'status',
     ];
 
