@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Pricing;
 use App\Models\aqar;
 use App\Models\FawryPayment;
+use App\Models\PropertyPromotion;
 
 use App\Models\UserPriceing;
 use App\Enums\PaymentStatusEnum;
@@ -477,7 +478,7 @@ $pric= Pricing::find(2);
             $amount
         );
 
-        FawryPayment::create([
+        $cardPayment = FawryPayment::create([
             'paymentAmount'       => $amount,
             'currency'            => 'EGP',
             'tmyezz_price_vip_id' => $package->id,
@@ -491,6 +492,15 @@ $pric= Pricing::find(2);
             'merchantRefNumber'   => $merchantRefNum,
             'gateway_response'    => json_encode(['aqar_id' => $aqar->id], JSON_UNESCAPED_UNICODE),
         ]);
+
+        PropertyPromotion::recordPending(
+            (int) $user->id,
+            (int) $aqar->id,
+            (int) $package->id,
+            (int) $cardPayment->id,
+            (float) $amount,
+            (int) $package->duration_days
+        );
 
         Log::info('VIP Fawry CARD checkout initiated.', [
             'merchantRefNumber' => $merchantRefNum,
@@ -603,6 +613,15 @@ $pric= Pricing::find(2);
                 'merchantRefNumber'   => $merchantRefNum,
                 'gateway_response'    => json_encode(['aqar_id' => $aqar->id], JSON_UNESCAPED_UNICODE),
             ]);
+
+            PropertyPromotion::recordPending(
+                (int) $user->id,
+                (int) $aqar->id,
+                (int) $package->id,
+                (int) $FawryPayment->id,
+                (float) $amount,
+                (int) $package->duration_days
+            );
 
             $customerMobile = $response['customerMobile'] ?? $user->MOP;
             $message = "$referenceNumber
@@ -1246,7 +1265,7 @@ $paymentStatus = $response['type']; // get response values
             throw new DomainException('يجب أن يكون العقار منشورًا وغير مميز حاليًا.');
         }
 
-        app(PropertyPromotionService::class)->activate($aqar, $package);
+        app(PropertyPromotionService::class)->activate($aqar, $package, true, $payment);
     }
 
     /**

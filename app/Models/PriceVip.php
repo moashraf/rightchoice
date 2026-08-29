@@ -26,4 +26,12 @@ class PriceVip extends Model
     protected $casts = [
         'duration_days' => 'integer',
     ];
+
+    /**
+     * All subscriptions ever purchased on this VIP package.
+     */
+    public function promotions()
+    {
+        return $this->hasMany(PropertyPromotion::class, 'price_vip_id');
+    }
 }

@@ -544,10 +544,16 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
-        app(PropertyPromotionService::class)->activate($aqar, $package);
+        $payment = FawryPayment::where('referenceNumber', $referenceNumber)->first();
 
-        FawryPayment::where('referenceNumber', $referenceNumber)
-            ->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
+        app(PropertyPromotionService::class)->activate($aqar, $package, true, $payment);
+
+        if ($payment) {
+            $payment->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
+        } else {
+            FawryPayment::where('referenceNumber', $referenceNumber)
+                ->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
+        }
 
         return $this->sendResponse([
             'aqar_id' => $aqar->id,

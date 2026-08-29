@@ -226,7 +226,7 @@ class PackageFulfillmentService
         }
 
         try {
-            $activated = $this->promotionService->activate($aqar, $package);
+            $activated = $this->promotionService->activate($aqar, $package, true, $payment);
         } catch (DomainException $exception) {
             Log::warning('Seller promotion fulfillment blocked.', [
                 'payment_id'   => $payment->id,

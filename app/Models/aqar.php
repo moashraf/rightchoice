@@ -125,6 +125,25 @@ class aqar extends Model
         return $this->belongsTo(PriceVip::class, 'vip_price_id');
     }
 
+    /**
+     * Full history of promotion subscriptions on this property.
+     */
+    public function promotions()
+    {
+        return $this->hasMany(PropertyPromotion::class, 'aqar_id');
+    }
+
+    /**
+     * Currently active promotion (if any). Used to know which subscription
+     * is fueling this ad's featured state.
+     */
+    public function activePromotion()
+    {
+        return $this->hasOne(PropertyPromotion::class, 'aqar_id')
+            ->where('status', PropertyPromotion::STATUS_ACTIVE)
+            ->latest('id');
+    }
+
     public static $rules = [
         // ── الحقول الأساسية ─────────────────────────────────────
         'title'            => 'required|string|max:255',
