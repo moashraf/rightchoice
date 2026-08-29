@@ -569,15 +569,15 @@ class AdminAqarController extends AppBaseController
     private function syncPropertyPromotion(aqar $aqar, Request $request): void
     {
         $duration = (int) $request->input('vip_duration_days', 0);
-        $isVip = (int) $aqar->vip === 1 && in_array($duration, [7, 14, 30], true);
 
-        if (!$isVip) {
+        if ($duration === 0 || (int) $request->input('vip') !== 1) {
             PropertyPromotion::query()
                 ->where('aqar_id', $aqar->id)
                 ->whereIn('status', [
                     PropertyPromotion::STATUS_PENDING,
                     PropertyPromotion::STATUS_ACTIVE,
                 ])
+                ->get()
                 ->each(function (PropertyPromotion $promotion) {
                     $promotion->markCancelled('تم إلغاء التمييز من لوحة الإدارة');
                 });
@@ -585,8 +585,40 @@ class AdminAqarController extends AppBaseController
             return;
         }
 
-        $packageId = $aqar->vip_price_id
-            ?: optional(PriceVip::where('duration_days', $duration)->first())->id;
+        $startedAt = $this->parsePromotionDate(
+            $request->input('vip_started_at') ?: $aqar->vip_started_at
+        ) ?? now();
+
+        $expiresAt = $this->parsePromotionDate(
+            $request->input('vip_expires_at') ?: $aqar->vip_expires_at
+        ) ?? $startedAt->copy()->addDays($duration);
+
+        $package = PriceVip::where('duration_days', $duration)->first()
+            ?: ($aqar->vip_price_id ? PriceVip::find($aqar->vip_price_id) : null)
+            ?: PriceVip::query()->orderBy('id')->first();
+
+        if (!$package || !$aqar->user_id) {
+            return;
+        }
+
+        $aqar->forceFill([
+            'vip'            => 1,
+            'vip_price_id'   => $package->id,
+            'vip_started_at' => $startedAt,
+            'vip_expires_at' => $expiresAt,
+        ])->save();
+
+        $payload = [
+            'user_id'       => $aqar->user_id,
+            'aqar_id'       => $aqar->id,
+            'price_vip_id'  => $package->id,
+            'status'        => PropertyPromotion::STATUS_ACTIVE,
+            'duration_days' => $duration,
+            'started_at'    => $startedAt,
+            'expires_at'    => $expiresAt,
+            'cancelled_at'  => null,
+            'notes'         => 'تم ضبط التمييز من لوحة التحكم.',
+        ];
 
         $promotion = PropertyPromotion::query()
             ->where('aqar_id', $aqar->id)
@@ -597,29 +629,33 @@ class AdminAqarController extends AppBaseController
             ->latest('id')
             ->first();
 
-        $payload = [
-            'user_id'       => $aqar->user_id,
-            'aqar_id'       => $aqar->id,
-            'price_vip_id'  => $packageId,
-            'status'        => PropertyPromotion::STATUS_ACTIVE,
-            'duration_days' => $duration,
-            'started_at'    => $aqar->vip_started_at,
-            'expires_at'    => $aqar->vip_expires_at,
-            'cancelled_at'  => null,
-        ];
-
-        if ($promotion) {
-            $promotion->update($payload);
-            return;
+        if (!$promotion) {
+            $promotion = PropertyPromotion::query()
+                ->where('aqar_id', $aqar->id)
+                ->latest('id')
+                ->first();
         }
 
-        if (!$packageId) {
+        if ($promotion) {
+            $promotion->fill($payload)->save();
             return;
         }
 
         PropertyPromotion::create(array_merge($payload, [
             'amount_paid' => 0,
-            'notes'       => 'تم التفعيل من لوحة الإدارة',
         ]));
+    }
+
+    private function parsePromotionDate($value): ?Carbon
+    {
+        if ($value instanceof Carbon) {
+            return $value;
+        }
+
+        if (empty($value)) {
+            return null;
+        }
+
+        return Carbon::parse($value);
     }
 }
