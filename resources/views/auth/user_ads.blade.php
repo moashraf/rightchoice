@@ -199,6 +199,29 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                     <img src="{{ asset('assets/img/pin.svg') }}" width="18" alt="" />
                                                         </div>
 
+                                                    @php
+                                                        $__stats = ($analyticsSummaries[$aqar->id] ?? [
+                                                            'views'           => 0,
+                                                            'contact_reveals' => 0,
+                                                            'whatsapp_clicks' => 0,
+                                                        ]);
+                                                    @endphp
+                                                    <div class="aqar-analytics-summary mb-2 d-flex flex-wrap"
+                                                         style="gap:10px; font-size:13px; color:#555;">
+                                                        <span title="آخر 30 يومًا: المشاهدات">
+                                                            <i class="fa fa-eye text-primary"></i>
+                                                            المشاهدات: <strong>{{ number_format((int)($__stats['views'] ?? 0)) }}</strong>
+                                                        </span>
+                                                        <span title="آخر 30 يومًا: فتح بيانات التواصل">
+                                                            <i class="fa fa-phone text-info"></i>
+                                                            فتح التواصل: <strong>{{ number_format((int)($__stats['contact_reveals'] ?? 0)) }}</strong>
+                                                        </span>
+                                                        <span title="آخر 30 يومًا: ضغطات واتساب">
+                                                            <i class="fa fa-comments text-success"></i>
+                                                            واتساب: <strong>{{ number_format((int)($__stats['whatsapp_clicks'] ?? 0)) }}</strong>
+                                                        </span>
+                                                    </div>
+
                                                     <div class="btnAdds">
                                                         @if($aqar->promotion_active)
                                                             <div class="alert alert-success w-100 mb-3" style="border-radius:10px;">
@@ -235,6 +258,14 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         @endif
 
                                                         <a   target="_blank"  href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}"  class="btn btn-outline-primary ml-2">عرض</a>
+
+                                                        {{-- زر لوحة تحليلات هذا العقار --}}
+                                                        <a href="{{ route('seller.property.analytics', ['locale' => Config::get('app.locale'), 'aqar' => $aqar->id]) }}"
+                                                           class="btn btn-outline-info ml-2"
+                                                           title="عرض تحليلات هذا العقار">
+                                                            <i class="fas fa-chart-line"></i>
+                                                            تحليلات
+                                                        </a>
 
                                                         {{-- زر إظهار المستخدمين المهتمين --}}
                                                         <button type="button"

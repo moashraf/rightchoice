@@ -514,6 +514,12 @@ Route::group(['prefix' => '{locale?}'], function () {
             return redirect()->route('priceSingle', compact('locale', 'single'));
         })->middleware('setLocale');
         Route::get('/user_ads', 'App\Http\Controllers\PageController@user_ads')->name('user_ads');
+
+        // ── لوحة تحليلات البائع لعقار محدد ──────────────────────────────
+        Route::get('/my-properties/{aqar}/analytics', [App\Http\Controllers\SellerPropertyAnalyticsController::class, 'show'])
+            ->name('seller.property.analytics')
+            ->middleware(['setLocale']);
+
         Route::get('/user_wishs', 'App\Http\Controllers\PageController@user_wishs')->name('user_wishs')->middleware(['setLocale']);
         Route::get('/user_complaints', 'App\Http\Controllers\PageController@user_complaints')->name('user_complaints')->middleware(['setLocale']);
         /*   Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
@@ -681,6 +687,11 @@ Route::get('/get-wish_list_ids', 'App\Http\Controllers\AqarController@getWishLis
 Route::post('/remove-wish_list', 'App\Http\Controllers\AqarController@removewish_list')->name('remove-wish_list');
 Route::post('/add-contactaqar', 'App\Http\Controllers\AqarController@addContact')->name('add-contactaqar');
 Route::post('/track-whatsapp-contact', 'App\Http\Controllers\AqarController@trackWhatsappContact')->name('track-whatsapp-contact');
+
+// ── AJAX Tracking endpoint for analytics events (compare, share, whatsapp click) ──
+Route::post('/aqar-analytics/track', [App\Http\Controllers\AqarAnalyticsTrackingController::class, 'store'])
+    ->name('aqar.analytics.track')
+    ->middleware('throttle:60,1');
 Route::post('/ajx_main_img_edit_only', 'App\Http\Controllers\AqarController@ajx_main_img_edit_only')->name('ajx_main_img_edit_only');
 
 Route::post('/contact-info', 'App\Http\Controllers\PagesController@store')->name('contact-info');
