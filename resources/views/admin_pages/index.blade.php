@@ -7,8 +7,12 @@
                 <div class="col-sm-6">
                     <h1>الصفحات</h1>
                 </div>
-                <div class="col-sm-6">
-                    <a class="btn btn-primary float-right" href="{{ route('sitemanagement.pages.create') }}">
+                <div class="col-sm-6 text-right">
+                    <a class="btn btn-outline-primary ml-2" href="{{ route('sitemanagement.privacy-policy-sections.index') }}">
+                        <i class="fas fa-user-shield ml-1"></i>
+                        سياسة الخصوصية
+                    </a>
+                    <a class="btn btn-primary" href="{{ route('sitemanagement.pages.create') }}">
                         اضف جديد
                     </a>
                 </div>
