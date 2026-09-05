@@ -2,6 +2,30 @@
 
 @section('title', 'تعديل سياسة الخصوصية')
 
+@push('page_css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css">
+    <style>
+        .note-editor.note-frame {
+            border-color: #ced4da;
+            border-radius: .25rem;
+        }
+
+        .note-editor .note-toolbar {
+            background: #f8f9fa;
+        }
+
+        #arabic-content .note-editable {
+            direction: rtl;
+            text-align: right;
+        }
+
+        #english-content .note-editable {
+            direction: ltr;
+            text-align: left;
+        }
+    </style>
+@endpush
+
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -72,7 +96,7 @@
 
                                 <div class="form-group mb-0">
                                     <label for="details_ar">التفاصيل <span class="text-danger">*</span></label>
-                                    <textarea id="details_ar" name="details_ar" rows="18" class="form-control text-right" required>{{ old('details_ar', $privacyPolicySection->details_ar) }}</textarea>
+                                    <textarea id="details_ar" name="details_ar" class="form-control rich-text-editor">{{ old('details_ar', $privacyPolicySection->details_ar) }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -95,14 +119,14 @@
 
                                 <div class="form-group mb-0">
                                     <label for="details_en">Details <span class="text-danger">*</span></label>
-                                    <textarea id="details_en" name="details_en" rows="18" class="form-control" required>{{ old('details_en', $privacyPolicySection->details_en) }}</textarea>
+                                    <textarea id="details_en" name="details_en" class="form-control rich-text-editor">{{ old('details_en', $privacyPolicySection->details_en) }}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <small class="form-text text-muted mt-3" dir="rtl">
-                        يمكنك استخدام HTML بسيط مثل &lt;p&gt; و &lt;ul&gt; و &lt;li&gt; و &lt;strong&gt; و &lt;a&gt; لتنسيق التفاصيل في اللغتين.
+                        محرر التفاصيل يدعم التنسيق مباشرة مثل الخط العريض، المائل، العناوين، القوائم، الروابط، والمحاذاة والنزول لسطر جديد.
                     </small>
 
                     <hr>
@@ -144,3 +168,35 @@
         </form>
     </div>
 @endsection
+
+@push('page_scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.js"></script>
+    <script>
+        $(function () {
+            var editorOptions = {
+                height: 360,
+                minHeight: 250,
+                dialogsInBody: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            };
+
+            $('#details_ar').summernote(editorOptions);
+            $('#details_en').summernote(editorOptions);
+
+            $('#arabic-content .note-editable').attr('dir', 'rtl').css('text-align', 'right');
+            $('#english-content .note-editable').attr('dir', 'ltr').css('text-align', 'left');
+
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function () {
+                $('.rich-text-editor').each(function () {
+                    $(this).summernote('code', $(this).summernote('code'));
+                });
+            });
+        });
+    </script>
+@endpush
