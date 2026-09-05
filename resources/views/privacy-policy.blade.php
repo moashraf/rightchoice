@@ -1,12 +1,4 @@
 <x-layout>
-    @section('title')
-        سياسة الخصوصية
-    @endsection
-
-    @section('og_description')
-        تعرف على كيفية جمع واستخدام وحماية البيانات الشخصية في منصة Right Choice العقارية.
-    @endsection
-
     @php
         $locale = app()->getLocale();
         $isEnglish = $locale === 'en';
@@ -15,6 +7,16 @@
             ? $lastUpdatedSection->updated_at->format('d/m/Y')
             : '05/09/2026';
     @endphp
+
+    @section('title')
+        {{ $isEnglish ? 'Privacy Policy' : 'سياسة الخصوصية' }}
+    @endsection
+
+    @section('og_description')
+        {{ $isEnglish
+            ? 'Learn how Right Choice collects, uses, shares and protects personal data.'
+            : 'تعرف على كيفية جمع واستخدام وحماية البيانات الشخصية في منصة Right Choice العقارية.' }}
+    @endsection
 
     <style>
         :root {
@@ -35,8 +37,8 @@
             background: var(--rc-privacy-bg);
             color: var(--rc-privacy-text);
             min-height: 100vh;
-            direction: rtl;
-            text-align: right;
+            direction: {{ $isEnglish ? 'ltr' : 'rtl' }};
+            text-align: {{ $isEnglish ? 'left' : 'right' }};
         }
 
         .rc-privacy-hero {
@@ -55,7 +57,7 @@
             position: absolute;
             width: 360px;
             height: 360px;
-            right: -8%;
+            {{ $isEnglish ? 'left' : 'right' }}: -8%;
             bottom: -110px;
             border: 52px solid rgba(255,255,255,.05);
             border-radius: 50%;
@@ -124,7 +126,7 @@
         .rc-privacy-summary {
             background: linear-gradient(135deg, #fff8f4, #fff);
             border: 1px solid #ffd9c9;
-            border-right: 5px solid var(--rc-privacy-accent);
+            border-{{ $isEnglish ? 'left' : 'right' }}: 5px solid var(--rc-privacy-accent);
             border-radius: 18px;
             padding: 22px 24px;
             margin-bottom: 24px;
@@ -174,7 +176,7 @@
         }
 
         .rc-privacy-subtitle {
-            margin: 0 48px 18px 0;
+            margin: {{ $isEnglish ? '0 0 18px 48px' : '0 48px 18px 0' }};
             color: var(--rc-privacy-muted);
             font-size: 14px;
             line-height: 1.8;
@@ -192,7 +194,7 @@
 
         .rc-privacy-details ul {
             margin: 0;
-            padding-right: 22px;
+            padding-{{ $isEnglish ? 'left' : 'right' }}: 22px;
         }
 
         .rc-privacy-details li { margin-bottom: 8px; }
@@ -252,7 +254,7 @@
         .rc-privacy-sidebar a:hover {
             background: var(--rc-privacy-soft);
             color: var(--rc-privacy-primary);
-            transform: translateX(-2px);
+            transform: translateX({{ $isEnglish ? '2px' : '-2px' }});
         }
 
         .rc-privacy-contact {
@@ -298,7 +300,7 @@
             .rc-privacy-wrap { padding: 28px 0 55px; }
             .rc-privacy-card { padding: 20px 18px; border-radius: 16px; }
             .rc-privacy-card h2 { font-size: 19px; }
-            .rc-privacy-subtitle { margin-right: 0; }
+            .rc-privacy-subtitle { margin: 0 0 18px; }
             .rc-privacy-contact { align-items: flex-start; flex-direction: column; }
             .rc-privacy-contact a { width: 100%; text-align: center; }
         }
@@ -310,12 +312,19 @@
                 <div class="rc-privacy-hero__inner">
                     <div class="rc-privacy-badge">
                         <i class="fa fa-shield-alt"></i>
-                        <span>الخصوصية والأمان في Right Choice</span>
+                        <span>{{ $isEnglish ? 'Privacy and security at Right Choice' : 'الخصوصية والأمان في Right Choice' }}</span>
                     </div>
-                    <h1>سياسة الخصوصية</h1>
-                    <p>نوضح هنا بصورة واضحة كيف نجمع بياناتك ونستخدمها ونشاركها ونحميها أثناء استخدامك لمنصة Right Choice العقارية.</p>
+                    <h1>{{ $isEnglish ? 'Privacy Policy' : 'سياسة الخصوصية' }}</h1>
+                    <p>
+                        {{ $isEnglish
+                            ? 'This page explains how we collect, use, share and protect your data while you use the Right Choice real estate platform.'
+                            : 'نوضح هنا بصورة واضحة كيف نجمع بياناتك ونستخدمها ونشاركها ونحميها أثناء استخدامك لمنصة Right Choice العقارية.' }}
+                    </p>
                     <div class="rc-privacy-meta">
-                        <span><i class="far fa-calendar-alt"></i> آخر تحديث: {{ $lastUpdated }}</span>
+                        <span>
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $isEnglish ? 'Last updated:' : 'آخر تحديث:' }} {{ $lastUpdated }}
+                        </span>
                         <span><i class="fas fa-globe"></i> rightchoice-co.com</span>
                     </div>
                 </div>
@@ -326,54 +335,53 @@
             <div class="container">
                 <div class="rc-privacy-layout">
                     <div class="rc-privacy-content">
-                        @if($isEnglish)
-                            <div class="rc-privacy-summary">
-                                <strong>ملاحظة</strong>
-                                النسخة القانونية المعتمدة من هذه الصفحة متاحة حاليًا باللغة العربية.
-                            </div>
-                        @endif
-
                         <div class="rc-privacy-summary">
-                            <strong>ملخص سريع</strong>
-                            توضح هذه السياسة كيفية تعامل Right Choice مع بياناتك أثناء التسجيل، نشر العقارات، البحث والتواصل، استخدام المفضلة، إرسال الشكاوى والاستفسارات، الاشتراك في الباقات والإعلانات المميزة، وإتمام عمليات الدفع من خلال مزودي الخدمة المعتمدين.
+                            <strong>{{ $isEnglish ? 'Quick summary' : 'ملخص سريع' }}</strong>
+                            {{ $isEnglish
+                                ? 'This policy explains how Right Choice handles data during registration, property publishing, search and contact, favorites, complaints and inquiries, package subscriptions, featured listings, and payment transactions through approved service providers.'
+                                : 'توضح هذه السياسة كيفية تعامل Right Choice مع بياناتك أثناء التسجيل، نشر العقارات، البحث والتواصل، استخدام المفضلة، إرسال الشكاوى والاستفسارات، الاشتراك في الباقات والإعلانات المميزة، وإتمام عمليات الدفع من خلال مزودي الخدمة المعتمدين.' }}
                         </div>
 
                         @forelse($sections as $section)
                             <article id="{{ $section->slug }}" class="rc-privacy-card">
                                 <h2>
                                     <span class="rc-num">{{ $section->sort_order }}</span>
-                                    {{ $section->title }}
+                                    {{ $section->localized_title }}
                                 </h2>
 
-                                @if(!empty($section->subtitle))
-                                    <p class="rc-privacy-subtitle">{{ $section->subtitle }}</p>
+                                @if(!empty($section->localized_subtitle))
+                                    <p class="rc-privacy-subtitle">{{ $section->localized_subtitle }}</p>
                                 @endif
 
                                 <div class="rc-privacy-details">
-                                    {!! $section->details !!}
+                                    {!! $section->localized_details !!}
                                 </div>
                             </article>
                         @empty
                             <div class="rc-privacy-summary">
-                                <strong>المحتوى غير متاح حاليًا</strong>
-                                يرجى المحاولة مرة أخرى لاحقًا أو التواصل معنا إذا كان لديك استفسار متعلق بالخصوصية.
+                                <strong>{{ $isEnglish ? 'Content is currently unavailable' : 'المحتوى غير متاح حاليًا' }}</strong>
+                                {{ $isEnglish
+                                    ? 'Please try again later or contact us if you have a privacy-related question.'
+                                    : 'يرجى المحاولة مرة أخرى لاحقًا أو التواصل معنا إذا كان لديك استفسار متعلق بالخصوصية.' }}
                             </div>
                         @endforelse
 
                         <div class="rc-privacy-contact">
                             <div>
-                                <h3>لديك استفسار بخصوص بياناتك؟</h3>
-                                <p>فريق Right Choice متاح لمراجعة طلبات الخصوصية والاستفسارات.</p>
+                                <h3>{{ $isEnglish ? 'Have a question about your data?' : 'لديك استفسار بخصوص بياناتك؟' }}</h3>
+                                <p>{{ $isEnglish ? 'The Right Choice team can review privacy requests and inquiries.' : 'فريق Right Choice متاح لمراجعة طلبات الخصوصية والاستفسارات.' }}</p>
                             </div>
-                            <a href="{{ url($locale . '/contact-us') }}">تواصل معنا</a>
+                            <a href="{{ url($locale . '/contact-us') }}">{{ $isEnglish ? 'Contact us' : 'تواصل معنا' }}</a>
                         </div>
                     </div>
 
-                    <aside class="rc-privacy-sidebar" aria-label="فهرس سياسة الخصوصية">
-                        <div class="rc-privacy-sidebar__title">محتويات الصفحة</div>
+                    <aside class="rc-privacy-sidebar" aria-label="{{ $isEnglish ? 'Privacy Policy contents' : 'فهرس سياسة الخصوصية' }}">
+                        <div class="rc-privacy-sidebar__title">
+                            {{ $isEnglish ? 'Page contents' : 'محتويات الصفحة' }}
+                        </div>
                         <nav>
                             @foreach($sections as $section)
-                                <a href="#{{ $section->slug }}">{{ $section->sort_order }}. {{ $section->title }}</a>
+                                <a href="#{{ $section->slug }}">{{ $section->sort_order }}. {{ $section->localized_title }}</a>
                             @endforeach
                         </nav>
                     </aside>
