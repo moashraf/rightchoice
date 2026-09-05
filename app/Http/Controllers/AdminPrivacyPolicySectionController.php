@@ -29,9 +29,12 @@ class AdminPrivacyPolicySectionController extends Controller
     public function update(Request $request, PrivacyPolicySection $privacyPolicySection)
     {
         $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'subtitle' => ['nullable', 'string', 'max:500'],
-            'details' => ['required', 'string'],
+            'title_ar' => ['required', 'string', 'max:255'],
+            'title_en' => ['required', 'string', 'max:255'],
+            'subtitle_ar' => ['nullable', 'string', 'max:500'],
+            'subtitle_en' => ['nullable', 'string', 'max:500'],
+            'details_ar' => ['required', 'string'],
+            'details_en' => ['required', 'string'],
             'sort_order' => ['required', 'integer', 'min:1', 'max:999'],
             'is_active' => ['nullable', 'boolean'],
         ]);
@@ -42,6 +45,6 @@ class AdminPrivacyPolicySectionController extends Controller
 
         return redirect()
             ->route('sitemanagement.privacy-policy-sections.index')
-            ->with('success', 'تم تحديث عنصر سياسة الخصوصية بنجاح.');
+            ->with('success', 'تم تحديث محتوى سياسة الخصوصية بالعربي والإنجليزي بنجاح.');
     }
 }
