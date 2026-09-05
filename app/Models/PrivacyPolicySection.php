@@ -9,9 +9,12 @@ class PrivacyPolicySection extends Model
 {
     protected $fillable = [
         'slug',
-        'title',
-        'subtitle',
-        'details',
+        'title_ar',
+        'title_en',
+        'subtitle_ar',
+        'subtitle_en',
+        'details_ar',
+        'details_en',
         'sort_order',
         'is_active',
     ];
@@ -29,5 +32,26 @@ class PrivacyPolicySection extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
+    public function getLocalizedTitleAttribute(): string
+    {
+        return app()->isLocale('en')
+            ? ($this->title_en ?: $this->title_ar)
+            : $this->title_ar;
+    }
+
+    public function getLocalizedSubtitleAttribute(): ?string
+    {
+        return app()->isLocale('en')
+            ? ($this->subtitle_en ?: $this->subtitle_ar)
+            : $this->subtitle_ar;
+    }
+
+    public function getLocalizedDetailsAttribute(): string
+    {
+        return app()->isLocale('en')
+            ? ($this->details_en ?: $this->details_ar)
+            : $this->details_ar;
     }
 }
