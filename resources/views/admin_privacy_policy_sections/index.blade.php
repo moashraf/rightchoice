@@ -8,12 +8,14 @@
             <div class="row mb-2 align-items-center">
                 <div class="col-sm-8">
                     <h1>محتويات سياسة الخصوصية</h1>
-                    <p class="text-muted mb-0">يمكنك تعديل العنوان والعنوان الفرعي والتفاصيل لكل عنصر، مع الحفاظ على الرابط الداخلي الخاص به.</p>
+                    <p class="text-muted mb-0">يمكنك تعديل المحتوى العربي والإنجليزي لكل عنصر مع الحفاظ على الرابط الداخلي الخاص به.</p>
                 </div>
                 <div class="col-sm-4 text-sm-right mt-2 mt-sm-0">
-                    <a href="{{ url(app()->getLocale() . '/privacy-policy') }}" target="_blank" class="btn btn-outline-primary">
-                        <i class="fas fa-external-link-alt ml-1"></i>
-                        معاينة الصفحة
+                    <a href="{{ url('ar/privacy-policy') }}" target="_blank" class="btn btn-outline-primary ml-1">
+                        معاينة العربي
+                    </a>
+                    <a href="{{ url('en/privacy-policy') }}" target="_blank" class="btn btn-outline-secondary">
+                        Preview English
                     </a>
                 </div>
             </div>
@@ -41,8 +43,8 @@
                         <thead class="thead-light">
                         <tr>
                             <th style="width: 80px;">الترتيب</th>
-                            <th>العنوان</th>
-                            <th>العنوان الفرعي</th>
+                            <th>العنوان العربي</th>
+                            <th>English Title</th>
                             <th style="width: 150px;">الرابط الداخلي</th>
                             <th style="width: 100px;">الحالة</th>
                             <th style="width: 100px;">الإجراء</th>
@@ -53,12 +55,18 @@
                             <tr>
                                 <td class="font-weight-bold">{{ $section->sort_order }}</td>
                                 <td>
-                                    <strong>{{ $section->title }}</strong>
+                                    <strong>{{ $section->title_ar }}</strong>
+                                    @if($section->subtitle_ar)
+                                        <div class="small text-muted mt-1">{{ $section->subtitle_ar }}</div>
+                                    @endif
                                 </td>
-                                <td class="text-muted">{{ $section->subtitle ?: '—' }}</td>
-                                <td>
-                                    <code>#{{ $section->slug }}</code>
+                                <td dir="ltr" class="text-left">
+                                    <strong>{{ $section->title_en }}</strong>
+                                    @if($section->subtitle_en)
+                                        <div class="small text-muted mt-1">{{ $section->subtitle_en }}</div>
+                                    @endif
                                 </td>
+                                <td><code>#{{ $section->slug }}</code></td>
                                 <td>
                                     @if($section->is_active)
                                         <span class="badge badge-success">ظاهر</span>
