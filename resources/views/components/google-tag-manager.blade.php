@@ -66,6 +66,25 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    {{-- Privacy policy link in the shared site footer --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var footerLinks = document.querySelector('.rc-footer-links-list');
+            if (!footerLinks || footerLinks.querySelector('[data-privacy-policy-link]')) {
+                return;
+            }
+
+            var listItem = document.createElement('li');
+            var link = document.createElement('a');
+
+            link.href = @json(url(Config::get('app.locale').'/privacy-policy'));
+            link.textContent = @json(App::isLocale('en') ? 'Privacy Policy' : 'سياسة الخصوصية');
+            link.setAttribute('data-privacy-policy-link', 'true');
+
+            listItem.appendChild(link);
+            footerLinks.appendChild(listItem);
+        });
+    </script>
 
 @endif
 
