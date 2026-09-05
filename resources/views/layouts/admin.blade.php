@@ -259,16 +259,12 @@
                         </a>
                     </li>
 
-
-
                     <li class="complaints_complaints nav-item">
                         <a href="{{ route('sitemanagement.complaints.index') }}" class="nav-link {{ request()->is('sitemanagement/complaints*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-exclamation-circle"></i>
                             <p>{{ __('admin.complaints') }}</p>
                         </a>
                     </li>
-
-
 
                     <li class=" users_users nav-item {{ request()->is('sitemanagement/users*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('sitemanagement/users*') ? 'active' : '' }}">
@@ -278,8 +274,6 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-
-
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.priceingSales.index') }}" class="nav-link {{ request()->is('sitemanagement/priceingSales*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-tags"></i>
@@ -294,8 +288,6 @@
                             </li>
                         </ul>
                     </li>
-
-
 
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.contactForms.index') }}" class="nav-link {{ request()->is('sitemanagement/contactForms*') ? 'active' : '' }}">
@@ -316,31 +308,6 @@
                             <p>{{ __('admin.services') }}</p>
                         </a>
                     </li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     <li class="blogs_blogs nav-item">
                         <a href="{{ route('sitemanagement.blogs.index') }}" class="nav-link {{ request()->is('sitemanagement/blogs*') ? 'active' : '' }}">
@@ -393,6 +360,13 @@
                             <p>{{ __('admin.pages') }}</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sitemanagement.privacy-policy-sections.index') }}"
+                           class="nav-link {{ request()->is('sitemanagement/privacy-policy-sections*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>سياسة الخصوصية</p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.mzayas.index') }}" class="nav-link {{ request()->is('sitemanagement/mzayas*') ? 'active' : '' }}">
@@ -400,7 +374,6 @@
                             <p>{{ __('admin.mzaya') }}</p>
                         </a>
                     </li>
-
 
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.jobTitles.index') }}" class="nav-link {{ request()->is('sitemanagement/jobTitles*') ? 'active' : '' }}">
@@ -593,9 +566,6 @@
                             <p>{{ __('admin.property_types') }}</p>
                         </a>
                     </li>
-
-
-
 
                     {{-- ── Laravel System Logs (admin only) ─────────────── --}}
                     @if(Route::has('sitemanagement.systemLogs.index') && Auth::guard('admin')->check() && Auth::guard('admin')->user()->isAdminRole())
