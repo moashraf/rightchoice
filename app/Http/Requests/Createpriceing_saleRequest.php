@@ -29,6 +29,7 @@ class Createpriceing_saleRequest extends FormRequest
             'type'               => 'required',
             'description'        => 'required',
             'price'              => 'required|integer|min:0',
+            'discount_percentage' => 'required|integer|min:0|max:100',
             'points'             => 'required|integer|not_in:0',
             'desc1'              => 'required',
             'desc2'              => 'required',
