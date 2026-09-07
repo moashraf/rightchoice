@@ -136,8 +136,7 @@ class ProfileAPIController extends AppBaseController
 
         $validator = Validator::make($request->all(), [
             'name'                => 'required|max:255',
-            'email'               => "required|email|unique:users,email,{$user->id}",
-            'AGE'                 => 'nullable|integer',
+             'AGE'                 => 'nullable|integer',
             'TYPE'                => 'nullable|integer',
             'name_of_real_estate_developer'       => ($request->TYPE == 3 ? 'required' : 'nullable'),
             'Job_title'           => ($request->TYPE == 3 ? 'required' : 'nullable'),
