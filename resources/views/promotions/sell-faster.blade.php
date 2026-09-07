@@ -202,7 +202,7 @@
                                             <form method="POST" action="{{ url($locale . '/sell-faster/subscribe/' . $package->id) }}">
                                                 @csrf
                                                 <button class="rc-promo-package-btn" type="submit">
-                                                    <span>{{ $isEnglish ? 'Promote my property with 80% off' : 'ميّز عقاري الآن بخصم 80%' }}</span>
+                                                    <span>{{ $isEnglish ? "Promote my property with {$packageDiscountPercent}% off" : "ميّز عقاري الآن بخصم {$packageDiscountPercent}%" }}</span>
                                                     <i class="fas fa-arrow-left rc-promo-arrow-rtl"></i>
                                                     <i class="fas fa-arrow-right rc-promo-arrow-ltr"></i>
                                                 </button>
