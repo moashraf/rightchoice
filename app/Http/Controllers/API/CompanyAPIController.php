@@ -36,9 +36,12 @@ class CompanyAPIController extends AppBaseController
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'keywords' => 'nullable|string|max:150',
             'per_page' => 'nullable|integer|min:1|max:100',
             'page'     => 'nullable|integer|min:1',
         ], [
+            'keywords.string'  => 'كلمة البحث يجب أن تكون نصًا.',
+            'keywords.max'     => 'كلمة البحث يجب ألا تتجاوز 150 حرفًا.',
             'per_page.integer' => 'عدد العناصر في الصفحة يجب أن يكون رقمًا صحيحًا.',
             'per_page.min'     => 'عدد العناصر في الصفحة يجب أن يكون 1 على الأقل.',
             'per_page.max'     => 'عدد العناصر في الصفحة لا يتجاوز 100.',
@@ -50,9 +53,18 @@ class CompanyAPIController extends AppBaseController
             return $this->sendError('خطأ في البيانات المدخلة.', 422, $validator->errors()->toArray());
         }
 
+        $keywords = trim((string) $request->input('keywords', ''));
+
         $companies = Company::with(['serv', 'governrateq'])
+            ->when($keywords !== '', function ($query) use ($keywords) {
+                $query->where(function ($query) use ($keywords) {
+                    $query->where('Name', 'like', '%' . $keywords . '%')
+                        ->orWhere('name_en', 'like', '%' . $keywords . '%');
+                });
+            })
             ->latest()
-            ->paginate((int) $request->get('per_page', 15));
+            ->paginate((int) $request->get('per_page', 15))
+            ->appends($request->query());
 
         return $this->sendResponse($companies->toArray(), 'Companies retrieved successfully');
     }
