@@ -20,6 +20,7 @@ class priceing_saleRepository extends BaseRepository
         'type',
         'description',
         'price',
+        'discount_percentage',
         'points',
         'desc1',
         'desc2',
