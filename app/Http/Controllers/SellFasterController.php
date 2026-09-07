@@ -10,8 +10,6 @@ use Illuminate\Validation\Rule;
 
 class SellFasterController extends Controller
 {
-    private const DISCOUNT_PERCENT = 80;
-
     /**
      * Show the promotional landing page.
      */
@@ -24,7 +22,6 @@ class SellFasterController extends Controller
 
         return view('promotions.sell-faster', [
             'packages' => $packages,
-            'discountPercent' => self::DISCOUNT_PERCENT,
         ]);
     }
 
@@ -40,7 +37,6 @@ class SellFasterController extends Controller
 
         return view('promotions.contact-more-owners', [
             'packages' => $packages,
-            'discountPercent' => self::DISCOUNT_PERCENT,
         ]);
     }
 
@@ -65,8 +61,9 @@ class SellFasterController extends Controller
                     : 'باقات المشتري غير متاحة لحسابات الشركات.');
         }
 
+        $discountPercent = (int) $pricing->discount_percentage;
         $discountedPrice = round(
-            (float) $pricing->price * ((100 - self::DISCOUNT_PERCENT) / 100),
+            (float) $pricing->price * ((100 - $discountPercent) / 100),
             2
         );
 
@@ -78,13 +75,13 @@ class SellFasterController extends Controller
                 'pricing_id' => $pricing->id,
                 'original_price' => (float) $pricing->price,
                 'discounted_price' => $discountedPrice,
-                'discount_percent' => self::DISCOUNT_PERCENT,
+                'discount_percent' => $discountPercent,
             ],
         ]);
 
         return view('price.show', [
             'single' => $single,
-            'promotionDiscountPercent' => self::DISCOUNT_PERCENT,
+            'promotionDiscountPercent' => $discountPercent,
             'promotionOriginalPrice' => (float) $pricing->price,
         ]);
     }
@@ -122,7 +119,7 @@ class SellFasterController extends Controller
         return view('promotions.select-property', [
             'pricing' => $pricing,
             'properties' => $properties,
-            'discountPercent' => self::DISCOUNT_PERCENT,
+            'discountPercent' => (int) $pricing->discount_percentage,
         ]);
     }
 
@@ -197,7 +194,8 @@ class SellFasterController extends Controller
                 : 'يجب أن يكون العقار منشورًا وغير مميز حاليًا.'
         );
 
-        $discountMultiplier = (100 - self::DISCOUNT_PERCENT) / 100;
+        $discountPercent = (int) $pricing->discount_percentage;
+        $discountMultiplier = (100 - $discountPercent) / 100;
         $discountedPrice = round((float) $pricing->price * $discountMultiplier, 2);
 
         $PriceVip = clone $pricing;
@@ -209,7 +207,7 @@ class SellFasterController extends Controller
                 'aqar_id' => $aqar->id,
                 'original_price' => (float) $pricing->price,
                 'discounted_price' => $discountedPrice,
-                'discount_percent' => self::DISCOUNT_PERCENT,
+                'discount_percent' => $discountPercent,
             ],
         ]);
 
@@ -217,7 +215,7 @@ class SellFasterController extends Controller
             'PriceVip' => $PriceVip,
             'vipid' => $pricing->id,
             'aqarSingle_id' => $aqar->id,
-            'promotionDiscountPercent' => self::DISCOUNT_PERCENT,
+            'promotionDiscountPercent' => $discountPercent,
         ]);
     }
 }

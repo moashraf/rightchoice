@@ -12,6 +12,13 @@
     <small class="text-danger">{{ $errors->first('price') }}</small>
 </div>
 
+<!-- Discount Percentage Field -->
+<div class="form-group col-sm-4">
+    {!! Form::label('discount_percentage', 'Discount Percentage:') !!} <span class="text-danger">*</span>
+    {!! Form::number('discount_percentage', null, ['class' => 'form-control', 'min' => 0, 'max' => 100, 'step' => 1, 'required']) !!}
+    <small class="text-danger">{{ $errors->first('discount_percentage') }}</small>
+</div>
+
 <!-- Points Field -->
 <div class="form-group col-sm-4">
     {!! Form::label('points', 'Points:') !!} <span class="text-danger">*</span>

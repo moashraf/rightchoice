@@ -27,6 +27,7 @@ class CreatePriceVipRequest extends FormRequest
     {
         return [
             'price'      => 'required|integer|min:0',
+            'discount_percentage' => 'required|integer|min:0|max:100',
             'name'       => 'required',
             'views'      => 'required|integer',
             'duration_days' => 'required|integer|in:7,14,30',

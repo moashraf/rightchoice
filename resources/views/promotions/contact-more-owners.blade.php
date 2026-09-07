@@ -3,7 +3,7 @@
 @php
     $locale = Config::get('app.locale') ?: app()->getLocale();
     $isEnglish = App::isLocale('en');
-    $discountMultiplier = (100 - $discountPercent) / 100;
+    $maximumDiscountPercent = (int) ($packages->max('discount_percentage') ?? 0);
 @endphp
 
 <main class="rc-buyer-promo" dir="{{ $isEnglish ? 'ltr' : 'rtl' }}">
@@ -17,7 +17,7 @@
                 <p>  احصل على نقاط اضافيه  تساعدك تتواصل مباشرة مع ملاك العقارات بعدد أكثر       </p>
                 <p>   بدون عمولة بدون وسيط. </p>
                 <div class="rc-buyer-actions">
-                    <a href="#buyer-packages" class="rc-buyer-btn rc-buyer-btn--primary">{{ $isEnglish ? 'Get 80% off' : 'استفد من خصم 80%' }} <i class="fas fa-arrow-down"></i></a>
+                    <a href="#buyer-packages" class="rc-buyer-btn rc-buyer-btn--primary">{{ $isEnglish ? "Discounts up to {$maximumDiscountPercent}%" : "خصومات تصل إلى {$maximumDiscountPercent}%" }} <i class="fas fa-arrow-down"></i></a>
                     <a href="{{ route('priceBuyer', ['locale' => $locale]) }}" class="rc-buyer-btn rc-buyer-btn--ghost">{{ $isEnglish ? 'Package details' : 'تفاصيل الباقات' }}</a>
                 </div>
                 <div class="rc-buyer-trust">
@@ -28,9 +28,9 @@
             </div>
             <aside class="rc-buyer-discount">
                 <small>{{ $isEnglish ? 'LIMITED OFFER' : 'عرض لفترة محدودة' }}</small>
-                <strong>{{ $discountPercent }}<sup>%</sup></strong>
+                <strong>{{ $maximumDiscountPercent }}<sup>%</sup></strong>
                 <h2>{{ $isEnglish ? 'Discount on buyer packages' : 'خصم على باقات المشتري' }}</h2>
-                <p>{{ $isEnglish ? 'Pay only 20% of the regular price.' : 'ادفع 20% فقط من السعر الأساسي.' }}</p>
+                <p>{{ $isEnglish ? 'Each package has its own discount.' : 'لكل باقة نسبة خصم خاصة بها.' }}</p>
             </aside>
         </div>
     </section>
@@ -52,7 +52,7 @@
     <section id="buyer-packages" class="rc-buyer-packages">
         <div class="container">
             <header class="rc-buyer-heading rc-buyer-heading--light">
-                <span>{{ $isEnglish ? '80% OFF' : 'خصم 80%' }}</span>
+                <span>{{ $isEnglish ? 'SPECIAL PACKAGE DISCOUNTS' : 'خصومات خاصة على الباقات' }}</span>
                 <h2>{{ $isEnglish ? 'Choose your buyer package' : 'اختار    الباقه المناسبة' }}</h2>
                 <p>{{ $isEnglish ? 'The discounted price is applied automatically when you continue from this page.' : 'السعر بعد الخصم بيتطبق تلقائيًا عند الاشتراك من الصفحة دي.' }}</p>
             </header>
@@ -63,6 +63,8 @@
                     @foreach($packages as $package)
                         @php
                             $originalPrice = (float) $package->price;
+                            $packageDiscountPercent = (int) $package->discount_percentage;
+                            $discountMultiplier = (100 - $packageDiscountPercent) / 100;
                             $promoPrice = round($originalPrice * $discountMultiplier, 2);
                             $packageName = $isEnglish && !empty($package->type_en) ? $package->type_en : $package->type;
                             $packageName = strip_tags($packageName, '<i>');
@@ -76,7 +78,7 @@
                             ], fn ($detail) => trim(strip_tags((string) $detail)) !== ''));
                         @endphp
                         <article class="rc-buyer-plan" style="--delay: {{ $loop->index * 120 }}ms">
-                            <span class="rc-buyer-plan__badge">-{{ $discountPercent }}%</span>
+                            <span class="rc-buyer-plan__badge">-{{ $packageDiscountPercent }}%</span>
                             <h3>{!! $packageName !!}</h3>
 
                             @if(!empty($packageDescription))

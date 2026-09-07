@@ -13,7 +13,7 @@
         $locale = Config::get('app.locale') ?: app()->getLocale();
         $isEnglish = App::isLocale('en');
         $isCompanyAccount = auth()->check() && auth()->user()->isCompanyAccount();
-        $discountMultiplier = (100 - $discountPercent) / 100;
+        $maximumDiscountPercent = (int) ($packages->max('discount_percentage') ?? 0);
     @endphp
 
     <main class="rc-promo-page" dir="{{ $isEnglish ? 'ltr' : 'rtl' }}">
@@ -44,7 +44,7 @@
 
                             <div class="rc-promo-hero__actions">
                                 <a href="#promo-packages" class="rc-promo-btn rc-promo-btn--primary">
-                                    <span>{{ $isEnglish ? 'Get the 80% discount' : 'استفد من خصم 80%' }}</span>
+                                    <span>{{ $isEnglish ? "Discounts up to {$maximumDiscountPercent}%" : "خصومات تصل إلى {$maximumDiscountPercent}%" }}</span>
                                     <i class="fas fa-arrow-down"></i>
                                 </a>
 
@@ -67,17 +67,17 @@
                             <div class="rc-promo-offer-card__glow"></div>
                             <span class="rc-promo-offer-card__eyebrow">{{ $isEnglish ? 'SPECIAL OFFER' : 'عرض خاص' }}</span>
                             <div class="rc-promo-discount">
-                                <strong>{{ $discountPercent }}%</strong>
+                                <strong>{{ $maximumDiscountPercent }}%</strong>
                                 <span>{{ $isEnglish ? 'OFF' : 'خصم' }}</span>
                             </div>
-                            <h2>{{ $isEnglish ? 'Pay only 20% of the regular package price' : 'ادفع 20% فقط من سعر الباقة الأساسي' }}</h2>
+                            <h2>{{ $isEnglish ? 'A custom discount for every package' : 'نسبة خصم مستقلة لكل باقة' }}</h2>
                             <p>{{ $isEnglish ? 'The discount is calculated automatically when you subscribe from this page.' : 'الخصم بيتحسب تلقائيًا لما تبدأ الاشتراك من الصفحة دي.' }}</p>
                             <div class="rc-promo-price-example">
-                                <span>{{ $isEnglish ? 'Regular price' : 'السعر الأساسي' }}</span>
-                                <strong>100%</strong>
+                                <span>{{ $isEnglish ? 'Choose a package' : 'اختار الباقة' }}</span>
+                                <strong>{{ $isEnglish ? 'Compare' : 'قارن' }}</strong>
                                 <i class="fas fa-long-arrow-alt-left"></i>
-                                <span>{{ $isEnglish ? 'You pay' : 'هتدفع' }}</span>
-                                <strong>20%</strong>
+                                <span>{{ $isEnglish ? 'See its discount' : 'شوف خصمها' }}</span>
+                                <strong>%</strong>
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
         <section id="promo-packages" class="rc-promo-packages">
             <div class="container">
                 <div class="rc-promo-section-heading rc-promo-section-heading--light">
-                    <span>{{ $isEnglish ? '80% OFF PACKAGES' : 'خصم 80% على الباقات' }}</span>
+                    <span>{{ $isEnglish ? 'SPECIAL PACKAGE DISCOUNTS' : 'خصومات خاصة على الباقات' }}</span>
                     <h2>{{ $isEnglish ? 'Choose how many people see your property' : 'اختار مستوى الظهور المناسب لعقارك' }}</h2>
                     <p>{{ $isEnglish ? 'Every package is designed to increase your property exposure. Compare the expected views and choose the package that helps you reach more buyers faster.' : 'كل باقة مصممة علشان تزود ظهور عقارك. قارن عدد المشاهدات المتوقع واختار الباقة اللي تساعدك توصل لمشترين أكتر وأسرع.' }}</p>
                 </div>
@@ -145,6 +145,8 @@
                         @foreach($packages as $package)
                             @php
                                 $originalPrice = (float) $package->price;
+                                $packageDiscountPercent = (int) $package->discount_percentage;
+                                $discountMultiplier = (100 - $packageDiscountPercent) / 100;
                                 $promoPrice = round($originalPrice * $discountMultiplier, 2);
                                 $packageTitle = trim(strip_tags($isEnglish && !empty($package->name_en) ? $package->name_en : $package->name));
                                 $packageDescription = trim(strip_tags($isEnglish && !empty($package->description_en) ? $package->description_en : $package->description));
@@ -152,7 +154,7 @@
 
                             <div class="col-xl-4 col-lg-4 col-md-6 mb-4 d-flex">
                                 <article class="rc-promo-package-card">
-                                    <div class="rc-promo-package-card__badge">-{{ $discountPercent }}%</div>
+                                    <div class="rc-promo-package-card__badge">-{{ $packageDiscountPercent }}%</div>
                                     <div class="rc-promo-package-card__icon"><i class="fas fa-home"></i></div>
                                     <h3>{{ $packageTitle ?: ($isEnglish ? 'Property package' : 'باقة عقارية') }}</h3>
 
@@ -200,7 +202,7 @@
                                             <form method="POST" action="{{ url($locale . '/sell-faster/subscribe/' . $package->id) }}">
                                                 @csrf
                                                 <button class="rc-promo-package-btn" type="submit">
-                                                    <span>{{ $isEnglish ? 'Promote my property with 80% off' : 'ميّز عقاري الآن بخصم 80%' }}</span>
+                                                    <span>{{ $isEnglish ? "Promote my property with {$packageDiscountPercent}% off" : "ميّز عقاري الآن بخصم {$packageDiscountPercent}%" }}</span>
                                                     <i class="fas fa-arrow-left rc-promo-arrow-rtl"></i>
                                                     <i class="fas fa-arrow-right rc-promo-arrow-ltr"></i>
                                                 </button>
@@ -222,8 +224,8 @@
                     <i class="fas fa-shield-alt"></i>
                     <p>
                         {{ $isEnglish
-                            ? 'The 80% discount is applied automatically only when subscription starts from this promotional page. No expiry date is displayed unless one is configured for the campaign.'
-                            : 'خصم 80% بيتم تطبيقه تلقائيًا عند بدء الاشتراك من صفحة العرض دي. مفيش تاريخ انتهاء معروض للعرض إلا لو تم تحديده للحملة لاحقًا.' }}
+                            ? 'Each package discount is applied automatically when subscription starts from this promotional page.'
+                            : 'نسبة الخصم الخاصة بكل باقة بتتطبق تلقائيًا عند بدء الاشتراك من صفحة العرض دي.' }}
                     </p>
                 </div>
             </div>

@@ -19,6 +19,7 @@ class PriceVipRepository extends BaseRepository
     protected $fieldSearchable = [
         'name',
         'price',
+        'discount_percentage',
         'description',
         'views',
         'duration_days',
