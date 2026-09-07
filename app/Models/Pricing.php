@@ -18,6 +18,7 @@ class Pricing extends Model
         'type',
         'description',
         'price',
+        'discount_percentage',
         'points',
         'desc1',
         'desc2',
@@ -27,6 +28,11 @@ class Pricing extends Model
         'bk_color',
         'type_en',
         'description_en',
+    ];
+
+    protected $casts = [
+        'price' => 'float',
+        'discount_percentage' => 'integer',
     ];
 
     public function users()
