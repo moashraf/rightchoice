@@ -18,12 +18,14 @@ class PriceVip extends Model
         'name',
         'name_en',
         'price',
+        'discount_percentage',
         'views',
         'duration_days',
         'bgColor'
     ];
 
     protected $casts = [
+        'discount_percentage' => 'integer',
         'duration_days' => 'integer',
     ];
 
