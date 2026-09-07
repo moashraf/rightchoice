@@ -346,7 +346,6 @@
                             <p>{{ __('admin.photo_sessions') }}</p>
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a href="{{ route('sitemanagement.images.index') }}"
                            class="nav-link {{ request()->is('sitemanagement/images*') ? 'active' : '' }}">
