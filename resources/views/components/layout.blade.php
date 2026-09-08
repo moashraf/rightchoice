@@ -970,11 +970,10 @@
                         <i class="fab fa-apple" aria-hidden="true"></i>
                         <span>
                             <small>{{ App::isLocale('ar') ? 'آيفون — جرّبه عبر' : 'iPhone — Try it on' }}</small>
-                            <strong dir="ltr">TestFlight</strong>
+                            <strong dir="ltr"> IOS</strong>
                         </span>
                     </a>
-                    <p id="rc-footer-ios-note" class="rc-footer-apps-note">{{ App::isLocale('ar') ? 'نسخة تجريبية للآيفون عبر TestFlight' : 'iPhone beta available via TestFlight' }}</p>
-                </div>
+                 </div>
             </section>
             <div class="rc-footer-main">
                 <div class="rc-footer-brand-col">
