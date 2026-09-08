@@ -139,6 +139,7 @@ class ProfileAPIController extends AppBaseController
              'TYPE'                => 'nullable|integer',
             'name_of_real_estate_developer'       => ($request->TYPE == 3 ? 'required' : 'nullable'),
              'img'                 => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120',
+            'logo_real_estate_development_company' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:5120',
         ], [
             'name.required'                => 'حقل الاسم مطلوب.',
             'name.max'                     => 'الاسم يجب ألا يتجاوز 255 حرفًا.',
@@ -149,6 +150,9 @@ class ProfileAPIController extends AppBaseController
               'img.image'                    => 'الملف يجب أن يكون صورة.',
             'img.mimes'                    => 'الصورة يجب أن تكون من نوع: jpeg, jpg, png, gif.',
             'img.max'                      => 'حجم الصورة يجب ألا يتجاوز 5 ميجابايت.',
+            'logo_real_estate_development_company.image' => 'لوجو الشركة يجب أن يكون صورة.',
+            'logo_real_estate_development_company.mimes' => 'لوجو الشركة يجب أن يكون من نوع: jpeg, jpg, png, gif.',
+            'logo_real_estate_development_company.max' => 'حجم لوجو الشركة يجب ألا يتجاوز 5 ميجابايت.',
         ]);
 
         if ($validator->fails()) {
@@ -156,6 +160,17 @@ class ProfileAPIController extends AppBaseController
         }
 
         $data = $request->only(['name', 'email', 'AGE', 'TYPE', 'name_of_real_estate_developer', 'Job_title', 'Tax_card', 'Commercial_Register']);
+
+        if ($request->hasFile('logo_real_estate_development_company')) {
+            $logoPath = _uploadFileWeb($request->file('logo_real_estate_development_company'), 'user/');
+
+            if (empty($logoPath)) {
+                return $this->sendError('تعذر رفع لوجو الشركة. يرجى المحاولة مرة أخرى.', 500);
+            }
+
+            // Assign the uploaded path explicitly because this field is not mass assignable.
+            $user->logo_real_estate_development_company = $logoPath;
+        }
 
         if ($request->hasFile('img')) {
             $data['profile_image'] = _uploadFileWeb($request->img, 'user/');
@@ -165,6 +180,7 @@ class ProfileAPIController extends AppBaseController
 
         return $this->sendResponse($user->fresh()->only([
             'id', 'name', 'email', 'MOP', 'AGE', 'TYPE', 'profile_image',
+            'logo_real_estate_development_company',
             'name_of_real_estate_developer', 'Job_title', 'Tax_card', 'Commercial_Register',
         ]), 'Profile updated successfully');
     }
