@@ -14,6 +14,9 @@ return [
     |
     */
 
+    'google' => ['web_client_id' => env('GOOGLE_WEB_CLIENT_ID')],
+    'apple' => ['client_id' => env('APPLE_CLIENT_ID')],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

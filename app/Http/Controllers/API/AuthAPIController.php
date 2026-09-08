@@ -62,7 +62,7 @@ class AuthAPIController extends AppBaseController
             ? $this->findUserByPhone($phone)
             : User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !$user->password || !Hash::check($request->password, $user->password)) {
             return $this->sendError('Invalid credentials', 401);
         }
 

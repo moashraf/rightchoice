@@ -130,6 +130,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
+    public function fcmTokens()
+    {
+        return $this->hasMany(FcmToken::class);
+    }
+
     public function prices()
     {
         return $this->belongsToMany(Pricing::Class, 'users_priceing_sale',

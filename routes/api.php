@@ -26,6 +26,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login',  [App\Http\Controllers\API\AuthAPIController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\API\AuthAPIController::class, 'logout']);
 
+Route::post('auth/social', [App\Http\Controllers\API\SocialAuthController::class, 'handle'])
+    ->middleware('throttle:10,1');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('fcm-token', [App\Http\Controllers\API\FcmTokenController::class, 'store']);
+    Route::delete('fcm-token', [App\Http\Controllers\API\FcmTokenController::class, 'destroy']);
+});
+
 // Registration
 Route::get('user-types', [App\Http\Controllers\API\RegisterAPIController::class, 'userTypes']);
 Route::post('register',   [App\Http\Controllers\API\RegisterAPIController::class, 'register']);
