@@ -34,11 +34,11 @@ class priceing_saleAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $priceingSales = $this->priceingSaleRepository->all(
+        $priceingSales = $this->priceingSaleRepository->allQuery(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
-        );
+        )->where('id', '!=', 2)->get();
 
         return $this->sendResponse($priceingSales->toArray(), 'Priceing Sales retrieved successfully');
     }
