@@ -952,6 +952,29 @@
         <div class="rc-footer-pattern" aria-hidden="true"></div>
 
         <div class="container rc-footer-container">
+
+            <section class="rc-footer-apps" aria-labelledby="rc-footer-apps-title">
+                <div class="rc-footer-apps-copy">
+                    <h3 id="rc-footer-apps-title">{{ App::isLocale('ar') ? 'رايت تشويز معاك في كل مكان' : 'Right Choice, wherever you go' }}</h3>
+                    <p>{{ App::isLocale('ar') ? 'حمّل التطبيق على موبايلك، وتصفّح العقارات وتابع إعلاناتك بسهولة.' : 'Get the app to browse properties and manage your listings on the go.' }}</p>
+                </div>
+                <div class="rc-footer-apps-downloads">
+                    <a class="rc-footer-app-link" href="https://play.google.com/store/apps/details?id=com.rightchoiceco.app" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-android" aria-hidden="true"></i>
+                        <span>
+                            <small>{{ App::isLocale('ar') ? 'أندرويد — حمّله من' : 'Android — Get it on' }}</small>
+                            <strong dir="ltr">Google Play</strong>
+                        </span>
+                    </a>
+                    <a class="rc-footer-app-link" href="https://testflight.apple.com/join/F39Bp6c1" target="_blank" rel="noopener noreferrer" aria-describedby="rc-footer-ios-note">
+                        <i class="fab fa-apple" aria-hidden="true"></i>
+                        <span>
+                            <small>{{ App::isLocale('ar') ? 'آيفون — جرّبه عبر' : 'iPhone — Try it on' }}</small>
+                            <strong dir="ltr"> IOS</strong>
+                        </span>
+                    </a>
+                 </div>
+            </section>
             <div class="rc-footer-main">
                 <div class="rc-footer-brand-col">
                     <a href="{{ asset('/') }}" class="rc-footer-logo" aria-label="Right Choice">
@@ -1098,6 +1121,51 @@
         .rc-modern-footer,
         .rc-modern-footer * {
             box-sizing: border-box;
+        }
+
+
+        .rc-footer-apps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            margin-bottom: 40px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 24px;
+            background: rgba(0, 20, 40, .32);
+            text-align: start;
+        }
+
+        .rc-footer-apps-copy { flex: 1; min-width: 0; }
+        .rc-footer-apps-copy h3 { margin: 0 0 10px; color: #fff; font-size: 24px; line-height: 1.5; }
+        .rc-footer-apps-copy p { margin: 0; color: #e0eaf2; font-size: 15px; line-height: 1.9; }
+        .rc-footer-apps-downloads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .rc-modern-footer .rc-footer-app-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border: 1px solid rgba(255, 255, 255, .4);
+            border-radius: 12px;
+            background: #071c2d;
+            color: #fff;
+            text-decoration: none;
+        }
+        .rc-footer-app-link i { flex-shrink: 0; font-size: 30px; }
+        .rc-footer-app-link small { display: block; color: #e0eaf2; font-size: 12px; line-height: 1.7; }
+        .rc-footer-app-link strong { display: block; color: #fff; font-size: 20px; line-height: 1.4; }
+        .rc-modern-footer .rc-footer-app-link:hover { background: #073f73; border-color: #18c7a1; }
+        .rc-modern-footer .rc-footer-app-link:focus-visible { outline: 3px solid #18c7a1; outline-offset: 4px; }
+        .rc-footer-apps-note { grid-column: 1 / -1; margin: 0; color: #e0eaf2; font-size: 12px; line-height: 1.7; text-align: center; }
+
+        @media (max-width: 991px) {
+            .rc-footer-apps { flex-direction: column; align-items: stretch; }
+        }
+        @media (max-width: 575px) {
+            .rc-footer-apps { padding: 22px 18px; gap: 20px; }
+            .rc-footer-apps-copy h3 { font-size: 21px; }
+            .rc-footer-apps-downloads { grid-template-columns: minmax(0, 1fr); }
         }
 
         .rc-footer-pattern {
