@@ -579,9 +579,9 @@
 
                                             <input  type="email" name="email"
                                                     value="{{ old('email') }}" required class="myselect"
-                                                    id="email" aria-describedby="emailHelp">
+                                                    id="email" aria-describedby="company-email-error">
                                             <small
-                                                class="text-danger">{{ $errors->first('email') }}</small>
+                                                id="company-email-error" class="text-danger" aria-live="polite">{{ $errors->first('email') }}</small>
 
 
                                         </div>
@@ -655,7 +655,14 @@
                                         <label for="">الحي <span class="text-danger">*</span></label>
                                         <select oninvalid="this.setCustomValidity('{{ trans('validation.areaError')}}')"
                                                 oninput="this.setCustomValidity('')" required name="district_id" id="area_input" class="myselect">
-                                            <option  selected disabled  value="">اختر</option>
+                                            <option disabled value="" {{ old('district_id') ? '' : 'selected' }}>اختر</option>
+                                            @foreach ($governrate as $province)
+                                                @if ((string) old('governrate_id') === (string) $province->id)
+                                                    @foreach ($province->districts as $district)
+                                                        <option value="{{ $district->id }}" {{ (string) old('district_id') === (string) $district->id ? 'selected' : '' }}>{{ $district->district }}</option>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
 
 
                                         </select>
@@ -810,6 +817,14 @@
 
 <script>
     $(document).ready(function () {
+        $('#email').on('input', function () {
+            $('#company-email-error').text('');
+        });
+
+        $('#country, #area_input').on('change', function () {
+            this.setCustomValidity('');
+        });
+
         $('#country').on('change', function () {
             var idCountry = this.value;
             $("#area_input").html('');
