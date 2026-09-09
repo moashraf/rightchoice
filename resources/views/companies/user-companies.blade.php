@@ -53,7 +53,7 @@
                                                                     href="{{ URL::to(Config::get('app.locale').'/update_companies/' .$comp->slug) }}"
                                                                     class="">
 
-                                                                    {{ $comp->Name }}
+                                                                    {{ $comp->name }}
                                                                 </a></h4>
                                                             <!-- <h4 class="listing-name verified"><a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
 

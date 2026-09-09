@@ -13,31 +13,31 @@ class Company extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'Name',
-        'Company_activity',
-        'name_of_real_estate_developer',
-        'Job_title',
-        'Phone',
+        'name',
+        'company_activity',
+        'employee_name',
+        'job_title',
+        'phone',
         'phone2',
         'landline',
         'governrate_id',
         'building_number',
-        'Floor',
+        'floor',
         'unit_number',
         'details',
-        'Tax_card',
-        'Commercial_Register',
+        'tax_card',
+        'commercial_register',
         'area_id',
         'district_id',
         'photo',
-        'Serv_id',
+        'serv_id',
         'status',
         'slug',
         'user_id',
         'name_en',
         'slug_en',
-        'name_of_real_estate_developer_en',
-        'Job_title_en',
+        'employee_name_en',
+        'job_title_en',
         'details_en'
     ];
 
@@ -45,36 +45,36 @@ class Company extends Model
      * Validation rules for creating/updating a Company.
      */
     public static $rules = [
-        'Name'                => 'required|string|max:255',
+        'name'                => 'required|string|max:255',
         'slug'                => 'nullable|string',
         'user_id'             => 'nullable|integer',
         'governrate_id'       => 'required|integer',
         'district_id'         => 'required|integer',
         'area_id'             => 'nullable|integer',
-        'Serv_id'             => 'required|integer',
-        'name_of_real_estate_developer'       => 'nullable|string|max:255',
-        'Job_title'           => 'nullable|string|max:255',
-        'Phone'               => 'nullable|string|max:255',
+        'serv_id'             => 'required|integer',
+        'employee_name'       => 'nullable|string|max:255',
+        'job_title'           => 'nullable|string|max:255',
+        'phone'               => 'nullable|string|max:255',
         'phone2'              => 'nullable|string|max:255',
         'landline'            => 'nullable|string|max:255',
         'building_number'     => 'nullable|string|max:255',
-        'Floor'               => 'nullable|string|max:10',
+        'floor'               => 'nullable|string|max:10',
         'unit_number'         => 'nullable|string|max:255',
         'details'             => 'nullable|string',
-        'Tax_card'            => 'nullable|string|max:255',
-        'Commercial_Register' => 'nullable|string|max:255',
+        'tax_card'            => 'nullable|string|max:255',
+        'commercial_register' => 'nullable|string|max:255',
         'photo'               => 'nullable|string|max:255',
-        'Company_activity'    => 'nullable|integer',
+        'company_activity'    => 'nullable|integer',
         'status'              => 'nullable|integer',
         'name_en'             => 'nullable|string|max:255',
         'slug_en'             => 'nullable|string|max:255',
-        'name_of_real_estate_developer_en'    => 'nullable|string|max:255',
-        'Job_title_en'        => 'nullable|string|max:255',
+        'employee_name_en'    => 'nullable|string|max:255',
+        'job_title_en'        => 'nullable|string|max:255',
         'details_en'          => 'nullable|string|max:255',
     ];
 
     /**
-     * Auto-generate slug from Name before creating.
+     * Auto-generate slug from name before creating.
      */
     protected static function boot()
     {
@@ -82,7 +82,7 @@ class Company extends Model
 
         static::creating(function ($company) {
             if (empty($company->slug)) {
-                $company->slug = Str::slug($company->Name) ?: Str::random(10);
+                $company->slug = Str::slug($company->name) ?: Str::random(10);
             }
             if (empty($company->slug_en) && !empty($company->name_en)) {
                 $company->slug_en = Str::slug($company->name_en);
@@ -96,9 +96,9 @@ class Company extends Model
     public function serv(){
 
 
-             return $this->belongsTo(Service::class, 'Serv_id');
+             return $this->belongsTo(Service::class, 'serv_id');
 
-       //return $this->belongsTo(Service::class, 'Company_activity');
+       //return $this->belongsTo(Service::class, 'company_activity');
     }
 
     public function employments()
@@ -120,7 +120,7 @@ class Company extends Model
     }
 
     public function jobTitle(){
-        return $this->belongsTo(JobTitles::class, 'Job_title', 'id');
+        return $this->belongsTo(JobTitles::class, 'job_title', 'id');
     }
 
     public function jobTitles(){

@@ -78,11 +78,11 @@ class CompanyDataTable extends DataTable
         return [
             'id',
             'Photo' => ['name' => 'Photo', 'data' => 'photo', 'render' => '"<a href=\"images/"+data+"\" data-toggle=\"lightbox\"/><img src=\"https://rightchoice-co.com/public/images/"+data+"\" height=\"50\"/>"'],
-            'Name',
+            'name',
             'user_id' => new \Yajra\DataTables\Html\Column(['title' => 'User', 'data' => 'userinfo.name', 'name' => 'userinfo.name']),
             'governrate_id' => new \Yajra\DataTables\Html\Column(['title' => 'Governrate', 'data' => 'governratinfo.governrate', 'name' => 'governratinfo.governrate']),
             'district_id' => new \Yajra\DataTables\Html\Column(['title' => 'District', 'data' => 'districtinfo.district', 'name' => 'districtinfo.district']),
-            'Serv_id' => new \Yajra\DataTables\Html\Column(['title' => 'Service', 'data' => 'serviceinfo.Service', 'name' => 'serviceinfo.Service']),
+            'serv_id' => new \Yajra\DataTables\Html\Column(['title' => 'Service', 'data' => 'serviceinfo.Service', 'name' => 'serviceinfo.Service']),
             'created_at',
             'status'
         ];

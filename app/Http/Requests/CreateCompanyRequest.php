@@ -26,8 +26,8 @@ class CreateCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'Name' => 'required',
-            'Job_title' => 'nullable|integer|exists:jobTitles,id',
+            'name' => 'required',
+            'job_title' => 'nullable|integer|exists:jobTitles,id',
         ];
     }
 }

@@ -16,8 +16,8 @@
 
 <!-- Name Field -->
 <div class="col-sm-6">
-    {!! Form::label('Name', 'Name:') !!}
-    <p>{{ $company->Name }}</p>
+    {!! Form::label('name', 'Name:') !!}
+    <p>{{ $company->name }}</p>
 </div>
 
 <!-- Slug Field -->
@@ -28,19 +28,19 @@
 
 <!-- Phone Field -->
 <div class="col-sm-6">
-    {!! Form::label('Phone', 'Phone:') !!}
-    <p>{{ $company->Phone }}</p>
+    {!! Form::label('phone', 'Phone:') !!}
+    <p>{{ $company->phone }}</p>
 </div>
 
 <!-- Employee Name Field -->
 <div class="col-sm-6">
-    {!! Form::label('name_of_real_estate_developer', 'Employee Name:') !!}
-    <p>{{ $company->name_of_real_estate_developer }}</p>
+    {!! Form::label('employee_name', 'Employee Name:') !!}
+    <p>{{ $company->employee_name }}</p>
 </div>
 
 <!-- Job Title Field -->
 <div class="col-sm-6">
-    {!! Form::label('Job_title', 'Job Title:') !!}
+    {!! Form::label('job_title', 'Job Title:') !!}
     <p>
         @if($company->jobTitle)
             @if(App::isLocale('en'))
@@ -49,7 +49,7 @@
                 {{ $company->jobTitle->Job_title }}
             @endif
         @else
-            {{ $company->Job_title }}
+            {{ $company->job_title }}
         @endif
     </p>
 </div>
@@ -62,8 +62,8 @@
 
 <!-- Floor Field -->
 <div class="col-sm-6">
-    {!! Form::label('Floor', 'Floor:') !!}
-    <p>{{ $company->Floor }}</p>
+    {!! Form::label('floor', 'Floor:') !!}
+    <p>{{ $company->floor }}</p>
 </div>
 
 <!-- Unit Number Field -->
@@ -74,14 +74,14 @@
 
 <!-- Tax Card Field -->
 <div class="col-sm-6">
-    {!! Form::label('Tax_card', 'Tax Card:') !!}
-    <p>{{ $company->Tax_card }}</p>
+    {!! Form::label('tax_card', 'Tax Card:') !!}
+    <p>{{ $company->tax_card }}</p>
 </div>
 
 <!-- Commercial Register Field -->
 <div class="col-sm-6">
-    {!! Form::label('Commercial_Register', 'Commercial Register:') !!}
-    <p>{{ $company->Commercial_Register }}</p>
+    {!! Form::label('commercial_register', 'Commercial Register:') !!}
+    <p>{{ $company->commercial_register }}</p>
 </div>
 
 <!-- Status Field -->

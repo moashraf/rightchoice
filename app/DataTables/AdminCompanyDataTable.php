@@ -32,7 +32,7 @@ class AdminCompanyDataTable extends DataTable
         $query = $model->newQuery()->with(['governrateq', 'serv']);
 
         if ($name = request('filter_name')) {
-            $query->where('Name', 'like', '%' . $name . '%');
+            $query->where('name', 'like', '%' . $name . '%');
         }
         if ($gov = request('filter_governrate')) {
             $query->where('governrate_id', $gov);
@@ -41,7 +41,7 @@ class AdminCompanyDataTable extends DataTable
             $query->where('district_id', $dist);
         }
         if ($serv = request('filter_service')) {
-            $query->where('Serv_id', $serv);
+            $query->where('serv_id', $serv);
         }
         if (request('filter_status') !== null && request('filter_status') !== '') {
             $query->where('status', request('filter_status'));
@@ -72,8 +72,8 @@ class AdminCompanyDataTable extends DataTable
     {
         return [
             ['data' => 'id',          'name' => 'id',          'title' => '#'],
-            ['data' => 'Name',        'name' => 'Name',        'title' => 'اسم الشركة'],
-            ['data' => 'Phone',       'name' => 'Phone',       'title' => 'الهاتف'],
+            ['data' => 'name',        'name' => 'name',        'title' => 'اسم الشركة'],
+            ['data' => 'phone',       'name' => 'phone',       'title' => 'الهاتف'],
             ['data' => 'governrate',  'name' => 'governrateq.governrate', 'title' => 'المحافظة', 'searchable' => false, 'orderable' => false],
             ['data' => 'service',     'name' => 'serv.service',           'title' => 'الخدمة',   'searchable' => false, 'orderable' => false],
             ['data' => 'status',      'name' => 'status',      'title' => 'الحالة'],

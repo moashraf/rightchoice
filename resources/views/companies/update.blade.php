@@ -2,7 +2,7 @@
 
 
  @section('title')
-{{$company->Name }}
+{{$company->name }}
 @endsection
 
 
@@ -79,23 +79,23 @@
 
                                     <div class="col-lg-4">
 
-                                        <div class="form-group {{ $errors->has('Serv_id') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('serv_id') ? ' has-error' : '' }}">
 
                                             <label for="company-type">اختر نشاط الشركه<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <select required name="Serv_id" id="company-type" class="myselect">
+                                            <select required name="serv_id" id="company-type" class="myselect">
 
                                                 <option value="">اختر</option>
                                                 @foreach($serviceInHeader as $serv)
-                                                        <option value="{{ $serv->id }}" {{ $company->Serv_id == $serv->id ? 'selected' : '' }}>{{ $serv->Service }}</option>
+                                                        <option value="{{ $serv->id }}" {{ $company->serv_id == $serv->id ? 'selected' : '' }}>{{ $serv->Service }}</option>
 
                                                 @endforeach
 
                                             </select>
 
-                                            <small class="text-danger">{{ $errors->first('Serv_id') }}</small>
+                                            <small class="text-danger">{{ $errors->first('serv_id') }}</small>
 
                                         </div>
 
@@ -105,17 +105,17 @@
 
 
 
-                                        <div class="form-group {{ $errors->has('name_of_real_estate_developer') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('employee_name') ? ' has-error' : '' }}">
 
                                             <label for="employe">اسم الموظف المسئول<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input required type="text" name="name_of_real_estate_developer" id="employe"
+                                            <input required type="text" name="employee_name" id="employe"
 
-                                                class="form-control" value="{{  $company->name_of_real_estate_developer }}">
+                                                class="form-control" value="{{  $company->employee_name }}">
 
-                                            <small class="text-danger">{{ $errors->first('name_of_real_estate_developer') }}</small>
+                                            <small class="text-danger">{{ $errors->first('employee_name') }}</small>
 
                                         </div>
 
@@ -125,19 +125,19 @@
 
                                     <div class="col-lg-4">
 
-                                        <div class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('job_title') ? ' has-error' : '' }}">
 
                                             <label for="employe-type">المسمى الوظيفي<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <select class="myselect" required name="Job_title" id="employe-type">
+                                            <select class="myselect" required name="job_title" id="employe-type">
 
                                                 <option value="">اختر</option>
 
                                                 @foreach($jobs ?? [] as $job)
 
-                                                    <option value="{{ $job->id }}" {{ old('Job_title', $company->Job_title) == $job->id ? 'selected' : '' }}>
+                                                    <option value="{{ $job->id }}" {{ old('job_title', $company->job_title) == $job->id ? 'selected' : '' }}>
                                                         @if(App::isLocale('en'))
                                                             {{ $job->Job_title_en ?: $job->Job_title }}
                                                         @else
@@ -149,7 +149,7 @@
 
                                             </select>
 
-                                            <small class="text-danger">{{ $errors->first('Job_title') }}</small>
+                                            <small class="text-danger">{{ $errors->first('job_title') }}</small>
 
                                         </div>
 
@@ -167,17 +167,17 @@
 
                                     <div class="col-lg-6">
 
-                                        <div class="form-group {{ $errors->has('Name') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
 
                                             <label for="company-name">اسم الشركه<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input required type="text" name="Name" id="company-name" class="form-control"
+                                            <input required type="text" name="name" id="company-name" class="form-control"
 
-                                                placeholder="  company name" value="{{  $company->Name }}">
+                                                placeholder="  company name" value="{{  $company->name }}">
 
-                                            <small class="text-danger">{{ $errors->first('Name') }}</small>
+                                            <small class="text-danger">{{ $errors->first('name') }}</small>
 
                                         </div>
 
@@ -187,19 +187,19 @@
 
                                     <div class="col-lg-6">
 
-                                        <div class="form-group {{ $errors->has('Phone') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
 
                                             <label for="company-phone">رقم التلفون<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input required type="phone" name="Phone" id="company-phone"
+                                            <input required type="phone" name="phone" id="company-phone"
 
                                                 class="form-control" placeholder="010000000000000"
 
-                                                value="{{  $company->Phone }}">
+                                                value="{{  $company->phone }}">
 
-                                            <small class="text-danger">{{ $errors->first('Phone') }}</small>
+                                            <small class="text-danger">{{ $errors->first('phone') }}</small>
 
                                         </div>
 
@@ -305,15 +305,15 @@
 
                                     <div class="col-md-4">
 
-                                        <div class="form-group {{ $errors->has('Floor') ? ' has-error' : '' }}"><label
+                                        <div class="form-group {{ $errors->has('floor') ? ' has-error' : '' }}"><label
 
                                                 for="floor-no">رقم الدور<span class="text-danger">*</span></label>
 
-                                            <input type="number" name="Floor" id="floor-no" class="form-control"
+                                            <input type="number" name="floor" id="floor-no" class="form-control"
 
-                                                placeholder="1" min="1" value="{{  $company->Floor }}">
+                                                placeholder="1" min="1" value="{{  $company->floor }}">
 
-                                            <small class="text-danger">{{ $errors->first('Floor') }}</small>
+                                            <small class="text-danger">{{ $errors->first('floor') }}</small>
 
                                         </div>
 
@@ -357,15 +357,15 @@
 
                                     <div class="col-md-6">
 
-                                        <div class="form-group {{ $errors->has('Tax_card') ? ' has-error' : '' }}">
+                                        <div class="form-group {{ $errors->has('tax_card') ? ' has-error' : '' }}">
 
                                             <label for="tax-id">رقم البطاقه الضريبيه<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input type="text" name="Tax_card" id="tax-id" class="form-control" value="{{  $company->Tax_card }}">
+                                            <input type="text" name="tax_card" id="tax-id" class="form-control" value="{{  $company->tax_card }}">
 
-                                            <small class="text-danger">{{ $errors->first('Tax_card') }}</small>
+                                            <small class="text-danger">{{ $errors->first('tax_card') }}</small>
 
                                         </div>
 
@@ -375,19 +375,19 @@
 
                                         <div
 
-                                            class="form-group {{ $errors->has('Commercial_Register') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('commercial_register') ? ' has-error' : '' }}">
 
                                             <label for="togary-id">رقم السجل التجاري<span
 
                                                     class="text-danger">*</span></label>
 
-                                            <input type="text" name="Commercial_Register" id="togary-id"
+                                            <input type="text" name="commercial_register" id="togary-id"
 
-                                                class="form-control" value="{{  $company->Commercial_Register }}">
+                                                class="form-control" value="{{  $company->commercial_register }}">
 
                                             <small
 
-                                                class="text-danger">{{ $errors->first('Commercial_Register') }}</small>
+                                                class="text-danger">{{ $errors->first('commercial_register') }}</small>
 
                                         </div>
 

@@ -211,21 +211,21 @@ class CompanyController extends Controller
 
             $rules = [
 
-                'name_of_real_estate_developer' => 'required|max:225',
+                'employee_name' => 'required|max:225',
                 'details' => 'required|max:2500',
-                'Serv_id' => 'required|integer|exists:services,id',
-                'Job_title' => 'required|integer|exists:jobTitles,id',
-                'Name' => 'required|max:225',
-                'Phone' => 'required|numeric|unique:company',
+                'serv_id' => 'required|integer|exists:services,id',
+                'job_title' => 'required|integer|exists:jobTitles,id',
+                'name' => 'required|max:225',
+                'phone' => 'required|numeric|unique:company',
                 'email' => 'required|unique:users',
                 'landline' => '',
                 'governrate_id' => 'required|integer',
                 'district_id' => 'required|integer',
                 'building_number' => 'required|min:1',
-                'Floor' => 'required|min:1',
+                'floor' => 'required|min:1',
                 'unit_number' => '',
-                'Tax_card' => '',
-                'Commercial_Register' => '',
+                'tax_card' => '',
+                'commercial_register' => '',
                 'photo' => 'required|image|mimes:jpeg,jpg,png,gif',
             ];
 
@@ -243,9 +243,9 @@ class CompanyController extends Controller
 
                     $register_user_data = User::create([
                         'TYPE' => 4,
-                        'MOP' => $request['Phone'],
+                        'MOP' => $request['phone'],
                         'AGE' => 0,
-                        'name' => $request['Name'],
+                        'name' => $request['name'],
                         'email' => $request['email'],
                         'password' => bcrypt($request->password),
                         'phone_sms_otp' => $random_mass_num
@@ -257,7 +257,7 @@ class CompanyController extends Controller
                     $userID = $register_user_data->id;
 
                     $findSlug = false;
-                    $cheackSlug = Company::where('slug', Str::slug($request->Name, '-'))->first();
+                    $cheackSlug = Company::where('slug', Str::slug($request->name, '-'))->first();
                     if ($cheackSlug) {
                         $findSlug = true;
                     }
@@ -265,19 +265,18 @@ class CompanyController extends Controller
 
                     $company = new Company();
 
+                    $company->name = request('name');
                     if (App::isLocale('en')) {
-                        $company->name_en = request('Name');
-                    } else {
-                        $company->Name = request('Name');
+                        $company->name_en = request('name');
                     }
 
 
                     if ($findSlug == true) {
 
-                        $company->slug = Str::slug($request->Name, '-') . '-' . Str::random(2);
+                        $company->slug = Str::slug($request->name, '-') . '-' . Str::random(2);
                     } else {
 
-                        $company->slug = Str::slug($request->Name, '-');
+                        $company->slug = Str::slug($request->name, '-');
                     }
 
                     $company->governrate_id = request('governrate_id');
@@ -292,22 +291,21 @@ class CompanyController extends Controller
                     }
                     $company->district_id = request('district_id');
 
-                    $company->Company_activity = request('Serv_id');
+                    $company->company_activity = request('serv_id');
 
                     $company->user_id = $userID;
 
+                    $company->employee_name = request('employee_name');
                     if (App::isLocale('en')) {
-                        $company->name_of_real_estate_developer = request('name_of_real_estate_developer_en');
-                    } else {
-                        $company->name_of_real_estate_developer = request('name_of_real_estate_developer');
+                        $company->employee_name_en = $request->input('employee_name_en', $request->employee_name);
                     }
 
-                    $company->Job_title = request('Job_title');
-                    $company->Phone = request('Phone');
-                    $company->Phone2 = request('Phone2');
+                    $company->job_title = request('job_title');
+                    $company->phone = request('phone');
+                    $company->phone2 = request('phone2');
                     $company->landline = request('landline');
                     $company->building_number = request('building_number');
-                    $company->Floor = request('Floor');
+                    $company->floor = request('floor');
                     $company->unit_number = request('unit_number');
                     if (App::isLocale('en')) {
                         $company->details = request('details_en');
@@ -315,9 +313,9 @@ class CompanyController extends Controller
                         $company->details = request('details');
                     }
 
-                    $company->Tax_card = request('Tax_card');
-                    $company->Commercial_Register = request('Commercial_Register');
-                    $company->Serv_id = request('Serv_id');
+                    $company->tax_card = request('tax_card');
+                    $company->commercial_register = request('commercial_register');
+                    $company->serv_id = request('serv_id');
 
                     if (!empty($request->photo)) {
 
@@ -337,7 +335,7 @@ class CompanyController extends Controller
 
                     /******************************************************/
 
-                    $MOP = $request['Phone'];
+                    $MOP = $request['phone'];
                     SmsService::sendOtp($MOP, $random_mass_num);
 
                     /******************************************************/
@@ -370,17 +368,17 @@ class CompanyController extends Controller
         if ($request->isMethod('post')) {
             //   dd($request->all());
             $rules = [
-                'name_of_real_estate_developer' => 'required|max:225',
+                'employee_name' => 'required|max:225',
 
                 'details' => 'required|max:2500',
 
-                'Serv_id' => 'required|integer',
+                'serv_id' => 'required|integer',
 
-                'Job_title' => 'required|integer|exists:jobTitles,id',
+                'job_title' => 'required|integer|exists:jobTitles,id',
 
-                'Name' => 'required|max:225',
+                'name' => 'required|max:225',
 
-                'Phone' => 'required|numeric',
+                'phone' => 'required|numeric',
 
                 'governrate_id' => 'required|integer',
 
@@ -390,13 +388,13 @@ class CompanyController extends Controller
 
                 'building_number' => 'required|min:1|integer',
 
-                'Floor' => 'required|min:1|integer',
+                'floor' => 'required|min:1|integer',
 
                 'unit_number' => 'required|min:1|integer',
 
-                'Tax_card' => '',
+                'tax_card' => '',
 
-                'Commercial_Register' => '',
+                'commercial_register' => '',
 
                 'img' => ($request->img != null ? 'required|image|mimes:jpeg,jpg,png,gif' : ''),
 
@@ -428,8 +426,8 @@ class CompanyController extends Controller
                     }
 
                     //update aqarDetails
-                    if ($request->Name) {
-                        $request->merge(['slug' => Str::slug($request->Name, '-')]);
+                    if ($request->name) {
+                        $request->merge(['slug' => Str::slug($request->name, '-')]);
                     }
 
                     $updatedata = Company::findOrFail($company->id);
@@ -437,8 +435,8 @@ class CompanyController extends Controller
 
 
                     $vendor->update([
-                        'name' => $request->Name,
-                        'MOP' => $request->Phone,
+                        'name' => $request->name,
+                        'MOP' => $request->phone,
                     ]);
 
 
