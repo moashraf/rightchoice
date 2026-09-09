@@ -443,6 +443,17 @@
                             <form action="{{ route('add_company_post') }}"
                                   enctype="multipart/form-data" method="POST" files="true">
                                 @csrf
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-4" role="alert" aria-labelledby="company-validation-title">
+                                        <strong id="company-validation-title">{{ App::isLocale('en') ? 'Please correct the following errors:' : 'يرجى تصحيح الأخطاء التالية:' }}</strong>
+                                        <ul class="mb-0 mt-2">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <!--      <input type="hidden" name="user_id" value="">-->
 
                                 <div class="row">
