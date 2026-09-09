@@ -210,7 +210,6 @@ class CompanyController extends Controller
             $random_mass_num = random_int(111, 10000);
 
             $rules = [
-
                 'employee_name' => 'required|max:225',
                 'details' => 'required|max:2500',
                 'serv_id' => 'required|integer|exists:services,id',
