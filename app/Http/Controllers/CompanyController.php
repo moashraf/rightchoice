@@ -220,8 +220,8 @@ class CompanyController extends Controller
                 'landline' => '',
                 'governrate_id' => 'required|integer',
                 'district_id' => 'required|integer',
-                'building_number' => 'required|min:1',
-                'floor' => 'required|min:1',
+                'building_number' => 'required|min:1|max:9',
+                'floor' => 'required|min:1|max:9',
                 'unit_number' => '',
                 'tax_card' => '',
                 'commercial_register' => '',
@@ -342,6 +342,7 @@ class CompanyController extends Controller
                     return redirect()->route('otbPage', ['userID' => $userID, 'locale' => $locale]);
 
                 } catch (\Exception $ex) {
+
                     session()->flash('error', 'عفوا, يوجد خطأ ما');
                     return Redirect::back()->withInput($request->all());
 
@@ -387,14 +388,11 @@ class CompanyController extends Controller
 
                 'building_number' => 'required|min:1|integer',
 
-                'floor' => 'required|min:1|integer',
+                'floor' => 'required|min:1|integer|max:9',
 
-                'unit_number' => 'required|min:1|integer',
-
+                'unit_number' => 'required|min:1|integer|max:9',
                 'tax_card' => '',
-
                 'commercial_register' => '',
-
                 'img' => ($request->img != null ? 'required|image|mimes:jpeg,jpg,png,gif' : ''),
 
             ];
