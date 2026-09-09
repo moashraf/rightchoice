@@ -58,7 +58,7 @@ class CompanyAPIController extends AppBaseController
         $companies = Company::with(['serv', 'governrateq'])
             ->when($keywords !== '', function ($query) use ($keywords) {
                 $query->where(function ($query) use ($keywords) {
-                    $query->where('Name', 'like', '%' . $keywords . '%')
+                    $query->where('name', 'like', '%' . $keywords . '%')
                         ->orWhere('name_en', 'like', '%' . $keywords . '%');
                 });
             })
@@ -94,7 +94,7 @@ class CompanyAPIController extends AppBaseController
         $serviceId = $request->input('service_id');
         $perPage   = $request->input('per_page', 15);
 
-        $companies = Company::where('Serv_id', $serviceId)
+        $companies = Company::where('serv_id', $serviceId)
             ->with(['serv', 'governrateq', 'subArea'])
             ->paginate($perPage);
 

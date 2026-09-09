@@ -652,12 +652,12 @@ Route::group(['prefix' => '{locale?}'], function () {
     Route::get('/companies/{compan}', 'App\Http\Controllers\CompanyController@show')->middleware('setLocale');
     Route::get('/ourcompanies-{slug}/filterby', 'App\Http\Controllers\CompanyController@sorting')->middleware('setLocale')->name('filterBy');
 
-    Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware('setLocale');
+    Route::get('/add_company', 'App\Http\Controllers\CompanyController@create')->middleware(['setLocale', 'auth:web']);
 
 
 });
 
-Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post');
+Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post')->middleware('auth:web');
 Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
 Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
 Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');

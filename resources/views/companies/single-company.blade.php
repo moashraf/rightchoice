@@ -1,6 +1,6 @@
 <x-layout>
     @section('title')
-        {{$company->Name}}
+        {{$company->name}}
     @endsection
     <section id="inner-listing">
         <div class="container">
@@ -16,9 +16,9 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="headingTitle2">{{ $company->Name }} </h4>
+                                <h4 class="headingTitle2">{{ $company->name }} </h4>
                                 <div dir="rtl">
-                                    <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>
+                                    <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
                                 </div>
 
                                 <div class="fr-grid-deatil-flex details mt-3">
@@ -42,9 +42,9 @@
 
 
                                 <div class="text-center">
-                                    <a style="width:41%" href="tel:{{ $company->Phone }}"
+                                    <a style="width:41%" href="tel:{{ $company->phone }}"
                                        class="btn btn-light ml-1 mr-1 addToCart mt-3"
-                                       data-id="146103"> {{ $company->Phone }}</a>
+                                       data-id="146103"> {{ $company->phone }}</a>
 
 
                                     <a style="width:30%" class="btn our-btn mt-3" id="trigger-2">مشاركه</a>
@@ -82,7 +82,7 @@
                                     {{ $company->serv->Service ?? '' }}
                                 </div>
                                 <div class="listing-card-info-icon">
-                                    {{ $company->Name }}
+                                    {{ $company->name }}
                                 </div>
 
                                 <div class="listing-card-info-icon">
@@ -122,7 +122,7 @@
 
                             <div class="fr-grid-deatil-flex">
                                 <div class="listing-card-info-icon">
-                                    <a href="tel:{{ $company->Phone }}">{{ $company->Phone }}</a>
+                                    <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
 
                                 </div>
 

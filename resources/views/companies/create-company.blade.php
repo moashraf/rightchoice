@@ -448,16 +448,16 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div
-                                            class="form-group {{ $errors->has('Serv_id') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('serv_id') ? ' has-error' : '' }}">
                                             <label>{{ trans('langsite.company-service') }}<span
                                                     class="text-danger">*</span></label>
 
                                             <div class="d-flex flex-wrap" style="gap: 10px;">
                                                 @foreach($serviceInHeader as $serv)
                                                     <div class="form-check form-check-inline mb-2" style="background: #fff; border: 1px solid #e6eaf3; border-radius: 8px; padding: 8px 14px;">
-                                                        <input class="form-check-input" type="radio" required name="Serv_id"
+                                                        <input class="form-check-input" type="radio" required name="serv_id"
                                                                id="company-service-{{ $serv->id }}" value="{{ $serv->id }}"
-                                                                <?php if(old('Serv_id') == $serv->id){ echo 'checked'; } ?>>
+                                                                <?php if(old('serv_id') == $serv->id){ echo 'checked'; } ?>>
                                                         <label class="form-check-label" for="company-service-{{ $serv->id }}">
                                                             @if(App::isLocale('en'))
                                                                 {{ $serv->Service_en }}
@@ -469,35 +469,35 @@
                                                 @endforeach
                                             </div>
                                             <small
-                                                class="text-danger">{{ $errors->first('Serv_id') }}</small>
+                                                class="text-danger">{{ $errors->first('serv_id') }}</small>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
 
                                         <div
-                                            class="form-group {{ $errors->has('name_of_real_estate_developer') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('employee_name') ? ' has-error' : '' }}">
                                             <label
                                                 for="employe">{{ trans('langsite.company-employee') }}<span
                                                     class="text-danger">*</span></label>
-                                            <input  value="{{ old('name_of_real_estate_developer') }}" required type="text" name="name_of_real_estate_developer" id="employe"
+                                            <input  value="{{ old('employee_name') }}" required type="text" name="employee_name" id="employe"
                                                     class="form-control" value="">
                                             <small
-                                                class="text-danger">{{ $errors->first('name_of_real_estate_developer') }}</small>
+                                                class="text-danger">{{ $errors->first('employee_name') }}</small>
                                         </div>
 
                                     </div>
                                     <div class="col-lg-12">
                                         <div
-                                            class="form-group {{ $errors->has('Job_title') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('job_title') ? ' has-error' : '' }}">
                                             <label>{{ trans('langsite.job-title') }}<span
                                                     class="text-danger">*</span></label>
 
                                             <div class="d-flex flex-wrap" style="gap: 10px;">
                                                 @foreach($jobs as $job)
                                                     <div class="form-check form-check-inline mb-2" style="background: #fff; border: 1px solid #e6eaf3; border-radius: 8px; padding: 8px 14px;">
-                                                        <input class="form-check-input" type="radio" required name="Job_title"
+                                                        <input class="form-check-input" type="radio" required name="job_title"
                                                                id="job-title-{{ $job->id }}" value="{{ $job->id }}"
-                                                                <?php if(old('Job_title') == $job->id){ echo 'checked'; } ?>>
+                                                                <?php if(old('job_title') == $job->id){ echo 'checked'; } ?>>
                                                         <label class="form-check-label" for="job-title-{{ $job->id }}">
                                                             @if(App::isLocale('en'))
                                                                 {{ $job->Job_title_en }}
@@ -509,7 +509,7 @@
                                                 @endforeach
                                             </div>
                                             <small
-                                                class="text-danger">{{ $errors->first('Job_title') }}</small>
+                                                class="text-danger">{{ $errors->first('job_title') }}</small>
                                         </div>
 
                                     </div>
@@ -519,14 +519,14 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div
-                                            class="form-group {{ $errors->has('Name') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                                             <label
                                                 for="company-name">{{ trans('langsite.company-name') }}<span
                                                     class="text-danger">*</span></label>
-                                            <input value="{{ old('Name') }}" required type="text" name="Name" id="company-name"
+                                            <input value="{{ old('name') }}" required type="text" name="name" id="company-name"
                                                    class="form-control">
                                             <small
-                                                class="text-danger">{{ $errors->first('Name') }}</small>
+                                                class="text-danger">{{ $errors->first('name') }}</small>
                                         </div>
                                     </div>
 
@@ -537,28 +537,28 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div
-                                            class="form-group {{ $errors->has('Phone') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
                                             <label
                                                 for="company-phone">{{ trans('langsite.Phone') }}<span
                                                     class="text-danger">*</span></label>
-                                            <input  type="number" value="{{ old('Phone') }}" required   name="Phone" id="company-phone"
+                                            <input  type="number" value="{{ old('phone') }}" required   name="phone" id="company-phone"
                                                     class="form-control" value="">
                                             <small
-                                                class="text-danger">{{ $errors->first('Phone') }}</small>
+                                                class="text-danger">{{ $errors->first('phone') }}</small>
                                         </div>
                                     </div>
 
 {{--                                    <div class="col-lg-6">--}}
 {{--                                        <div--}}
-{{--                                            class="form-group {{ $errors->has('Phone2') ? ' has-error' : '' }}">--}}
+{{--                                            class="form-group {{ $errors->has('phone2') ? ' has-error' : '' }}">--}}
 {{--                                            <label for="company-phone2">--}}
 {{--                                                الهاتف الفرعي (اختياري)--}}
 {{--                                            </label>--}}
 
-{{--                                            <input value="{{ old('Phone2') }}"   type="number" name="Phone2" id="company-phone2"--}}
+{{--                                            <input value="{{ old('phone2') }}"   type="number" name="phone2" id="company-phone2"--}}
 {{--                                                   class="form-control" value="">--}}
 {{--                                            <small--}}
-{{--                                                class="text-danger">{{ $errors->first('Phone2') }}</small>--}}
+{{--                                                class="text-danger">{{ $errors->first('phone2') }}</small>--}}
 {{--                                        </div>--}}
 {{--                                    </div>--}}
 {{--                                    --}}
@@ -696,14 +696,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div
-                                            class="form-group {{ $errors->has('Floor') ? ' has-error' : '' }}">
+                                            class="form-group {{ $errors->has('floor') ? ' has-error' : '' }}">
                                             <label
                                                 for="floor-no">{{ trans('langsite.floor-no') }}<span
                                                     class="text-danger">*</span></label>
-                                            <input value="{{ old('Floor') }}"  required type="number" name="Floor" id="floor-no" class="form-control"
+                                            <input value="{{ old('floor') }}"  required type="number" name="floor" id="floor-no" class="form-control"
                                                    min="1">
                                             <small
-                                                class="text-danger">{{ $errors->first('Floor') }}</small>
+                                                class="text-danger">{{ $errors->first('floor') }}</small>
                                         </div>
                                     </div>
 

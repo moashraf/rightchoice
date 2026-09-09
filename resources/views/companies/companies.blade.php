@@ -611,8 +611,8 @@
                         $isArabic = App::isLocale('ar');
 
                         $companyName = $isArabic
-                            ? ($company->Name ?? $company->name_en ?? '')
-                            : ($company->name_en ?? $company->Name ?? '');
+                            ? ($company->name ?? $company->name_en ?? '')
+                            : ($company->name_en ?? $company->name ?? '');
 
                         $companyDescription = $isArabic
                             ? ($company->description ?? $company->description_en ?? '')

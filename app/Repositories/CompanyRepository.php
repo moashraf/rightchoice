@@ -17,23 +17,23 @@ class CompanyRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'Name',
+        'name',
         'slug',
         'area_id',
         'district_id',
         'governrate_id',
-        'Serv_id',
-        'name_of_real_estate_developer',
-        'Job_title',
-        'Phone',
+        'serv_id',
+        'employee_name',
+        'job_title',
+        'phone',
         'building_number',
-        'Floor',
+        'floor',
         'unit_number',
         'details',
-        'Tax_card',
-        'Commercial_Register',
+        'tax_card',
+        'commercial_register',
         'photo',
-        'Company_activity',
+        'company_activity',
         'status',
         'user_id'
     ];

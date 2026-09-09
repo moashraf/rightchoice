@@ -1,8 +1,8 @@
 <!-- Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Name', 'Name:') !!} <span class="text-danger">*</span>
-    {!! Form::text('Name', null, ['class' => 'form-control']) !!}
-    <small class="text-danger">{{ $errors->first('Name') }}</small>
+    {!! Form::label('name', 'Name:') !!} <span class="text-danger">*</span>
+    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    <small class="text-danger">{{ $errors->first('name') }}</small>
 </div>
 
 <!-- Slug Field -->
@@ -31,26 +31,26 @@
 
 <!-- Service Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Serv_id', 'Service:') !!}
-    {!! Form::select('Serv_id', $service ?? [], null, ['class' => 'form-control']) !!}
+    {!! Form::label('serv_id', 'Service:') !!}
+    {!! Form::select('serv_id', $service ?? [], null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Employee Name Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('name_of_real_estate_developer', 'name_of_real_estate_developer Name:') !!}
-    {!! Form::text('name_of_real_estate_developer', null, ['class' => 'form-control']) !!}
+    {!! Form::label('employee_name', 'Employee Name:') !!}
+    {!! Form::text('employee_name', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Job Title Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Job_title', 'Job Title:') !!}
-    {!! Form::select('Job_title', ['' => 'اختر'] + ($jobTitlesOptions ?? []), null, ['class' => 'form-control']) !!}
+    {!! Form::label('job_title', 'Job Title:') !!}
+    {!! Form::select('job_title', ['' => 'اختر'] + ($jobTitlesOptions ?? []), null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Phone Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Phone', 'Phone:') !!}
-    {!! Form::text('Phone', null, ['class' => 'form-control']) !!}
+    {!! Form::label('phone', 'Phone:') !!}
+    {!! Form::text('phone', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Building Number Field -->
@@ -61,8 +61,8 @@
 
 <!-- Floor Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Floor', 'Floor:') !!}
-    {!! Form::text('Floor', null, ['class' => 'form-control']) !!}
+    {!! Form::label('floor', 'Floor:') !!}
+    {!! Form::text('floor', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Unit Number Field -->
@@ -73,14 +73,14 @@
 
 <!-- Tax Card Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Tax_card', 'Tax Card:') !!}
-    {!! Form::text('Tax_card', null, ['class' => 'form-control']) !!}
+    {!! Form::label('tax_card', 'Tax Card:') !!}
+    {!! Form::text('tax_card', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Commercial Register Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('Commercial_Register', 'Commercial Register:') !!}
-    {!! Form::text('Commercial_Register', null, ['class' => 'form-control']) !!}
+    {!! Form::label('commercial_register', 'Commercial Register:') !!}
+    {!! Form::text('commercial_register', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Status Field -->
