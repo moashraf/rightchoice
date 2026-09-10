@@ -43,14 +43,14 @@ class AppleWebAuthTest extends MobileTestCase
 
     public function test_existing_apple_user_can_sign_in_when_later_token_omits_email_and_name(): void
     {
-        $user = User::create([
-            'name' => 'Original Apple Name',
-            'email' => 'apple-web@example.com',
-            'password' => null,
-            'provider' => 'apple',
-            'provider_id' => 'apple-web-user-123',
-            'status' => 1,
-        ]);
+        $user = new User();
+        $user->name = 'Original Apple Name';
+        $user->email = 'apple-web@example.com';
+        $user->password = null;
+        $user->provider = 'apple';
+        $user->provider_id = 'apple-web-user-123';
+        $user->status = 1;
+        $user->save();
         $this->mockAppleIdentity(['email' => null, 'email_verified' => null]);
 
         $this->post('/en/auth/apple', [
