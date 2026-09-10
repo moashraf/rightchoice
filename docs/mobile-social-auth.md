@@ -55,6 +55,29 @@ Accounts, keep it outside Git and the public web root, readable only by the appl
 runtime. Kreait's automatically discovered provider reads FIREBASE_CREDENTIALS.
 No Firebase key is included in this branch.
 
+## Flutter to Laravel social login
+
+Flutter sends exactly two JSON parameters to the unified endpoint:
+
+```http
+POST /api/auth/social
+Accept: application/json
+Content-Type: application/json
+```
+
+```json
+{
+  "provider": "google",
+  "token": "GOOGLE_ID_TOKEN"
+}
+```
+
+Use `apple` as the provider and the Apple identity token for Apple sign-in. The token
+must be the provider identity token returned after native sign-in; this request does not
+use an Authorization header because the endpoint creates the RightChoice login session.
+On success, store `data.token` and send it on later protected API requests as
+`Authorization: Bearer <data.token>`.
+
 ## API contract
 
 Send `Accept: application/json` and `Content-Type: application/json`.
