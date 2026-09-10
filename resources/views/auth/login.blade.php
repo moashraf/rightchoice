@@ -59,16 +59,37 @@
 
                             <x-jet-validation-errors class="mb-4 error-box" />
 
-                            @if (config('services.google.web_client_id'))
-                                <div class="google-login-wrap">
-                                    <div id="google-signin-button" aria-label="المتابعة باستخدام Google"></div>
+                            @if (config('services.google.web_client_id') || config('services.apple.web_client_id'))
+                                <div class="social-login-buttons">
+                                    @if (config('services.google.web_client_id'))
+                                        <div class="google-login-wrap">
+                                            <div id="google-signin-button" aria-label="المتابعة باستخدام Google"></div>
+                                        </div>
+
+                                        <form id="google-login-form" method="POST" action="{{ route('google.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                            @csrf
+                                            <input type="hidden" name="credential" id="google-credential">
+                                        </form>
+                                    @endif
+
+                                    @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
+                                        <div class="apple-login-wrap">
+                                            <div id="appleid-signin"
+                                                 data-color="black"
+                                                 data-border="true"
+                                                 data-type="sign-in"
+                                                 data-mode="center-align"
+                                                 aria-label="المتابعة باستخدام Apple"></div>
+                                        </div>
+
+                                        <form id="apple-login-form" method="POST" action="{{ route('apple.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                            @csrf
+                                            <input type="hidden" name="credential" id="apple-credential">
+                                            <input type="hidden" name="name" id="apple-name">
+                                        </form>
+                                    @endif
                                 </div>
                                 <div class="login-divider"><span>أو</span></div>
-
-                                <form id="google-login-form" method="POST" action="{{ route('google.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
-                                    @csrf
-                                    <input type="hidden" name="credential" id="google-credential">
-                                </form>
                             @endif
 
                             <form method="POST" action="{{ route('customLoginManual' , Config::get('app.locale') ) }}" class="login-form">
@@ -476,6 +497,22 @@
             text-decoration: none;
         }
 
+        #register .social-login-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        #register .apple-login-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
+        #register #appleid-signin {
+            width: 340px;
+            max-width: 100%;
+            height: 44px;
+        }
+
         #register .google-login-wrap {
             display: flex;
             justify-content: center;
@@ -646,5 +683,35 @@
             }
         </script>
         <script src="https://accounts.google.com/gsi/client" async defer onload="initializeGoogleLogin()"></script>
+    @endif
+    @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
+        <script>
+            window.addEventListener('load', function () {
+                AppleID.auth.init({
+                    clientId: @json(config('services.apple.web_client_id')),
+                    scope: 'name email',
+                    redirectURI: @json(config('services.apple.redirect_uri')),
+                    state: @json(csrf_token()),
+                    usePopup: true
+                });
+            });
+
+            document.addEventListener('AppleIDSignInOnSuccess', function (event) {
+                var authorization = event.detail && event.detail.authorization;
+                if (!authorization || !authorization.id_token) {
+                    return;
+                }
+
+                var user = event.detail.user || {};
+                var firstName = user.name && user.name.firstName ? user.name.firstName : '';
+                var lastName = user.name && user.name.lastName ? user.name.lastName : '';
+                var fullName = (firstName + ' ' + lastName).trim();
+
+                document.getElementById('apple-credential').value = authorization.id_token;
+                document.getElementById('apple-name').value = fullName;
+                document.getElementById('apple-login-form').submit();
+            });
+        </script>
+        <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
     @endif
 </x-layout>
