@@ -37,6 +37,17 @@ class AppleTokenTest extends MobileTestCase
         Http::assertSentCount(1);
     }
 
+    public function test_apple_web_services_id_audience_is_accepted(): void
+    {
+        config(['services.apple.web_client_id' => 'com.rightchoiceco.web']);
+        $claims = app(SocialTokenVerifier::class)->verify(
+            'apple',
+            $this->token(['aud' => 'com.rightchoiceco.web'])
+        );
+
+        $this->assertSame('com.rightchoiceco.web', $claims['aud']);
+    }
+
     #[DataProvider('invalidClaims')]
     public function test_invalid_claims_are_rejected(array $claims): void
     {
