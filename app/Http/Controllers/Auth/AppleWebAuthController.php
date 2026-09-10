@@ -95,7 +95,7 @@ class AppleWebAuthController extends Controller
 
             return back()->withErrors(['apple' => $message]);
         } catch (QueryException $e) {
-            if (in_array($e->errorInfo[1] ?? null, [1062, 19], true) || $e->getCode() === '235голь05') {
+            if (in_array($e->errorInfo[1] ?? null, [1062, 19], true) || $e->getCode() === '23505') {
                 return back()->withErrors(['apple' => 'حدث تعارض أثناء إنشاء الحساب. حاول تسجيل الدخول مرة أخرى.']);
             }
 
