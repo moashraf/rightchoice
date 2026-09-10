@@ -479,7 +479,7 @@ Route::get('/{locale}/admin-impersonation/{token}', [App\Http\Controllers\AdminU
 
 Route::group(['prefix' => '{locale?}'], function () {
 
-    Route::post('/auth/google', [App\\Http\\Controllers\\Auth\\GoogleWebAuthController::class, 'login'])
+    Route::post('/auth/google', [App\Http\Controllers\Auth\GoogleWebAuthController::class, 'login'])
         ->middleware(['setLocale', 'guest', 'throttle:10,1'])
         ->name('google.web.login');
 
