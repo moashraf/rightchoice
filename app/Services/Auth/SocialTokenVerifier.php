@@ -13,13 +13,20 @@ class SocialTokenVerifier
 {
     public function verify(string $provider, string $token): array
     {
-        $clientId = (string) config($provider === 'google'
-            ? 'services.google.web_client_id' : 'services.apple.client_id');
-        abort_if($clientId === '', 503, 'Social sign-in is not configured.');
-
         if ($provider === 'google') {
+            $clientId = (string) config('services.google.web_client_id');
+            abort_if($clientId === '', 503, 'Social sign-in is not configured.');
+
             $claims = (new Client(['client_id' => $clientId]))->verifyIdToken($token);
+            $audiences = [$clientId];
+            $issuers = ['accounts.google.com', 'https://accounts.google.com'];
         } else {
+            $audiences = array_values(array_unique(array_filter([
+                (string) config('services.apple.client_id'),
+                (string) config('services.apple.web_client_id'),
+            ])));
+            abort_if($audiences === [], 503, 'Social sign-in is not configured.');
+
             $keys = Cache::remember('social-auth.apple.keys', 3600, function () {
                 return Http::connectTimeout(5)->timeout(10)
                     ->get('https://appleid.apple.com/auth/keys')->throw()->json();
@@ -28,15 +35,12 @@ class SocialTokenVerifier
             $keys['keys'] = array_values(array_filter($keys['keys'] ?? [], fn ($key) =>
                 ($key['kty'] ?? null) === 'RSA' && ($key['alg'] ?? null) === 'RS256'));
             $claims = (array) JWT::decode($token, JWK::parseKeySet($keys, 'RS256'));
+            $issuers = ['https://appleid.apple.com'];
         }
-
-        $issuers = $provider === 'google'
-            ? ['accounts.google.com', 'https://accounts.google.com']
-            : ['https://appleid.apple.com'];
 
         if (!is_array($claims)
             || !in_array($claims['iss'] ?? null, $issuers, true)
-            || ($claims['aud'] ?? null) !== $clientId
+            || !in_array($claims['aud'] ?? null, $audiences, true)
             || !is_string($claims['sub'] ?? null) || $claims['sub'] === ''
             || strlen($claims['sub']) > 191
             || !is_numeric($claims['exp'] ?? null) || $claims['exp'] <= time()
