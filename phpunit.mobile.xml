@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
-        <testsuite name="Google"><file>tests/Feature/Mobile/SocialAuthTest.php</file></testsuite>
+        <testsuite name="Google">
+            <file>tests/Feature/Mobile/SocialAuthTest.php</file>
+            <file>tests/Feature/Mobile/GoogleWebAuthTest.php</file>
+        </testsuite>
         <testsuite name="Apple"><file>tests/Feature/Mobile/AppleTokenTest.php</file></testsuite>
         <testsuite name="FCM"><file>tests/Feature/Mobile/FcmTest.php</file></testsuite>
     </testsuites>
