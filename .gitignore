@@ -21,3 +21,7 @@ yarn-error.log
 /storage/*.key
 /storage/framework/
 /storage/logs/
+
+/storage/app/firebase/
+*service-account*.json
+*firebase-adminsdk*.json
