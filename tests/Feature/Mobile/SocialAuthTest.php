@@ -75,7 +75,13 @@ class SocialAuthTest extends MobileTestCase
 
     public function test_invalid_input_and_token_do_not_create_an_account(): void
     {
-        $this->postJson('/api/auth/social', ['provider' => 'facebook'])->assertUnprocessable();
+        $this->postJson('/api/auth/social', ['provider' => 'facebook'])
+            ->assertUnprocessable()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('message', 'Validation failed.')
+            ->assertJsonValidationErrors(['provider', 'token'])
+            ->assertJsonPath('errors.provider.0', 'The provider must be either google or apple.')
+            ->assertJsonPath('errors.token.0', 'The provider token field is required.');
         $verifier = Mockery::mock(SocialTokenVerifier::class);
         $verifier->shouldReceive('verify')->andThrow(new \UnexpectedValueException('Bad signature'));
         $this->app->instance(SocialTokenVerifier::class, $verifier);
