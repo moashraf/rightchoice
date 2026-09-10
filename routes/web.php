@@ -479,6 +479,10 @@ Route::get('/{locale}/admin-impersonation/{token}', [App\Http\Controllers\AdminU
 
 Route::group(['prefix' => '{locale?}'], function () {
 
+    Route::post('/auth/google', [App\\Http\\Controllers\\Auth\\GoogleWebAuthController::class, 'login'])
+        ->middleware(['setLocale', 'guest', 'throttle:10,1'])
+        ->name('google.web.login');
+
     // â”€â”€ Real Estate Map Page (public, no auth required) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     Route::get('/map', [App\Http\Controllers\MapController::class, 'index'])->middleware('setLocale')->name('map.index');
 
