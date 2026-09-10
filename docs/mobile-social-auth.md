@@ -47,6 +47,8 @@ Copy these values from `.env.example` into the server's private `.env`:
 ```dotenv
 GOOGLE_WEB_CLIENT_ID=15346110767-7fq20pf3cof6ahb1p8gm3ki0g9og69d0.apps.googleusercontent.com
 APPLE_CLIENT_ID=com.rightchoiceco.app
+APPLE_WEB_CLIENT_ID=YOUR_APPLE_SERVICES_ID
+APPLE_REDIRECT_URI=https://rightchoice-co.com/ar/login
 FIREBASE_CREDENTIALS=/absolute/private/path/service-account.json
 ```
 
