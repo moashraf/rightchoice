@@ -21,12 +21,31 @@ class SocialAuthController extends AppBaseController
 {
     public function handle(Request $request, SocialTokenVerifier $verifier): JsonResponse
     {
-        $data = $request->validate([
-            'provider' => 'required|in:google,apple',
-            'token' => 'required|string|max:16384',
+        $validator = Validator::make($request->all(), [
+            'provider' => ['bail', 'required', 'string', 'in:google,apple'],
+            'token' => ['bail', 'required', 'string', 'max:16384'],
             // Apple supplies the display name separately on the first consent only.
-            'name' => 'nullable|string|max:90',
+            'name' => ['bail', 'nullable', 'string', 'max:90'],
+        ], [
+            'provider.required' => 'The provider field is required.',
+            'provider.string' => 'The provider must be a string.',
+            'provider.in' => 'The provider must be either google or apple.',
+            'token.required' => 'The provider token field is required.',
+            'token.string' => 'The provider token must be a string.',
+            'token.max' => 'The provider token must not exceed 16384 characters.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 90 characters.',
         ]);
+
+        if ($validator->fails()) {
+            return $this->sendError(
+                'Validation failed.',
+                422,
+                $validator->errors()->toArray()
+            );
+        }
+
+        $data = $validator->validated();
 
         try {
             $claims = $verifier->verify($data['provider'], $data['token']);
