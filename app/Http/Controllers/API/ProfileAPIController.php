@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use App\Services\SmsService;
 
 /**
  * Profile & Password management API.
@@ -51,6 +54,141 @@ class ProfileAPIController extends AppBaseController
             ? 'المستخدم لديه رقم هاتف مسجل.'
             : 'المستخدم ليس لديه رقم هاتف مسجل.'
         );
+    }
+
+
+    /**
+     * POST /api/profile/phone/request-otp
+     * Send an OTP to the new phone number before changing it.
+     */
+    public function requestPhoneChangeOtp(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^01[0125][0-9]{8}$/',
+                Rule::unique('users', 'MOP')->ignore($request->user_id),
+            ],
+        ], $this->phoneChangeValidationMessages());
+
+        if ($validator->fails()) {
+            return $this->sendError(
+                'خطأ في البيانات المدخلة.',
+                422,
+                $validator->errors()->toArray()
+            );
+        }
+         if ((int) $request->user_id !== (int) $request->user()->id) {
+            return $this->sendError('غير مسموح لك بتغيير رقم هاتف مستخدم آخر.', 403);
+        }
+
+        $otp = random_int(1000, 9999);
+        $smsResponse = SmsService::sendOtp($request->phone, $otp);
+
+        if ($smsResponse === false) {
+            return $this->sendError('تعذر إرسال رمز التحقق. يرجى المحاولة مرة أخرى.', 500);
+        }
+
+        Cache::put(
+            $this->phoneChangeOtpCacheKey((int) $request->user_id, $request->phone),
+            Hash::make((string) $otp),
+            now()->addMinutes(10)
+        );
+
+        return $this->sendResponse([
+            'user_id' => (int) $request->user_id,
+            'phone' => $request->phone,
+            'otp_sent' => true,
+            'expires_in_minutes' => 10,
+        ], 'تم إرسال رمز التحقق إلى رقم الهاتف الجديد.');
+    }
+
+    /**
+     * POST /api/profile/phone/update
+     * Verify the OTP and update the authenticated user's phone number.
+     */
+    public function updatePhone(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^01[0125][0-9]{8}$/',
+                Rule::unique('users', 'MOP')->ignore($request->user_id),
+            ],
+            'otp' => 'required|digits:4',
+        ], $this->phoneChangeValidationMessages());
+
+        if ($validator->fails()) {
+            return $this->sendError(
+                'خطأ في البيانات المدخلة.',
+                422,
+                $validator->errors()->toArray()
+            );
+        }
+
+        if ((int) $request->user_id !== (int) $request->user()->id) {
+            return $this->sendError('غير مسموح لك بتغيير رقم هاتف مستخدم آخر.', 403);
+        }
+
+        $cacheKey = $this->phoneChangeOtpCacheKey(
+            (int) $request->user_id,
+            $request->phone
+        );
+        $storedOtpHash = Cache::get($cacheKey);
+
+        if (!$storedOtpHash) {
+            return $this->sendError(
+                'رمز التحقق منتهي الصلاحية أو لم يتم طلبه لهذا الرقم.',
+                422,
+                ['otp' => ['اطلب رمز تحقق جديدًا ثم حاول مرة أخرى.']]
+            );
+        }
+
+        if (!Hash::check((string) $request->otp, $storedOtpHash)) {
+            return $this->sendError(
+                'رمز التحقق غير صحيح.',
+                422,
+                ['otp' => ['رمز التحقق الذي أدخلته غير صحيح.']]
+            );
+        }
+
+        $user = User::findOrFail($request->user_id);
+        $user->update([
+            'MOP' => $request->phone,
+            'phone_verfied_sms_status' => true,
+        ]);
+
+        Cache::forget($cacheKey);
+
+        return $this->sendResponse([
+            'user_id' => $user->id,
+            'phone' => $user->MOP,
+            'phone_verified' => true,
+        ], 'تم تحديث رقم الهاتف والتحقق منه بنجاح.');
+    }
+
+    private function phoneChangeOtpCacheKey(int $userId, string $phone): string
+    {
+        return 'profile_phone_change:' . $userId . ':' . hash('sha256', $phone);
+    }
+
+    private function phoneChangeValidationMessages(): array
+    {
+        return [
+            'user_id.required' => 'معرّف المستخدم مطلوب.',
+            'user_id.integer' => 'معرّف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists' => 'المستخدم المحدد غير موجود.',
+            'phone.required' => 'رقم الهاتف الجديد مطلوب.',
+            'phone.string' => 'رقم الهاتف الجديد يجب أن يكون نصًا.',
+            'phone.regex' => 'رقم الهاتف يجب أن يكون رقم موبايل مصريًا صحيحًا مكونًا من 11 رقمًا.',
+            'phone.unique' => 'رقم الهاتف مستخدم بالفعل في حساب آخر.',
+            'otp.required' => 'رمز التحقق OTP مطلوب.',
+            'otp.digits' => 'رمز التحقق OTP يجب أن يتكون من 4 أرقام.',
+        ];
     }
 
     /**
