@@ -24,13 +24,33 @@ class ProfileAPIController extends AppBaseController
      */
     public function phoneStatus(Request $request): JsonResponse
     {
-        $phone = trim((string) $request->user()->MOP);
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
+        ], [
+            'user_id.required' => 'معرّف المستخدم مطلوب.',
+            'user_id.integer' => 'معرّف المستخدم يجب أن يكون رقمًا صحيحًا.',
+            'user_id.exists' => 'المستخدم المحدد غير موجود.',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError(
+                'خطأ في البيانات المدخلة.',
+                422,
+                $validator->errors()->toArray()
+            );
+        }
+
+        $user = User::findOrFail($validator->validated()['user_id']);
+        $hasPhone = trim((string) $user->MOP) !== '';
 
         return $this->sendResponse([
-            'has_phone' => $phone !== '',
-            'requires_phone' => $phone === '',
-            'phone' => $phone !== '' ? $phone : null,
-        ], 'Phone status retrieved successfully');
+            'user_id' => $user->id,
+            'has_phone' => $hasPhone,
+            'requires_phone' => !$hasPhone,
+        ], $hasPhone
+            ? 'المستخدم لديه رقم هاتف مسجل.'
+            : 'المستخدم ليس لديه رقم هاتف مسجل.'
+        );
     }
 
     /**
