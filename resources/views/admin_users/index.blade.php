@@ -280,7 +280,10 @@
                                             <i class="fab fa-google ml-1"></i> Google
                                         </span>
                                     @else
-                                        <span class="badge badge-light text-muted mt-1">المصدر غير محدد</span>
+                                        <span class="badge badge-secondary mt-1">
+                                            <i class="fas fa-globe ml-1"></i> الموقع
+                                        </span>
+
                                     @endif
                                 </td>
                                 <td>{{ $user->getUserType() }}</td>
