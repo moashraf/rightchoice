@@ -187,9 +187,16 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.users.index') }}"
-                                   class="nav-link {{ (request()->is('sitemanagement/users') || request()->is('sitemanagement/users?*')) && !request()->is('sitemanagement/users/deleted*') ? 'active' : '' }}">
+                                   class="nav-link {{ request()->is('sitemanagement/users') && !request()->filled('filter_source') && !request()->filled('filter_status') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>كل المستخدمين</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index', ['filter_source' => 'app']) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_source') === 'app' ? 'active' : '' }}">
+                                    <i class="fas fa-mobile-alt nav-icon text-info"></i>
+                                    <p>مستخدمو التطبيق</p>
                                 </a>
                             </li>
                             <li class="nav-item">
