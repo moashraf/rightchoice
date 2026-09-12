@@ -14,7 +14,7 @@ class AdminUserController extends Controller
     public function index(Request $request)
     {
         $users = User::withCount(['aqars', 'contact'])
-            ->with(['userpricing.pricing']);
+            ->with(['userpricing.pricing', 'registrationLog']);
 
         if ($request->sortBy == 0)
             $users->orderBy('id', 'DESC');
@@ -74,6 +74,14 @@ class AdminUserController extends Controller
             } else {
                 $users->whereDoesntHave('UserPriceing');
             }
+        }
+
+        // فلتر حسب مصدر التسجيل
+        if (in_array($request->filter_source, ['app', 'web'], true)) {
+            $users->whereHas('registrationLog', function ($query) use ($request) {
+                $query->where('source', $request->filter_source)
+                    ->where('event', 'new_registration');
+            });
         }
 
         // فلتر حسب مصدر الدعوة
@@ -378,6 +386,7 @@ class AdminUserController extends Controller
             'filter_type',
             'type_tab',
             'filter_invited_by',
+            'filter_source',
             'filter_user_id',
             'has_package',
             'has_aqars',
