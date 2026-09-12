@@ -152,8 +152,7 @@ class ProfileAPIController extends AppBaseController
         $user->update([
             'MOP' => $request->phone,
             'phone_verfied_sms_status' => true,
-            'phone_sms_otp' => null,
-        ]);
+         ]);
 
         return $this->sendResponse([
             'user_id' => $user->id,
