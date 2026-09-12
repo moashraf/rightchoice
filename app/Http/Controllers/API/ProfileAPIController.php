@@ -25,12 +25,16 @@ class ProfileAPIController extends AppBaseController
     public function phoneStatus(Request $request): JsonResponse
     {
         $phone = trim((string) $request->user()->MOP);
+        $requiresPhone = $phone === '';
+        $message = $requiresPhone
+            ? 'رقم الهاتف مطلوب. يرجى إضافة رقم هاتف للمتابعة.'
+            : 'رقم الهاتف مسجل بالفعل.';
 
         return $this->sendResponse([
-            'has_phone' => $phone !== '',
-            'requires_phone' => $phone === '',
-            'phone' => $phone !== '' ? $phone : null,
-        ], 'Phone status retrieved successfully');
+            'has_phone' => !$requiresPhone,
+            'requires_phone' => $requiresPhone,
+            'phone' => $requiresPhone ? null : $phone,
+        ], $message);
     }
 
     /**
