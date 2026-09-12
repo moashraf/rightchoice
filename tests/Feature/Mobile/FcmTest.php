@@ -24,8 +24,54 @@ class FcmTest extends MobileTestCase
         $this->assertSame(0, FcmToken::count());
     }
 
+    public function test_token_endpoints_return_explicit_validation_messages(): void
+    {
+        Sanctum::actingAs($this->user());
+
+        $this->postJson('/api/fcm-token', [])
+            ->assertUnprocessable()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('message', 'Validation failed.')
+            ->assertJsonPath('errors.token.0', 'The device FCM token is required.');
+
+        $this->deleteJson('/api/fcm-token', [])
+            ->assertUnprocessable()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('message', 'Validation failed.')
+            ->assertJsonPath('errors.token.0', 'The device FCM token is required.');
+    }
+
+    public function test_registration_sends_welcome_notification_to_the_registered_device(): void
+    {
+        $user = $this->user();
+        $service = Mockery::mock(FcmNotificationService::class);
+        $service->shouldReceive('sendToToken')
+            ->once()
+            ->withArgs(fn (User $target, string $token, string $title, string $body, array $data) =>
+                $target->is($user)
+                && $token === 'device'
+                && $title === 'RightChoice'
+                && $body === 'مرحبًا بك في RightChoice'
+                && $data === ['type' => 'welcome', 'screen' => 'home']
+            )
+            ->andReturn(['sent' => 1, 'removed' => 0]);
+        $this->app->instance(FcmNotificationService::class, $service);
+
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/fcm-token', ['token' => 'device'])
+            ->assertOk()
+            ->assertJsonPath('message', 'Device token registered and welcome notification processed.');
+    }
+
     public function test_registration_is_idempotent_and_transfers_ownership(): void
     {
+        $service = Mockery::mock(FcmNotificationService::class);
+        $service->shouldReceive('sendToToken')
+            ->times(3)
+            ->andReturn(['sent' => 1, 'removed' => 0]);
+        $this->app->instance(FcmNotificationService::class, $service);
+
         $first = $this->user();
         $second = $this->user('two@example.com');
         Sanctum::actingAs($first);
