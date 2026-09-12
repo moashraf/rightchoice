@@ -62,6 +62,8 @@ class User extends Authenticatable implements MustVerifyEmail
          'profile_image',
          'phone_verfied_sms_status',
          'phone_sms_otp',
+         'pending_phone',
+         'phone_otp_expires_at',
          'isAdmin',
          'invited_by',
          'role_id',
@@ -88,6 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login_at'     => 'datetime',
+        'phone_otp_expires_at' => 'datetime',
     ];
 
     /**
