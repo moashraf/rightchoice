@@ -55,7 +55,7 @@ class LastUsersExport implements FromQuery, WithHeadings, WithMapping, WithChunk
             $query->where('invited_by', $this->filters['filter_invited_by']);
         }
 
-        if (in_array($this->filters['filter_source'] ?? null, ['app', 'web'], true)) {
+        if (in_array($this->filters['filter_source'] ?? null, ['app', 'web', 'google'], true)) {
             $query->whereHas('registrationLog', function ($registrationQuery) {
                 $registrationQuery->where('source', $this->filters['filter_source'])
                     ->where('event', 'new_registration');
