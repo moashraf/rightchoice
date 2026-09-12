@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -91,11 +90,12 @@ class ProfileAPIController extends AppBaseController
             return $this->sendError('تعذر إرسال رمز التحقق. يرجى المحاولة مرة أخرى.', 500);
         }
 
-        Cache::put(
-            $this->phoneChangeOtpCacheKey((int) $request->user_id, $request->phone),
-            Hash::make((string) $otp),
-            now()->addMinutes(10)
-        );
+        $user = User::findOrFail($request->user_id);
+        $user->update([
+            'phone_sms_otp' => $otp,
+            'pending_phone' => $request->phone,
+            'phone_otp_expires_at' => now()->addMinutes(10),
+        ]);
 
         return $this->sendResponse([
             'user_id' => (int) $request->user_id,
@@ -134,21 +134,43 @@ class ProfileAPIController extends AppBaseController
             return $this->sendError('غير مسموح لك بتغيير رقم هاتف مستخدم آخر.', 403);
         }
 
-        $cacheKey = $this->phoneChangeOtpCacheKey(
-            (int) $request->user_id,
-            $request->phone
-        );
-        $storedOtpHash = Cache::get($cacheKey);
+        $user = User::findOrFail($request->user_id);
 
-        if (!$storedOtpHash) {
+        if (
+            empty($user->phone_sms_otp) ||
+            empty($user->pending_phone) ||
+            empty($user->phone_otp_expires_at)
+        ) {
             return $this->sendError(
-                'رمز التحقق منتهي الصلاحية أو لم يتم طلبه لهذا الرقم.',
+                'لم يتم طلب رمز تحقق لهذا الرقم.',
                 422,
                 ['otp' => ['اطلب رمز تحقق جديدًا ثم حاول مرة أخرى.']]
             );
         }
 
-        if (!Hash::check((string) $request->otp, $storedOtpHash)) {
+        if ((string) $user->pending_phone !== (string) $request->phone) {
+            return $this->sendError(
+                'رقم الهاتف لا يطابق الرقم الذي تم إرسال رمز التحقق إليه.',
+                422,
+                ['phone' => ['اطلب رمز تحقق جديدًا لهذا الرقم.']]
+            );
+        }
+
+        if ($user->phone_otp_expires_at->isPast()) {
+            $user->update([
+                'phone_sms_otp' => null,
+                'pending_phone' => null,
+                'phone_otp_expires_at' => null,
+            ]);
+
+            return $this->sendError(
+                'رمز التحقق منتهي الصلاحية.',
+                422,
+                ['otp' => ['اطلب رمز تحقق جديدًا ثم حاول مرة أخرى.']]
+            );
+        }
+
+        if (!hash_equals((string) $user->phone_sms_otp, (string) $request->otp)) {
             return $this->sendError(
                 'رمز التحقق غير صحيح.',
                 422,
@@ -156,24 +178,19 @@ class ProfileAPIController extends AppBaseController
             );
         }
 
-        $user = User::findOrFail($request->user_id);
         $user->update([
             'MOP' => $request->phone,
             'phone_verfied_sms_status' => true,
+            'phone_sms_otp' => null,
+            'pending_phone' => null,
+            'phone_otp_expires_at' => null,
         ]);
-
-        Cache::forget($cacheKey);
 
         return $this->sendResponse([
             'user_id' => $user->id,
             'phone' => $user->MOP,
             'phone_verified' => true,
         ], 'تم تحديث رقم الهاتف والتحقق منه بنجاح.');
-    }
-
-    private function phoneChangeOtpCacheKey(int $userId, string $phone): string
-    {
-        return 'profile_phone_change:' . $userId . ':' . hash('sha256', $phone);
     }
 
     private function phoneChangeValidationMessages(): array
