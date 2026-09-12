@@ -62,6 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
          'profile_image',
          'phone_verfied_sms_status',
          'phone_sms_otp',
+         'phone_change_otp',
          'pending_phone',
          'phone_otp_expires_at',
          'isAdmin',
