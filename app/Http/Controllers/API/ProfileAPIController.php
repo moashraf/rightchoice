@@ -92,16 +92,13 @@ class ProfileAPIController extends AppBaseController
 
         $user = User::findOrFail($request->user_id);
         $user->update([
-            'phone_change_otp' => $otp,
-            'pending_phone' => $request->phone,
-            'phone_otp_expires_at' => now()->addMinutes(10),
+            'phone_sms_otp' => $otp,
         ]);
 
         return $this->sendResponse([
             'user_id' => (int) $request->user_id,
             'phone' => $request->phone,
             'otp_sent' => true,
-            'expires_in_minutes' => 10,
         ], 'تم إرسال رمز التحقق إلى رقم الهاتف الجديد.');
     }
 
@@ -136,41 +133,15 @@ class ProfileAPIController extends AppBaseController
 
         $user = User::findOrFail($request->user_id);
 
-        if (
-            empty($user->phone_change_otp) ||
-            empty($user->pending_phone) ||
-            empty($user->phone_otp_expires_at)
-        ) {
+        if (empty($user->phone_sms_otp)) {
             return $this->sendError(
-                'لم يتم طلب رمز تحقق لهذا الرقم.',
+                'لم يتم طلب رمز تحقق لهذا المستخدم.',
                 422,
                 ['otp' => ['اطلب رمز تحقق جديدًا ثم حاول مرة أخرى.']]
             );
         }
 
-        if ((string) $user->pending_phone !== (string) $request->phone) {
-            return $this->sendError(
-                'رقم الهاتف لا يطابق الرقم الذي تم إرسال رمز التحقق إليه.',
-                422,
-                ['phone' => ['اطلب رمز تحقق جديدًا لهذا الرقم.']]
-            );
-        }
-
-        if ($user->phone_otp_expires_at->isPast()) {
-            $user->update([
-                'phone_change_otp' => null,
-                'pending_phone' => null,
-                'phone_otp_expires_at' => null,
-            ]);
-
-            return $this->sendError(
-                'رمز التحقق منتهي الصلاحية.',
-                422,
-                ['otp' => ['اطلب رمز تحقق جديدًا ثم حاول مرة أخرى.']]
-            );
-        }
-
-        if (!hash_equals((string) $user->phone_change_otp, (string) $request->otp)) {
+        if (!hash_equals((string) $user->phone_sms_otp, (string) $request->otp)) {
             return $this->sendError(
                 'رمز التحقق غير صحيح.',
                 422,
@@ -181,9 +152,7 @@ class ProfileAPIController extends AppBaseController
         $user->update([
             'MOP' => $request->phone,
             'phone_verfied_sms_status' => true,
-            'phone_change_otp' => null,
-            'pending_phone' => null,
-            'phone_otp_expires_at' => null,
+            'phone_sms_otp' => null,
         ]);
 
         return $this->sendResponse([
