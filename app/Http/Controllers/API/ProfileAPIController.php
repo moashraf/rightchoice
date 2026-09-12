@@ -92,7 +92,7 @@ class ProfileAPIController extends AppBaseController
 
         $user = User::findOrFail($request->user_id);
         $user->update([
-            'phone_sms_otp' => $otp,
+            'phone_change_otp' => $otp,
             'pending_phone' => $request->phone,
             'phone_otp_expires_at' => now()->addMinutes(10),
         ]);
@@ -137,7 +137,7 @@ class ProfileAPIController extends AppBaseController
         $user = User::findOrFail($request->user_id);
 
         if (
-            empty($user->phone_sms_otp) ||
+            empty($user->phone_change_otp) ||
             empty($user->pending_phone) ||
             empty($user->phone_otp_expires_at)
         ) {
@@ -158,7 +158,7 @@ class ProfileAPIController extends AppBaseController
 
         if ($user->phone_otp_expires_at->isPast()) {
             $user->update([
-                'phone_sms_otp' => null,
+                'phone_change_otp' => null,
                 'pending_phone' => null,
                 'phone_otp_expires_at' => null,
             ]);
@@ -170,7 +170,7 @@ class ProfileAPIController extends AppBaseController
             );
         }
 
-        if (!hash_equals((string) $user->phone_sms_otp, (string) $request->otp)) {
+        if (!hash_equals((string) $user->phone_change_otp, (string) $request->otp)) {
             return $this->sendError(
                 'رمز التحقق غير صحيح.',
                 422,
@@ -181,7 +181,7 @@ class ProfileAPIController extends AppBaseController
         $user->update([
             'MOP' => $request->phone,
             'phone_verfied_sms_status' => true,
-            'phone_sms_otp' => null,
+            'phone_change_otp' => null,
             'pending_phone' => null,
             'phone_otp_expires_at' => null,
         ]);
