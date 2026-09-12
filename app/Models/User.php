@@ -138,6 +138,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
+    public function registrationLog()
+    {
+        return $this->hasOne(UserRegistrationLog::class)
+            ->where('event', 'new_registration')
+            ->latestOfMany();
+    }
+
     public function fcmTokens()
     {
         return $this->hasMany(FcmToken::class);
