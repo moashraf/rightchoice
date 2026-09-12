@@ -19,6 +19,21 @@ class ProfileAPIController extends AppBaseController
     // ...existing code...
 
     /**
+     * GET /api/profile/phone-status
+     * Check whether the authenticated user needs to add a phone number.
+     */
+    public function phoneStatus(Request $request): JsonResponse
+    {
+        $phone = trim((string) $request->user()->MOP);
+
+        return $this->sendResponse([
+            'has_phone' => $phone !== '',
+            'requires_phone' => $phone === '',
+            'phone' => $phone !== '' ? $phone : null,
+        ], 'Phone status retrieved successfully');
+    }
+
+    /**
      * POST /api/profile/full
      * عرض البيانات الشخصية الكاملة للمستخدم المسجّل مع pagination
      */
@@ -250,4 +265,3 @@ class ProfileAPIController extends AppBaseController
         return $this->sendSuccess('Password changed successfully');
     }
 }
-
