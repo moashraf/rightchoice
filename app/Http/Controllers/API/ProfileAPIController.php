@@ -80,8 +80,7 @@ class ProfileAPIController extends AppBaseController
                 $validator->errors()->toArray()
             );
         }
-
-        if ((int) $request->user_id !== (int) $request->user()->id) {
+         if ((int) $request->user_id !== (int) $request->user()->id) {
             return $this->sendError('غير مسموح لك بتغيير رقم هاتف مستخدم آخر.', 403);
         }
 
