@@ -200,6 +200,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('sitemanagement.users.index', ['filter_source' => 'google']) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_source') === 'google' ? 'active' : '' }}">
+                                    <i class="fab fa-google nav-icon text-danger"></i>
+                                    <p>مستخدمو Google</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('sitemanagement.users.index', ['filter_status' => 1]) }}"
                                    class="nav-link {{ request()->is('sitemanagement/users') && request()->query('filter_status') == '1' ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon text-success"></i>
