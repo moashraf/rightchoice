@@ -27,7 +27,8 @@ class ProfilePhoneStatusTest extends MobileTestCase
             ->assertOk()
             ->assertJsonPath('data.has_phone', false)
             ->assertJsonPath('data.requires_phone', true)
-            ->assertJsonPath('data.phone', null);
+            ->assertJsonPath('data.phone', null)
+            ->assertJsonPath('message', 'رقم الهاتف مطلوب. يرجى إضافة رقم هاتف للمتابعة.');
     }
 
     public function test_it_treats_a_blank_phone_as_missing(): void
@@ -63,6 +64,7 @@ class ProfilePhoneStatusTest extends MobileTestCase
             ->assertOk()
             ->assertJsonPath('data.has_phone', true)
             ->assertJsonPath('data.requires_phone', false)
-            ->assertJsonPath('data.phone', '01012345678');
+            ->assertJsonPath('data.phone', '01012345678')
+            ->assertJsonPath('message', 'رقم الهاتف مسجل بالفعل.');
     }
 }
