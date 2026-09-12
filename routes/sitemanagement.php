@@ -17,15 +17,10 @@ Route::middleware('admin-web')->group(function () {
 |--------------------------------------------------------------------------
 | Admin Protected Routes
 |--------------------------------------------------------------------------
-| All routes here require admin-web middleware + adminfCheckAdmin (role gate).
-| Individual routes are further restricted with fine-grained `permission`
-| middleware. The viewer role can access *.view permissions only; user role
-| has no admin panel access; admin role has access to everything.
-|--------------------------------------------------------------------------
 */
 Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web', 'adminfCheckAdmin'])->group(function () {
 
-    // ── Blogs ────────────────────────────────────────────────────────────
+    // ── Blogs ─────────────────────────────────────────────────────────────
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
         ->middleware('permission:blogs.create')->only(['create', 'store']);
     Route::resource('blogs', App\Http\Controllers\AdminBlogController::class)
@@ -44,7 +39,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('sliders', App\Http\Controllers\AdminSliderController::class)
         ->middleware('permission:sliders.delete')->only(['destroy']);
 
-    // ── Ads (اعلانات خارجية) ─────────────────────────────────────────
+    // ── Ads (اعلانات خارجية) ──────────────────────────────────────────────
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
         ->middleware('permission:ads.create')->only(['create', 'store']);
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
@@ -54,11 +49,11 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('ads', App\Http\Controllers\AdminAdsController::class)
         ->middleware('permission:ads.delete')->only(['destroy']);
 
-    // ── Settings ─────────────────────────────────────────────────────────
+    // ── Settings ──────────────────────────────────────────────────────────
     Route::resource('settingSites', App\Http\Controllers\AdminSettingSiteController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Meta Conversions API ─────────────────────────────────────────────
+    // ── Meta Conversions API ───────────────────────────────────────────────
     Route::get('meta-conversions', [App\Http\Controllers\AdminMetaConversionsController::class, 'index'])
         ->name('meta-conversions.index')
         ->middleware('permission:settings.manage');
@@ -71,7 +66,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
 
     Route::resource('requestPhotoSessions', App\Http\Controllers\AdminRequestPhotoSessionController::class);
 
-    // ── Images Management ─────────────────────────────────────────────────
+    // ── Images Management ──────────────────────────────────────────────────
     Route::get('images', [App\Http\Controllers\AdminImagesController::class, 'index'])->name('images.index');
     Route::delete('images/bulk-delete', [App\Http\Controllers\AdminImagesController::class, 'bulkDelete'])->name('images.bulk-delete');
     Route::delete('images/{id}', [App\Http\Controllers\AdminImagesController::class, 'destroy'])->name('images.destroy');
@@ -80,7 +75,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:pricing.manage');
     Route::resource('pages', App\Http\Controllers\AdminPagesController::class);
 
-    // ── Companies ────────────────────────────────────────────────────────
+    // ── Companies ──────────────────────────────────────────────────────────
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
         ->middleware('permission:companies.create')->only(['create', 'store']);
     Route::resource('companies', App\Http\Controllers\AdminCompanyController::class)
@@ -95,10 +90,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:pricing.manage');
     Route::resource('adminServices', App\Http\Controllers\AdminServicesController::class)
         ->middleware('permission:settings.manage');
-    Route::resource('jobTitles', App\Http\Controllers\AdminJobTitleController::class)
-        ->middleware('permission:settings.manage');
 
-    // ── Location Data ────────────────────────────────────────────────────
+    // ── Location Data ──────────────────────────────────────────────────────
     Route::resource('subareas', App\Http\Controllers\AdminSubareaController::class)
         ->middleware('permission:locations.manage');
     Route::resource('licenseTypes', App\Http\Controllers\AdminLicenseTypeController::class)
@@ -120,13 +113,13 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('offerTypes', App\Http\Controllers\AdminOfferTypeController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Notifications ────────────────────────────────────────────────────
+    // ── Notifications ──────────────────────────────────────────────────────
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
         ->middleware('permission:notifications.manage')->only(['create', 'store', 'edit', 'update', 'destroy']);
     Route::resource('notifications', App\Http\Controllers\AdminNotificationController::class)
         ->middleware('permission:notifications.view')->only(['index', 'show']);
 
-    // ── Contact Forms ────────────────────────────────────────────────────
+    // ── Contact Forms ──────────────────────────────────────────────────────
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
         ->middleware('permission:contact_forms.view')->only(['create', 'store', 'edit', 'update']);
     Route::resource('contactForms', App\Http\Controllers\AdminContactFormController::class)
@@ -137,7 +130,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('propertyTypes', App\Http\Controllers\AdminPropertyTypeController::class)
         ->middleware('permission:settings.manage');
 
-    // ── Complaints ───────────────────────────────────────────────────────
+    // ── Complaints ─────────────────────────────────────────────────────────
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.update')->only(['edit', 'update']);
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
@@ -145,15 +138,13 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::resource('complaints', App\Http\Controllers\AdminComplaintsController::class)
         ->middleware('permission:complaints.delete')->only(['destroy']);
 
-    // ── Real Estate (Aqars) ──────────────────────────────────────────────
+    // ── Real Estate (Aqars) ────────────────────────────────────────────────
     Route::get('aqars/deleted', [App\Http\Controllers\AdminAqarController::class, 'deletedAqars'])->name('aqars.deleted')
         ->middleware('permission:aqars.delete');
     Route::post('aqars/{id}/restore', [App\Http\Controllers\AdminAqarController::class, 'restoreAqar'])->name('aqars.restore')
         ->middleware('permission:aqars.delete');
     Route::delete('aqars/{id}/force-delete', [App\Http\Controllers\AdminAqarController::class, 'forceDeleteAqar'])->name('aqars.forceDelete')
         ->middleware('permission:aqars.delete');
-    Route::patch('aqars/{id}/status', [App\Http\Controllers\AdminAqarController::class, 'updateStatus'])->name('aqars.updateStatus')
-        ->middleware('permission:aqars.update');
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
         ->middleware('permission:aqars.create')->only(['create', 'store']);
     Route::resource('aqars', App\Http\Controllers\AdminAqarController::class)
@@ -169,11 +160,11 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:aqars.update');
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints')
         ->middleware('permission:aqars.refund');
-    Route::get('aqars/{id}/stats', [App\Http\Controllers\AdminAqarController::class, 'stats'])->name('aqars.stats')
-        ->middleware('permission:aqars.view');
+
+    // ── Aqar Delete Reasons ────────────────────────────────────────────────
     Route::resource('aqar-delete-reasons', App\Http\Controllers\AdminAqarDeleteReasonController::class);
 
-    // ── Users ────────────────────────────────────────────────────────────
+    // ── Users ──────────────────────────────────────────────────────────────
     Route::get('users/deleted', [App\Http\Controllers\AdminUserController::class, 'deletedUsers'])->name('users.deleted')
         ->middleware('permission:users.delete');
     Route::post('users/{id}/restore', [App\Http\Controllers\AdminUserController::class, 'restoreUser'])->name('users.restore')
@@ -199,7 +190,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('users/{user}/contact-forms', [App\Http\Controllers\AdminUserController::class, 'contactForms'])->name('users.contactForms')
         ->middleware('permission:users.view');
     Route::get('users/{user}/packages', [App\Http\Controllers\AdminUserController::class, 'packages'])->name('users.packages')
-    ->middleware('permission:users.view');
+        ->middleware('permission:users.view');
     Route::get('users/{user}/history', [App\Http\Controllers\AdminUserController::class, 'history'])->name('users.history')
         ->middleware('permission:users.view');
     Route::get('users-export', [App\Http\Controllers\AdminUserController::class, 'exportUsers'])->name('users.exportUsers')
@@ -208,10 +199,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->middleware('permission:users.update');
     Route::get('users/{user}/get-points', [App\Http\Controllers\AdminUserPointsController::class, 'getPoints'])->name('users.getPoints')
         ->middleware('permission:users.update');
-    Route::post('users/{user}/impersonate', [App\Http\Controllers\AdminUserImpersonationController::class, 'start'])
-        ->name('users.impersonate');
 
-    // ── Reports ──────────────────────────────────────────────────────────
+    // ── Reports ────────────────────────────────────────────────────────────
     Route::get('reports', [App\Http\Controllers\AdminReportController::class, 'index'])->name('reports.index')
         ->middleware('permission:reports.view');
     Route::get('reports/invited-by-details', [App\Http\Controllers\AdminReportController::class, 'invitedByDetails'])->name('reports.invitedByDetails')
@@ -221,7 +210,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('reports/subscriptions', [App\Http\Controllers\AdminReportController::class, 'subscriptions'])->name('reports.subscriptions')
         ->middleware('permission:reports.view');
 
-    // ── Account Delete Requests ──────────────────────────────────────────
+    // ── Account Delete Requests ────────────────────────────────────────────
     Route::get('accountDeleteRequests', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'index'])->name('accountDeleteRequests.index')
         ->middleware('permission:users.view');
     Route::post('accountDeleteRequests/{id}/approve', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'approve'])->name('accountDeleteRequests.approve')
@@ -231,29 +220,26 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('accountDeleteRequests/{id}/restore', [App\Http\Controllers\AdminAccountDeleteRequestController::class, 'restore'])->name('accountDeleteRequests.restore')
         ->middleware('permission:users.delete');
 
-    // ── Laravel System Logs ─────────────────────────────────────────────
+    // ── Laravel System Logs ─────────────────────────────────────────────────
     Route::get('systemLogs', [App\Http\Controllers\AdminSystemLogController::class, 'index'])
         ->name('systemLogs.index')
         ->middleware('role:admin');
-    Route::post('systemLogs/clear', [App\Http\Controllers\AdminSystemLogController::class, 'clear'])
-        ->name('systemLogs.clear')
-        ->middleware('role:admin');
 
-    // ── Error Logs ─────────────────────────────────────────────────────
+    // ── Error Logs ─────────────────────────────────────────────────────────
     Route::post('errorLogs/clear', [App\Http\Controllers\AdminErrorLogController::class, 'clearAll'])
         ->name('errorLogs.clearAll')
         ->middleware('role:admin');
     Route::resource('errorLogs', App\Http\Controllers\AdminErrorLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
 
-    // ── Activity Logs ──────────────────────────────────────────────────
+    // ── Activity Logs ──────────────────────────────────────────────────────
     Route::post('activityLogs/clear', [App\Http\Controllers\AdminActivityLogController::class, 'clearAll'])
         ->name('activityLogs.clearAll')
         ->middleware('role:admin');
     Route::resource('activityLogs', App\Http\Controllers\AdminActivityLogController::class)
         ->middleware('role:admin')->only(['index', 'show', 'destroy']);
 
-    // ── Online Users ───────────────────────────────────────────────────
+    // ── Online Users ───────────────────────────────────────────────────────
     Route::get('onlineUsers', [App\Http\Controllers\AdminOnlineUsersController::class, 'index'])
         ->name('onlineUsers.index')
         ->middleware('role:admin');
@@ -261,7 +247,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('onlineUsers.show')
         ->middleware('role:admin');
 
-    // ── SMS Messaging ────────────────────────────────────────────────────
+    // ── SMS Messaging ──────────────────────────────────────────────────────
     Route::get('sms', [App\Http\Controllers\AdminSmsController::class, 'index'])
         ->name('sms.index')
         ->middleware('permission:sms.view');
@@ -277,7 +263,6 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('sms/{id}/retry', [App\Http\Controllers\AdminSmsController::class, 'retryFailed'])
         ->name('sms.retry')
         ->middleware('permission:sms.send');
-    // AJAX endpoints for SMS user selection
     Route::get('sms-search-users', [App\Http\Controllers\AdminSmsController::class, 'searchUsers'])
         ->name('sms.searchUsers')
         ->middleware('permission:sms.send');
@@ -285,7 +270,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('sms.previewRecipients')
         ->middleware('permission:sms.send');
 
-    // ── WhatsApp Messaging ───────────────────────────────────────────────
+    // ── WhatsApp Messaging ─────────────────────────────────────────────────
     Route::get('whatsapp', [App\Http\Controllers\AdminWhatsappController::class, 'index'])
         ->name('whatsapp.index')
         ->middleware('permission:whatsapp.view');
@@ -301,7 +286,6 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('whatsapp/{id}/retry', [App\Http\Controllers\AdminWhatsappController::class, 'retryFailed'])
         ->name('whatsapp.retry')
         ->middleware('permission:whatsapp.send');
-    // AJAX endpoints for WhatsApp user selection
     Route::get('whatsapp-search-users', [App\Http\Controllers\AdminWhatsappController::class, 'searchUsers'])
         ->name('whatsapp.searchUsers')
         ->middleware('permission:whatsapp.send');
@@ -309,7 +293,7 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('whatsapp.previewRecipients')
         ->middleware('permission:whatsapp.send');
 
-    // ── Payment Management ────────────────────────────────────────────────
+    // ── Payment Management ─────────────────────────────────────────────────
     Route::get('payments', [App\Http\Controllers\AdminPaymentController::class, 'index'])
         ->name('payments.index')
         ->middleware('permission:payments.view');
@@ -347,42 +331,28 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
         ->name('refunds.markRefunded')
         ->middleware('permission:payments.refunds');
 
-    // ── RBAC Management Panel (admin-only) ───────────────────────────────
+    // ── RBAC Management Panel ──────────────────────────────────────────────
     Route::get('rbac', [App\Http\Controllers\AdminRolesPermissionsController::class, 'index'])
-        ->name('rbac.index')
-        ->middleware('role:admin');
-
+        ->name('rbac.index')->middleware('role:admin');
     Route::post('rbac/matrix', [App\Http\Controllers\AdminRolesPermissionsController::class, 'updateMatrix'])
-        ->name('rbac.updateMatrix')
-        ->middleware('role:admin');
-
+        ->name('rbac.updateMatrix')->middleware('role:admin');
     Route::post('rbac/roles', [App\Http\Controllers\AdminRolesPermissionsController::class, 'storeRole'])
-        ->name('rbac.roles.store')
-        ->middleware('role:admin');
-
+        ->name('rbac.roles.store')->middleware('role:admin');
     Route::delete('rbac/roles/{role}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyRole'])
-        ->name('rbac.roles.destroy')
-        ->middleware('role:admin');
-
+        ->name('rbac.roles.destroy')->middleware('role:admin');
     Route::post('rbac/permissions', [App\Http\Controllers\AdminRolesPermissionsController::class, 'storePermission'])
-        ->name('rbac.permissions.store')
-        ->middleware('role:admin');
-
+        ->name('rbac.permissions.store')->middleware('role:admin');
     Route::delete('rbac/permissions/{permission}', [App\Http\Controllers\AdminRolesPermissionsController::class, 'destroyPermission'])
-        ->name('rbac.permissions.destroy')
-        ->middleware('role:admin');
+        ->name('rbac.permissions.destroy')->middleware('role:admin');
 
-    // ── Chat Reports Management ──────────────────────────────────────────
+    // ── Chat Reports Management ────────────────────────────────────────────
     Route::get('chatReports', [App\Http\Controllers\AdminChatReportController::class, 'index'])
-        ->name('chatReports.index')
-        ->middleware('permission:reports.view');
+        ->name('chatReports.index')->middleware('permission:reports.view');
     Route::get('chatReports/{id}', [App\Http\Controllers\AdminChatReportController::class, 'show'])
-        ->name('chatReports.show')
-        ->middleware('permission:reports.view');
+        ->name('chatReports.show')->middleware('permission:reports.view');
     Route::post('chatReports/{id}/review', [App\Http\Controllers\AdminChatReportController::class, 'review'])
-        ->name('chatReports.review')
-        ->middleware('permission:reports.view');
+        ->name('chatReports.review')->middleware('permission:reports.view');
     Route::post('chatReports/{id}/block-user', [App\Http\Controllers\AdminChatReportController::class, 'blockUser'])
-        ->name('chatReports.blockUser')
-        ->middleware('permission:users.block');
+        ->name('chatReports.blockUser')->middleware('permission:users.block');
 });
+
