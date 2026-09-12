@@ -77,7 +77,7 @@ class AdminUserController extends Controller
         }
 
         // فلتر حسب مصدر التسجيل
-        if (in_array($request->filter_source, ['app', 'web'], true)) {
+        if (in_array($request->filter_source, ['app', 'web', 'google'], true)) {
             $users->whereHas('registrationLog', function ($query) use ($request) {
                 $query->where('source', $request->filter_source)
                     ->where('event', 'new_registration');
