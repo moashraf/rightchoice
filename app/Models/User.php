@@ -124,6 +124,14 @@ class User extends Authenticatable implements MustVerifyEmail
                 'statues'        => 1,
             ]);
         });
+
+        static::created(function (User $user) {
+            UserRegistrationLog::create([
+                'user_id' => $user->id,
+                'source' => request()->is('api/*') ? 'app' : 'web',
+                'event' => 'new_registration',
+            ]);
+        });
     }
 
 
