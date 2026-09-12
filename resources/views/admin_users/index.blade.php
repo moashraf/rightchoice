@@ -47,6 +47,7 @@
         'filter_type',
         'type_tab',
         'filter_invited_by',
+        'filter_source',
         'filter_user_id',
         'has_package',
         'has_aqars',
@@ -182,6 +183,14 @@
                             </select>
                         </div>
                         <div class="col-md-2">
+                            <label>مصدر التسجيل</label>
+                            <select class="form-control" name="filter_source">
+                                <option value="">الكل</option>
+                                <option value="app" {{ request('filter_source') === 'app' ? 'selected' : '' }}>التطبيق</option>
+                                <option value="web" {{ request('filter_source') === 'web' ? 'selected' : '' }}>الموقع</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
                             <label>مصدر الدعوة</label>
                             <select class="form-control" name="filter_invited_by">
                                 <option value="">الكل</option>
@@ -255,7 +264,20 @@
                                 <td class="serial-cell">{{ $users->total() - ($users->currentPage() - 1) * $users->perPage() - $loop->index }}</td>
                                 <td>{{ $user->id }}</td>
 
-                                <td>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</td>
+                                <td>
+                                    <div>{{ implode(' ', array_slice(explode(' ', $user->name), 0, 3)) }}</div>
+                                    @if(optional($user->registrationLog)->source === 'app')
+                                        <span class="badge badge-info mt-1">
+                                            <i class="fas fa-mobile-alt ml-1"></i> التطبيق
+                                        </span>
+                                    @elseif(optional($user->registrationLog)->source === 'web')
+                                        <span class="badge badge-secondary mt-1">
+                                            <i class="fas fa-globe ml-1"></i> الموقع
+                                        </span>
+                                    @else
+                                        <span class="badge badge-light text-muted mt-1">المصدر غير محدد</span>
+                                    @endif
+                                </td>
                                 <td>{{ $user->getUserType() }}</td>
 
                                 <td>{{ $user->MOP }}</td>
