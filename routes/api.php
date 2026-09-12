@@ -161,6 +161,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // ── Profile ──────────────────────────────────────────────────────
     Route::get('profile',                  [App\Http\Controllers\API\ProfileAPIController::class, 'show']);
     Route::get('profile/phone-status',     [App\Http\Controllers\API\ProfileAPIController::class, 'phoneStatus']);
+    Route::post('profile/phone/request-otp', [App\Http\Controllers\API\ProfileAPIController::class, 'requestPhoneChangeOtp'])
+        ->middleware('throttle:3,10');
+    Route::post('profile/phone/update',      [App\Http\Controllers\API\ProfileAPIController::class, 'updatePhone'])
+        ->middleware('throttle:10,1');
     Route::post('profile/update',          [App\Http\Controllers\API\ProfileAPIController::class, 'update']);
     Route::post('profile/change-password', [App\Http\Controllers\API\ProfileAPIController::class, 'changePassword']);
     Route::post('profile/full',            [App\Http\Controllers\API\ProfileAPIController::class, 'fullProfile']);
