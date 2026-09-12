@@ -32,6 +32,8 @@ Route::post('auth/social', [App\Http\Controllers\API\SocialAuthController::class
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('fcm-token', [App\Http\Controllers\API\FcmTokenController::class, 'store']);
     Route::delete('fcm-token', [App\Http\Controllers\API\FcmTokenController::class, 'destroy']);
+    Route::post('fcm/send', [App\Http\Controllers\API\FcmSendController::class, 'store'])
+        ->middleware('throttle:10,1');
 });
 
 // Registration

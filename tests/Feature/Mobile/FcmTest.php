@@ -24,6 +24,64 @@ class FcmTest extends MobileTestCase
         $this->assertSame(0, FcmToken::count());
     }
 
+    public function test_device_send_endpoint_requires_authentication(): void
+    {
+        $this->postJson('/api/fcm/send', [
+            'token' => 'device',
+            'message' => 'Hello',
+        ])->assertUnauthorized();
+    }
+
+    public function test_device_send_endpoint_validates_payload_and_token_ownership(): void
+    {
+        $user = $this->user();
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/fcm/send', [])
+            ->assertUnprocessable()
+            ->assertJsonPath('message', 'Validation failed.')
+            ->assertJsonValidationErrors(['token', 'message']);
+
+        $this->postJson('/api/fcm/send', [
+            'token' => 'another-users-device',
+            'message' => 'Hello',
+        ])->assertNotFound()
+            ->assertJsonPath(
+                'message',
+                'The device token is not registered to the authenticated user.'
+            );
+    }
+
+    public function test_authenticated_user_can_send_message_to_their_device(): void
+    {
+        $user = $this->user();
+        $user->fcmTokens()->create(['token' => 'device']);
+
+        $service = Mockery::mock(FcmNotificationService::class);
+        $service->shouldReceive('sendToToken')
+            ->once()
+            ->withArgs(fn (User $target, string $token, string $title, string $body, array $data) =>
+                $target->is($user)
+                && $token === 'device'
+                && $title === 'RightChoice'
+                && $body === 'Hello from the API'
+                && $data === ['screen' => 'home']
+            )
+            ->andReturn(['sent' => 1, 'removed' => 0]);
+        $this->app->instance(FcmNotificationService::class, $service);
+
+        Sanctum::actingAs($user);
+
+        $this->postJson('/api/fcm/send', [
+            'token' => 'device',
+            'message' => 'Hello from the API',
+            'data' => ['screen' => 'home'],
+        ])->assertOk()
+            ->assertJsonPath('data.sent', 1)
+            ->assertJsonPath('data.removed', 0)
+            ->assertJsonPath('message', 'Notification processed successfully.');
+    }
+
     public function test_token_endpoints_return_explicit_validation_messages(): void
     {
         Sanctum::actingAs($this->user());
