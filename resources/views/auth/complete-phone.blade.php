@@ -1,6 +1,7 @@
-<x-guest-layout>
+<x-layout>
     @section('title', 'إضافة رقم الهاتف')
 
+    <div class="container" style="padding-top: 70px; padding-bottom: 70px;">
     <x-jet-authentication-card>
         <x-slot name="logo"><x-logo /></x-slot>
 
@@ -45,4 +46,5 @@
             @endif
         </div>
     </x-jet-authentication-card>
-</x-guest-layout>
+    </div>
+</x-layout>
