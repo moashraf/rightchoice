@@ -2174,4 +2174,56 @@
         }
     </style>
 
+    {{-- ── Analytics: track comparison + share (client-triggered events) ── --}}
+    <script>
+        (function () {
+            var aqarIdForAnalytics = {{ (int) $aqar->id }};
+            var trackUrl           = '{{ route("aqar.analytics.track") }}';
+            var csrfToken          = '{{ csrf_token() }}';
+
+            function sendAnalytics(eventType, extra) {
+                try {
+                    var payload = JSON.stringify(Object.assign({
+                        aqar_id: aqarIdForAnalytics,
+                        event_type: eventType,
+                        source: 'aqar_show'
+                    }, extra || {}));
+
+                    if (navigator && typeof navigator.sendBeacon === 'function') {
+                        var blob = new Blob([payload], { type: 'text/plain' });
+                        var okBeacon = navigator.sendBeacon(trackUrl, blob);
+                        if (okBeacon) return;
+                    }
+                    fetch(trackUrl, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: payload,
+                        keepalive: true
+                    }).catch(function () { /* silent */ });
+                } catch (e) { /* silent */ }
+            }
+
+            document.addEventListener('click', function (e) {
+                var compareBtn = e.target.closest('.btn-compare-toggle[data-compare-id="' + aqarIdForAnalytics + '"]');
+                if (compareBtn) {
+                    // نُسجّل فقط عند الإضافة إلى المقارنة (الزر يصبح active بعد الضغط).
+                    setTimeout(function () {
+                        if (compareBtn.classList.contains('active')) {
+                            sendAnalytics('comparison');
+                        }
+                    }, 0);
+                }
+                var shareBtn = e.target.closest('#trigger-2');
+                if (shareBtn) {
+                    sendAnalytics('share');
+                }
+            }, false);
+        })();
+    </script>
+
 </x-layout>

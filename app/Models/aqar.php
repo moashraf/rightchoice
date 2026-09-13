@@ -419,4 +419,12 @@ class aqar extends Model
         return $this->hasOne(AqarLocation::class, 'id_aqar');
     }
 
+    /**
+     * سجلات لوحة تحليلات البائع لهذا العقار.
+     */
+    public function analyticsEvents()
+    {
+        return $this->hasMany(AqarAnalyticsEvent::class, 'aqar_id');
+    }
+
 }
