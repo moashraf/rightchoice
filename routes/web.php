@@ -502,9 +502,15 @@ Route::group(['prefix' => '{locale?}'], function () {
         ->middleware('setLocale')->name('developers.show');
 
     Route::group(['middleware' => 'CheackUser'], function () {
+        Route::get('/complete-phone', [App\Http\Controllers\PhoneVerificationController::class, 'show'])
+            ->name('phone.complete')->middleware('setLocale');
+        Route::post('/complete-phone/request-otp', [App\Http\Controllers\PhoneVerificationController::class, 'requestOtp'])
+            ->name('phone.request-otp')->middleware(['setLocale', 'throttle:5,1']);
+        Route::post('/complete-phone/verify', [App\Http\Controllers\PhoneVerificationController::class, 'verify'])
+            ->name('phone.verify')->middleware(['setLocale', 'throttle:10,1']);
         Route::post('/redirectBack', 'App\Http\Controllers\PageController@redirectBack')->name('redirectBack');
 
-        Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale']);
+        Route::get('/aqars/create', 'App\Http\Controllers\AqarController@create')->middleware(['setLocale', 'verified.phone']);
         Route::get('/governorates/search', 'App\Http\Controllers\AqarController@searchGovernorates')->middleware(['setLocale']);
         Route::get('/dashboard', function () {
 
@@ -530,8 +536,8 @@ Route::group(['prefix' => '{locale?}'], function () {
         Route::get('/update_companies/{company}', 'App\Http\Controllers\CompanyController@updateCompany')->middleware('setLocale');
         Route::get('/fawryCallback', 'App\Http\Controllers\PricController@fawryCallback')->middleware('setLocale');
         Route::get('/tmyezz_fawryCallback', 'App\Http\Controllers\PricController@tmyezz_fawryCallback')->name('tmyezz.fawry.callback')->middleware('setLocale');
-        Route::post('/vip-card-checkout', 'App\Http\Controllers\PricController@initVipCardCheckout')->name('vip-card-checkout')->middleware('setLocale');
-        Route::post('/vip-fawry-checkout', 'App\Http\Controllers\PricController@storeVipFawry')->name('vip-fawry-checkout')->middleware('setLocale');
+        Route::post('/vip-card-checkout', 'App\Http\Controllers\PricController@initVipCardCheckout')->name('vip-card-checkout')->middleware(['setLocale', 'verified.phone']);
+        Route::post('/vip-fawry-checkout', 'App\Http\Controllers\PricController@storeVipFawry')->name('vip-fawry-checkout')->middleware(['setLocale', 'verified.phone']);
 
 
         //  Route::post('/post_fawry_code_send', 'App\Http\Controllers\PricController@getNumber')->middleware('setLocale')->name('post_fawry_code_send');
@@ -666,8 +672,8 @@ Route::group(['prefix' => '{locale?}'], function () {
 });
 
 Route::post('/add_company_post', 'App\Http\Controllers\CompanyController@store')->name('add_company_post')->middleware('guest:web');
-Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed');
-Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed');
+Route::post('/price-subscribed', 'App\Http\Controllers\PricController@store')->name('price-subscribed')->middleware(['CheackUser', 'verified.phone']);
+Route::post('/price-free-subscribed', 'App\Http\Controllers\PricController@storeFree')->name('price-free-subscribed')->middleware(['CheackUser', 'verified.phone']);
 Route::post('/add-user-complain', 'App\Http\Controllers\AqarController@usercomplain')->name('add-user-complain');
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
@@ -677,11 +683,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 //Route::get('/pricing-seller', 'App\Http\Controllers\PricController@index')->name('priceSeller');
 //Route::get('/pricing-seller/{single}', 'App\Http\Controllers\PricController@show')->name('priceSingle');
-    Route::get('/aqar/{aqarid}/toVip', 'App\Http\Controllers\PricController@ChangeUpdated');
+    Route::get('/aqar/{aqarid}/toVip', 'App\Http\Controllers\PricController@ChangeUpdated')->middleware('verified.phone');
 
 
 });
-Route::post('/aqars', 'App\Http\Controllers\AqarController@store')->name('aqars.upload');
+Route::post('/aqars', 'App\Http\Controllers\AqarController@store')->name('aqars.upload')->middleware(['CheackUser', 'verified.phone']);
 Route::get('/aqar-finnance', 'App\Http\Controllers\AqarController@finnance');
 Route::get('/aqars-{slug}', 'App\Http\Controllers\AqarController@mainAqar');
 Route::post('/add-wish_list', 'App\Http\Controllers\AqarController@addwish_list')->name('add-wish_list');
@@ -697,7 +703,7 @@ Route::get('/ourcompanies-{slug}', 'App\Http\Controllers\CompanyController@furn'
 Route::get('/companies/{compan}', 'App\Http\Controllers\CompanyController@show');
 Route::get('/ourcompanies-{slug}/filterby', 'App\Http\Controllers\CompanyController@sorting');
 
-Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricController@add_to_vip');
+Route::get('/add-to-vip/{aqar_id}/{user_id}', 'App\Http\Controllers\PricController@add_to_vip')->middleware(['CheackUser', 'verified.phone']);
 Route::post('api/fetch-states', [App\Http\Controllers\DropdownController::class, 'fetchState']);
 Route::get('api/fetch-property-types', 'App\Http\Controllers\AqarController@fetchPropertyTypesByCat')->name('api.fetchPropertyTypes');
 Route::get('/api/map/aqars', [App\Http\Controllers\MapController::class, 'getAqars'])->name('api.map.aqars');
