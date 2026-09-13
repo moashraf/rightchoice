@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Middleware\TrackApiAccess;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -69,7 +70,9 @@ class AuthAPIController extends AppBaseController
         if ($user->status != 1) {
             return $this->sendError('Your account is inactive', 403);
         }
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $newToken = $user->createToken('auth_token');
+        TrackApiAccess::stamp($newToken->accessToken, $request);
+        $token = $newToken->plainTextToken;
 
 
         $result = [

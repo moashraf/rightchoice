@@ -33,19 +33,14 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
                                                         <div><a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}">
 
-
                                                                                     @if($aqar->mainImage)
                                  <img src="{{ URL::to('/').'/images/'.$aqar->mainImage->img_url}}"  class="img-fluid main-img" alt="main">
 
                                 @else
-
-
-
                                                             @if($aqar->firstImage)
                                                             <img
                                                                     src="{{ URL::to('/') . '/images/' . $aqar->firstImage->img_url }}"
                                                                     class="img-fluid mx-auto" alt="" />
-
 
                                                                              	@else
                                         <img src="https://rightchoice-co.com/images/FBO.png" class="img-fluid main-img"    alt="main">
@@ -54,14 +49,32 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                     @endif
                                                                     @endif
 
-
-
                                                                     </a></div>
 
 
 
 
                                                 </div>
+                                              @if ((int) $aqar->status === 1 && $aqar->auto_suspension_at)
+                                                  <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
+                                                      <strong>متبقي حتى يتحول العقار إلى معلق:</strong>
+                                                      <div>
+                                                          @forelse($aqar->auto_suspension_remaining_parts as $remainingPart)
+                                                              <span class="d-block">{{ $remainingPart['value'] }} {{ $remainingPart['label'] }}</span>
+                                                          @empty
+                                                              {{ $aqar->auto_suspension_remaining }}
+                                                          @endforelse
+                                                      </div>
+                                                      <small>
+                                                          الموعد: {{ $aqar->auto_suspension_at->format('Y-m-d H:i') }}
+                                                      </small>
+                                                      {{--                                                                    @if($aqar->auto_suspension_deferred_by_promotion)--}}
+                                                      {{--                                                                        <div class="mt-1 text-info">--}}
+                                                      {{--                                                                            تم تأجيل التعليق حتى انتهاء مدة التمييز الحالية.--}}
+                                                      {{--                                                                        </div>--}}
+                                                      {{--                                                                    @endif--}}
+                                                  </div>
+                                              @endif
                                                         <div class="views">
 
                         <div class="views-2 views-2-user_ads " >
@@ -76,13 +89,12 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                     <div class="listing-detail-wrapper">
                                                         <div class="listing-short-detail-wrap flex-block">
                                                             <div class="listing-short-detail">
-                                                                <h4 dir="rtl" class="listing-name verified"><a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}">
+                                                                <h4 dir="rtl" class="listing-name verified">
+                                                                    <a href="{{ URL::to(Config::get('app.locale').'/aqars/' . $aqar->slug) }}">
 
                                                                         {{ \Illuminate\Support\Str::limit($aqar->title, 50) }}
                                                                     </a></h4>
                                                                 <!-- <h4 class="listing-name verified"><a href="single-property-1.html" class="prt-link-detail">Banyon Tree Realty</a></h4> -->
-
-
 
                                                             </div>
                                                             @if ($aqar->status == 0 && $aqar->was_auto_suspended)
@@ -93,16 +105,12 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                 </div>
                                                             @elseif ($aqar->status == 0)
                                                                  <div>
-
                                                                       <a  href="#" class="btn btn-outline-warning">جاري المراجعه</a>
-
                                                                 </div>
                                                                 @endif
                                                             @if ($aqar->status == 1)
                                                                  <div>
-
                                                                       <a  href="#" class="btn btn-outline-success">
-
                                                                         تم نشر الاعلان
                                                                         </a>
 
@@ -111,7 +119,6 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
 
                                                                 @if($aqar->status != 0 && $aqar->status != 1)
                                                                     <div>
-
                                                                       <a  href="#" class="btn btn-outline-danger">
 
                                                                         تم رفض الاعلان
@@ -120,26 +127,8 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                 </div>
                                                             @endif
 
-                                                            @if ((int) $aqar->status === 1 && $aqar->auto_suspension_at)
-                                                                <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
-                                                                    <strong>متبقي حتى يتحول العقار إلى معلق:</strong>
-                                                                    <div>
-                                                                        @forelse($aqar->auto_suspension_remaining_parts as $remainingPart)
-                                                                            <span class="d-block">{{ $remainingPart['value'] }} {{ $remainingPart['label'] }}</span>
-                                                                        @empty
-                                                                            {{ $aqar->auto_suspension_remaining }}
-                                                                        @endforelse
-                                                                    </div>
-                                                                    <small>
-                                                                        الموعد: {{ $aqar->auto_suspension_at->format('Y-m-d H:i') }}
-                                                                    </small>
-{{--                                                                    @if($aqar->auto_suspension_deferred_by_promotion)--}}
-{{--                                                                        <div class="mt-1 text-info">--}}
-{{--                                                                            تم تأجيل التعليق حتى انتهاء مدة التمييز الحالية.--}}
-{{--                                                                        </div>--}}
-{{--                                                                    @endif--}}
-                                                                </div>
-                                                            @elseif($aqar->was_auto_suspended)
+
+                                                            @if($aqar->was_auto_suspended)
                                                                 <div class="alert alert-warning mt-2 mb-2" style="border-radius:10px;">
                                                                     تم تعليق العقار تلقائيًا لتجاوز مدة 180 يومًا من تاريخ إضافته.
                                                                 </div>
