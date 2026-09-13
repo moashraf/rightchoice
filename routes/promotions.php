@@ -23,22 +23,22 @@ Route::prefix('{locale}')
             ->name('contact-more-owners.index');
 
         Route::get('/contact-more-owners/checkout/{pricing}', [SellFasterController::class, 'buyerCheckout'])
-            ->middleware('CheackUser')
+            ->middleware(['CheackUser', 'verified.phone'])
             ->whereNumber('pricing')
             ->name('contact-more-owners.checkout');
 
         Route::post('/sell-faster/subscribe/{pricing}', [SellFasterController::class, 'subscribe'])
-            ->middleware('CheackUser')
+            ->middleware(['CheackUser', 'verified.phone'])
             ->whereNumber('pricing')
             ->name('sell-faster.subscribe');
 
         Route::post('/sell-faster/subscribe/{pricing}/property', [SellFasterController::class, 'selectProperty'])
-            ->middleware('CheackUser')
+            ->middleware(['CheackUser', 'verified.phone'])
             ->whereNumber('pricing')
             ->name('sell-faster.select-property');
 
         Route::get('/sell-faster/checkout/{pricing}/{aqar}', [SellFasterController::class, 'checkout'])
-            ->middleware('CheackUser')
+            ->middleware(['CheackUser', 'verified.phone'])
             ->where([
                 'pricing' => '[0-9]+',
                 'aqar' => '[0-9]+',
