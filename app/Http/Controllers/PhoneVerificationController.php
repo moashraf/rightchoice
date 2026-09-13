@@ -96,8 +96,7 @@ class PhoneVerificationController extends Controller
             $user->forceFill([
                 'MOP' => $phone,
                 'phone_verfied_sms_status' => 1,
-                'phone_sms_otp' => null,
-            ])->save();
+             ])->save();
         });
 
         session()->forget('phone_verification');
