@@ -1218,6 +1218,11 @@ $paymentStatus = $response['type']; // get response values
 
     private function extractAqarIdFromPayment(FawryPayment $payment, array $payload = []): ?int
     {
+        $promotionAqarId = $payment->propertyPromotion()->value('aqar_id');
+        if ($promotionAqarId) {
+            return (int) $promotionAqarId;
+        }
+
         $gateway = json_decode((string) $payment->gateway_response, true);
         if (is_array($gateway) && isset($gateway['aqar_id']) && is_numeric($gateway['aqar_id'])) {
             return (int) $gateway['aqar_id'];
@@ -1432,24 +1437,34 @@ $paymentStatus = $response['type']; // get response values
                 $aqarId = $this->extractAqarIdFromPayment($payment, $request->all());
                 $aqar = $aqarId ? aqar::find($aqarId) : null;
 
-                if ($package && $aqar) {
-                    $this->markVipPaymentPaidAndActivate($payment, $aqar, $package, $request->all());
-                } else {
-                    Log::warning('Fawry VIP notification missing package or property.', [
-                        'payment_id' => $payment->id,
-                        'tmyezz_price_vip_id' => $payment->tmyezz_price_vip_id,
-                        'aqar_id' => $aqarId,
-                    ]);
+                if (!$package || !$aqar) {
+                    throw new DomainException('تعذر تحديد العقار أو باقة التمييز المرتبطة بعملية الدفع.');
                 }
-            } catch (DomainException $exception) {
-                Log::warning('Fawry VIP notification could not activate listing.', [
+
+                $this->markVipPaymentPaidAndActivate($payment, $aqar, $package, $request->all());
+
+                Log::info('Fawry VIP notification activated listing.', [
                     'payment_id' => $payment->id,
+                    'aqar_id' => $aqar->id,
+                    'price_vip_id' => $package->id,
+                    'vip_expires_at' => $aqar->fresh()->vip_expires_at,
+                ]);
+            } catch (\Throwable $exception) {
+                Log::error('Fawry VIP notification activation failed; callback must be retried.', [
+                    'payment_id' => $payment->id,
+                    'merchantRefNumber' => $data['merchantRefNumber'],
                     'message' => $exception->getMessage(),
                 ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment was recorded but the property promotion could not be activated.',
+                ], 500);
             }
         }
 
         return response()->json([
+            'success' => true,
             'message' => 'Payment status updated successfully.',
             'paymentStatus' => $payment->paymentStatus,
         ]);
