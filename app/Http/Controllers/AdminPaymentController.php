@@ -96,10 +96,10 @@ class AdminPaymentController extends Controller
         try {
             $result = $this->fawryGatewayService->checkPaymentStatus($payment);
 
-            //            $fawryStatus =$result['status'];
-//            $raw_response=   $result['raw_response'];
-            $fawryStatus ='PAID';
-            $raw_response='PAID';
+           $fawryStatus =$result['status'];
+            $raw_response=   $result['raw_response'];
+//            $fawryStatus ='PAID';
+//            $raw_response='PAID';
 
             $payment->gateway_response = json_encode( $raw_response, JSON_UNESCAPED_UNICODE);
             $payment->save();
