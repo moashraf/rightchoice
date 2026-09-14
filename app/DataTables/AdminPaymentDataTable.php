@@ -54,17 +54,32 @@ class AdminPaymentDataTable extends DataTable
                 $label = $payment->status_label;
                 return '<span class="badge badge-' . $badge . '">' . e($label) . '</span>';
             })
-            ->editColumn('refund_status', function ($payment) {
-                if (!$payment->refund_status) return '-';
-                $badge = $payment->refund_status_badge;
-                $label = $payment->refund_status_label;
-                return '<span class="badge badge-' . $badge . '">' . e($label) . '</span>';
-            })
-            ->editColumn('refunded_amount', function ($payment) {
-                return $payment->refunded_amount > 0 ? number_format($payment->refunded_amount, 2) . ' ج.م' : '-';
+            ->editColumn('paymentMethod', function ($payment) {
+                $referenceNumber = $payment->referenceNumber ?: $payment->merchantRefNumber;
+
+                return '<div>' . e($payment->paymentMethod ?: '-') . '</div>'
+                    . '<small class="text-muted d-block mt-1">'
+                    . '<strong>رقم المرجع:</strong> ' . e($referenceNumber ?: '-')
+                    . '</small>';
             })
             ->editColumn('net_amount', function ($payment) {
-                return number_format($payment->net_amount, 2) . ' ج.م';
+                $refundStatus = '-';
+
+                if ($payment->refund_status) {
+                    $refundStatus = '<span class="badge badge-' . e($payment->refund_status_badge) . '">'
+                        . e($payment->refund_status_label)
+                        . '</span>';
+                }
+
+                $refundedAmount = (float) $payment->refunded_amount > 0
+                    ? number_format($payment->refunded_amount, 2) . ' ج.م'
+                    : '-';
+
+                return '<div>' . number_format($payment->net_amount, 2) . ' ج.م</div>'
+                    . '<small class="text-muted d-block mt-1"><strong>المسترد:</strong> '
+                    . e($refundedAmount) . '</small>'
+                    . '<small class="text-muted d-block"><strong>حالة الاسترداد:</strong> '
+                    . $refundStatus . '</small>';
             })
             ->addColumn('package_type', function ($payment) {
                 if ($payment->paqaat_priceing_sale_id) {
@@ -87,35 +102,35 @@ class AdminPaymentDataTable extends DataTable
                     $editUrl = route('sitemanagement.priceVips.edit', $payment->tmyezz_price_vip_id);
                 }
 
-                if (! $editUrl) {
-                    return e($packageName);
-                }
+                $packageHtml = $editUrl
+                    ? '<a target="_blank" href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>'
+                    : e($packageName);
 
-                return '<a  target="_blank" href="' . e($editUrl) . '" title="تعديل الباقة">' . e($packageName) . '</a>';
-            })
-            ->addColumn('aqar', function ($payment) {
                 if (! $payment->isSellerVip()) {
-                    return '<span class="text-muted">-</span>';
+                    return $packageHtml;
                 }
 
                 $aqar = $payment->resolveTargetAqar();
 
                 if (! $aqar) {
-                    return '<span class="text-muted" title="لم يتم تحديد إعلان لهذه العملية">'
+                    $aqarHtml = '<span class="text-muted" title="لم يتم تحديد إعلان لهذه العملية">'
                         . '<i class="fas fa-exclamation-triangle text-warning"></i> غير محدد</span>';
+                } else {
+                    $title = trim((string) ($aqar->title ?: $aqar->title_en));
+                    if ($title === '') {
+                        $title = 'إعلان #' . $aqar->id;
+                    }
+
+                    $showUrl = route('sitemanagement.aqars.show', $aqar->id);
+                    $aqarHtml = '<a href="' . e($showUrl) . '" target="_blank" title="عرض تفاصيل الإعلان">'
+                        . '<i class="fas fa-home"></i> ' . e($title)
+                        . ' <small class="text-muted">#' . (int) $aqar->id . '</small>'
+                        . '</a>';
                 }
 
-                $title = trim((string) ($aqar->title ?: $aqar->title_en));
-                if ($title === '') {
-                    $title = 'إعلان #' . $aqar->id;
-                }
-
-                $showUrl = route('sitemanagement.aqars.show', $aqar->id);
-
-                return '<a href="' . e($showUrl) . '" target="_blank" title="عرض تفاصيل الإعلان">'
-                    . '<i class="fas fa-home"></i> ' . e($title)
-                    . ' <small class="text-muted">#' . (int) $aqar->id . '</small>'
-                    . '</a>';
+                return $packageHtml
+                    . '<small class="text-muted d-block mt-1"><strong>الإعلان المميز:</strong> '
+                    . $aqarHtml . '</small>';
             })
             ->editColumn('paid_at', function ($payment) {
                 return $payment->paid_at ? $payment->paid_at->format('Y-m-d H:i') : '-';
@@ -206,13 +221,9 @@ class AdminPaymentDataTable extends DataTable
             'paymentAmount'    => ['title' => 'المبلغ'],
             'paymentStatus'    => ['title' => 'حالة الدفع'],
             'paymentMethod'    => ['title' => 'طريقة الدفع'],
-            'referenceNumber'  => ['title' => 'رقم المرجع'],
             'package_type'     => ['title' => 'نوع الباقة', 'orderable' => false, 'searchable' => false],
             'package'          => ['title' => 'الباقة', 'orderable' => false, 'searchable' => false],
-            'aqar'             => ['title' => 'الإعلان المميز', 'orderable' => false, 'searchable' => false],
             'paid_at'          => ['title' => 'تاريخ الدفع'],
-            'refund_status'    => ['title' => 'حالة الاسترداد'],
-            'refunded_amount'  => ['title' => 'المسترد'],
             'net_amount'       => ['title' => 'صافي الربح'],
             'created_at'       => ['title' => 'تاريخ الإنشاء'],
         ];
