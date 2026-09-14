@@ -229,7 +229,19 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-list"></i> قائمة المدفوعات</h3>
-            <div class="card-tools">
+            <div class="card-tools d-flex align-items-center">
+                @if($canManage)
+                <form action="{{ route('sitemanagement.payments.checkRecentFawryStatuses') }}"
+                      method="POST"
+                      class="d-inline ml-2"
+                      onsubmit="return confirm('سيتم التحقق من أحدث 10 عمليات فوري غير مدفوعة. هل تريد المتابعة؟')">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-warning">
+                        <i class="fas fa-sync-alt"></i>
+                        تحقق من أحدث 10 عمليات
+                    </button>
+                </form>
+                @endif
                 @if($canReports)
                 <a href="{{ route('sitemanagement.payments.reports') }}" class="btn btn-sm btn-outline-info">
                     <i class="fas fa-chart-bar"></i> التقارير
