@@ -67,6 +67,18 @@
                             باقاتي
                         </a>
 
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments/paid') }}"
+                           class="btn btn-sm btn-outline-success">
+                            <i class="fa fa-check-circle"></i>
+                            عمليات الدفع المدفوعة
+                        </a>
+
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments/unpaid') }}"
+                           class="btn btn-sm btn-outline-warning">
+                            <i class="fa fa-clock"></i>
+                            عمليات الدفع غير المدفوعة
+                        </a>
+
 
 
 
