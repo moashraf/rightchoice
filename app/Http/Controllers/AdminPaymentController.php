@@ -85,6 +85,95 @@ class AdminPaymentController extends Controller
         return redirect()->back()->with('success', $activationMessage ? $baseMessage . ' ' . $activationMessage : $baseMessage);
     }
 
+    public function checkRecentFawryStatuses()
+    {
+        $payments = FawryPayment::query()
+            ->where('paymentMethod', 'PAYATFAWRY')
+            ->where('paymentStatus', '!=', PaymentStatusEnum::PAID)
+            ->whereNotNull('merchantRefNumber')
+            ->where('merchantRefNumber', '!=', '')
+            ->latest('id')
+            ->limit(10)
+            ->get();
+
+        if ($payments->isEmpty()) {
+            return redirect()->back()->with('error', 'لا توجد عمليات فوري غير مدفوعة متاحة للتحقق.');
+        }
+
+        $checkedCount = 0;
+        $paidCount = 0;
+        $failedCount = 0;
+
+        foreach ($payments as $payment) {
+            try {
+                $result = $this->fawryGatewayService->checkPaymentStatus($payment);
+                $fawryStatus = $result['status'];
+                $rawResponse = $result['raw_response'];
+
+                $payment->gateway_response = json_encode($rawResponse, JSON_UNESCAPED_UNICODE);
+                $payment->save();
+
+                if (!$fawryStatus) {
+                    $payment->logStatusChange(
+                        'fawry_status_check',
+                        $payment->paymentStatus,
+                        $payment->paymentStatus,
+                        'تم الاتصال بفوري ولكن لم يتم إرجاع حالة دفع واضحة.',
+                        $rawResponse,
+                        Auth::guard('admin')->id()
+                    );
+
+                    $failedCount++;
+                    continue;
+                }
+
+                if ($fawryStatus !== $payment->paymentStatus) {
+                    $this->paymentService->updateStatus(
+                        $payment,
+                        $fawryStatus,
+                        'تم تحديث الحالة بعد التحقق الجماعي من API فوري. الحالة من فوري: ' . $fawryStatus,
+                        $rawResponse
+                    );
+                } else {
+                    $payment->logStatusChange(
+                        'fawry_status_check',
+                        $payment->paymentStatus,
+                        $payment->paymentStatus,
+                        'تم التحقق الجماعي من API فوري. الحالة الحالية مؤكدة: ' . $fawryStatus,
+                        $fawryStatus,
+                        Auth::guard('admin')->id()
+                    );
+                }
+
+                $this->fulfillIfPaid($payment->refresh());
+
+                $checkedCount++;
+                if ($fawryStatus === PaymentStatusEnum::PAID) {
+                    $paidCount++;
+                }
+            } catch (GuzzleException $exception) {
+                $failedCount++;
+                Log::error('Bulk admin Fawry status check HTTP error: ' . $exception->getMessage(), [
+                    'payment_id' => $payment->id,
+                ]);
+            } catch (\Throwable $exception) {
+                $failedCount++;
+                Log::error('Bulk admin Fawry status check error: ' . $exception->getMessage(), [
+                    'payment_id' => $payment->id,
+                ]);
+            }
+        }
+
+        $message = sprintf(
+            'تم التحقق من %d عملية. العمليات المدفوعة: %d. العمليات التي تعذر التحقق منها: %d.',
+            $checkedCount,
+            $paidCount,
+            $failedCount
+        );
+
+        return redirect()->back()->with($checkedCount > 0 ? 'success' : 'error', $message);
+    }
+
     public function checkFawryStatus(int $id)
     {
         $payment = FawryPayment::findOrFail($id);
