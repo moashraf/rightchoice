@@ -165,7 +165,7 @@ class AdminPaymentController extends Controller
         if ($payment->paymentStatus !== PaymentStatusEnum::PAID) {
             return null;
         }
-        //  dd(2222);
+
         try {
             $fulfilled = $this->packageFulfillmentService->fulfill(
                 $payment,
@@ -179,8 +179,7 @@ class AdminPaymentController extends Controller
 
             return 'تم تأكيد الدفع لكن تعذر تفعيل الباقة تلقائيًا، راجع سجل الأحداث.';
         }
-
-        if (!$fulfilled) {
+         if (!$fulfilled) {
             return null;
         }
 
