@@ -389,6 +389,9 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::get('payments/user/{userId}', [App\Http\Controllers\AdminPaymentController::class, 'userPayments'])
         ->name('payments.userPayments')
         ->middleware('permission:payments.view');
+    Route::post('payments/check-recent-fawry-statuses', [App\Http\Controllers\AdminPaymentController::class, 'checkRecentFawryStatuses'])
+        ->name('payments.checkRecentFawryStatuses')
+        ->middleware('permission:payments.manage');
     Route::post('payments/{id}/check-fawry-status', [App\Http\Controllers\AdminPaymentController::class, 'checkFawryStatus'])
         ->name('payments.checkFawryStatus')
         ->middleware('permission:payments.manage');
