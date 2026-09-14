@@ -101,7 +101,24 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex gap-3 align-items-center">
-                                                        <span class="badge badge-price">{{ number_format($not->pricing->price ?? 0) }} ج.م</span>
+                                                        @php
+                                                            $buyerOriginalPrice = (float) ($not->pricing->price ?? 0);
+                                                            $buyerDiscount = max(0, min(100, (int) ($not->pricing->discount_percentage ?? 0)));
+                                                            $buyerDiscountedPrice = $buyerOriginalPrice * (1 - ($buyerDiscount / 100));
+                                                        @endphp
+                                                        <span class="badge badge-price">
+                                                            @if($buyerDiscount > 0)
+                                                                <span class="price-before">
+                                                                    قبل الخصم: {{ number_format($buyerOriginalPrice, 2) }} ج.م
+                                                                </span>
+                                                                <span class="price-after">
+                                                                    بعد الخصم: {{ number_format($buyerDiscountedPrice, 2) }} ج.م
+                                                                </span>
+                                                                <span class="price-discount">خصم {{ $buyerDiscount }}%</span>
+                                                            @else
+                                                                <span class="price-after">{{ number_format($buyerOriginalPrice, 2) }} ج.م</span>
+                                                            @endif
+                                                        </span>
                                                         <span class="badge badge-points-total">
                                                             <i class="fa fa-star ml-1"></i>
                                                             {{ $not->start_points }} نقطة
@@ -261,7 +278,24 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex gap-3 align-items-center">
-                                                        <span class="badge badge-price">{{ number_format($pkg->price ?? 0) }} ج.م</span>
+                                                        @php
+                                                            $sellerOriginalPrice = (float) ($pkg->price ?? 0);
+                                                            $sellerDiscount = max(0, min(100, (int) ($pkg->discount_percentage ?? 0)));
+                                                            $sellerDiscountedPrice = $sellerOriginalPrice * (1 - ($sellerDiscount / 100));
+                                                        @endphp
+                                                        <span class="badge badge-price">
+                                                            @if($sellerDiscount > 0)
+                                                                <span class="price-before">
+                                                                    قبل الخصم: {{ number_format($sellerOriginalPrice, 2) }} ج.م
+                                                                </span>
+                                                                <span class="price-after">
+                                                                    بعد الخصم: {{ number_format($sellerDiscountedPrice, 2) }} ج.م
+                                                                </span>
+                                                                <span class="price-discount">خصم {{ $sellerDiscount }}%</span>
+                                                            @else
+                                                                <span class="price-after">{{ number_format($sellerOriginalPrice, 2) }} ج.م</span>
+                                                            @endif
+                                                        </span>
                                                         <span class="badge badge-points-total">
                                                             <i class="fa fa-clock ml-1"></i>
                                                             {{ $totalDays }} يوم
@@ -617,7 +651,27 @@
 .pkg-chevron { transition: transform 0.3s; }
 .pkg-header[aria-expanded="true"] .pkg-chevron { transform: rotate(180deg); }
 
-.badge-price { background:#ffc107; color:#333; padding:5px 10px; border-radius:20px; font-weight:700; font-size:13px; }
+.badge-price {
+    background:#ffc107;
+    color:#333;
+    padding:6px 10px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:12px;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+}
+.badge-price .price-before { color:#6c757d; text-decoration:line-through; font-size:11px; }
+.badge-price .price-after { color:#155724; font-size:13px; }
+.badge-price .price-discount {
+    background:#dc3545;
+    color:#fff;
+    padding:1px 6px;
+    border-radius:10px;
+    font-size:10px;
+}
 .badge-points-total { background:rgba(255,255,255,0.25); color:#fff; padding:5px 10px; border-radius:20px; font-size:13px; }
 .badge-points-ok { background:#28a745; color:#fff; padding:5px 10px; border-radius:20px; font-size:13px; }
 .badge-points-zero { background:#dc3545; color:#fff; padding:5px 10px; border-radius:20px; font-size:13px; }
