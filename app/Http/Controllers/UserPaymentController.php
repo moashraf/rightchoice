@@ -28,15 +28,42 @@ class UserPaymentController extends Controller
      */
     public function index(Request $request)
     {
+        return $this->renderPayments($request);
+    }
+
+    public function paid(Request $request)
+    {
+        return $this->renderPayments($request, true);
+    }
+
+    public function unpaid(Request $request)
+    {
+        return $this->renderPayments($request, false);
+    }
+
+    private function renderPayments(Request $request, ?bool $paidOnly = null)
+    {
         $userId = Auth::id();
 
         $query = FawryPayment::where('user_id', $userId)
-            ->with(['pricingSale:id,type,price', 'priceVip:id,name,price']);
+            ->with([
+                'pricingSale:id,type,price,discount_percentage',
+                'priceVip:id,name,price,discount_percentage,duration_days',
+                'propertyPromotion:id,fawry_payment_id,aqar_id,status,started_at,expires_at,duration_days',
+                'propertyPromotion.aqar:id,title,title_en,slug,slug_en',
+            ]);
 
-        // Filters
-        if ($status = $request->get('status')) {
+        if ($paidOnly === true) {
+            $query->where('paymentStatus', PaymentStatusEnum::PAID);
+        } elseif ($paidOnly === false) {
+            $query->where(function ($statusQuery) {
+                $statusQuery->where('paymentStatus', '!=', PaymentStatusEnum::PAID)
+                    ->orWhereNull('paymentStatus');
+            });
+        } elseif ($status = $request->get('status')) {
             $query->where('paymentStatus', $status);
         }
+
         if ($dateFrom = $request->get('date_from')) {
             $query->whereDate('created_at', '>=', $dateFrom);
         }
@@ -46,14 +73,55 @@ class UserPaymentController extends Controller
 
         $payments = $query->orderByDesc('created_at')->paginate(15);
 
-        // Summary stats for the user
-        $totalPaid    = FawryPayment::where('user_id', $userId)->where('paymentStatus', PaymentStatusEnum::PAID)->sum('paymentAmount');
+        $totalPaid = FawryPayment::where('user_id', $userId)
+            ->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->sum('paymentAmount');
         $totalRefunded = FawryPayment::where('user_id', $userId)->sum('refunded_amount');
         $paymentCount = FawryPayment::where('user_id', $userId)->count();
-
         $statuses = PaymentStatusEnum::labels();
 
-        return view('user_payments.index', compact('payments', 'totalPaid', 'totalRefunded', 'paymentCount', 'statuses'));
+        $paymentScope = $paidOnly === true ? 'paid' : ($paidOnly === false ? 'unpaid' : 'all');
+        $pageTitle = $paidOnly === true
+            ? 'عمليات الدفع المدفوعة'
+            : ($paidOnly === false ? 'عمليات الدفع غير المدفوعة' : trans('langsite.my_payments'));
+
+        return view('user_payments.index', compact(
+            'payments',
+            'totalPaid',
+            'totalRefunded',
+            'paymentCount',
+            'statuses',
+            'paymentScope',
+            'pageTitle'
+        ));
+    }
+
+    /**
+     * List every payment reference requested by the authenticated user.
+     */
+    public function references()
+    {
+        $payments = FawryPayment::query()
+            ->where('user_id', Auth::id())
+            ->with([
+                'pricingSale:id,type',
+                'priceVip:id,name',
+            ])
+            ->orderByDesc('created_at')
+            ->paginate(20);
+
+        $paidCount = FawryPayment::where('user_id', Auth::id())
+            ->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->count();
+
+        $unpaidCount = FawryPayment::where('user_id', Auth::id())
+            ->where(function ($query) {
+                $query->where('paymentStatus', '!=', PaymentStatusEnum::PAID)
+                    ->orWhereNull('paymentStatus');
+            })
+            ->count();
+
+        return view('user_payments.references', compact('payments', 'paidCount', 'unpaidCount'));
     }
 
     /**

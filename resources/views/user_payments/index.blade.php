@@ -1,7 +1,7 @@
 <x-layout>
 
 @section('title')
-        {{ trans('langsite.my_payments')}}
+        {{ $pageTitle ?? trans('langsite.my_payments')}}
 
     @endsection
 
@@ -16,7 +16,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h3 class="mb-0">
                             <i class="fa fa-credit-card ml-2 text-primary"></i>
-                            {{ trans('langsite.my_payments')}}
+                            {{ $pageTitle ?? trans('langsite.my_payments')}}
 
                         </h3>
                         <a href="{{ URL::to(Config::get('app.locale').'/dashboard') }}"
@@ -67,7 +67,20 @@
                         </div>
                     </div>
 
+                    {{-- Payment scope navigation --}}
+                    <div class="btn-group btn-group-sm mb-3" role="group">
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments/paid') }}"
+                           class="btn {{ ($paymentScope ?? 'all') === 'paid' ? 'btn-success' : 'btn-outline-success' }}">
+                            <i class="fa fa-check-circle ml-1"></i> المدفوعة
+                        </a>
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payments/unpaid') }}"
+                           class="btn {{ ($paymentScope ?? 'all') === 'unpaid' ? 'btn-danger' : 'btn-outline-danger' }}">
+                            <i class="fa fa-clock ml-1"></i> غير المدفوعة
+                        </a>
+                    </div>
+
                     {{-- Status Filter --}}
+                    @if(($paymentScope ?? 'all') === 'all')
                     <div class="card mb-3 shadow-sm">
                         <div class="card-body py-2">
                             <form method="GET" class="form-inline">
@@ -81,6 +94,7 @@
                             </form>
                         </div>
                     </div>
+                    @endif
 
                     {{-- Payments List --}}
                     @forelse($payments as $payment)
@@ -93,11 +107,19 @@
                                             {{ $payment->package_name }}
                                         </h6>
                                         <p class="mb-1 text-muted" style="font-size:13px;">
-                                            <strong>المرجع:</strong> {{ $payment->referenceNumber ?? '-' }}
+                                            <strong>رقم العملية:</strong> #{{ $payment->id }}
+                                            <br>
+                                            <strong>رقم المرجع:</strong> {{ $payment->referenceNumber ?? '-' }}
+                                            <br>
+                                            <strong>مرجع التاجر:</strong> {{ $payment->merchantRefNumber ?? '-' }}
                                         </p>
                                         <p class="mb-1" style="font-size:13px;">
                                             <strong>المبلغ:</strong>
                                             <span class="text-success font-weight-bold">{{ number_format($payment->paymentAmount, 2) }} ج.م</span>
+                                            <br>
+                                            <strong>صافي المبلغ:</strong> {{ number_format($payment->net_amount ?? 0, 2) }} ج.م
+                                            <br>
+                                            <strong>المسترد:</strong> {{ number_format($payment->refunded_amount ?? 0, 2) }} ج.م
                                         </p>
                                         @if($payment->paymentMethod)
                                             <small class="text-muted">

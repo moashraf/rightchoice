@@ -553,6 +553,9 @@ Route::group(['prefix' => '{locale?}'], function () {
 
         // â”€â”€ User Payment History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         Route::get('/my-payments', [App\Http\Controllers\UserPaymentController::class, 'index'])->name('user.payments.index')->middleware('setLocale');
+        Route::get('/my-payments/paid', [App\Http\Controllers\UserPaymentController::class, 'paid'])->name('user.payments.paid')->middleware('setLocale');
+        Route::get('/my-payment-references', [App\Http\Controllers\UserPaymentController::class, 'references'])->name('user.payments.references')->middleware('setLocale');
+        Route::get('/my-payments/unpaid', [App\Http\Controllers\UserPaymentController::class, 'unpaid'])->name('user.payments.unpaid')->middleware('setLocale');
         Route::get('/my-payments/{id}', [App\Http\Controllers\UserPaymentController::class, 'show'])->name('user.payments.show')->middleware('setLocale');
         Route::post('/my-payments/{id}/refund', [App\Http\Controllers\UserPaymentController::class, 'requestRefund'])->name('user.payments.refund')->middleware('setLocale');
 
