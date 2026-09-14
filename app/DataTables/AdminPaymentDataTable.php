@@ -25,7 +25,7 @@ class AdminPaymentDataTable extends DataTable
                     $actions .= '<a href="' . $viewUrl . '" class="btn btn-sm btn-info" title="عرض التفاصيل"><i class="fas fa-eye"></i></a> ';
                 }
 
-                if ($canManage && ! $payment->isPaid() && $payment->paymentMethod === 'PAYATFAWRY' && $payment->merchantRefNumber) {
+                if ($canManage  && $payment->paymentMethod === 'PAYATFAWRY' && $payment->merchantRefNumber) {
                     $checkUrl = route('sitemanagement.payments.checkFawryStatus', $payment->id);
                     $actions .= '<form action="' . $checkUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'هل تريد التحقق من حالة هذه العملية من فوري؟\')">'
                         . csrf_field()
