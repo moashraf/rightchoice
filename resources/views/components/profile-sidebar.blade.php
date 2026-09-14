@@ -79,6 +79,12 @@
                             عمليات الدفع غير المدفوعة
                         </a>
 
+                        <a href="{{ URL::to(Config::get('app.locale').'/my-payment-references') }}"
+                           class="btn btn-sm btn-outline-info">
+                            <i class="fa fa-list-ol"></i>
+                            كل أرقام الدفع المرجعية
+                        </a>
+
 
 
 
