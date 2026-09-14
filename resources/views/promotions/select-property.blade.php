@@ -36,11 +36,7 @@
                         <small>{{ $isEnglish ? 'Selected package' : 'الباقة المختارة' }}</small>
                         <strong>{{ $packageName }}</strong>
                     </div>
-                    <div class="rc-selected-package__views">
-                        <i class="fas fa-eye"></i>
-                        {{ number_format((int) $pricing->views) }}
-                        {{ $isEnglish ? 'expected views' : 'مشاهدة متوقعة' }}
-                    </div>
+
                     <div class="rc-selected-package__metric">
                         <strong>{{ $pricing->duration_days }}</strong>
                         <span>{{ $isEnglish ? 'days promotion' : 'يوم تمييز' }}</span>
