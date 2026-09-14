@@ -78,11 +78,23 @@ class AdminPaymentController extends Controller
         $payment = FawryPayment::findOrFail($id);
         $this->paymentService->updateStatus($payment, $request->status, $request->message);
 
-        $activationMessage = $this->fulfillIfPaid($payment->refresh());
+        $fulfillmentResult = $this->fulfillIfPaid($payment->refresh());
 
         $baseMessage = 'تم تحديث حالة الدفعة بنجاح.';
 
-        return redirect()->back()->with('success', $activationMessage ? $baseMessage . ' ' . $activationMessage : $baseMessage);
+        if ($fulfillmentResult['failed']) {
+            return redirect()->back()->with(
+                'error',
+                $baseMessage . ' ' . $fulfillmentResult['message']
+            );
+        }
+
+        return redirect()->back()->with(
+            'success',
+            $fulfillmentResult['message']
+                ? $baseMessage . ' ' . $fulfillmentResult['message']
+                : $baseMessage
+        );
     }
 
     public function checkFawryStatus(int $id)
@@ -133,18 +145,21 @@ class AdminPaymentController extends Controller
                     Auth::guard('admin')->id()
                 );
             }
-             $activationMessage = $this->fulfillIfPaid($payment->refresh());
-              // dd($activationMessage);
+            $fulfillmentResult = $this->fulfillIfPaid($payment->refresh());
+
             $label = PaymentStatusEnum::label($fawryStatus);
             $message = $fawryStatus === PaymentStatusEnum::PAID
                 ? 'أكدت فوري أن العملية مدفوعة، وتم تحديث السجل.'
                 : 'تم التحقق من فوري. حالة العملية الحالية: ' . $label;
 
-            if ($activationMessage) {
-                $message .= ' ' . $activationMessage;
+            if ($fulfillmentResult['message']) {
+                $message .= ' ' . $fulfillmentResult['message'];
             }
 
-            return redirect()->back()->with('success', $message);
+            return redirect()->back()->with(
+                $fulfillmentResult['failed'] ? 'error' : 'success',
+                $message
+            );
         } catch (GuzzleException $e) {
             Log::error('Admin Fawry status check HTTP error: ' . $e->getMessage(), ['payment_id' => $payment->id]);
             return redirect()->back()->with('error', 'تعذر الاتصال بخدمة فوري حاليًا، حاول مرة أخرى لاحقًا.');
@@ -158,13 +173,19 @@ class AdminPaymentController extends Controller
      * Ensure the paid package (buyer points / seller property promotion) has been activated
      * for the user. Runs after any admin action that flips a payment to PAID and is idempotent.
      *
-     * @return string|null A user-facing status message describing what was activated (or null if nothing happened).
+     * @return array{message: string|null, failed: bool}
      */
-    private function fulfillIfPaid(FawryPayment $payment): ?string
+    private function fulfillIfPaid(FawryPayment $payment): array
     {
+        $result = ['message' => null, 'failed' => false];
+
         if ($payment->paymentStatus !== PaymentStatusEnum::PAID) {
-            return null;
+            return $result;
         }
+
+        $latestFailureLogId = (int) $payment->statusLogs()
+            ->where('event_type', 'package_fulfillment_failed')
+            ->max('id');
 
         try {
             $fulfilled = $this->packageFulfillmentService->fulfill(
@@ -177,21 +198,38 @@ class AdminPaymentController extends Controller
                 'message'    => $exception->getMessage(),
             ]);
 
-            return 'تم تأكيد الدفع لكن تعذر تفعيل الباقة تلقائيًا، راجع سجل الأحداث.';
+            return [
+                'message' => 'تم تأكيد الدفع لكن تعذر تفعيل الباقة تلقائيًا: ' . $exception->getMessage(),
+                'failed'  => true,
+            ];
         }
-         if (!$fulfilled) {
-            return null;
+
+        if (!$fulfilled) {
+            $failureLog = $payment->statusLogs()
+                ->where('event_type', 'package_fulfillment_failed')
+                ->where('id', '>', $latestFailureLogId)
+                ->latest('id')
+                ->first();
+
+            if ($failureLog) {
+                return [
+                    'message' => $failureLog->message ?: 'تم تأكيد الدفع لكن تعذر تفعيل الباقة تلقائيًا.',
+                    'failed'  => true,
+                ];
+            }
+
+            return $result;
         }
 
         if ((int) ($payment->paqaat_priceing_sale_id ?? 0) > 0) {
-            return 'تم تفعيل باقة النقاط للعميل.';
+            $result['message'] = 'تم تفعيل باقة النقاط للعميل.';
+        } elseif ((int) ($payment->tmyezz_price_vip_id ?? 0) > 0) {
+            $result['message'] = 'تم تمييز إعلان العقار للبائع.';
+        } else {
+            $result['message'] = 'تم تفعيل الباقة المرتبطة بالدفعة.';
         }
 
-        if ((int) ($payment->tmyezz_price_vip_id ?? 0) > 0) {
-            return 'تم تمييز إعلان العقار للبائع.';
-        }
-
-        return 'تم تفعيل الباقة المرتبطة بالدفعة.';
+        return $result;
     }
 
     // ── Add Note ─────────────────────────────────────────────────────
