@@ -334,10 +334,10 @@
                                                                         </a>
                                                                     @endif
                                                                     <div class="aqar-row-meta">
-                                                                        <span>
-                                                                            <i class="fa fa-eye"></i>
-                                                                            {{ $pkg->views ?? 0 }} مشاهدات إضافية
-                                                                        </span>
+{{--                                                                        <span>--}}
+{{--                                                                            <i class="fa fa-eye"></i>--}}
+{{--                                                                            {{ $pkg->views ?? 0 }} مشاهدات إضافية--}}
+{{--                                                                        </span>--}}
                                                                         @if($startedAt)
                                                                             <span class="text-muted small">
                                                                                 <i class="fa fa-calendar"></i>

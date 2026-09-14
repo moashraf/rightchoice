@@ -95,12 +95,12 @@ class AdminPaymentController extends Controller
 
         try {
             $result = $this->fawryGatewayService->checkPaymentStatus($payment);
-         //   dd($result);
 
+           $fawryStatus =$result['status'];
+            $raw_response=   $result['raw_response'];
 //            $fawryStatus ='PAID';
 //            $raw_response='PAID';
-            $fawryStatus =$result['status'];
-            $raw_response=   $result['raw_response'];
+
             $payment->gateway_response = json_encode( $raw_response, JSON_UNESCAPED_UNICODE);
             $payment->save();
 
@@ -135,8 +135,7 @@ class AdminPaymentController extends Controller
                 );
             }
              $activationMessage = $this->fulfillIfPaid($payment->refresh());
-              // dd($activationMessage);
-            $label = PaymentStatusEnum::label($fawryStatus);
+             $label = PaymentStatusEnum::label($fawryStatus);
             $message = $fawryStatus === PaymentStatusEnum::PAID
                 ? 'أكدت فوري أن العملية مدفوعة، وتم تحديث السجل.'
                 : 'تم التحقق من فوري. حالة العملية الحالية: ' . $label;
@@ -166,8 +165,7 @@ class AdminPaymentController extends Controller
         if ($payment->paymentStatus !== PaymentStatusEnum::PAID) {
             return null;
         }
-        //  dd(2222);
-        try {
+         try {
             $fulfilled = $this->packageFulfillmentService->fulfill(
                 $payment,
                 Auth::guard('admin')->id()

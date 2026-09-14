@@ -297,10 +297,20 @@ class PackageFulfillmentService
      */
     private function resolveAqarId(FawryPayment $payment): ?int
     {
+        // The selected property is stored in property_promotions for the current payment.
+        // Use it first because gateway_response can be replaced by later Fawry status checks.
+        $promotionAqarId = $payment->propertyPromotion()
+            ->value('aqar_id');
+
+        if (is_numeric($promotionAqarId) && (int) $promotionAqarId > 0) {
+            return (int) $promotionAqarId;
+        }
+
+        // Backward compatibility for older payments created before property_promotions.
         $raw = trim((string) $payment->gateway_response);
 
         if ($raw === '') {
-            return null;
+            return $this->resolveAqarIdFromCallback($payment);
         }
 
         $decoded = json_decode($raw, true);
@@ -321,17 +331,27 @@ class PackageFulfillmentService
             }
         }
 
+        return $this->resolveAqarIdFromCallback($payment);
+    }
+
+    private function resolveAqarIdFromCallback(FawryPayment $payment): ?int
+    {
         $callback = json_decode((string) $payment->callback_payload, true);
-        if (is_array($callback)) {
-            $profileId = (string) ($callback['customerMerchantId'] ?? $callback['customerProfileId'] ?? '');
-            if ($profileId !== '' && str_contains($profileId, '55555')) {
-                $pieces = explode('55555', $profileId, 2);
-                if (count($pieces) === 2 && ctype_digit($pieces[1])) {
-                    return (int) $pieces[1];
-                }
-            }
+
+        if (!is_array($callback)) {
+            return null;
         }
 
-        return null;
+        $profileId = (string) ($callback['customerMerchantId'] ?? $callback['customerProfileId'] ?? '');
+
+        if ($profileId === '' || !str_contains($profileId, '55555')) {
+            return null;
+        }
+
+        $pieces = explode('55555', $profileId, 2);
+
+        return count($pieces) === 2 && ctype_digit($pieces[1])
+            ? (int) $pieces[1]
+            : null;
     }
 }
