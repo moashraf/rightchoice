@@ -540,7 +540,7 @@
                             @if($__canPayView)
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.payments.index') }}"
-                                   class="nav-link {{ request()->is('sitemanagement/payments') ? 'active' : '' }}">
+                                   class="nav-link {{ request()->is('sitemanagement/payments') && !request('filter_package_type') ? 'active' : '' }}">
                                     <i class="far fa-list-alt nav-icon"></i>
                                     <p>المدفوعات</p>
                                 </a>
@@ -561,6 +561,22 @@
                                     </p>
                                 </a>
                             </li>
+                            @if($__canPayView)
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.index', ['filter_package_type' => 'buyer']) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments') && request('filter_package_type') === 'buyer' ? 'active' : '' }}">
+                                    <i class="fas fa-shopping-cart nav-icon text-success"></i>
+                                    <p>مدفوعات باقات المشتري</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.payments.index', ['filter_package_type' => 'seller']) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/payments') && request('filter_package_type') === 'seller' ? 'active' : '' }}">
+                                    <i class="fas fa-star nav-icon text-warning"></i>
+                                    <p>مدفوعات باقات البائع VIP</p>
+                                </a>
+                            </li>
+                            @endif
                         </ul>
                     </li>
                     @endif
