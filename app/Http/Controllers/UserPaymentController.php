@@ -97,6 +97,34 @@ class UserPaymentController extends Controller
     }
 
     /**
+     * List every payment reference requested by the authenticated user.
+     */
+    public function references()
+    {
+        $payments = FawryPayment::query()
+            ->where('user_id', Auth::id())
+            ->with([
+                'pricingSale:id,type',
+                'priceVip:id,name',
+            ])
+            ->orderByDesc('created_at')
+            ->paginate(20);
+
+        $paidCount = FawryPayment::where('user_id', Auth::id())
+            ->where('paymentStatus', PaymentStatusEnum::PAID)
+            ->count();
+
+        $unpaidCount = FawryPayment::where('user_id', Auth::id())
+            ->where(function ($query) {
+                $query->where('paymentStatus', '!=', PaymentStatusEnum::PAID)
+                    ->orWhereNull('paymentStatus');
+            })
+            ->count();
+
+        return view('user_payments.references', compact('payments', 'paidCount', 'unpaidCount'));
+    }
+
+    /**
      * Show single payment details.
      */
     public function show(Request $request)
