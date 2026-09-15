@@ -30,6 +30,7 @@ use App\Models\wish;
 use App\Models\UserPriceing;
 use App\Models\Complaints;
 use App\Models\property_type;
+use App\Services\AqarAnalyticsService;
 use Redirect;
 use Config;
 use App;
@@ -1260,8 +1261,9 @@ class AqarController extends Controller
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function show($locale, $aqar)
+    public function show($locale, $aqar, Request $request = null)
     {
+        $request = $request ?: request();
          $random_ads = Ads::inRandomOrder()->first();
         //   dd($random_ads);
         $aqar_chexk = aqar::where('slug', $aqar)->with('mzaya')->with('compounds')->with('governrateq')
@@ -1328,6 +1330,14 @@ class AqarController extends Controller
 
         if (!empty($updateview)) {
             $updateview->increment('views', 1);
+
+            // ── Seller Analytics: view event ───────────────────────────────
+            try {
+                app(AqarAnalyticsService::class)->trackView($updateview, $request);
+            } catch (\Throwable $e) {
+                \Log::error('[AqarAnalytics show] ' . $e->getMessage());
+            }
+            // ───────────────────────────────────────────────────────────────
 
             // ── Meta Conversions API: ViewContent ──────────────────────────
             try {
@@ -1443,6 +1453,15 @@ class AqarController extends Controller
 
         Auth::user()->wishlist()->create($request->all());
 
+        try {
+            $aqarModel = aqar::find($request->aqars_id);
+            if ($aqarModel) {
+                app(AqarAnalyticsService::class)->trackFavorite($aqarModel, $request);
+            }
+        } catch (\Throwable $e) {
+            \Log::error('[AqarAnalytics favorite] ' . $e->getMessage());
+        }
+
         return response()->json(['massage' => 'تم حفظ العقار في المفضلة بنجاح ✓', 'status' => 200], 200);
 
     }
@@ -1523,6 +1542,11 @@ class AqarController extends Controller
 
         }
 
+        try {
+            app(AqarAnalyticsService::class)->trackContactReveal($pointAqqr, $request);
+        } catch (\Throwable $e) {
+            \Log::error('[AqarAnalytics contact_reveal] ' . $e->getMessage());
+        }
 
         return response()->json(['massage' => $pointAqqr->user->MOP, 'status' => 200], 200);
     }
@@ -1564,6 +1588,15 @@ $request->validate([
               $existing->update([
                 'contact_via_whats_app' => 1,
             ]);
+        }
+
+        try {
+            $aqarModel = aqar::find($aqarId);
+            if ($aqarModel) {
+                app(AqarAnalyticsService::class)->trackWhatsappClick($aqarModel, $request);
+            }
+        } catch (\Throwable $e) {
+            \Log::error('[AqarAnalytics whatsapp_click] ' . $e->getMessage());
         }
 
         return response()->json([

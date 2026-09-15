@@ -6,6 +6,7 @@ use Laravel\Jetstream\Jetstream;
 
 use App\Models\aqar;
 use App\Services\PropertyAutoSuspensionService;
+use App\Services\SellerPropertyAnalyticsService;
 use App\Models\wish;
 use App\Models\FawryPayment;
 
@@ -102,8 +103,11 @@ class PageController extends Controller
     }
 
 
-    public function user_ads(Request $request, PropertyAutoSuspensionService $propertyAutoSuspensionService)
-    {
+    public function user_ads(
+        Request $request,
+        PropertyAutoSuspensionService $propertyAutoSuspensionService,
+        SellerPropertyAnalyticsService $sellerAnalytics
+    ) {
         $getUser = Auth::user();
 
         aqar::query()
@@ -137,7 +141,10 @@ class PageController extends Controller
         });
         $propertyAutoSuspensionService->decorateCollection($allAqars->getCollection());
 
-        return view('auth.user_ads', compact('allAqars', 'points'));
+        $aqarIds = $allAqars->getCollection()->pluck('id')->all();
+        $analyticsSummaries = $sellerAnalytics->summariesForAqarIds($aqarIds, SellerPropertyAnalyticsService::DEFAULT_PERIOD);
+
+        return view('auth.user_ads', compact('allAqars', 'points', 'analyticsSummaries'));
     }
 
     public function register(Request $request, $locale)
