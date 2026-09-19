@@ -60,7 +60,19 @@ class GoogleWebAuthController extends Controller
                     throw new DomainException('email');
                 }
 
-                if (User::withTrashed()->where('email', $email)->exists()) {
+                $existingUser = User::withTrashed()
+                    ->where('email', $email)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($existingUser) {
+                    if (!$existingUser->trashed()
+                        && (int) $existingUser->status === 1
+                        && trim((string) $existingUser->MOP) !== ''
+                        && (int) $existingUser->phone_verfied_sms_status === 1) {
+                        return $existingUser;
+                    }
+
                     throw new DomainException('conflict');
                 }
 
