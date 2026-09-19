@@ -209,8 +209,8 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
 
     /**
      * POST /api/my-aqar-posts
-     * Returns all aqar (property) listings created by a given user
-     * that are regular posts (vip = 0), not VIP/featured.
+     * Returns all aqar (property) listings created by a given user.
+     * The results can optionally be filtered by VIP and status.
      */
     public function myAqarPosts(Request $request): JsonResponse
     {
@@ -244,10 +244,8 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
         }
 
         $perPage = (int) $request->get('per_page', 15);
-        $vip     = $request->has('vip') ? (int) $request->vip : 0;
 
         $query = aqar::where('user_id', $request->user_id)
-            ->where('vip', $vip)
             ->with([
                 'images',
                 'aqarLocation',
@@ -264,6 +262,10 @@ public function getUserWishlistByUserId(Request $request): JsonResponse
                 'user.companiess',
             ])
             ->latest();
+
+        if ($request->has('vip')) {
+            $query->where('vip', (int) $request->vip);
+        }
 
         if ($request->has('status')) {
             $query->where('status', (int) $request->status);
