@@ -1489,6 +1489,14 @@ class AqarController extends Controller
             return response()->json(['massage' => 'يجب تسجيل الدخول أولاً', 'status' => 401], 401);
         }
 
+        if (trim((string) Auth::user()->MOP) === '' || (int) Auth::user()->phone_verfied_sms_status !== 1) {
+            return response()->json([
+                'massage' => 'يجب إضافة رقم الهاتف والتحقق منه أولاً.',
+                'status' => 403,
+                'redirect_url' => route('phone.complete', ['locale' => app()->getLocale()]),
+            ], 403);
+        }
+
         if (Auth::user()->isCompanyAccount()) {
             return response()->json(['massage' => $this->companyRestrictionMessage(), 'status' => 403], 403);
         }
