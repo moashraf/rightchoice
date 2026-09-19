@@ -154,6 +154,13 @@
                                                 <i class="fa fa-ban ml-1"></i>
                                                 حسابات الشركات غير مسموح لها بمشاهدة أرقام التواصل للعقارات.
                                             </div>
+                                        @elseif(trim((string) Auth::user()->MOP) === '' || (int) Auth::user()->phone_verfied_sms_status !== 1)
+                                            <a href="{{ route('phone.complete', ['locale' => Config::get('app.locale')]) }}"
+                                               class="btn btn-success mt-3">
+                                                <img src="https://img.icons8.com/carbon-copy/50/000000/phone.png"
+                                                     width="20" height="20"/>
+                                                اظهر الرقم
+                                            </a>
                                         @else
                                                 <?php if ($show && $aqar->user != null){ ?>
                                             <div id="contMop">
