@@ -2171,6 +2171,11 @@ else{
 
                     var message = (data.responseJSON && (data.responseJSON.massage || data.responseJSON.message)) ? (data.responseJSON.massage || data.responseJSON.message) : 'حدث خطأ، حاول مجدداً';
 
+                    if (data.responseJSON && data.responseJSON.redirect_url) {
+                        window.location.href = data.responseJSON.redirect_url;
+                        return;
+                    }
+
                     document.getElementById('contMop').innerHTML = '<span style="color:red;font-size:13px;">' + message + '</span>';
 
                     toastr.error(message, '', {
