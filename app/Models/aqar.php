@@ -90,6 +90,7 @@ class aqar extends Model
         'points_avail',
         'views',
         'status',
+        'display_priority',
         'title_en',
         'description_en',
         'slug_en',
@@ -101,6 +102,7 @@ class aqar extends Model
         'vip_started_at' => 'datetime',
         'vip_expires_at' => 'datetime',
         'auto_suspended_at' => 'datetime',
+        'display_priority' => 'integer',
     ];
 
     public function isPromotionActive(): bool
@@ -193,6 +195,7 @@ class aqar extends Model
         'rec_time'         => 'nullable|string',
         'vip'              => 'nullable|integer|in:0,1',
         'status'           => 'nullable|integer|in:0,1,2',
+        'display_priority' => 'nullable|integer|in:0,1',
 
         // ── الـ Slug ─────────────────────────────────────────────
         'slug'             => 'required|string|unique:aqar,slug',
