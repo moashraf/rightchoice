@@ -232,6 +232,8 @@ Route::prefix('sitemanagement')->name('sitemanagement.')->middleware(['admin-web
     Route::post('ajax-getpropertyByCat', [App\Http\Controllers\AdminAqarController::class, 'getPropertyByCat'])->name('aqars.getPropertyByCat');
     Route::post('ajax-getdistrictByGovernrate', [App\Http\Controllers\AdminAqarController::class, 'getDistrictByGovernrate'])->name('aqars.getDistrictByGovernrate');
     Route::post('ajax-getPhoneUser', [App\Http\Controllers\AdminAqarController::class, 'getPhoneUser'])->name('aqars.getPhoneUser');
+    Route::post('aqars/{aqar}/images/{image}/set-main', [App\Http\Controllers\AdminAqarController::class, 'setMainImage'])->name('aqars.images.setMain')
+        ->middleware('permission:aqars.update');
     Route::get('RemoveImageAqar/{Images}', [App\Http\Controllers\AdminAqarController::class, 'removeImage'])->name('aqars.removeImage')
         ->middleware('permission:aqars.update');
     Route::post('refund-points/{viewer}', [App\Http\Controllers\AdminAqarController::class, 'refundPoints'])->name('aqars.refundPoints')
