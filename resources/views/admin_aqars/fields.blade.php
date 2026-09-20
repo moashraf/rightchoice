@@ -427,6 +427,19 @@
     </select>
 </div>
 
+@if(Route::currentRouteName() === 'sitemanagement.aqars.edit')
+    <!-- Display Priority Field -->
+    <div class="form-group col-sm-6">
+        {!! Form::label('display_priority', 'أولوية الظهور:') !!}
+        <select class="form-control" name="display_priority">
+            <option value="0" {{ (int) old('display_priority', $aqar->display_priority ?? 0) === 0 ? 'selected' : '' }}>عادي</option>
+            <option value="1" {{ (int) old('display_priority', $aqar->display_priority ?? 0) === 1 ? 'selected' : '' }}>أولوية في الظهور</option>
+        </select>
+        <small class="text-muted">العقارات ذات الأولوية تظهر أولاً في الصفحة الرئيسية.</small>
+        <small class="text-danger">{{ $errors->first('display_priority') }}</small>
+    </div>
+@endif
+
 <div class="card-header mb-3 mt-3 col-12">
     <h4 class="mb-0" style="color: gray;"> Ad Advantages</h4>
 </div>

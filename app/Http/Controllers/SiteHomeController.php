@@ -51,10 +51,10 @@ class SiteHomeController extends Controller
         $locale = App::currentLocale();
 
         $offers = OfferTypes::all();
-        $vipAqars = aqar::where('status',1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('images') ->latest()->take(10)->get();
-        $saleAqars = aqar::where('status',1)->where('status',1)->whereIn('offer_type', [1, 2])->with('governrateq')->with('districte')->with('subAreaa')->with('images')->latest()->take(4)->get();
-        $rentAqars = aqar::where('status',1)->where('status',1)->whereIn('offer_type', [3, 4])->with('governrateq')->with('districte')->with('subAreaa')->with('images')->latest()->take(5)->get();
-        $mostRecent = aqar::where('status',1)->where('status',1)->with('governrateq')->with('districte')->with('subAreaa')->with('images')->take(5)->inRandomOrder()->get();
+        $vipAqars = aqar::where('status',1)->where('vip', 1)->with('governrateq')->with('districte')->with('subAreaa')->with('images')->orderByDesc('display_priority')->latest()->take(10)->get();
+        $saleAqars = aqar::where('status',1)->where('status',1)->whereIn('offer_type', [1, 2])->with('governrateq')->with('districte')->with('subAreaa')->with('images')->orderByDesc('display_priority')->latest()->take(4)->get();
+        $rentAqars = aqar::where('status',1)->where('status',1)->whereIn('offer_type', [3, 4])->with('governrateq')->with('districte')->with('subAreaa')->with('images')->orderByDesc('display_priority')->latest()->take(5)->get();
+        $mostRecent = aqar::where('status',1)->where('status',1)->with('governrateq')->with('districte')->with('subAreaa')->with('images')->orderByDesc('display_priority')->take(5)->inRandomOrder()->get();
         $services = Service::take(5)->get();
         $user = Auth::user();
         $slider = Slider::all();

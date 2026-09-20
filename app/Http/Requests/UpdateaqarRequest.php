@@ -41,6 +41,7 @@ class UpdateaqarRequest extends FormRequest
             'vip_started_at'      => 'nullable|date',
             'vip_expires_at'      => 'nullable|date',
             'vip_duration_days'   => 'nullable|integer|in:0,7,14,30',
+            'display_priority'    => 'nullable|integer|in:0,1',
         ];
     }
 }
