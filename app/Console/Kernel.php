@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -25,7 +26,20 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('promotions:expire')->everyMinute()->withoutOverlapping();
-        $schedule->command('properties:suspend-expired')->everyFiveMinutes()->withoutOverlapping();
+        $lastPropertySuspensionRunKey = 'scheduler.properties_suspend_expired.last_success_at';
+
+        $schedule->command('properties:suspend-expired')
+            ->everyMinute()
+            ->when(function () use ($lastPropertySuspensionRunKey) {
+                $lastRunAt = Cache::get($lastPropertySuspensionRunKey);
+
+                return $lastRunAt === null
+                    || now()->timestamp - (int) $lastRunAt >= 20 * 60 * 60;
+            })
+            ->onSuccess(function () use ($lastPropertySuspensionRunKey) {
+                Cache::forever($lastPropertySuspensionRunKey, now()->timestamp);
+            })
+            ->withoutOverlapping();
     }
 
     /**
