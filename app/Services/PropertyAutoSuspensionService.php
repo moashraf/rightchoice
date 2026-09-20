@@ -15,12 +15,9 @@ class PropertyAutoSuspensionService
         return aqar::query()
             ->where('status', 1)
             ->where('created_at', '<=', now()->subDays(self::ACTIVE_LIFETIME_DAYS))
-            ->where(function ($query) {
-                $query->whereNull('vip')
-                    ->orWhere('vip', '!=', 1)
-                    ->orWhereNull('vip_expires_at')
-                    ->orWhere('vip_expires_at', '<=', now());
-            })
+            // A promotion expiry must only disable the featured state. Properties
+            // that have been promoted remain published after their promotion ends.
+            ->whereNull('vip_expires_at')
             ->update([
                 'status' => 0,
                 'vip' => 0,
@@ -38,12 +35,10 @@ class PropertyAutoSuspensionService
         $baseDeadline = $property->created_at
             ? $property->created_at->copy()->addDays(self::ACTIVE_LIFETIME_DAYS)
             : null;
-        $promotionDefersSuspension = $baseDeadline
-            && $property->isPromotionActive()
-            && $property->vip_expires_at->greaterThan($baseDeadline);
-        $effectiveDeadline = $promotionDefersSuspension
-            ? $property->vip_expires_at->copy()
-            : $baseDeadline;
+        // Once a property has been promoted, ending that promotion must not
+        // become an automatic suspension deadline for the property itself.
+        $promotionDefersSuspension = $property->vip_expires_at !== null;
+        $effectiveDeadline = $promotionDefersSuspension ? null : $baseDeadline;
         $remaining = $this->remaining($effectiveDeadline);
 
         $property->setAttribute('auto_suspension_days', self::ACTIVE_LIFETIME_DAYS);
