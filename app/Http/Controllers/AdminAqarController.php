@@ -6,6 +6,7 @@ use App\Http\Requests\CreateaqarRequest;
 use App\Http\Requests\UpdateaqarRequest;
 use App\Repositories\aqarRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -370,6 +371,26 @@ class AdminAqarController extends AppBaseController
 
         Flash::success('تم حذف العقار بنجاح.');
         return redirect(route('sitemanagement.aqars.index'));
+    }
+
+    /**
+     * Set one of the aqar images as its main image.
+     */
+    public function setMainImage($aqarId, Images $image)
+    {
+        $aqar = $this->aqarRepository->find($aqarId);
+
+        if (empty($aqar) || (int) $image->aqar_id !== (int) $aqar->id) {
+            abort(404);
+        }
+
+        DB::transaction(function () use ($aqar, $image) {
+            Images::where('aqar_id', $aqar->id)->update(['main_img' => 0]);
+            $image->update(['main_img' => 1]);
+        });
+
+        Flash::success('تم تعيين الصورة الرئيسية بنجاح.');
+        return redirect()->back();
     }
 
     /**
