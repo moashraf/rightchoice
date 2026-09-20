@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('promotions:expire')->everyMinute()->withoutOverlapping();
+        $schedule->command('promotions:expire')->daily()->withoutOverlapping();
         $schedule->command('properties:suspend-expired')->daily()->withoutOverlapping();
     }
 
