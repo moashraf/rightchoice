@@ -46,6 +46,26 @@
 
 @section('third_party_scripts')
 <script>
+    function setMainAqarImage(url) {
+        if (!confirm('هل تريد تعيين هذه الصورة كصورة رئيسية للعقار؟')) {
+            return;
+        }
+
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = url;
+
+        var token = document.createElement('input');
+        token.type = 'hidden';
+        token.name = '_token';
+        token.value = '{{ csrf_token() }}';
+
+        form.appendChild(token);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+<script>
     $(window).on("load", function () {
         var max_fields = 10;
         var wrapper = $(".imagesmore");

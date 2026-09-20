@@ -471,22 +471,38 @@
     @if(!empty($aqar->Images))
         @foreach($aqar->Images as $img)
             <div class="col-md-3 mt-3">
-                <div class="col-md-8 ml-4">
-                    <input type="text" @if($img->main_img == 1) value="Main Image" @else value="Normal Image" @endif
-                    class="form-control" style="text-align: center;" readonly>
-                </div>
-                <div class="img-thumbnail text-center">
+                <div class="img-thumbnail text-center h-100 {{ $img->main_img == 1 ? 'border border-warning' : '' }}">
+                    <div class="mb-2">
+                        @if($img->main_img == 1)
+                            <span class="badge badge-warning px-3 py-2">
+                                <i class="fas fa-star"></i> الصورة الرئيسية
+                            </span>
+                        @else
+                            <span class="badge badge-secondary px-3 py-2">صورة عادية</span>
+                        @endif
+                    </div>
+
                     @if(!empty($img->img_url))
                         <a href="{{ url('public/images/' . $img->img_url) }}" data-toggle="lightbox">
-                            <img src="{{ url('public/images/' . $img->img_url) }}" width="100%" height="140"/>
+                            <img src="{{ url('public/images/' . $img->img_url) }}" width="100%" height="140" style="object-fit: cover;"/>
                         </a>
                     @endif
-                    <a onclick="return confirm('Are You Sure You Want To Delete This Record ?')"
-                       href="{{ route('sitemanagement.aqars.removeImage', $img->id) }}"
-                       class="btn waves-effect waves-light btn-danger"
-                       style="padding: 0.375rem 2.36rem; font-size: .875rem; border-radius: 0;">
-                        <i class="far fa-trash-alt"> delete</i>
-                    </a>
+
+                    <div class="mt-2">
+                        @if($img->main_img != 1)
+                            <button type="button"
+                                    class="btn btn-warning btn-sm mb-1"
+                                    onclick="setMainAqarImage('{{ route('sitemanagement.aqars.images.setMain', [$aqar->id, $img->id]) }}')">
+                                <i class="fas fa-star"></i> تعيين كصورة رئيسية
+                            </button>
+                        @endif
+
+                        <a onclick="return confirm('Are You Sure You Want To Delete This Record ?')"
+                           href="{{ route('sitemanagement.aqars.removeImage', $img->id) }}"
+                           class="btn waves-effect waves-light btn-danger btn-sm mb-1">
+                            <i class="far fa-trash-alt"></i> حذف
+                        </a>
+                    </div>
                 </div>
             </div>
         @endforeach
