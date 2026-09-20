@@ -141,9 +141,16 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('sitemanagement.aqars.index') }}"
-                                   class="nav-link {{ (request()->is('sitemanagement/aqars') || (request()->is('sitemanagement/aqars*') && !request()->is('sitemanagement/aqars/deleted*'))) && request()->query('filter_vip') != '1' ? 'active' : '' }}">
+                                   class="nav-link {{ (request()->is('sitemanagement/aqars') || (request()->is('sitemanagement/aqars*') && !request()->is('sitemanagement/aqars/deleted*'))) && !request()->filled('filter_status') && request()->query('filter_vip') != '1' ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>كل العقارات</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('sitemanagement.aqars.index', ['filter_status' => 0]) }}"
+                                   class="nav-link {{ request()->is('sitemanagement/aqars') && request()->query('filter_status') === '0' ? 'active' : '' }}">
+                                    <i class="fas fa-ban nav-icon text-danger"></i>
+                                    <p>العقارات غير المفعلة</p>
                                 </a>
                             </li>
                             <li class="nav-item">
