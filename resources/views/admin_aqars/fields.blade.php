@@ -483,8 +483,8 @@
                     </div>
 
                     @if(!empty($img->img_url))
-                        <a href="{{ url('public/images/' . $img->img_url) }}" data-toggle="lightbox">
-                            <img src="{{ url('public/images/' . $img->img_url) }}" width="100%" height="140" style="object-fit: cover;"/>
+                        <a href="{{ url('/images/' . $img->img_url) }}" data-toggle="lightbox">
+                            <img src="{{ url('/images/' . $img->img_url) }}" width="100%" height="140" style="object-fit: cover;"/>
                         </a>
                     @endif
 
