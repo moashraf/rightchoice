@@ -69,6 +69,9 @@ class AdminAqarController extends AppBaseController
         if ($request->filter_vip !== null && $request->filter_vip !== '')
             $allAqars->where('vip', $request->filter_vip);
 
+        if ($request->filter_display_priority !== null && $request->filter_display_priority !== '')
+            $allAqars->where('display_priority', $request->filter_display_priority);
+
         if ($request->filter_status !== null && $request->filter_status !== '')
             $allAqars->where('status', $request->filter_status);
 
