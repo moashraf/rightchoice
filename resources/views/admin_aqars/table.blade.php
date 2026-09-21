@@ -21,6 +21,14 @@
         </select>
     </div>
     <div class="col-md-2">
+        <label>أولوية الظهور</label>
+        <select class="form-control" name="filter_display_priority">
+            <option value="">الكل</option>
+            <option value="1" {{ request('filter_display_priority') === '1' ? 'selected' : '' }}>أولوية في الظهور</option>
+            <option value="0" {{ request('filter_display_priority') === '0' ? 'selected' : '' }}>عادي</option>
+        </select>
+    </div>
+    <div class="col-md-2">
         <label>نوع الوحدة</label>
         <select class="form-control" name="filter_property_type">
             <option value="">الكل</option>
