@@ -2031,7 +2031,9 @@ $request->validate([
             $allAqars = aqar::where('status', 1)
                 ->where('vip', '!=', 1)
                 ->whereIn('offer_type', [1, 2, 5])
-                ->latest()->paginate(9);
+                ->orderByDesc('display_priority')
+                ->latest()
+                ->paginate(9);
 
         } else {
             $allAqars = [];
