@@ -2032,7 +2032,7 @@ $request->validate([
                 ->where('vip', '!=', 1)
                 ->whereIn('offer_type', [1, 2, 5])
                 ->orderByDesc('display_priority')
-                ->latest()
+                ->inRandomOrder()
                 ->paginate(9);
 
         } else {
