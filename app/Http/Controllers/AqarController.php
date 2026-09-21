@@ -274,7 +274,8 @@ class AqarController extends Controller
         }
 
 
-        $allAqars = aqar::where('status', 1)->orderBy('created_at', 'DESC')->when($request->has('location1') && $request->location1 != null, function ($query) use ($request) {
+        $allAqars = aqar::where('status', 1)->orderByDesc('display_priority') ->inRandomOrder()
+            ->when($request->has('location1') && $request->location1 != null, function ($query) use ($request) {
 
             $query->where('governrate_id', $request->location1);
 
@@ -770,8 +771,10 @@ class AqarController extends Controller
             ->with('districte')
             ->with('subAreaa')
             ->with('offerTypes')
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
+          //  ->orderByDesc('created_at')
+           // ->orderByDesc('id')
+            ->orderByDesc('display_priority')
+            ->inRandomOrder()
             ->paginate(9);
         // dd($allAqars);
         $offerTypes = OfferTypes::all();
@@ -1970,7 +1973,9 @@ $request->validate([
             $allAqars = aqar::where('status', 1)
                 ->where('vip', '!=', 1)
                 ->whereIn('offer_type', [3, 4])
-                ->latest()->paginate(9);
+                ->orderByDesc('display_priority')
+                ->inRandomOrder()
+                ->paginate(9);
 
         } else {
             $allAqars = [];
@@ -2075,9 +2080,7 @@ $request->validate([
         $district = District::all();
         $areas = SubArea::distinct()->get();
         $mzaya = Mzaya::all();
-
         $compounds = Compound::all();
-
          $offerTypes = OfferTypes::all();
         $finishes = Finish_type::all();
         $categories = Category::all();
@@ -2094,11 +2097,13 @@ $request->validate([
             ->with('subAreaa')
             ->with('offerTypes')->latest()->take(10)->get();
 
+
         $allAqars = aqar::where('status', 1)
             ->where('vip', '!=', 1)
             ->where('offer_type', $offs)
-            ->latest()->paginate(9);
-
+            ->orderByDesc('display_priority')
+            ->inRandomOrder()
+            ->paginate(9);
 
         $off = $getOffers;
 
