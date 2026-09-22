@@ -195,10 +195,13 @@ class aqarAPIController extends AppBaseController
         }
 
         // ── Sorting ─────────────────────────────────────────────────────
+        $query->orderByDesc('display_priority');
         $sortBy  = $request->input('sort_by', 'id');
         $sortDir = $request->input('sort_dir', 'desc');
-        if (in_array($sortBy, $exactFields) || $sortBy === 'id' || $sortBy === 'created_at') {
+        if ($request->filled('sort_by') && (in_array($sortBy, $exactFields) || $sortBy === 'id' || $sortBy === 'created_at')) {
             $query->orderBy($sortBy, $sortDir === 'asc' ? 'asc' : 'desc');
+        } else {
+            $query->inRandomOrder();
         }
 
         // ── Pagination (skip / limit) ───────────────────────────────────
