@@ -124,7 +124,11 @@ class PageController extends Controller
         }
 
         $allAqars = aqar::where('user_id', $getUser->id)
-            ->with(['interestedContacts.user'])
+            ->with([
+                'interestedContacts.user',
+                'latestPromotion.package',
+                'latestPromotion.payment',
+            ])
             ->withCount('interestedContacts')
             ->latest()
             ->paginate(9);

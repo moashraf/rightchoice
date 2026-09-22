@@ -200,9 +200,16 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                         </div>
 
                                                     <div class="btnAdds">
+                                                        @php($latestPromotion = $aqar->latestPromotion)
+
                                                         @if($aqar->promotion_active)
                                                             <div class="alert alert-success w-100 mb-3" style="border-radius:10px;">
                                                                 <x-property-promotion-badge :property="$aqar" class="mb-2" />
+                                                                @if($latestPromotion && $latestPromotion->package)
+                                                                    <div class="mt-1">
+                                                                        الباقة: <strong>{{ strip_tags($latestPromotion->package->name) }}</strong>
+                                                                    </div>
+                                                                @endif
                                                                 <div class="mt-1">
                                                                     متبقي:
                                                                     <span class="promotion-countdown font-weight-bold"
@@ -211,6 +218,25 @@ if(isset($user) ){ }else{ dd("يجب تسجيل الدخول ");  }
                                                                     </span>
                                                                 </div>
                                                                 <small>ينتهي في {{ $aqar->vip_expires_at->format('Y-m-d H:i') }}</small>
+                                                            </div>
+                                                        @elseif($latestPromotion && $latestPromotion->status === \App\Models\PropertyPromotion::STATUS_PENDING)
+                                                            <div class="alert alert-warning w-100 mb-3" style="border-radius:10px;">
+                                                                <strong>اشتراك تمييز بانتظار تأكيد الدفع من فوري</strong>
+                                                                @if($latestPromotion->package)
+                                                                    <div class="mt-1">
+                                                                        الباقة: {{ strip_tags($latestPromotion->package->name) }}
+                                                                        — المدة: {{ $latestPromotion->duration_days }} يوم
+                                                                    </div>
+                                                                @endif
+                                                                @if($latestPromotion->payment && $latestPromotion->payment->referenceNumber)
+                                                                    <small class="d-block mt-1">
+                                                                        الرقم المرجعي: {{ $latestPromotion->payment->referenceNumber }}
+                                                                    </small>
+                                                                @endif
+                                                            </div>
+                                                        @elseif($latestPromotion && $latestPromotion->status === \App\Models\PropertyPromotion::STATUS_CANCELLED)
+                                                            <div class="alert alert-danger w-100 mb-3" style="border-radius:10px;">
+                                                                تم إلغاء اشتراك تمييز هذا الإعلان.
                                                             </div>
                                                         @elseif($aqar->vip_expires_at)
                                                             <div class="alert alert-secondary w-100 mb-3" style="border-radius:10px;">
