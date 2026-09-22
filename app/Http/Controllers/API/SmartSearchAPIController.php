@@ -59,7 +59,9 @@ class SmartSearchAPIController extends AppBaseController
             $filters = array_merge($context, $filters);
         }
 
-        $query = aqar::where('status', 1)->orderBy('vip', 'DESC')->orderBy('created_at', 'DESC');
+        $query = aqar::where('status', 1)
+            ->orderByDesc('display_priority')
+            ->inRandomOrder();
         $this->applyFilters($query, $filters);
 
         $results = $query->with(['images', 'mainImage', 'firstImage', 'districte', 'governrateq', 'subAreaa', 'offerTypes'])
