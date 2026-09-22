@@ -28,7 +28,7 @@ class SearchAPIController extends AppBaseController
      */
     public function search(Request $request): JsonResponse
     {
-        $query = aqar::where('status', 1)->orderBy('vip', 'DESC')->orderBy('created_at', 'DESC');
+        $query = aqar::where('status', 1);
 
         // Category
         if ($request->filled('licat')) {
@@ -142,7 +142,8 @@ class SearchAPIController extends AppBaseController
             });
         }
 
-        // Sort
+        // Show priority listings first for every property type.
+        $query->orderByDesc('display_priority');
         if ($request->filled('sort')) {
             switch ($request->sort) {
                 case 'price_asc':
@@ -163,7 +164,12 @@ class SearchAPIController extends AppBaseController
                 case 'oldest':
                     $query->orderBy('created_at', 'asc');
                     break;
+                default:
+                    $query->inRandomOrder();
+                    break;
             }
+        } else {
+            $query->inRandomOrder();
         }
 
         $results = $query->with(['images', 'mainImage', 'firstImage', 'governrateq', 'districte', 'subAreaa', 'offerTypes'])
