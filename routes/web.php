@@ -17,6 +17,9 @@ use App\Http\Controllers\Auth\CustomPasswordResetLinkController;
 |
 */
 
+// Public app download page: keep /app_mob independent of the optional locale prefix.
+Route::get('/app_mob', function () { return view('app-download'); })->name('app.download');
+
 Route::get('/', 'App\Http\Controllers\SiteHomeController@home');
 Route::get('/changeLang/{url}', 'App\Http\Controllers\PageController@changeLang')->name('changeLang');
 
