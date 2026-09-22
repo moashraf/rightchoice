@@ -10,7 +10,7 @@
   <meta property="og:title" content="Right Choice | رايت تشويس">
   <meta property="og:description" content="حمّل تطبيق رايت تشويس للعقارات — Download the Right Choice app">
   <meta property="og:image" content="https://rightchoice-co.com/assets/img/logo.png">
-  <meta property="og:url" content="https://rightchoice-co.com/app">
+  <meta property="og:url" content="https://rightchoice-co.com/app_mob">
   <meta name="twitter:card" content="summary">
 
   <style>
