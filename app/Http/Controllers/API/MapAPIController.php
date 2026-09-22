@@ -59,7 +59,7 @@ class MapAPIController extends AppBaseController
             });
         }
 
-        $aqars = $query->get();
+        $aqars = $query->orderByDesc('display_priority')->inRandomOrder()->get();
 
         $results = $aqars->map(function ($item) use ($locale) {
             $loc = $item->aqarLocation;
