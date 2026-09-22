@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Middleware\TrackApiAccess;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -172,8 +173,9 @@ class RegisterAPIController extends AppBaseController
             'status'                   => 1,
         ]);
 
-        // Create Sanctum token for authenticated requests
-            $token = $user->createToken('auth_token')->plainTextToken;
+        $newToken = $user->createToken('auth_token');
+        TrackApiAccess::stamp($newToken->accessToken, $request);
+        $token = $newToken->plainTextToken;
 
         $result = [
             'user' => [
