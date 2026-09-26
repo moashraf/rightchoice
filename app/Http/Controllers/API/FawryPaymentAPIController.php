@@ -68,6 +68,20 @@ class FawryPaymentAPIController extends AppBaseController
         ]];
     }
 
+    private function discountedPackageAmount(Pricing|PriceVip $package): ?string
+    {
+        $price = (float) $package->price;
+        $discountPercent = (int) $package->discount_percentage;
+
+        if (!is_finite($price) || $price <= 0 || $discountPercent < 0 || $discountPercent > 100) {
+            return null;
+        }
+
+        $amount = round($price * ((100 - $discountPercent) / 100), 2);
+
+        return $amount > 0 ? number_format($amount, 2, '.', '') : null;
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // POST /api/fawry/charge
     // ─────────────────────────────────────────────────────────────────────────
@@ -79,16 +93,12 @@ class FawryPaymentAPIController extends AppBaseController
             $request->all(),
             [
                 'price_id' => 'required|integer|exists:priceing_sale,id',
-                'price'    => 'required|numeric|min:1|max:99999',
             ],
             array_merge($this->arabicMessages, [
                 'price_id.exists' => 'الباقة المختارة غير موجودة في النظام.',
-                'price.min'       => 'المبلغ يجب أن يكون على الأقل 1 جنيه.',
-                'price.max'       => 'المبلغ يجب ألا يتجاوز 99,999 جنيه.',
             ]),
             [
                 'price_id' => 'الباقة',
-                'price'    => 'المبلغ',
             ]
         );
 
@@ -123,9 +133,16 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
+        // Calculate the payable amount from the package, never from the client price.
+        $package = Pricing::find($request->integer('price_id'));
+        $amount = $package ? $this->discountedPackageAmount($package) : null;
+
+        if ($amount === null || (float) $amount < 1 || (float) $amount > 99999) {
+            return $this->sendError('سعر الباقة بعد الخصم غير صالح للدفع من فوري.', 422);
+        }
+
         // ── Process ──────────────────────────────────────────────────────────
         $merchantRefNum = random_int(100000, 999999);
-        $amount         = number_format((float) $request->price, 2, '.', '');
         $webhookUrl     = (string) config('services.fawry.webhook_url');
 
         if ($webhookUrl === '') {
@@ -261,6 +278,11 @@ class FawryPaymentAPIController extends AppBaseController
             return $this->sendError('باقة التمييز غير متاحة.', 404);
         }
 
+        $amount = $this->discountedPackageAmount($package);
+        if ($amount === null) {
+            return $this->sendError('سعر باقة التمييز بعد الخصم غير صالح للدفع من فوري.', 422);
+        }
+
         if ((int) $property->user_id !== (int) $user->id) {
             return $this->sendError('لا يمكنك تمييز إعلان لا يخصك.', 403);
         }
@@ -282,7 +304,6 @@ class FawryPaymentAPIController extends AppBaseController
             ]);
         }
 
-        $amount = number_format((float) $package->price, 2, '.', '');
         $merchantRefNum = (string) (time() . $property->id . $package->id . random_int(10, 99));
         $customerProfileId = $package->id . '55555' . $property->id;
         $signature = $fawryGateway->buildPayAtFawrySignature($merchantRefNum, $customerProfileId, $amount);
