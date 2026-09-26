@@ -306,7 +306,8 @@ class AdminAqarController extends AppBaseController
             return redirect(route('sitemanagement.aqars.index'));
         }
 
-        $wasPublished = (int) $aqar->status === 1;
+        $previousStatus = (int) $aqar->status;
+        $wasPublished = $previousStatus === 1;
         $this->applyVipSchedule($request, $aqar);
 
         if ((int) $request->input('status') !== 0) {
@@ -343,8 +344,8 @@ class AdminAqarController extends AppBaseController
 
         if (!$wasPublished && (int) $aqar->status === 1) {
             app(PropertyPublicationNotifier::class)->notify($aqar);
-        } elseif ($wasPublished && (int) $aqar->status === 2) {
-            // Keep the existing rejection message when a published listing is stopped.
+        } elseif ($previousStatus !== 2 && (int) $aqar->status === 2) {
+            // Keep the existing rejection message when a listing is stopped.
             $user = User::find($aqar->user_id);
             if ($user) {
                 Notification::create([
