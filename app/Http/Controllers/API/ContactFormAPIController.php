@@ -53,7 +53,7 @@ class ContactFormAPIController extends AppBaseController
      */
     public function store(CreateContactFormAPIRequest $request)
     {
-        $input = $request->all();
+        $input = $request->validated();
 
         $contactForm = $this->contactFormRepository->create($input);
 

@@ -3,6 +3,8 @@
 namespace App\Http\Requests\API;
 
 use App\Models\ContactForm;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use InfyOm\Generator\Request\APIRequest;
 
 class CreateContactFormAPIRequest extends APIRequest
@@ -25,5 +27,14 @@ class CreateContactFormAPIRequest extends APIRequest
     public function rules()
     {
         return ContactForm::$rules;
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => $validator->errors()->first(),
+            'errors' => $validator->errors()->toArray(),
+        ], 422));
     }
 }
