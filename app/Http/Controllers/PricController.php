@@ -14,6 +14,7 @@ use App\Models\UserPriceing;
 use App\Enums\PaymentStatusEnum;
 use App\Services\FawryPaymentGatewayService;
 use App\Services\PropertyPromotionService;
+use App\Services\PackageSubscriptionNotifier;
 use DomainException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -297,7 +298,10 @@ class PricController extends Controller
 
         $subscription->save();
 
-
+        $payment = FawryPayment::where('referenceNumber', (string) request('referenceNumber'))->first();
+        if ($payment && (int) $payment->user_id === (int) auth()->id()) {
+            app(PackageSubscriptionNotifier::class)->notify($payment);
+        }
 
  /////////////////////////////////////////////
  /*
@@ -1266,6 +1270,7 @@ $paymentStatus = $response['type']; // get response values
         }
 
         app(PropertyPromotionService::class)->activate($aqar, $package, true, $payment);
+        app(PackageSubscriptionNotifier::class)->notify($payment);
     }
 
     /**
