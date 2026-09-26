@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
 use App\Models\FcmToken;
+use App\Models\Notification;
 use App\Services\FcmNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -45,12 +46,23 @@ class FcmTokenController extends AppBaseController
                 'created_at' => now(), 'updated_at' => now()],
         ], ['token'], ['user_id', 'updated_at']);
 
+        $title = 'RightChoice';
+        $message = 'مرحبًا بك في RightChoice';
+
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 0,
+            'title' => $title,
+            'message' => $message,
+            'status' => 0,
+        ]);
+
         try {
             $result = $fcmService->sendToToken(
                 $user,
                 $data['token'],
-                'RightChoice',
-                'مرحبًا بك في RightChoice',
+                $title,
+                $message,
                 [
                     'type' => 'welcome',
                     'screen' => 'home',
