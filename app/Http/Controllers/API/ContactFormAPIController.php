@@ -54,7 +54,6 @@ class ContactFormAPIController extends AppBaseController
     public function store(CreateContactFormAPIRequest $request)
     {
         $input = $request->validated();
-        $input['user_id'] = $request->user('sanctum')?->id ?? $request->user()?->id;
 
         $contactForm = $this->contactFormRepository->create($input);
 
