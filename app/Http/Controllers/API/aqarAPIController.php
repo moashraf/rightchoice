@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\Images;
 use App\Models\User;
+use App\Services\PropertySubmissionNotifier;
 
 class aqarAPIController extends AppBaseController
 {
@@ -268,6 +269,8 @@ class aqarAPIController extends AppBaseController
             'user:id,name,email,MOP,AGE,TYPE,Job_title,profile_image,created_at',
             'user.companiess',
         ])->find($aqar->id);
+
+        app(PropertySubmissionNotifier::class)->notify($aqar);
 
         return $this->sendResponse($aqar->toArray(), 'Aqar saved successfully');
     }
