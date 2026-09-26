@@ -29,45 +29,40 @@
                                         </div>
                                     </div>
 
-                                    <a href="{{ url(Config::get('app.locale').'/login') }}"
-                                       class="rc-login-prompt-btn">
-                                        <span>تسجيل الدخول</span>
-                                        <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                    </a>
-                                </div>
+                                    <div class="rc-login-prompt-actions">
+                                        <a href="{{ url(Config::get('app.locale').'/login') }}"
+                                           class="rc-login-prompt-btn">
+                                            <span>تسجيل الدخول</span>
+                                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                        </a>
 
-                                @if (config('services.google.web_client_id') || (config('services.apple.web_client_id') && config('services.apple.redirect_uri')))
-                                    <div class="rc-login-prompt-social">
-                                        <p>أو سجّل الدخول مباشرة باستخدام أحد الخيارات التالية</p>
-                                        <div class="rc-social-login-buttons">
-                                            @if (config('services.google.web_client_id'))
-                                                <div class="rc-google-login-wrap">
-                                                    <div id="register-google-signin-button" aria-label="المتابعة باستخدام Google"></div>
-                                                </div>
-                                                <form id="register-google-login-form" method="POST" action="{{ route('google.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
-                                                    @csrf
-                                                    <input type="hidden" name="credential" id="register-google-credential">
-                                                </form>
-                                            @endif
+                                        @if (config('services.google.web_client_id'))
+                                            <div class="rc-google-login-wrap" title="تسجيل الدخول باستخدام Google">
+                                                <div id="register-google-signin-button" aria-label="تسجيل الدخول باستخدام Google"></div>
+                                            </div>
+                                            <form id="register-google-login-form" method="POST" action="{{ route('google.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                                @csrf
+                                                <input type="hidden" name="credential" id="register-google-credential">
+                                            </form>
+                                        @endif
 
-                                            @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
-                                                <div class="rc-apple-login-wrap">
-                                                    <div id="register-appleid-signin"
-                                                         data-color="black"
-                                                         data-border="true"
-                                                         data-type="sign-in"
-                                                         data-mode="center-align"
-                                                         aria-label="المتابعة باستخدام Apple"></div>
-                                                </div>
-                                                <form id="register-apple-login-form" method="POST" action="{{ route('apple.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
-                                                    @csrf
-                                                    <input type="hidden" name="credential" id="register-apple-credential">
-                                                    <input type="hidden" name="name" id="register-apple-name">
-                                                </form>
-                                            @endif
-                                        </div>
+                                        @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
+                                            <div class="rc-apple-login-wrap" title="تسجيل الدخول باستخدام Apple">
+                                                <div id="register-appleid-signin"
+                                                     data-color="black"
+                                                     data-border="true"
+                                                     data-type="sign-in"
+                                                     data-mode="logo-only"
+                                                     aria-label="تسجيل الدخول باستخدام Apple"></div>
+                                            </div>
+                                            <form id="register-apple-login-form" method="POST" action="{{ route('apple.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                                @csrf
+                                                <input type="hidden" name="credential" id="register-apple-credential">
+                                                <input type="hidden" name="name" id="register-apple-name">
+                                            </form>
+                                        @endif
                                     </div>
-                                @endif
+                                </div>
                             </div>
 
                             @php
@@ -563,38 +558,27 @@
             gap: 16px;
         }
 
-        .rc-login-prompt-social {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(11, 95, 159, 0.14);
-            text-align: center;
-        }
-
-        .rc-login-prompt-social p {
-            margin: 0 0 12px;
-            color: var(--rc-blue-dark);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .rc-social-login-buttons {
+        .rc-login-prompt-actions {
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 0 0 auto;
         }
 
         .rc-google-login-wrap,
         .rc-apple-login-wrap {
             display: flex;
+            align-items: center;
             justify-content: center;
-            width: 340px;
-            max-width: 100%;
-            min-height: 44px;
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
         }
 
         #register-appleid-signin {
-            width: 100%;
+            width: 44px;
             height: 44px;
         }
 
@@ -743,7 +727,10 @@
                 flex-direction: column;
             }
 
-            .rc-login-prompt-btn,
+            .rc-login-prompt-actions {
+                justify-content: flex-start;
+            }
+
             .rc-existing-account-login-btn {
                 width: 100%;
             }
@@ -1330,14 +1317,11 @@
                 });
 
                 google.accounts.id.renderButton(button, {
-                    type: 'standard',
+                    type: 'icon',
                     theme: 'outline',
                     size: 'large',
-                    text: 'continue_with',
-                    shape: 'rectangular',
-                    logo_alignment: 'left',
-                    locale: '{{ Config::get('app.locale') === 'en' ? 'en' : 'ar' }}',
-                    width: Math.min(340, button.parentElement.clientWidth)
+                    shape: 'square',
+                    locale: '{{ Config::get('app.locale') === 'en' ? 'en' : 'ar' }}'
                 });
             }
         </script>
