@@ -30,6 +30,7 @@ use App\Models\wish;
 use App\Models\UserPriceing;
 use App\Models\Complaints;
 use App\Models\property_type;
+use App\Services\PropertySubmissionNotifier;
 use Redirect;
 use Config;
 use App;
@@ -1249,13 +1250,14 @@ class AqarController extends Controller
 
         // return redirect("/")->with('status', '  تم الحفظ بنجاح!');
 
-        $message = ' شكرا  لك تم اضافه الاعلان بنجاح و جاري المراجعه';
+        $message = 'تم إضافة عقارك بنجاح، وجارٍ مراجعته.';
         if ($validator->fails()) {
 
             return Redirect::back()->withErrors($validator)->withInput($request->input());
         } else {
+            app(PropertySubmissionNotifier::class)->notify($aqar);
 
-            session()->flash('success', 'تم اضافه الاعلان بنجاح و جاري المراجعه');
+            session()->flash('success', $message);
             return Redirect()->to('ar/aqar-added')->with('message', $message)->with('id', $id);
         }
 
