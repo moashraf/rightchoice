@@ -46,6 +46,7 @@ class PackageFulfillmentService
         }
 
         if ($this->alreadyFulfilled($payment)) {
+            app(PackageSubscriptionNotifier::class)->notify($payment);
             return false;
         }
 
@@ -162,6 +163,8 @@ class PackageFulfillmentService
             ],
             $performedBy
         );
+
+        app(PackageSubscriptionNotifier::class)->notify($payment);
 
         return true;
     }
@@ -286,6 +289,8 @@ class PackageFulfillmentService
             ],
             $performedBy
         );
+
+        app(PackageSubscriptionNotifier::class)->notify($payment);
 
         return true;
     }
