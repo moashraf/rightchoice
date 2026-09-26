@@ -44,6 +44,67 @@ class SocialAuthTest extends MobileTestCase
         $this->assertSame(0, PersonalAccessToken::count());
     }
 
+    public function test_verified_google_email_signs_in_to_existing_active_phone_verified_account(): void
+    {
+        $user = User::create([
+            'name' => 'Existing', 'email' => 'person@example.com', 'status' => 1,
+            'MOP' => '01012345678', 'phone_verfied_sms_status' => 1,
+            'password' => 'existing-password',
+        ]);
+        $this->identity();
+
+        $response = $this->postJson('/api/auth/social', [
+            'provider' => 'google', 'token' => 'identity-token',
+        ])->assertOk()->assertJsonPath('data.user.id', $user->id);
+
+        $token = PersonalAccessToken::findToken($response->json('data.token'));
+        $this->assertSame($user->id, $token->tokenable->id);
+        $this->assertSame(1, User::count());
+        $this->assertNull($user->fresh()->provider);
+        $this->assertSame('existing-password', $user->fresh()->password);
+    }
+
+    public function test_google_email_match_requires_verified_provider_email_and_verified_phone(): void
+    {
+        $user = User::create([
+            'name' => 'Existing', 'email' => 'person@example.com', 'status' => 1,
+            'MOP' => '01012345678', 'phone_verfied_sms_status' => 1,
+            'password' => 'hash',
+        ]);
+        $payload = ['provider' => 'google', 'token' => 'identity-token'];
+
+        $this->identity('google', ['email_verified' => false]);
+        $this->postJson('/api/auth/social', $payload)->assertUnprocessable();
+
+        $user->update(['phone_verfied_sms_status' => 0]);
+        $this->identity();
+        $this->postJson('/api/auth/social', $payload)->assertStatus(409);
+
+        $user->update(['phone_verfied_sms_status' => 1, 'status' => 0]);
+        $this->postJson('/api/auth/social', $payload)->assertStatus(409);
+
+        $user->update(['status' => 1]);
+        $user->delete();
+        $this->postJson('/api/auth/social', $payload)->assertStatus(409);
+
+        $this->assertSame(0, PersonalAccessToken::count());
+    }
+
+    public function test_apple_cannot_sign_in_to_existing_account_by_email(): void
+    {
+        User::create([
+            'name' => 'Existing', 'email' => 'person@example.com', 'status' => 1,
+            'MOP' => '01012345678', 'phone_verfied_sms_status' => 1,
+            'password' => 'hash',
+        ]);
+        $this->identity('apple');
+
+        $this->postJson('/api/auth/social', [
+            'provider' => 'apple', 'token' => 'identity-token',
+        ])->assertStatus(409);
+        $this->assertSame(0, PersonalAccessToken::count());
+    }
+
     public function test_inactive_and_deleted_accounts_cannot_sign_in(): void
     {
         $this->identity();
