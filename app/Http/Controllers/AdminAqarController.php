@@ -30,6 +30,7 @@ use App\Models\aqar_mzaya;
 use App\Models\Images;
 use App\Models\Notification;
 use App\Services\PropertyAutoSuspensionService;
+use App\Services\PropertyPublicationNotifier;
 use App\Enums\StatusEnumAqar;
 use App\Models\PriceVip;
 use App\Models\PropertyPromotion;
@@ -148,10 +149,15 @@ class AdminAqarController extends AppBaseController
             return back();
         }
 
+        $wasPublished = (int) $aqar->status === 1;
         $aqar->update([
             'status' => (int) $validated['status'],
             'auto_suspended_at' => null,
         ]);
+
+        if (!$wasPublished && (int) $aqar->status === 1) {
+            app(PropertyPublicationNotifier::class)->notify($aqar);
+        }
 
         Flash::success('تم تغيير حالة العقار بنجاح.');
 
@@ -293,7 +299,6 @@ class AdminAqarController extends AppBaseController
      */
     public function update($id, UpdateaqarRequest $request)
     {
-        $user = User::where('id', $request->user_id)->first();
         $aqar = $this->aqarRepository->find($id);
 
         if (empty($aqar)) {
@@ -301,6 +306,8 @@ class AdminAqarController extends AppBaseController
             return redirect(route('sitemanagement.aqars.index'));
         }
 
+        $previousStatus = (int) $aqar->status;
+        $wasPublished = $previousStatus === 1;
         $this->applyVipSchedule($request, $aqar);
 
         if ((int) $request->input('status') !== 0) {
@@ -335,21 +342,19 @@ class AdminAqarController extends AppBaseController
             $aqar->governrate_id ?? $request->governrate_id
         );
 
-        // Send notification based on status
-        if ($user) {
-            if ($request->status == 1) {
-                $message = 'تم قبول الاعلان';
-                $message .= "<br/><br/><div class='btnAdds' style='text-align: center;'><a href='/ar/aqars/$aqar->slug' class='btn btn-outline-primary ml-2'>عرض</a></div>";
-            } else {
-                $message = 'تم رفض الاعلان بسبب احد الاسباب الاتيه<br/>1/عدم وجود صور بالإعلان<br/>2/ عدم استكمال البيانات<br/>3 / محتوى غير لائق<br/>4/ وجود اكثر من عرض في وصف الإعلان<br/>5/عرض اكثر من وحده في الإعلان';
+        if (!$wasPublished && (int) $aqar->status === 1) {
+            app(PropertyPublicationNotifier::class)->notify($aqar);
+        } elseif ($previousStatus !== 2 && (int) $aqar->status === 2) {
+            // Keep the existing rejection message when a listing is stopped.
+            $user = User::find($aqar->user_id);
+            if ($user) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'type' => 0,
+                    'title' => 'حاله الاعلان رقم ' . $aqar->id,
+                    'message' => 'تم رفض الاعلان بسبب احد الاسباب الاتيه<br/>1/عدم وجود صور بالإعلان<br/>2/ عدم استكمال البيانات<br/>3 / محتوى غير لائق<br/>4/ وجود اكثر من عرض في وصف الإعلان<br/>5/عرض اكثر من وحده في الإعلان',
+                ]);
             }
-
-            Notification::create([
-                'user_id' => $user->id,
-                'type'    => 0,
-                'title'   => 'حاله الاعلان رقم ' . $aqar->id,
-                'message' => $message,
-            ]);
         }
 
         Flash::success('تم تحديث العقار بنجاح.');
