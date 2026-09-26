@@ -73,25 +73,39 @@ class SocialAuthController extends AppBaseController
                         return $this->sendError('A verified provider email is required for the first sign-in.', 422);
                     }
 
-                    // Do not silently attach a new provider to an existing account.
-                    if (User::withTrashed()->where('email', $email)->exists()) {
-                        return $this->sendError('An account already uses this email. Sign in using its existing method.', 409);
+                    $existingUser = User::withTrashed()->where('email', $email)
+                        ->lockForUpdate()->first();
+
+                    if ($existingUser) {
+                        // Match the website: verified Google users may sign in to an existing,
+                        // active account only after its phone number has been verified.
+                        if ($data['provider'] === 'google'
+                            && !$existingUser->trashed()
+                            && (int) $existingUser->status === 1
+                            && trim((string) $existingUser->MOP) !== ''
+                            && (int) $existingUser->phone_verfied_sms_status === 1) {
+                            $user = $existingUser;
+                        } else {
+                            return $this->sendError('An account already uses this email. Sign in using its existing method.', 409);
+                        }
                     }
 
-                    $user = new User();
-                    $user->provider = $data['provider'];
-                    $user->provider_id = $claims['sub'];
-                    $name = $claims['name'] ?? ($data['name'] ?? 'RightChoice user');
-                    $user->name = Str::limit(is_string($name) && trim($name) !== '' ? trim($name) : 'RightChoice user', 90, '');
-                    $user->email = $email;
-                    $user->email_verified_at = now();
-                    $user->password = null;
-                    $user->TYPE = 1;
-                    $user->isAdmin = 0;
-                    $user->status = 1;
-                    // Email verification is not phone verification.
-                    $user->phone_verfied_sms_status = 0;
-                    $user->save();
+                    if (!$user) {
+                        $user = new User();
+                        $user->provider = $data['provider'];
+                        $user->provider_id = $claims['sub'];
+                        $name = $claims['name'] ?? ($data['name'] ?? 'RightChoice user');
+                        $user->name = Str::limit(is_string($name) && trim($name) !== '' ? trim($name) : 'RightChoice user', 90, '');
+                        $user->email = $email;
+                        $user->email_verified_at = now();
+                        $user->password = null;
+                        $user->TYPE = 1;
+                        $user->isAdmin = 0;
+                        $user->status = 1;
+                        // Email verification is not phone verification.
+                        $user->phone_verfied_sms_status = 0;
+                        $user->save();
+                    }
                 }
 
                 // Preserve profile data on subsequent sign-ins (Apple omits name).
