@@ -72,6 +72,8 @@ Route::apiResource('pages',                    App\Http\Controllers\API\PagesAPI
 Route::get('developers',                      [App\Http\Controllers\API\DeveloperAPIController::class, 'index']);
 Route::get('developers/{id}',                 [App\Http\Controllers\API\DeveloperAPIController::class, 'show'])
     ->where('id', '[0-9]+');
+Route::get('users/{id}/properties',            [App\Http\Controllers\PublicUserProfileController::class, 'apiShow'])
+    ->where('id', '[0-9]+');
 Route::get('aqars/compare',                   [App\Http\Controllers\API\aqarAPIController::class, 'compare']);
 Route::apiResource('aqars',                    App\Http\Controllers\API\aqarAPIController::class);
 Route::apiResource('images',                   App\Http\Controllers\API\ImagesAPIController::class);

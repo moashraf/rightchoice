@@ -509,6 +509,10 @@ Route::group(['prefix' => '{locale?}'], function () {
         ->where('id', '[0-9]+')
         ->middleware('setLocale')->name('developers.show');
 
+    Route::get('/users/{id}', [App\Http\Controllers\PublicUserProfileController::class, 'show'])
+        ->where('id', '[0-9]+')
+        ->middleware('setLocale')->name('users.public.show');
+
     Route::group(['middleware' => 'CheackUser'], function () {
         Route::get('/complete-phone', [App\Http\Controllers\PhoneVerificationController::class, 'show'])
             ->name('phone.complete')->middleware('setLocale');

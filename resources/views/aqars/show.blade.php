@@ -757,17 +757,15 @@
                             </style>
 
                     </div>
-                    <?php if ($aqar->user != null){ ?>
-
-                    <div class="same-owner property-owner-card mt-5">
-
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle"
-                             width="80">
-
-                        <span>{{$aqar->user->name}}</span>
-
-                    </div>
-                    <?php } ?>
+                    @if ($aqar->user && in_array((int) $aqar->user->TYPE, [1, 2], true) && (int) $aqar->user->status === 1)
+                        <a href="{{ route('users.public.show', ['locale' => app()->getLocale(), 'id' => $aqar->user->id]) }}"
+                           class="same-owner property-owner-card mt-5" aria-label="عرض عقارات {{ $aqar->user->name }}">
+                            <img src="{{ $aqar->user->profile_image ? url('/images/' . $aqar->user->profile_image) : url('/images/default-avatar.png') }}"
+                                 alt="{{ $aqar->user->name }}" class="rounded-circle" width="80" height="80"
+                                 style="object-fit:cover">
+                            <span>{{ $aqar->user->name }}</span>
+                        </a>
+                    @endif
 
 
                 </div>
