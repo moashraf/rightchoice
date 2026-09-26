@@ -60,7 +60,7 @@
         .rc-promo-float__copy strong{color:#fff;font-size:14px;font-weight:900}.rc-promo-float__copy small{color:#ffffffe0;font-size:11px;font-weight:800}
         .rc-promo-float__badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:32px;padding:0 7px;border-radius:999px;color:#073f73;background:#fff;font-size:12px;font-weight:900;box-shadow:0 8px 20px #00000024}
         @keyframes rcPromoPulse{50%{box-shadow:0 20px 52px #0b66bd59}}@keyframes rcPromoShine{0%,58%{transform:translateX(120%)}78%,100%{transform:translateX(-120%)}}
-        @media(max-width:767.98px){.rc-floating-promos{top:auto;right:12px;bottom:76px;gap:8px;transform:none}.rc-promo-float{min-height:52px;padding:7px 9px;border-radius:17px;border-right:1px solid #ffffff42}.rc-promo-float:hover,.rc-promo-float:focus{transform:translateY(-3px)}.rc-promo-float__copy strong{font-size:12px}.rc-promo-float__copy small{font-size:9px}.rc-promo-float__badge{min-width:36px;height:28px}}
+        @media(max-width:767.98px){.rc-floating-promos{top:auto;right:12px;bottom:200px;gap:8px;transform:none}.rc-promo-float{min-height:52px;padding:7px 9px;border-radius:17px;border-right:1px solid #ffffff42}.rc-promo-float:hover,.rc-promo-float:focus{transform:translateY(-3px)}.rc-promo-float__copy strong{font-size:12px}.rc-promo-float__copy small{font-size:9px}.rc-promo-float__badge{min-width:36px;height:28px}}
         @media(max-width:420px){.rc-promo-float__copy small{display:none}.rc-promo-float{min-height:46px}.rc-promo-float__badge{height:25px}}
         @media(prefers-reduced-motion:reduce){.rc-promo-float,.rc-promo-float::before{animation:none!important;transition:none!important}}
     </style>

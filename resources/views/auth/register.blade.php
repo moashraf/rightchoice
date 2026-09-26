@@ -20,20 +20,49 @@
                                 <p>ابدأ الآن وأنشئ حسابك للوصول إلى أفضل تجربة عقارية بسهولة وأمان.</p>
                             </div>
 
-                            <div class="rc-login-prompt" role="note">
-                                <div class="rc-login-prompt-content">
+                            <div class="rc-login-prompt" role="region" aria-label="خيارات تسجيل الدخول">
+                                <div class="rc-login-prompt-top">
+                                    <div class="rc-login-prompt-content">
+                                        <div>
+                                            <strong>هل أنت مسجل من قبل؟</strong>
+                                            <p>ادخل إلى حسابك مباشرة بدلًا من إنشاء حساب جديد.</p>
+                                        </div>
+                                    </div>
 
-                                    <div>
-                                        <strong>هل أنت مسجل من قبل؟</strong>
-                                        <p>ادخل إلى حسابك مباشرة بدلًا من إنشاء حساب جديد.</p>
+                                    <div class="rc-login-prompt-actions">
+                                        <a href="{{ url(Config::get('app.locale').'/login') }}"
+                                           class="rc-login-prompt-btn">
+                                            <span>تسجيل الدخول</span>
+                                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                        </a>
+
+                                        @if (config('services.google.web_client_id'))
+                                            <div class="rc-google-login-wrap" title="تسجيل الدخول باستخدام Google">
+                                                <div id="register-google-signin-button" aria-label="تسجيل الدخول باستخدام Google"></div>
+                                            </div>
+                                            <form id="register-google-login-form" method="POST" action="{{ route('google.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                                @csrf
+                                                <input type="hidden" name="credential" id="register-google-credential">
+                                            </form>
+                                        @endif
+
+                                        @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
+                                            <div class="rc-apple-login-wrap" title="تسجيل الدخول باستخدام Apple">
+                                                <div id="register-appleid-signin"
+                                                     data-color="black"
+                                                     data-border="true"
+                                                     data-type="sign-in"
+                                                     data-mode="logo-only"
+                                                     aria-label="تسجيل الدخول باستخدام Apple"></div>
+                                            </div>
+                                            <form id="register-apple-login-form" method="POST" action="{{ route('apple.web.login', ['locale' => Config::get('app.locale')]) }}" class="d-none">
+                                                @csrf
+                                                <input type="hidden" name="credential" id="register-apple-credential">
+                                                <input type="hidden" name="name" id="register-apple-name">
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
-
-                                <a href="{{ url(Config::get('app.locale').'/login') }}"
-                                   class="rc-login-prompt-btn">
-                                    <span>تسجيل الدخول</span>
-                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                </a>
                             </div>
 
                             @php
@@ -519,11 +548,38 @@
             border: 1px solid rgba(11, 95, 159, 0.14);
             border-radius: 16px;
             background: linear-gradient(135deg, rgba(11, 95, 159, 0.055), rgba(24, 199, 161, 0.08));
+            box-shadow: 0 12px 28px rgba(20, 74, 116, 0.06);
+        }
+
+        .rc-login-prompt-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            box-shadow: 0 12px 28px rgba(20, 74, 116, 0.06);
+        }
+
+        .rc-login-prompt-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .rc-google-login-wrap,
+        .rc-apple-login-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+        }
+
+        #register-appleid-signin {
+            width: 44px;
+            height: 44px;
         }
 
         .rc-login-prompt-content {
@@ -665,13 +721,16 @@
         }
 
         @media (max-width: 767px) {
-            .rc-login-prompt,
+            .rc-login-prompt-top,
             .rc-existing-account-notice {
                 align-items: stretch;
                 flex-direction: column;
             }
 
-            .rc-login-prompt-btn,
+            .rc-login-prompt-actions {
+                justify-content: flex-start;
+            }
+
             .rc-existing-account-login-btn {
                 width: 100%;
             }
@@ -1239,5 +1298,61 @@
             });
         });
     </script>
+
+    @if (config('services.google.web_client_id'))
+        <script>
+            function initializeRegisterGoogleLogin() {
+                var button = document.getElementById('register-google-signin-button');
+                if (!button) return;
+
+                google.accounts.id.initialize({
+                    client_id: @json(config('services.google.web_client_id')),
+                    callback: function (response) {
+                        if (!response.credential) return;
+                        document.getElementById('register-google-credential').value = response.credential;
+                        document.getElementById('register-google-login-form').submit();
+                    },
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+
+                google.accounts.id.renderButton(button, {
+                    type: 'icon',
+                    theme: 'outline',
+                    size: 'large',
+                    shape: 'square',
+                    locale: '{{ Config::get('app.locale') === 'en' ? 'en' : 'ar' }}'
+                });
+            }
+        </script>
+        <script src="https://accounts.google.com/gsi/client" async defer onload="initializeRegisterGoogleLogin()"></script>
+    @endif
+
+    @if (config('services.apple.web_client_id') && config('services.apple.redirect_uri'))
+        <script>
+            window.addEventListener('load', function () {
+                AppleID.auth.init({
+                    clientId: @json(config('services.apple.web_client_id')),
+                    scope: 'name email',
+                    redirectURI: @json(config('services.apple.redirect_uri')),
+                    state: @json(csrf_token()),
+                    usePopup: true
+                });
+            });
+
+            document.addEventListener('AppleIDSignInOnSuccess', function (event) {
+                var authorization = event.detail && event.detail.authorization;
+                if (!authorization || !authorization.id_token) return;
+
+                var user = event.detail.user || {};
+                var firstName = user.name && user.name.firstName ? user.name.firstName : '';
+                var lastName = user.name && user.name.lastName ? user.name.lastName : '';
+                document.getElementById('register-apple-credential').value = authorization.id_token;
+                document.getElementById('register-apple-name').value = (firstName + ' ' + lastName).trim();
+                document.getElementById('register-apple-login-form').submit();
+            });
+        </script>
+        <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
+    @endif
 
 </x-layout>
