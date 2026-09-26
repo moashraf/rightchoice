@@ -13,6 +13,7 @@ use App\Models\PriceVip;
 use App\Models\PropertyPromotion;
 use App\Services\FawryPaymentGatewayService;
 use App\Services\PropertyPromotionService;
+use App\Services\PackageSubscriptionNotifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -623,6 +624,13 @@ class FawryPaymentAPIController extends AppBaseController
         FawryPayment::where('referenceNumber', $referenceNumber)
             ->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
 
+        $payment = FawryPayment::where('referenceNumber', $referenceNumber)
+            ->where('user_id', $userId)
+            ->first();
+        if ($payment) {
+            app(PackageSubscriptionNotifier::class)->notify($payment);
+        }
+
         return $this->sendResponse([
             'points'  => $pric->points + $current,
             'message' => "ربحت معنا {$pric->points} نقطة! ممكن تتعامل مع المالك مباشرة بدون عمولة.",
@@ -725,6 +733,7 @@ class FawryPaymentAPIController extends AppBaseController
 
         if ($payment) {
             $payment->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
+            app(PackageSubscriptionNotifier::class)->notify($payment);
         } else {
             FawryPayment::where('referenceNumber', $referenceNumber)
                 ->update(['paymentStatus' => 'PAID', 'paid_at' => now()]);
